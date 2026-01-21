@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Map Editor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Pantalla de inicio -->
+    <div id="homeScreen" class="screen active">
+        <div class="home-container">
+            <h1>D&D Map Editor</h1>
+            <p class="subtitle">Crea y comparte tableros para tus partidas</p>
+
+            <div class="home-options">
+                <!-- Opción Admin -->
+                <div class="option-card">
+                    <h2>Administrador</h2>
+                    <p>Crea y edita salas de juego</p>
+
+                    <div class="option-buttons">
+                        <button id="btnCreateRoom" class="btn btn-primary">Crear Nueva Sala</button>
+                        <button id="btnAccessAdmin" class="btn">Acceder a Sala Existente</button>
+                    </div>
+                </div>
+
+                <!-- Opción Usuario -->
+                <div class="option-card">
+                    <h2>Jugador</h2>
+                    <p>Únete a una sala existente</p>
+
+                    <div class="join-form">
+                        <input type="text" id="roomCodeInput" placeholder="Código de sala" maxlength="8">
+                        <button id="btnJoinRoom" class="btn btn-primary">Unirse</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal crear sala -->
+    <div id="createRoomModal" class="modal">
+        <div class="modal-content">
+            <h2>Crear Nueva Sala</h2>
+            <div class="form-group">
+                <label for="roomName">Nombre de la sala</label>
+                <input type="text" id="roomName" placeholder="Ej: Mazmorra del Dragón">
+            </div>
+            <div class="form-group">
+                <label for="adminPassword">Contraseña de admin</label>
+                <input type="password" id="adminPassword" placeholder="Contraseña para editar">
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCancelCreate" class="btn">Cancelar</button>
+                <button id="btnConfirmCreate" class="btn btn-primary">Crear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal acceder como admin -->
+    <div id="accessAdminModal" class="modal">
+        <div class="modal-content">
+            <h2>Acceder como Admin</h2>
+            <div class="form-group">
+                <label for="accessRoomCode">Código de sala</label>
+                <input type="text" id="accessRoomCode" placeholder="Código de 8 caracteres" maxlength="8">
+            </div>
+            <div class="form-group">
+                <label for="accessAdminPassword">Contraseña de admin</label>
+                <input type="password" id="accessAdminPassword" placeholder="Tu contraseña">
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCancelAccess" class="btn">Cancelar</button>
+                <button id="btnConfirmAccess" class="btn btn-primary">Acceder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla Admin (Editor) -->
+    <div id="adminScreen" class="screen">
+        <div class="app-container">
+            <!-- Panel de herramientas lateral -->
+            <aside class="toolbar">
+                <div class="toolbar-header">
+                    <button id="btnBackFromAdmin" class="btn btn-small">Volver</button>
+                    <h2>Editor</h2>
+                </div>
+
+                <!-- Info de sala -->
+                <section class="tool-section room-info">
+                    <h3>Sala: <span id="adminRoomName">-</span></h3>
+                    <p class="room-code">Código: <strong id="adminRoomCode">-</strong></p>
+                    <button id="btnCopyCode" class="btn btn-small">Copiar Código</button>
+                    <button id="btnSaveRoom" class="btn btn-primary">Guardar Cambios</button>
+                </section>
+
+                <!-- Cargar imagen -->
+                <section class="tool-section">
+                    <h3>Imagen de Fondo</h3>
+                    <input type="file" id="imageInput" accept="image/*">
+                    <label for="imageInput" class="btn btn-primary">Cargar Imagen</label>
+                </section>
+
+                <!-- Controles de imagen -->
+                <section class="tool-section">
+                    <h3>Ajustar Imagen</h3>
+                    <div class="control-group">
+                        <label for="imageScale">Zoom: <span id="scaleValue">100</span>%</label>
+                        <input type="range" id="imageScale" min="10" max="300" value="100">
+                    </div>
+                    <div class="control-group">
+                        <label for="imageRotation">Rotación: <span id="rotationValue">0</span>°</label>
+                        <input type="range" id="imageRotation" min="0" max="360" value="0">
+                    </div>
+                    <button id="resetImage" class="btn">Resetear Imagen</button>
+                </section>
+
+                <!-- Configuración de cuadrícula -->
+                <section class="tool-section">
+                    <h3>Cuadrícula</h3>
+                    <div class="control-group">
+                        <label for="gridSize">Tamaño de celda: <span id="gridSizeValue">50</span>px</label>
+                        <input type="range" id="gridSize" min="20" max="150" value="50">
+                    </div>
+                    <div class="control-group">
+                        <label for="gridOpacity">Opacidad: <span id="gridOpacityValue">50</span>%</label>
+                        <input type="range" id="gridOpacity" min="0" max="100" value="50">
+                    </div>
+                    <div class="control-group">
+                        <label for="gridColor">Color:</label>
+                        <input type="color" id="gridColor" value="#ffffff">
+                    </div>
+                    <div class="control-group">
+                        <label for="gridLineWidth">Grosor de línea: <span id="gridLineWidthValue">1</span>px</label>
+                        <input type="range" id="gridLineWidth" min="1" max="5" value="1">
+                    </div>
+                    <div class="control-group checkbox-group">
+                        <input type="checkbox" id="showGrid" checked>
+                        <label for="showGrid">Mostrar cuadrícula</label>
+                    </div>
+                </section>
+
+                <!-- Offset de cuadrícula -->
+                <section class="tool-section">
+                    <h3>Offset de Cuadrícula</h3>
+                    <div class="control-group">
+                        <label for="gridOffsetX">Offset X: <span id="gridOffsetXValue">0</span>px</label>
+                        <input type="range" id="gridOffsetX" min="-100" max="100" value="0">
+                    </div>
+                    <div class="control-group">
+                        <label for="gridOffsetY">Offset Y: <span id="gridOffsetYValue">0</span>px</label>
+                        <input type="range" id="gridOffsetY" min="-100" max="100" value="0">
+                    </div>
+                </section>
+
+                <!-- Instrucciones -->
+                <section class="tool-section instructions">
+                    <h3>Controles</h3>
+                    <ul>
+                        <li><strong>Arrastrar:</strong> Click + mover</li>
+                        <li><strong>Zoom:</strong> Rueda del mouse</li>
+                    </ul>
+                </section>
+            </aside>
+
+            <!-- Área principal del canvas -->
+            <main class="canvas-container">
+                <canvas id="mapCanvas"></canvas>
+            </main>
+        </div>
+    </div>
+
+    <!-- Pantalla Usuario (Solo visualización) -->
+    <div id="userScreen" class="screen">
+        <div class="user-container">
+            <!-- Barra superior mínima -->
+            <header class="user-header">
+                <button id="btnBackFromUser" class="btn btn-small">Salir</button>
+                <h2 id="userRoomName">Sala</h2>
+                <span id="userRoomCode" class="room-code-badge">CODIGO</span>
+            </header>
+
+            <!-- Canvas a pantalla completa -->
+            <main class="user-canvas-container">
+                <canvas id="userMapCanvas"></canvas>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
