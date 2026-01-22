@@ -12,8 +12,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-// Servir archivos estáticos desde la carpeta public
-app.use(express.static(path.join(__dirname, '../public')));
+// Servir archivos estáticos desde la carpeta client
+app.use(express.static(path.join(__dirname, '../client')));
 
 // Conexión a PostgreSQL
 const pool = new Pool({
@@ -173,7 +173,7 @@ app.post('/api/rooms/list', async (req, res) => {
 
 // Ruta catch-all para SPA (sirve index.html para cualquier ruta no API)
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
 // Iniciar servidor
