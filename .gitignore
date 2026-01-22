@@ -8,6 +8,7 @@ node_modules/
 
 # Claude config
 .claude/
+Claude.md
 
 # OS files
 .DS_Store

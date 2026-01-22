@@ -2,8 +2,8 @@
 // D&D Map Editor - Sistema de Salas
 // ==========================================
 
-// Configuración de API
-const API_URL = 'http://localhost:3000/api';
+// Configuración de API (usa la URL actual del servidor)
+const API_URL = '/api';
 
 // ==========================================
 // Clase principal de la aplicación
