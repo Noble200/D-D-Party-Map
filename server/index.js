@@ -173,6 +173,10 @@ app.post('/api/rooms/list', async (req, res) => {
 
 // Ruta catch-all para SPA (sirve index.html para cualquier ruta no API)
 app.get('*', (req, res) => {
+    // No servir HTML para rutas de API
+    if (req.path.startsWith('/api')) {
+        return res.status(404).json({ error: 'Ruta no encontrada' });
+    }
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
