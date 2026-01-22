@@ -12,9 +12,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-// Servir archivos estáticos desde la carpeta client
-app.use(express.static(path.join(__dirname, '../client')));
-
 // Conexión a PostgreSQL
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -45,8 +42,25 @@ async function initDB() {
 }
 
 // ==========================================
-// API ENDPOINTS
+// API ENDPOINTS (definir ANTES de static)
 // ==========================================
+
+// Listar salas de un admin (por contraseña) - DEBE IR ANTES de :code
+app.post('/api/rooms/list', async (req, res) => {
+    try {
+        const { adminPassword } = req.body;
+
+        const result = await pool.query(
+            'SELECT code, name, created_at, updated_at FROM rooms WHERE admin_password = $1 ORDER BY updated_at DESC',
+            [adminPassword]
+        );
+
+        res.json({ success: true, rooms: result.rows });
+    } catch (error) {
+        console.error('Error listando salas:', error);
+        res.status(500).json({ error: 'Error al listar salas' });
+    }
+});
 
 // Crear nueva sala (Admin)
 app.post('/api/rooms', async (req, res) => {
@@ -77,28 +91,7 @@ app.post('/api/rooms', async (req, res) => {
     }
 });
 
-// Obtener sala (Usuario - solo lectura)
-app.get('/api/rooms/:code', async (req, res) => {
-    try {
-        const { code } = req.params;
-
-        const result = await pool.query(
-            'SELECT code, name, image_data, image_transform, grid_config FROM rooms WHERE code = $1',
-            [code.toUpperCase()]
-        );
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Sala no encontrada' });
-        }
-
-        res.json({ success: true, room: result.rows[0] });
-    } catch (error) {
-        console.error('Error obteniendo sala:', error);
-        res.status(500).json({ error: 'Error al obtener la sala' });
-    }
-});
-
-// Verificar acceso admin
+// Verificar acceso admin - DEBE IR ANTES de GET :code
 app.post('/api/rooms/:code/admin', async (req, res) => {
     try {
         const { code } = req.params;
@@ -154,29 +147,35 @@ app.put('/api/rooms/:code', async (req, res) => {
     }
 });
 
-// Listar salas de un admin (por contraseña)
-app.post('/api/rooms/list', async (req, res) => {
+// Obtener sala (Usuario - solo lectura)
+app.get('/api/rooms/:code', async (req, res) => {
     try {
-        const { adminPassword } = req.body;
+        const { code } = req.params;
 
         const result = await pool.query(
-            'SELECT code, name, created_at, updated_at FROM rooms WHERE admin_password = $1 ORDER BY updated_at DESC',
-            [adminPassword]
+            'SELECT code, name, image_data, image_transform, grid_config FROM rooms WHERE code = $1',
+            [code.toUpperCase()]
         );
 
-        res.json({ success: true, rooms: result.rows });
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Sala no encontrada' });
+        }
+
+        res.json({ success: true, room: result.rows[0] });
     } catch (error) {
-        console.error('Error listando salas:', error);
-        res.status(500).json({ error: 'Error al listar salas' });
+        console.error('Error obteniendo sala:', error);
+        res.status(500).json({ error: 'Error al obtener la sala' });
     }
 });
 
-// Ruta catch-all para SPA (sirve index.html para cualquier ruta no API)
+// ==========================================
+// ARCHIVOS ESTÁTICOS (después de API)
+// ==========================================
+
+app.use(express.static(path.join(__dirname, '../client')));
+
+// Ruta catch-all para SPA
 app.get('*', (req, res) => {
-    // No servir HTML para rutas de API
-    if (req.path.startsWith('/api')) {
-        return res.status(404).json({ error: 'Ruta no encontrada' });
-    }
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
