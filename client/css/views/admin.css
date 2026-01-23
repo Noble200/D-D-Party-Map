@@ -1,0 +1,15 @@
+/* ==========================================
+   Admin View - Vista del administrador
+   ========================================== */
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+}

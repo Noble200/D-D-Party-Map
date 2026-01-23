@@ -1,0 +1,111 @@
+/* ==========================================
+   Home View - Pantalla de inicio
+   ========================================== */
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: var(--spacing-lg);
+}
+
+.home-container h1 {
+    font-size: 3rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+}
+
+.subtitle {
+    color: var(--color-text-muted);
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+/* Opciones de inicio */
+.home-options {
+    display: flex;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Tarjetas de opción */
+.option-card {
+    background: var(--color-bg-medium);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+    width: 300px;
+    text-align: center;
+    border: 2px solid var(--border-color);
+    transition: all var(--transition-normal);
+}
+
+.option-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-5px);
+}
+
+.option-card h2 {
+    color: var(--color-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.option-card p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-lg);
+    font-size: 0.9rem;
+}
+
+/* Botones de opción */
+.option-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+/* Formulario de unirse */
+.join-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.join-form input {
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-light);
+    color: var(--color-text);
+    font-size: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.join-form input::placeholder {
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.join-form input:focus {
+    outline: 2px solid var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .home-container h1 {
+        font-size: 2rem;
+    }
+
+    .home-options {
+        flex-direction: column;
+    }
+
+    .option-card {
+        width: 100%;
+        max-width: 350px;
+    }
+}

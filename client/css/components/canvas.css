@@ -1,0 +1,151 @@
+/* ==========================================
+   Canvas - Estilos del área de dibujo
+   ========================================== */
+
+.canvas-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-bg-canvas);
+    background-image:
+        radial-gradient(circle at 25% 25%, var(--color-bg-dark) 2%, transparent 2%),
+        radial-gradient(circle at 75% 75%, var(--color-bg-dark) 2%, transparent 2%);
+    background-size: 20px 20px;
+}
+
+#mapCanvas,
+#adminMapCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: grab;
+}
+
+#mapCanvas:active,
+#adminMapCanvas:active {
+    cursor: grabbing;
+}
+
+/* Canvas del usuario/jugador */
+.user-canvas-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-bg-canvas);
+}
+
+#userMapCanvas,
+#playerMapCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: grab;
+}
+
+#userMapCanvas:active,
+#playerMapCanvas:active {
+    cursor: grabbing;
+}
+
+/* ==========================================
+   HUD DE USUARIOS CONECTADOS
+   ========================================== */
+
+.users-hud {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(22, 33, 62, 0.9);
+    border: 1px solid var(--color-bg-light);
+    border-radius: var(--radius-lg);
+    padding: 12px 15px;
+    min-width: 140px;
+    max-width: 200px;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    pointer-events: none;
+}
+
+.users-hud-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--color-text);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-bg-light);
+    margin-bottom: 8px;
+}
+
+.users-hud-icon {
+    color: var(--color-success);
+    font-size: 0.6rem;
+    animation: hudPulse 2s infinite;
+}
+
+@keyframes hudPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.users-hud-list {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.users-hud-group {
+    margin-bottom: 6px;
+}
+
+.users-hud-group:last-child {
+    margin-bottom: 0;
+}
+
+.users-hud-group-label {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+}
+
+.users-hud-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--color-text);
+    padding: 2px 0;
+}
+
+.users-hud-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    flex-shrink: 0;
+}
+
+.users-hud-dot.admin {
+    background: var(--color-primary);
+}
+
+.users-hud-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.users-hud-empty {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .canvas-container {
+        height: 60vh;
+    }
+}

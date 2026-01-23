@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&D Map Editor</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    <!-- Pantalla de inicio -->
+    <!-- ==========================================
+         PANTALLA DE INICIO
+         ========================================== -->
     <div id="homeScreen" class="screen active">
         <div class="home-container">
             <h1>D&D Map Editor</h1>
@@ -31,6 +34,7 @@
                     <p>Únete a una sala existente</p>
 
                     <div class="join-form">
+                        <input type="text" id="playerNameInput" placeholder="Tu nombre" maxlength="20">
                         <input type="text" id="roomCodeInput" placeholder="Código de sala" maxlength="8">
                         <button id="btnJoinRoom" class="btn btn-primary">Unirse</button>
                     </div>
@@ -39,7 +43,9 @@
         </div>
     </div>
 
-    <!-- Modal crear sala -->
+    <!-- ==========================================
+         MODAL: CREAR SALA
+         ========================================== -->
     <div id="createRoomModal" class="modal">
         <div class="modal-content">
             <h2>Crear Nueva Sala</h2>
@@ -58,7 +64,9 @@
         </div>
     </div>
 
-    <!-- Modal acceder como admin -->
+    <!-- ==========================================
+         MODAL: ACCEDER COMO ADMIN
+         ========================================== -->
     <div id="accessAdminModal" class="modal">
         <div class="modal-content">
             <h2>Acceder como Admin</h2>
@@ -77,7 +85,9 @@
         </div>
     </div>
 
-    <!-- Pantalla Admin (Editor) -->
+    <!-- ==========================================
+         PANTALLA ADMIN (Editor)
+         ========================================== -->
     <div id="adminScreen" class="screen">
         <div class="app-container">
             <!-- Panel de herramientas lateral -->
@@ -87,6 +97,18 @@
                     <h2>Editor</h2>
                 </div>
 
+                <!-- Mode Toggle: Edit / Master -->
+                <section class="tool-section">
+                    <div class="mode-toggle">
+                        <button id="btnModeEdit" class="mode-toggle-btn active">Edit</button>
+                        <button id="btnModeMaster" class="mode-toggle-btn">Master</button>
+                    </div>
+                    <div id="modeIndicator" class="mode-indicator" style="display: none;">
+                        <div class="mode-indicator-dot"></div>
+                        <span class="mode-indicator-text">Modo presentación activo</span>
+                    </div>
+                </section>
+
                 <!-- Info de sala -->
                 <section class="tool-section room-info">
                     <h3>Sala: <span id="adminRoomName">-</span></h3>
@@ -95,6 +117,7 @@
                     <button id="btnSaveRoom" class="btn btn-primary">Guardar Cambios</button>
                 </section>
 
+                
                 <!-- Cargar imagen -->
                 <section class="tool-section">
                     <h3>Imagen de Fondo</h3>
@@ -166,28 +189,50 @@
 
             <!-- Área principal del canvas -->
             <main class="canvas-container">
-                <canvas id="mapCanvas"></canvas>
+                <canvas id="adminMapCanvas"></canvas>
+                <!-- HUD de usuarios conectados -->
+                <div id="usersHud" class="users-hud">
+                    <div class="users-hud-header">
+                        <span class="users-hud-icon">●</span>
+                        <span id="usersHudCount">0</span> en sala
+                    </div>
+                    <div id="usersHudList" class="users-hud-list">
+                        <!-- Lista de usuarios -->
+                    </div>
+                </div>
             </main>
         </div>
     </div>
 
-    <!-- Pantalla Usuario (Solo visualización) -->
-    <div id="userScreen" class="screen">
+    <!-- ==========================================
+         PANTALLA JUGADOR (Solo visualización)
+         ========================================== -->
+    <div id="playerScreen" class="screen">
         <div class="user-container">
             <!-- Barra superior mínima -->
             <header class="user-header">
-                <button id="btnBackFromUser" class="btn btn-small">Salir</button>
-                <h2 id="userRoomName">Sala</h2>
-                <span id="userRoomCode" class="room-code-badge">CODIGO</span>
+                <button id="btnBackFromPlayer" class="btn btn-small">Salir</button>
+                <h2 id="playerRoomName">Sala</h2>
+                <span id="playerRoomCode" class="room-code-badge">CODIGO</span>
             </header>
 
             <!-- Canvas a pantalla completa -->
             <main class="user-canvas-container">
-                <canvas id="userMapCanvas"></canvas>
+                <canvas id="playerMapCanvas"></canvas>
+                <!-- HUD de usuarios conectados -->
+                <div id="playerUsersHud" class="users-hud">
+                    <div class="users-hud-header">
+                        <span class="users-hud-icon">●</span>
+                        <span id="playerUsersHudCount">0</span> en sala
+                    </div>
+                    <div id="playerUsersHudList" class="users-hud-list">
+                        <!-- Lista de usuarios -->
+                    </div>
+                </div>
             </main>
         </div>
     </div>
 
-    <script src="app.js?v=2"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>

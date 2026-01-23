@@ -1,0 +1,161 @@
+/* ==========================================
+   Toolbar - Estilos del panel de herramientas
+   ========================================== */
+
+.toolbar {
+    width: var(--toolbar-width);
+    background-color: var(--color-bg-medium);
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+    border-right: 2px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.toolbar-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.toolbar-header h2 {
+    color: var(--color-primary);
+    font-size: 1.4rem;
+}
+
+.toolbar h2 {
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--border-color);
+    font-size: 1.4rem;
+}
+
+/* Secciones de herramientas */
+.tool-section {
+    margin-bottom: 25px;
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tool-section h3 {
+    color: var(--color-secondary);
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+/* Info de sala */
+.room-info .room-code {
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-sm);
+}
+
+.room-info strong {
+    color: var(--color-primary);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+/* Grupos de control */
+.control-group {
+    margin-bottom: 12px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+/* Instrucciones */
+.instructions ul {
+    list-style: none;
+    font-size: 0.85rem;
+}
+
+.instructions li {
+    margin-bottom: 8px;
+    color: var(--color-text-muted);
+}
+
+.instructions strong {
+    color: var(--color-secondary);
+}
+
+/* ==========================================
+   MODE TOGGLE - Selector de modo Edit/Master
+   ========================================== */
+
+.mode-toggle {
+    display: flex;
+    background: var(--color-bg-dark);
+    border-radius: var(--radius-lg);
+    padding: 4px;
+    margin-bottom: var(--spacing-md);
+}
+
+.mode-toggle-btn {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background: transparent;
+    color: var(--color-text-muted);
+}
+
+.mode-toggle-btn.active {
+    background: var(--color-primary);
+    color: white;
+}
+
+.mode-toggle-btn:hover:not(.active) {
+    background: var(--color-bg-light);
+    color: var(--color-text);
+}
+
+/* Indicador de modo Master */
+.mode-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--color-bg-dark);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.mode-indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-success);
+    animation: pulse 2s infinite;
+}
+
+.mode-indicator-text {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .toolbar {
+        width: 100%;
+        height: auto;
+        max-height: 40vh;
+        border-right: none;
+        border-bottom: 2px solid var(--border-color);
+    }
+}

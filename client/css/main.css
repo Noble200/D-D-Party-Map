@@ -1,0 +1,266 @@
+/* ==========================================
+   D&D Map Editor - Estilos principales
+   ========================================== */
+
+/* Importar módulos */
+@import url('./components/toolbar.css');
+@import url('./components/modal.css');
+@import url('./components/canvas.css');
+@import url('./views/home.css');
+@import url('./views/admin.css');
+@import url('./views/player.css');
+
+/* ==========================================
+   VARIABLES CSS
+   ========================================== */
+
+:root {
+    /* Colores principales */
+    --color-bg-dark: #1a1a2e;
+    --color-bg-medium: #16213e;
+    --color-bg-light: #0f3460;
+    --color-bg-canvas: #0d0d1a;
+
+    /* Colores de acento */
+    --color-primary: #e94560;
+    --color-primary-hover: #ff6b6b;
+    --color-secondary: #00d9ff;
+    --color-success: #27ae60;
+
+    /* Colores de texto */
+    --color-text: #eaeaea;
+    --color-text-muted: #b8b8b8;
+
+    /* Bordes */
+    --border-color: #0f3460;
+
+    /* Transiciones */
+    --transition-fast: 0.2s;
+    --transition-normal: 0.3s;
+
+    /* Espaciado */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --spacing-xl: 30px;
+
+    /* Bordes redondeados */
+    --radius-sm: 4px;
+    --radius-md: 5px;
+    --radius-lg: 8px;
+    --radius-xl: 15px;
+    --radius-full: 20px;
+
+    /* Ancho de toolbar */
+    --toolbar-width: 280px;
+}
+
+/* ==========================================
+   RESET Y BASE
+   ========================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-bg-dark);
+    color: var(--color-text);
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* ==========================================
+   PANTALLAS
+   ========================================== */
+
+.screen {
+    display: none;
+    height: 100vh;
+    width: 100%;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* ==========================================
+   BOTONES
+   ========================================== */
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: center;
+    margin-top: 8px;
+    background-color: var(--color-bg-light);
+    color: var(--color-text);
+}
+
+.btn:hover {
+    background-color: #1a4a7a;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.btn-small {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    margin-top: 0;
+}
+
+/* ==========================================
+   INPUTS
+   ========================================== */
+
+/* Inputs de rango */
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    background: var(--color-bg-light);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: var(--color-primary-hover);
+}
+
+/* Input de color */
+input[type="color"] {
+    width: 100%;
+    height: 35px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background: var(--color-bg-light);
+    padding: 2px;
+}
+
+/* Input de archivo (oculto) */
+input[type="file"] {
+    display: none;
+}
+
+/* ==========================================
+   CHECKBOX
+   ========================================== */
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+/* ==========================================
+   NOTIFICACIONES
+   ========================================== */
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: var(--radius-lg);
+    color: white;
+    font-weight: 500;
+    z-index: 2000;
+    animation: slideIn 0.3s ease;
+}
+
+.notification.success {
+    background: var(--color-success);
+}
+
+.notification.error {
+    background: var(--color-primary);
+}
+
+.notification.info {
+    background: var(--color-secondary);
+    color: var(--color-bg-dark);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   SCROLLBAR PERSONALIZADA
+   ========================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-bg-light);
+    border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1a4a7a;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+    :root {
+        --toolbar-width: 100%;
+    }
+}
