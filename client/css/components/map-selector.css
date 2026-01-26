@@ -1,0 +1,379 @@
+/* ==========================================
+   Estilos del Selector de Mapas
+   ========================================== */
+
+/* Modal de selector de mapas */
+.modal-content.modal-large {
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content.modal-large h2 {
+    margin: 0 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-stone);
+    color: var(--color-gold);
+    font-family: var(--font-title);
+    text-align: center;
+}
+
+/* Grid de mapas */
+.maps-grid {
+    flex: 1;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+    padding: 10px 5px;
+    margin-bottom: 20px;
+}
+
+/* Card de mapa individual */
+.map-card {
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.map-card:hover {
+    border-color: var(--color-gold);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow-gold);
+}
+
+.map-card.active {
+    border-color: var(--color-forest);
+    box-shadow: 0 0 10px rgba(45, 90, 39, 0.5);
+}
+
+.map-card.active::before {
+    content: 'ACTIVO';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--color-forest);
+    color: var(--color-text);
+    padding: 3px 8px;
+    font-size: 0.65rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    z-index: 1;
+}
+
+/* Thumbnail del mapa */
+.map-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    background: var(--color-bg-canvas);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.map-thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.map-thumbnail .no-image {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* Info del mapa */
+.map-info {
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.map-info h4 {
+    margin: 0 0 8px 0;
+    color: var(--color-parchment);
+    font-family: var(--font-title);
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.map-info .map-distance {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+}
+
+/* Botones de acción del mapa */
+.map-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.map-actions button {
+    flex: 1;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    background: var(--color-bg-medium);
+    border: 1px solid var(--border-stone);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.map-actions button:hover {
+    background: var(--color-bg-light);
+    border-color: var(--color-gold);
+}
+
+.map-actions .btn-activate {
+    background: var(--color-forest);
+    border-color: var(--color-forest-light);
+}
+
+.map-actions .btn-activate:hover {
+    background: var(--color-forest-light);
+}
+
+.map-actions .btn-delete {
+    flex: 0 0 auto;
+    background: var(--color-blood);
+    border-color: var(--color-blood-light);
+    padding: 6px 12px;
+}
+
+.map-actions .btn-delete:hover {
+    background: var(--color-blood-light);
+}
+
+/* Mensaje de lista vacía */
+.maps-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--color-text-muted);
+}
+
+.maps-empty p {
+    margin: 0 0 15px 0;
+    font-size: 1rem;
+}
+
+/* Footer del modal con botón crear */
+.maps-footer {
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-stone);
+}
+
+.maps-footer .btn {
+    width: auto;
+    min-width: 200px;
+}
+
+/* ==========================================
+   Modal de formulario de mapa
+   ========================================== */
+
+.modal-content.modal-form {
+    width: 90%;
+    max-width: 450px;
+}
+
+.modal-content.modal-form h2 {
+    margin: 0 0 20px 0;
+    color: var(--color-gold);
+    font-family: var(--font-title);
+    text-align: center;
+}
+
+/* Grupos de formulario */
+.map-form .form-group {
+    margin-bottom: 20px;
+}
+
+.map-form .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-parchment);
+    font-size: 0.9rem;
+}
+
+.map-form .form-group input[type="text"],
+.map-form .form-group input[type="number"],
+.map-form .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+}
+
+.map-form .form-group input:focus,
+.map-form .form-group select:focus {
+    outline: none;
+    border-color: var(--color-gold);
+}
+
+/* Configuración de distancia */
+.distance-config {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.distance-config input[type="number"] {
+    width: 80px;
+    text-align: center;
+}
+
+.distance-config select {
+    width: auto;
+    min-width: 100px;
+}
+
+.distance-config span {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+/* Botones del formulario */
+.map-form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.map-form-actions button {
+    flex: 1;
+    padding: 12px 20px;
+}
+
+/* ==========================================
+   Admin Viewer Header
+   ========================================== */
+
+.admin-viewer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
+    border-bottom: 2px solid var(--border-stone);
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.admin-viewer-header .header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-viewer-header .header-center {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    justify-content: center;
+}
+
+.admin-viewer-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-viewer-header h2 {
+    margin: 0;
+    color: var(--color-gold);
+    font-family: var(--font-title);
+    font-size: 1.3rem;
+}
+
+.admin-viewer-header .room-code {
+    background: var(--color-bg-dark);
+    border: 1px solid var(--border-stone);
+    padding: 5px 12px;
+    color: var(--color-parchment);
+    font-family: monospace;
+    font-size: 1rem;
+    letter-spacing: 2px;
+}
+
+/* Botones de admin viewer */
+.admin-viewer-header .btn-admin {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    background: var(--color-bg-medium);
+    border: 1px solid var(--border-stone);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-viewer-header .btn-admin:hover {
+    background: var(--color-bg-light);
+    border-color: var(--color-gold);
+}
+
+.admin-viewer-header .btn-admin.btn-primary {
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    color: var(--color-text-dark);
+    border-color: var(--color-gold-light);
+    font-weight: 600;
+}
+
+.admin-viewer-header .btn-admin.btn-primary:hover {
+    background: linear-gradient(180deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+
+@media (max-width: 600px) {
+    .maps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-viewer-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .admin-viewer-header .header-left,
+    .admin-viewer-header .header-center,
+    .admin-viewer-header .header-right {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .distance-config {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .distance-config input[type="number"],
+    .distance-config select {
+        width: 100%;
+    }
+}

@@ -10,8 +10,9 @@ const http = require('http');
 const { Server } = require('socket.io');
 
 // Importar módulos
-const { initDB } = require('./db/database');
+const { initDB, migrateRoomMapsData } = require('./db/database');
 const roomRoutes = require('./routes/rooms');
+const userRoutes = require('./routes/users');
 
 const app = express();
 const server = http.createServer(app);
@@ -33,6 +34,7 @@ app.use(express.json({ limit: '50mb' }));
 // ==========================================
 
 app.use('/api/rooms', roomRoutes);
+app.use('/api/users', userRoutes);
 
 // ==========================================
 // ARCHIVOS ESTÁTICOS (después de API)
@@ -49,28 +51,32 @@ app.get('*', (req, res) => {
 // SOCKET.IO - Gestión de usuarios en salas
 // ==========================================
 
-// Almacén de usuarios por sala: { roomCode: { socketId: { type, name } } }
+// Almacén de usuarios por sala: { roomCode: { socketId: { type, name, ... } } }
 const roomUsers = {};
 
 io.on('connection', (socket) => {
     console.log('Usuario conectado:', socket.id);
 
     // Unirse a una sala
-    socket.on('join-room', ({ roomCode, userType, userName }) => {
+    socket.on('join-room', ({ roomCode, userType, userName, userId, characterName }) => {
         socket.join(roomCode);
         socket.roomCode = roomCode;
         socket.userType = userType;
         socket.userName = userName || (userType === 'admin' ? 'Admin' : 'Jugador');
+        socket.userId = userId || null;
+        socket.characterName = characterName || null;
 
         // Inicializar sala si no existe
         if (!roomUsers[roomCode]) {
             roomUsers[roomCode] = {};
         }
 
-        // Agregar usuario
+        // Agregar usuario con datos extendidos
         roomUsers[roomCode][socket.id] = {
             type: userType,
-            name: socket.userName
+            name: socket.userName,
+            odeleteduserId: socket.userId,
+            characterName: socket.characterName
         };
 
         // Emitir lista actualizada a todos en la sala
@@ -92,6 +98,13 @@ io.on('connection', (socket) => {
     // Admin notifica actualización del mapa
     socket.on('map-updated', ({ roomCode }) => {
         socket.to(roomCode).emit('map-changed');
+    });
+
+    // Admin cambia el mapa activo
+    socket.on('map-switched', ({ roomCode, mapId }) => {
+        // Notificar a todos los jugadores (excepto al admin que envió)
+        socket.to(roomCode).emit('active-map-changed', { mapId });
+        console.log(`Mapa activo cambiado en sala ${roomCode} a ${mapId}`);
     });
 });
 
@@ -116,18 +129,33 @@ function leaveRoom(socket) {
 
 // Obtener lista formateada de usuarios
 function getUsersList(roomCode) {
-    if (!roomUsers[roomCode]) return { admins: [], players: [] };
+    if (!roomUsers[roomCode]) return { admins: [], players: [], total: 0 };
 
     const users = Object.values(roomUsers[roomCode]);
     return {
-        admins: users.filter(u => u.type === 'admin').map(u => u.name),
-        players: users.filter(u => u.type === 'player').map(u => u.name),
+        admins: users.filter(u => u.type === 'admin').map(u => ({
+            name: u.name
+        })),
+        players: users.filter(u => u.type === 'player').map(u => ({
+            name: u.name,
+            characterName: u.characterName
+        })),
         total: users.length
     };
 }
 
 // Iniciar servidor
-initDB().then(() => {
+initDB().then(async () => {
+    // Migrar datos de mapas existentes (solo si hay datos sin migrar)
+    try {
+        const migrated = await migrateRoomMapsData();
+        if (migrated > 0) {
+            console.log(`Migración completada: ${migrated} mapas`);
+        }
+    } catch (err) {
+        console.log('Migración de mapas ya completada o sin datos');
+    }
+
     server.listen(PORT, '0.0.0.0', () => {
         console.log(`Servidor corriendo en puerto ${PORT}`);
     });

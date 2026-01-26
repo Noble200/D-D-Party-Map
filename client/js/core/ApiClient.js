@@ -55,6 +55,116 @@ class ApiClient {
         });
         return response.json();
     }
+
+    // ==========================================
+    // USUARIOS
+    // ==========================================
+
+    // Identificar o crear usuario
+    async identifyUser(userHash, playerName) {
+        const response = await fetch(`${API_URL}/users/identify`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userHash, playerName })
+        });
+        return response.json();
+    }
+
+    // ==========================================
+    // PERSONAJES
+    // ==========================================
+
+    // Obtener personaje de usuario en sala
+    async getCharacter(roomCode, userId) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/characters/${userId}`);
+        return response.json();
+    }
+
+    // Crear o actualizar personaje
+    async saveCharacter(roomCode, userId, characterName, characterData) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/characters`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, characterName, characterData })
+        });
+        return response.json();
+    }
+
+    // Actualizar personaje existente
+    async updateCharacter(roomCode, characterId, characterName, characterData) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/characters/${characterId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ characterName, characterData })
+        });
+        return response.json();
+    }
+
+    // ==========================================
+    // MAPAS
+    // ==========================================
+
+    // Obtener mapa activo
+    async getActiveMap(roomCode) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/maps/active`);
+        return response.json();
+    }
+
+    // Listar todos los mapas de la sala
+    async getMaps(roomCode) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/maps`);
+        return response.json();
+    }
+
+    // Crear nuevo mapa
+    async createMap(roomCode, adminPassword, name, imageData = null, imageTransform = null, gridConfig = null, distanceConfig = null) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/maps`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                adminPassword,
+                name,
+                imageData,
+                imageTransform,
+                gridConfig,
+                distanceConfig
+            })
+        });
+        return response.json();
+    }
+
+    // Actualizar mapa
+    async updateMap(roomCode, mapId, adminPassword, data) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/maps/${mapId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                adminPassword,
+                ...data
+            })
+        });
+        return response.json();
+    }
+
+    // Activar mapa
+    async activateMap(roomCode, mapId, adminPassword) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/maps/${mapId}/activate`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword })
+        });
+        return response.json();
+    }
+
+    // Eliminar mapa
+    async deleteMap(roomCode, mapId, adminPassword) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/maps/${mapId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword })
+        });
+        return response.json();
+    }
 }
 
 // Exportar instancia única

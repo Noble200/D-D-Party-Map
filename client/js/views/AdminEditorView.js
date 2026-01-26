@@ -1,5 +1,5 @@
 // ==========================================
-// Vista de administrador - Editor de mapas
+// Vista de Editor de Mapas (Admin)
 // ==========================================
 
 import { MapEditor } from '../core/MapEditor.js';
@@ -9,12 +9,14 @@ import { socketClient } from '../core/SocketClient.js';
 import { ADMIN_MODES } from '../config.js';
 import { showNotification, copyToClipboard } from '../utils/helpers.js';
 
-class AdminView {
+class AdminEditorView {
     constructor(app) {
         this.app = app;
         this.editor = null;
         this.currentMode = ADMIN_MODES.EDIT;
         this.initialized = false;
+        this.currentMapId = null;
+        this.currentMapName = '';
     }
 
     // Inicializar la vista cuando se muestra
@@ -40,11 +42,9 @@ class AdminView {
     }
 
     bindEvents() {
-        // Volver al inicio
+        // Volver a la vista de admin (no al home)
         document.getElementById('btnBackFromAdmin')?.addEventListener('click', () => {
-            socketClient.leaveRoom();
-            this.app.clearRoom();
-            screenManager.show('home');
+            screenManager.show('adminViewer');
         });
 
         // Copiar código
@@ -57,7 +57,7 @@ class AdminView {
 
         // Guardar cambios
         document.getElementById('btnSaveRoom')?.addEventListener('click', () => {
-            this.saveRoom();
+            this.saveMap();
         });
 
         // Cargar imagen
@@ -147,7 +147,88 @@ class AdminView {
         }
     }
 
-    // Actualizar UI con datos de la sala
+    // Mostrar vista con datos de la sala y mapa
+    async show(room, mapId = null) {
+        if (!room) return;
+
+        document.getElementById('adminRoomName').textContent = room.name;
+        document.getElementById('adminRoomCode').textContent = room.code;
+
+        // Si se especifica un mapId, cargar ese mapa
+        if (mapId) {
+            await this.loadMap(mapId);
+        } else {
+            // Cargar el mapa activo
+            await this.loadActiveMap();
+        }
+
+        this.updateImageControls();
+        this.updateGridControls();
+    }
+
+    // Cargar un mapa específico
+    async loadMap(mapId) {
+        try {
+            const result = await apiClient.getMaps(this.app.currentRoom.code);
+
+            if (result.success) {
+                const map = result.maps.find(m => m.id === mapId);
+                if (map) {
+                    this.currentMapId = map.id;
+                    this.currentMapName = map.name;
+                    this.loadMapData(map);
+                }
+            }
+        } catch (error) {
+            console.error('Error al cargar mapa:', error);
+        }
+    }
+
+    // Cargar el mapa activo
+    async loadActiveMap() {
+        try {
+            const result = await apiClient.getActiveMap(this.app.currentRoom.code);
+
+            if (result.success && result.map) {
+                this.currentMapId = result.map.id;
+                this.currentMapName = result.map.name;
+                this.loadMapData(result.map);
+            } else {
+                // No hay mapa activo, crear uno nuevo al guardar
+                this.currentMapId = null;
+                this.currentMapName = 'Mapa Principal';
+            }
+        } catch (error) {
+            console.error('Error al cargar mapa activo:', error);
+        }
+    }
+
+    // Cargar datos del mapa en el editor
+    loadMapData(mapData) {
+        if (!this.editor) return;
+
+        if (mapData.imageData) {
+            this.editor.loadImageFromData(mapData.imageData);
+        }
+
+        if (mapData.imageTransform) {
+            const transform = typeof mapData.imageTransform === 'string'
+                ? JSON.parse(mapData.imageTransform)
+                : mapData.imageTransform;
+            this.editor.imageTransform = { ...transform };
+        }
+
+        if (mapData.gridConfig) {
+            const gridConfig = typeof mapData.gridConfig === 'string'
+                ? JSON.parse(mapData.gridConfig)
+                : mapData.gridConfig;
+            this.editor.gridConfig = { ...gridConfig };
+        }
+
+        this.editor.render();
+    }
+
+    // Actualizar UI con datos de la sala (compatibilidad)
     updateUI() {
         const room = this.app.currentRoom;
         if (!room) return;
@@ -174,8 +255,9 @@ class AdminView {
             if (users.admins?.length > 0) {
                 html += '<div class="users-hud-group">';
                 html += '<span class="users-hud-group-label">Admin</span>';
-                users.admins.forEach(name => {
-                    html += `<div class="users-hud-item"><span class="users-hud-dot admin"></span><span class="users-hud-name">${name}</span></div>`;
+                users.admins.forEach(admin => {
+                    const name = typeof admin === 'object' ? admin.name : admin;
+                    html += `<div class="users-hud-item"><span class="users-hud-dot admin"></span><span class="users-hud-name">${this.escapeHtml(name)}</span></div>`;
                 });
                 html += '</div>';
             }
@@ -184,8 +266,11 @@ class AdminView {
             if (users.players?.length > 0) {
                 html += '<div class="users-hud-group">';
                 html += '<span class="users-hud-group-label">Jugadores</span>';
-                users.players.forEach(name => {
-                    html += `<div class="users-hud-item"><span class="users-hud-dot"></span><span class="users-hud-name">${name}</span></div>`;
+                users.players.forEach(player => {
+                    const name = typeof player === 'object' ? player.name : player;
+                    const charName = typeof player === 'object' ? player.characterName : null;
+                    const displayName = charName ? `${charName} (${name})` : name;
+                    html += `<div class="users-hud-item"><span class="users-hud-dot"></span><span class="users-hud-name">${this.escapeHtml(displayName)}</span></div>`;
                 });
                 html += '</div>';
             }
@@ -198,19 +283,22 @@ class AdminView {
         }
     }
 
-    // Cargar datos de la sala en el editor
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text || '';
+        return div.innerHTML;
+    }
+
+    // Cargar datos de la sala en el editor (compatibilidad)
     loadRoomData() {
         const room = this.app.currentRoom;
         if (!room || !this.editor) return;
 
-        this.editor.loadState(
-            room.image_data,
-            room.image_transform,
-            room.grid_config
-        );
-
-        this.updateImageControls();
-        this.updateGridControls();
+        // Intentar cargar mapa activo primero
+        this.loadActiveMap().then(() => {
+            this.updateImageControls();
+            this.updateGridControls();
+        });
     }
 
     // Actualizar controles de imagen en la UI
@@ -264,34 +352,63 @@ class AdminView {
         setText('gridOffsetYValue', gc.offsetY);
     }
 
-    // Guardar cambios en el servidor
-    async saveRoom() {
+    // Guardar mapa en el servidor
+    async saveMap() {
         const room = this.app.currentRoom;
         const password = this.app.adminPassword;
         if (!room || !password || !this.editor) return;
 
         try {
             const state = this.editor.getState();
-            const data = await apiClient.updateRoom(
-                room.code,
-                password,
-                state.imageData,
-                state.imageTransform,
-                state.gridConfig
-            );
+            let result;
 
-            if (data.success) {
+            if (this.currentMapId) {
+                // Actualizar mapa existente
+                result = await apiClient.updateMap(
+                    room.code,
+                    this.currentMapId,
+                    password,
+                    {
+                        imageData: state.imageData,
+                        imageTransform: state.imageTransform,
+                        gridConfig: state.gridConfig
+                    }
+                );
+            } else {
+                // Crear nuevo mapa
+                result = await apiClient.createMap(
+                    room.code,
+                    password,
+                    this.currentMapName || 'Mapa Principal',
+                    state.imageData,
+                    state.imageTransform,
+                    state.gridConfig
+                );
+
+                if (result.success && result.map) {
+                    this.currentMapId = result.map.id;
+                    // Activar el nuevo mapa
+                    await apiClient.activateMap(room.code, result.map.id, password);
+                }
+            }
+
+            if (result.success) {
                 showNotification('Cambios guardados', 'success');
                 // Notificar a los jugadores que el mapa cambió
                 socketClient.notifyMapUpdate();
             } else {
-                showNotification(data.error, 'error');
+                showNotification(result.error || 'Error al guardar', 'error');
             }
         } catch (error) {
             showNotification('Error al guardar', 'error');
             console.error(error);
         }
     }
+
+    // Mantener compatibilidad con saveRoom
+    async saveRoom() {
+        return this.saveMap();
+    }
 }
 
-export { AdminView };
+export { AdminEditorView };

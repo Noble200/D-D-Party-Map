@@ -4,8 +4,11 @@
 
 import { screenManager } from './core/ScreenManager.js';
 import { HomeView } from './views/HomeView.js';
-import { AdminView } from './views/AdminView.js';
+import { AdminViewerView } from './views/AdminViewerView.js';
+import { AdminEditorView } from './views/AdminEditorView.js';
 import { PlayerView } from './views/PlayerView.js';
+import { CharacterSheet } from './components/CharacterSheet.js';
+import { MapSelector } from './components/MapSelector.js';
 
 class DnDMapApp {
     constructor() {
@@ -13,11 +16,17 @@ class DnDMapApp {
         this.currentRoom = null;
         this.adminPassword = null;
         this.isAdmin = false;
+        this.currentUser = null;
 
         // Vistas
         this.homeView = null;
-        this.adminView = null;
+        this.adminViewerView = null;
+        this.adminEditorView = null;
         this.playerView = null;
+
+        // Componentes
+        this.characterSheet = null;
+        this.mapSelector = null;
 
         this.init();
     }
@@ -25,8 +34,15 @@ class DnDMapApp {
     init() {
         // Inicializar vistas
         this.homeView = new HomeView(this);
-        this.adminView = new AdminView(this);
+        this.adminViewerView = new AdminViewerView(this);
+        this.adminEditorView = new AdminEditorView(this);
         this.playerView = new PlayerView(this);
+
+        // Inicializar componentes
+        this.characterSheet = new CharacterSheet(this);
+        this.characterSheet.init();
+        this.mapSelector = new MapSelector(this);
+        this.mapSelector.init();
 
         // Configurar callback para cambios de pantalla
         screenManager.onChange((screenName) => {
@@ -37,12 +53,13 @@ class DnDMapApp {
     // Callback cuando cambia la pantalla
     onScreenChange(screenName) {
         switch (screenName) {
-            case 'admin':
-                this.adminView.init();
-                this.adminView.updateUI();
-                if (this.currentRoom?.image_data || this.currentRoom?.grid_config) {
-                    this.adminView.loadRoomData();
-                }
+            case 'adminViewer':
+                this.adminViewerView.init();
+                this.adminViewerView.show(this.currentRoom);
+                break;
+            case 'adminEditor':
+                this.adminEditorView.init();
+                this.adminEditorView.show(this.currentRoom, this.adminEditorView.currentMapId);
                 break;
             case 'player':
                 this.playerView.init();
@@ -64,6 +81,7 @@ class DnDMapApp {
         this.currentRoom = null;
         this.adminPassword = null;
         this.isAdmin = false;
+        this.currentUser = null;
     }
 }
 

@@ -5,6 +5,7 @@
 import { apiClient } from '../core/ApiClient.js';
 import { screenManager } from '../core/ScreenManager.js';
 import { showNotification } from '../utils/helpers.js';
+import { getUserHash, setPlayerName, getPlayerName, setUserId } from '../utils/userIdentity.js';
 
 class HomeView {
     constructor(app) {
@@ -14,6 +15,18 @@ class HomeView {
             accessAdmin: document.getElementById('accessAdminModal')
         };
         this.bindEvents();
+        this.restorePlayerName();
+    }
+
+    // Restaurar nombre guardado del jugador
+    restorePlayerName() {
+        const savedName = getPlayerName();
+        if (savedName) {
+            const playerInput = document.getElementById('playerNameInput');
+            if (playerInput) {
+                playerInput.value = savedName;
+            }
+        }
     }
 
     bindEvents() {
@@ -89,7 +102,7 @@ class HomeView {
             if (data.success) {
                 this.app.setRoom(data.room, password, true);
                 this.hideModal('createRoom');
-                screenManager.show('admin');
+                screenManager.show('adminViewer');
                 showNotification(`Sala creada: ${data.room.code}`, 'success');
 
                 // Limpiar formulario
@@ -120,7 +133,7 @@ class HomeView {
             if (data.success) {
                 this.app.setRoom(data.room, password, true);
                 this.hideModal('accessAdmin');
-                screenManager.show('admin');
+                screenManager.show('adminViewer');
                 showNotification('Acceso concedido', 'success');
 
                 // Limpiar formulario
@@ -137,11 +150,17 @@ class HomeView {
 
     // Unirse como jugador
     async joinAsPlayer() {
-        const name = document.getElementById('playerNameInput').value.trim();
+        const characterName = document.getElementById('characterNameInput')?.value.trim() || '';
+        const playerName = document.getElementById('playerNameInput').value.trim();
         const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
 
-        if (!name) {
-            showNotification('Ingresa tu nombre', 'error');
+        if (!characterName) {
+            showNotification('Ingresa el nombre de tu personaje', 'error');
+            return;
+        }
+
+        if (!playerName) {
+            showNotification('Ingresa tu nombre real', 'error');
             return;
         }
 
@@ -151,19 +170,42 @@ class HomeView {
         }
 
         try {
+            // Verificar sala
             const data = await apiClient.getRoom(code);
 
-            if (data.success) {
-                this.app.setRoom(data.room, null, false);
-                this.app.playerName = name;
-                screenManager.show('player');
-                showNotification('Conectado a la sala', 'success');
-
-                document.getElementById('playerNameInput').value = '';
-                document.getElementById('roomCodeInput').value = '';
-            } else {
+            if (!data.success) {
                 showNotification(data.error, 'error');
+                return;
             }
+
+            // Identificar usuario con hash persistente
+            const userHash = getUserHash();
+            const userResult = await apiClient.identifyUser(userHash, playerName);
+
+            if (!userResult.success) {
+                showNotification('Error al identificar usuario', 'error');
+                return;
+            }
+
+            // Guardar datos del usuario
+            setPlayerName(playerName);
+            setUserId(userResult.user.id);
+
+            this.app.currentUser = {
+                id: userResult.user.id,
+                hash: userHash,
+                playerName: playerName
+            };
+
+            this.app.setRoom(data.room, null, false);
+            this.app.playerName = playerName;
+            this.app.characterName = characterName;
+
+            screenManager.show('player');
+            showNotification('Conectado a la sala', 'success');
+
+            // Solo limpiar código, mantener nombres para conveniencia
+            document.getElementById('roomCodeInput').value = '';
         } catch (error) {
             showNotification('Error de conexión con el servidor', 'error');
             console.error(error);

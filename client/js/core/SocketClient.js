@@ -9,6 +9,7 @@ class SocketClient {
         this.roomCode = null;
         this.onUsersUpdated = null;
         this.onMapChanged = null;
+        this.onActiveMapChanged = null;
     }
 
     // Conectar al servidor
@@ -43,14 +44,28 @@ class SocketClient {
                 this.onMapChanged();
             }
         });
+
+        // Escuchar cambio de mapa activo
+        this.socket.on('active-map-changed', (data) => {
+            console.log('Mapa activo cambiado:', data);
+            if (this.onActiveMapChanged) {
+                this.onActiveMapChanged(data);
+            }
+        });
     }
 
-    // Unirse a una sala
-    joinRoom(roomCode, userType, userName = null) {
+    // Unirse a una sala (con datos extendidos)
+    joinRoom(roomCode, userType, userName = null, userId = null, characterName = null) {
         if (!this.socket) this.connect();
 
         this.roomCode = roomCode;
-        this.socket.emit('join-room', { roomCode, userType, userName });
+        this.socket.emit('join-room', {
+            roomCode,
+            userType,
+            userName,
+            userId,
+            characterName
+        });
     }
 
     // Salir de la sala actual
@@ -65,6 +80,13 @@ class SocketClient {
     notifyMapUpdate() {
         if (this.socket && this.roomCode) {
             this.socket.emit('map-updated', { roomCode: this.roomCode });
+        }
+    }
+
+    // Emitir evento genérico
+    emit(event, data) {
+        if (this.socket) {
+            this.socket.emit(event, data);
         }
     }
 
