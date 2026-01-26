@@ -1,6 +1,10 @@
 /* ==========================================
    D&D Map Editor - Estilos principales
+   Tema: Medieval Fantasy / D&D
    ========================================== */
+
+/* Importar fuentes medievales góticas */
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Uncial+Antiqua&family=Cinzel:wght@400;600;700&display=swap');
 
 /* Importar módulos */
 @import url('./components/toolbar.css');
@@ -11,32 +15,51 @@
 @import url('./views/player.css');
 
 /* ==========================================
-   VARIABLES CSS
+   VARIABLES CSS - TEMA D&D MEDIEVAL
    ========================================== */
 
 :root {
-    /* Colores principales */
-    --color-bg-dark: #1a1a2e;
-    --color-bg-medium: #16213e;
-    --color-bg-light: #0f3460;
-    --color-bg-canvas: #0d0d1a;
+    /* Colores principales - Terrosos y medievales */
+    --color-bg-dark: #0f0d0a;
+    --color-bg-medium: #1a1611;
+    --color-bg-light: #2d261e;
+    --color-bg-canvas: #0a0908;
+    --color-parchment: #d4c4a8;
+    --color-parchment-dark: #b8a684;
 
-    /* Colores de acento */
-    --color-primary: #e94560;
-    --color-primary-hover: #ff6b6b;
-    --color-secondary: #00d9ff;
-    --color-success: #27ae60;
+    /* Colores de acento - Dorado, rojo sangre, verde bosque */
+    --color-gold: #d4a726;
+    --color-gold-light: #f0c845;
+    --color-gold-dark: #9a7a1c;
+    --color-blood: #8b1e3f;
+    --color-blood-light: #a62d4e;
+    --color-forest: #2d5a27;
+    --color-forest-light: #3d7a35;
+    --color-magic: #5e3d76;
+    --color-fire: #e25822;
+    --color-fire-glow: #ff6b35;
+
+    /* Alias para compatibilidad */
+    --color-primary: var(--color-gold);
+    --color-primary-hover: var(--color-gold-light);
+    --color-secondary: #8b5a2b;
+    --color-accent: var(--color-blood);
+    --color-success: var(--color-forest);
 
     /* Colores de texto */
-    --color-text: #eaeaea;
-    --color-text-muted: #b8b8b8;
+    --color-text: #e8dcc4;
+    --color-text-muted: #9a8b72;
+    --color-text-dark: #1a1611;
 
-    /* Bordes */
-    --border-color: #0f3460;
+    /* Bordes - Estilo piedra/madera */
+    --border-color: #3d3428;
+    --border-ornate: #6b5d4d;
+    --border-stone: #4a4035;
 
     /* Transiciones */
     --transition-fast: 0.2s;
     --transition-normal: 0.3s;
+    --transition-slow: 0.5s;
 
     /* Espaciado */
     --spacing-xs: 5px;
@@ -46,14 +69,25 @@
     --spacing-xl: 30px;
 
     /* Bordes redondeados */
-    --radius-sm: 4px;
+    --radius-sm: 3px;
     --radius-md: 5px;
     --radius-lg: 8px;
-    --radius-xl: 15px;
-    --radius-full: 20px;
+    --radius-xl: 12px;
 
     /* Ancho de toolbar */
     --toolbar-width: 280px;
+
+    /* Fuentes medievales */
+    --font-title: 'MedievalSharp', 'Uncial Antiqua', cursive;
+    --font-display: 'Uncial Antiqua', cursive;
+    --font-body: 'Cinzel', Georgia, serif;
+
+    /* Sombras temáticas */
+    --shadow-glow-gold: 0 0 15px rgba(212, 167, 38, 0.4), 0 0 30px rgba(212, 167, 38, 0.2);
+    --shadow-glow-fire: 0 0 20px rgba(226, 88, 34, 0.5), 0 0 40px rgba(255, 107, 53, 0.3);
+    --shadow-glow-magic: 0 0 15px rgba(94, 61, 118, 0.5), 0 0 30px rgba(94, 61, 118, 0.3);
+    --shadow-stone: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    --shadow-deep: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
 /* ==========================================
@@ -67,11 +101,24 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--font-body);
     background-color: var(--color-bg-dark);
     color: var(--color-text);
     overflow: hidden;
     height: 100vh;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Títulos con fuente medieval gótica */
+h1, h2, h3 {
+    font-family: var(--font-title);
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+h1 {
+    font-family: var(--font-display);
 }
 
 /* ==========================================
@@ -89,49 +136,117 @@ body {
 }
 
 /* ==========================================
-   BOTONES
+   BOTONES - Estilo piedra/madera medieval
    ========================================== */
 
 .btn {
     display: block;
     width: 100%;
-    padding: 10px 15px;
-    border: none;
-    border-radius: var(--radius-md);
-    font-size: 0.9rem;
+    padding: 12px 18px;
+    border: 2px solid var(--border-ornate);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: var(--font-body);
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: all var(--transition-normal);
     text-align: center;
     margin-top: 8px;
-    background-color: var(--color-bg-light);
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
     color: var(--color-text);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Efecto de brillo en hover */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 167, 38, 0.2), transparent);
+    transition: left var(--transition-slow);
+}
+
+.btn:hover::before {
+    left: 100%;
 }
 
 .btn:hover {
-    background-color: #1a4a7a;
+    border-color: var(--color-gold);
+    box-shadow: var(--shadow-glow-gold);
+    transform: translateY(-2px);
 }
 
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Botón principal - Estilo dorado real */
 .btn-primary {
-    background-color: var(--color-primary);
-    color: white;
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    color: var(--color-text-dark);
+    font-weight: 600;
+    border: 3px solid var(--color-gold-light);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: var(--shadow-stone), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
-    background-color: var(--color-primary-hover);
+    background: linear-gradient(180deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
+    box-shadow: var(--shadow-glow-gold), var(--shadow-stone);
 }
 
 .btn-small {
     width: auto;
-    padding: 6px 12px;
+    padding: 8px 14px;
     font-size: 0.8rem;
     margin-top: 0;
+}
+
+/* Botón decorativo medieval con filigranas */
+.btn-ornate {
+    position: relative;
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-dark) 100%);
+    border: 3px solid var(--color-gold);
+    font-family: var(--font-title);
+    padding: 14px 30px;
+    font-size: 1rem;
+}
+
+.btn-ornate::before,
+.btn-ornate::after {
+    content: '◆';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-gold);
+    font-size: 0.7rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-ornate::before { left: 10px; }
+.btn-ornate::after { right: 10px; }
+
+.btn-ornate:hover::before,
+.btn-ornate:hover::after {
+    color: var(--color-fire);
+    text-shadow: var(--shadow-glow-fire);
+}
+
+.btn-ornate:hover {
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    color: var(--color-text-dark);
+    border-color: var(--color-gold-light);
 }
 
 /* ==========================================
    INPUTS
    ========================================== */
 
-/* Inputs de rango */
 input[type="range"] {
     width: 100%;
     height: 6px;
@@ -144,30 +259,30 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: var(--color-primary);
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
     border-radius: 50%;
     cursor: pointer;
-    transition: background var(--transition-fast);
+    transition: all var(--transition-fast);
+    border: 2px solid var(--color-gold-light);
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-    background: var(--color-primary-hover);
+    box-shadow: var(--shadow-glow-gold);
+    transform: scale(1.1);
 }
 
-/* Input de color */
 input[type="color"] {
     width: 100%;
-    height: 35px;
-    border: none;
+    height: 38px;
+    border: 2px solid var(--border-ornate);
     border-radius: var(--radius-sm);
     cursor: pointer;
     background: var(--color-bg-light);
-    padding: 2px;
+    padding: 3px;
 }
 
-/* Input de archivo (oculto) */
 input[type="file"] {
     display: none;
 }
@@ -179,14 +294,14 @@ input[type="file"] {
 .checkbox-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .checkbox-group input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
-    accent-color: var(--color-primary);
+    accent-color: var(--color-gold);
 }
 
 .checkbox-group label {
@@ -195,37 +310,43 @@ input[type="file"] {
 }
 
 /* ==========================================
-   NOTIFICACIONES
+   NOTIFICACIONES - Estilo pergamino
    ========================================== */
 
 .notification {
     position: fixed;
     top: 20px;
     right: 20px;
-    padding: 15px 25px;
-    border-radius: var(--radius-lg);
-    color: white;
+    padding: 16px 28px;
+    border-radius: var(--radius-md);
+    color: var(--color-text);
     font-weight: 500;
     z-index: 2000;
-    animation: slideIn 0.3s ease;
+    animation: notificationSlide 0.4s ease-out;
+    border: 3px solid;
+    font-family: var(--font-body);
+    box-shadow: var(--shadow-deep);
 }
 
 .notification.success {
-    background: var(--color-success);
+    background: linear-gradient(180deg, var(--color-forest) 0%, #1e3d1a 100%);
+    border-color: var(--color-forest-light);
 }
 
 .notification.error {
-    background: var(--color-primary);
+    background: linear-gradient(180deg, var(--color-blood) 0%, #5a1428 100%);
+    border-color: var(--color-blood-light);
 }
 
 .notification.info {
-    background: var(--color-secondary);
-    color: var(--color-bg-dark);
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    color: var(--color-text-dark);
+    border-color: var(--color-gold-light);
 }
 
-@keyframes slideIn {
+@keyframes notificationSlide {
     from {
-        transform: translateX(100%);
+        transform: translateX(120%);
         opacity: 0;
     }
     to {
@@ -235,24 +356,84 @@ input[type="file"] {
 }
 
 /* ==========================================
-   SCROLLBAR PERSONALIZADA
+   SCROLLBAR - Estilo madera
    ========================================== */
 
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
     background: var(--color-bg-dark);
+    border-left: 1px solid var(--border-stone);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--color-bg-light);
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--border-stone) 100%);
     border-radius: var(--radius-sm);
+    border: 1px solid var(--border-ornate);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #1a4a7a;
+    background: linear-gradient(180deg, var(--border-ornate) 0%, var(--color-bg-light) 100%);
+}
+
+/* ==========================================
+   ANIMACIONES GLOBALES
+   ========================================== */
+
+/* Efecto de brillo de runa */
+@keyframes runeGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px var(--color-gold), 0 0 10px var(--color-gold);
+        opacity: 1;
+    }
+    50% {
+        text-shadow: 0 0 20px var(--color-gold), 0 0 40px var(--color-fire);
+        opacity: 0.8;
+    }
+}
+
+/* Efecto de fuego */
+@keyframes fireFlicker {
+    0%, 100% {
+        box-shadow: 0 0 10px var(--color-fire), 0 0 20px rgba(226, 88, 34, 0.5);
+    }
+    25% {
+        box-shadow: 0 0 15px var(--color-fire-glow), 0 0 30px rgba(255, 107, 53, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 8px var(--color-fire), 0 0 18px rgba(226, 88, 34, 0.4);
+    }
+    75% {
+        box-shadow: 0 0 12px var(--color-fire-glow), 0 0 25px rgba(255, 107, 53, 0.5);
+    }
+}
+
+/* Efecto de pulso mágico */
+@keyframes magicPulse {
+    0%, 100% {
+        box-shadow: 0 0 10px var(--color-magic);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 25px var(--color-magic), 0 0 50px rgba(94, 61, 118, 0.4);
+        transform: scale(1.02);
+    }
+}
+
+/* Efecto de aparición épica */
+@keyframes epicReveal {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+        filter: blur(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
 }
 
 /* ==========================================
@@ -262,5 +443,9 @@ input[type="file"] {
 @media (max-width: 768px) {
     :root {
         --toolbar-width: 100%;
+    }
+
+    body {
+        font-size: 14px;
     }
 }

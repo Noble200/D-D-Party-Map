@@ -1,111 +1,333 @@
 /* ==========================================
    Home View - Pantalla de inicio
+   Estilo: Medieval Fantasy / D&D Gótico
    ========================================== */
 
+/* Contenedor principal con fondo de taberna oscura */
 .home-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    padding: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
 }
+
+/* Fondo texturizado estilo piedra/madera */
+.home-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 30% 20%, rgba(212, 167, 38, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(139, 30, 63, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at center, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Efecto de luz de antorcha animado */
+.home-container::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200%;
+    height: 100%;
+    background: radial-gradient(ellipse at center top, rgba(226, 88, 34, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    animation: torchFlicker 4s ease-in-out infinite;
+}
+
+@keyframes torchFlicker {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+    25% { opacity: 0.8; transform: translateX(-50%) scale(1.02); }
+    50% { opacity: 0.5; transform: translateX(-50%) scale(0.98); }
+    75% { opacity: 0.7; transform: translateX(-50%) scale(1.01); }
+}
+
+/* ==========================================
+   TÍTULO PRINCIPAL - Estilo runa/gótico
+   ========================================== */
 
 .home-container h1 {
-    font-size: 3rem;
-    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-size: 4rem;
+    color: var(--color-gold);
     margin-bottom: var(--spacing-sm);
-    text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+    letter-spacing: 6px;
+    position: relative;
+    z-index: 1;
+    animation: titleReveal 1s ease-out, runeGlow 3s ease-in-out infinite 1s;
+    text-transform: uppercase;
 }
 
+@keyframes titleReveal {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+        letter-spacing: 20px;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        letter-spacing: 6px;
+    }
+}
+
+
+/* Subtítulo */
 .subtitle {
+    font-family: var(--font-body);
+    font-style: italic;
     color: var(--color-text-muted);
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     font-size: 1.1rem;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 1s ease-out 0.5s backwards;
 }
 
-/* Opciones de inicio */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   TARJETAS DE OPCIÓN - Estilo pergamino/piedra
+   ========================================== */
+
 .home-options {
     display: flex;
-    gap: var(--spacing-xl);
+    gap: 40px;
     flex-wrap: wrap;
     justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
-/* Tarjetas de opción */
 .option-card {
-    background: var(--color-bg-medium);
-    padding: var(--spacing-xl);
-    border-radius: var(--radius-xl);
-    width: 300px;
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-dark) 100%);
+    padding: 35px;
+    border-radius: var(--radius-lg);
+    width: 340px;
     text-align: center;
-    border: 2px solid var(--border-color);
+    border: 3px solid var(--border-stone);
     transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    animation: cardReveal 0.8s ease-out backwards;
+}
+
+.option-card:nth-child(1) { animation-delay: 0.3s; }
+.option-card:nth-child(2) { animation-delay: 0.5s; }
+
+@keyframes cardReveal {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Marco decorativo con filigranas */
+.option-card::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border: 1px solid var(--border-ornate);
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Línea decorativa superior */
+.option-card::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    opacity: 0.5;
 }
 
 .option-card:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-5px);
+    border-color: var(--color-gold);
+    transform: translateY(-10px);
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(212, 167, 38, 0.15),
+        inset 0 0 60px rgba(212, 167, 38, 0.03);
 }
 
+/* Efecto de brillo en hover */
+.option-card:hover::before {
+    border-color: var(--color-gold);
+    opacity: 0.8;
+    box-shadow: inset 0 0 20px rgba(212, 167, 38, 0.1);
+}
+
+.option-card:hover::after {
+    opacity: 1;
+    animation: runeGlow 1.5s ease-in-out infinite;
+}
+
+/* Títulos de tarjetas con iconos */
 .option-card h2 {
-    color: var(--color-secondary);
-    margin-bottom: var(--spacing-sm);
+    font-family: var(--font-title);
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-md);
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    position: relative;
+    padding-top: 20px;
 }
 
-.option-card p {
+
+/* Línea decorativa bajo título */
+.option-card h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    margin: 12px auto 0;
+}
+
+.option-card > p {
+    font-family: var(--font-body);
     color: var(--color-text-muted);
     margin-bottom: var(--spacing-lg);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-style: italic;
 }
 
-/* Botones de opción */
+/* ==========================================
+   BOTONES DE OPCIÓN
+   ========================================== */
+
 .option-buttons {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: 12px;
 }
 
-/* Formulario de unirse */
+/* ==========================================
+   FORMULARIO DE UNIRSE
+   ========================================== */
+
 .join-form {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: 12px;
 }
 
 .join-form input {
-    padding: 12px;
-    border: none;
-    border-radius: var(--radius-md);
-    background: var(--color-bg-light);
+    padding: 14px 18px;
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-dark);
     color: var(--color-text);
     font-size: 1rem;
+    font-family: var(--font-body);
     text-align: center;
+    transition: all var(--transition-normal);
+}
+
+.join-form input[id="roomCodeInput"] {
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 .join-form input::placeholder {
     text-transform: none;
     letter-spacing: normal;
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-size: 0.95rem;
 }
 
 .join-form input:focus {
-    outline: 2px solid var(--color-primary);
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow:
+        0 0 15px rgba(212, 167, 38, 0.2),
+        inset 0 0 10px rgba(212, 167, 38, 0.05);
 }
 
-/* Responsive */
+.join-form input:hover:not(:focus) {
+    border-color: var(--border-ornate);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
 @media (max-width: 768px) {
     .home-container h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
+        letter-spacing: 3px;
+    }
+
+    .home-container h1::before,
+    .home-container h1::after {
+        display: none;
     }
 
     .home-options {
         flex-direction: column;
+        gap: 25px;
     }
 
     .option-card {
         width: 100%;
-        max-width: 350px;
+        max-width: 360px;
+        padding: 28px;
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
+        text-align: center;
+        padding: 0 20px;
+    }
+}
+
+/* ==========================================
+   EFECTOS ADICIONALES DE INMERSIÓN
+   ========================================== */
+
+/* Partículas de polvo/magia flotando */
+@keyframes dustFloat {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(20px);
+        opacity: 0;
     }
 }

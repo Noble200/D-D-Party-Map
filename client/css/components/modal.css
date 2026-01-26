@@ -1,5 +1,6 @@
 /* ==========================================
    Modal - Estilos de ventanas modales
+   Estilo: Pergamino medieval / D&D Gótico
    ========================================== */
 
 .modal {
@@ -9,63 +10,195 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.92);
     z-index: 1000;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(5px);
 }
 
 .modal.active {
     display: flex;
+    animation: modalOverlayFade 0.3s ease-out;
 }
 
+@keyframes modalOverlayFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Contenido del modal - Estilo pergamino/piedra */
 .modal-content {
-    background: var(--color-bg-medium);
-    padding: var(--spacing-xl);
-    border-radius: var(--radius-xl);
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-dark) 100%);
+    padding: 40px;
+    border-radius: var(--radius-lg);
     width: 90%;
-    max-width: 400px;
-    border: 2px solid var(--border-color);
+    max-width: 450px;
+    border: 4px solid var(--border-stone);
+    position: relative;
+    animation: modalReveal 0.4s ease-out;
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
+@keyframes modalReveal {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Marco interior ornamental */
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    border: 1px solid var(--border-ornate);
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+/* Decoración superior */
+.modal-content::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    opacity: 0.6;
+}
+
+/* Título del modal */
 .modal-content h2 {
-    color: var(--color-primary);
-    margin-bottom: var(--spacing-lg);
+    font-family: var(--font-title);
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-xl);
     text-align: center;
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    padding-top: 20px;
+    animation: runeGlow 3s ease-in-out infinite;
+}
+
+/* Línea decorativa bajo el título */
+.modal-content h2::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    margin: 15px auto 0;
 }
 
 /* Grupos de formulario */
 .form-group {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
 }
 
 .form-group label {
     display: block;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: 10px;
     color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    letter-spacing: 1px;
 }
 
 .form-group input {
     width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: var(--radius-md);
-    background: var(--color-bg-light);
+    padding: 15px 18px;
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-dark);
     color: var(--color-text);
     font-size: 1rem;
+    font-family: var(--font-body);
+    transition: all var(--transition-normal);
 }
 
 .form-group input:focus {
-    outline: 2px solid var(--color-primary);
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow:
+        0 0 20px rgba(212, 167, 38, 0.2),
+        inset 0 0 10px rgba(212, 167, 38, 0.03);
+}
+
+.form-group input:hover:not(:focus) {
+    border-color: var(--border-ornate);
+}
+
+.form-group input::placeholder {
+    color: var(--color-text-muted);
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* Input de código - estilo especial de runa */
+.form-group input[id*="Code"] {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.15rem;
 }
 
 /* Botones del modal */
 .modal-buttons {
     display: flex;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-lg);
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
 }
 
 .modal-buttons .btn {
     flex: 1;
+    font-family: var(--font-body);
+    letter-spacing: 1px;
+    font-size: 0.95rem;
+    padding: 14px;
+}
+
+/* Botón cancelar - Estilo piedra oscura */
+.modal-buttons .btn:not(.btn-primary) {
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-dark) 100%);
+    border: 2px solid var(--border-stone);
+}
+
+.modal-buttons .btn:not(.btn-primary):hover {
+    border-color: var(--color-blood);
+    background: linear-gradient(180deg, var(--color-blood) 0%, #5a1428 100%);
+    color: var(--color-text);
+    box-shadow: 0 0 15px rgba(139, 30, 63, 0.3);
+}
+
+/* Efecto de entrada con brillo mágico */
+.modal.active .modal-content {
+    animation: modalReveal 0.4s ease-out, magicBorderFlash 0.6s ease-out;
+}
+
+@keyframes magicBorderFlash {
+    0% {
+        border-color: var(--color-gold);
+        box-shadow:
+            0 30px 80px rgba(0, 0, 0, 0.7),
+            0 0 50px rgba(212, 167, 38, 0.4);
+    }
+    100% {
+        border-color: var(--border-stone);
+        box-shadow:
+            0 30px 80px rgba(0, 0, 0, 0.7),
+            0 0 0 transparent;
+    }
 }

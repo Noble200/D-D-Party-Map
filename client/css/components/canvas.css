@@ -49,52 +49,91 @@
 
 /* ==========================================
    HUD DE USUARIOS CONECTADOS
+   Estilo: Pergamino/Piedra medieval gótico
    ========================================== */
 
 .users-hud {
     position: absolute;
-    top: 15px;
-    left: 15px;
-    background: rgba(22, 33, 62, 0.9);
-    border: 1px solid var(--color-bg-light);
-    border-radius: var(--radius-lg);
-    padding: 12px 15px;
-    min-width: 140px;
-    max-width: 200px;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(180deg, rgba(45, 38, 30, 0.95) 0%, rgba(15, 13, 10, 0.95) 100%);
+    border: 3px solid var(--border-stone);
+    border-radius: var(--radius-md);
+    padding: 15px 18px;
+    min-width: 160px;
+    max-width: 240px;
     z-index: 100;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
     pointer-events: none;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* Marco interior decorativo */
+.users-hud::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    border: 1px solid var(--border-ornate);
+    border-radius: var(--radius-sm);
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+/* Decoración superior */
+.users-hud::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    border-radius: 2px;
 }
 
 .users-hud-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    color: var(--color-text);
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--color-bg-light);
-    margin-bottom: 8px;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-family: var(--font-title);
+    color: var(--color-gold);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-ornate);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
 }
 
 .users-hud-icon {
-    color: var(--color-success);
+    color: var(--color-forest-light);
     font-size: 0.6rem;
     animation: hudPulse 2s infinite;
 }
 
 @keyframes hudPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    0%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 8px var(--color-forest-light);
+    }
+    50% {
+        opacity: 0.3;
+        text-shadow: none;
+    }
 }
 
 .users-hud-list {
-    max-height: 150px;
+    max-height: 160px;
     overflow-y: auto;
 }
 
 .users-hud-group {
-    margin-bottom: 6px;
+    margin-bottom: 10px;
 }
 
 .users-hud-group:last-child {
@@ -102,33 +141,61 @@
 }
 
 .users-hud-group-label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 0.65rem;
-    color: var(--color-text-muted);
+    font-family: var(--font-title);
+    color: var(--color-gold);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 3px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    opacity: 0.9;
 }
+
 
 .users-hud-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.8rem;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-family: var(--font-body);
     color: var(--color-text);
-    padding: 2px 0;
+    padding: 4px 0;
 }
 
 .users-hud-dot {
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: var(--color-secondary);
+    background: var(--color-forest);
     flex-shrink: 0;
+    box-shadow: 0 0 8px var(--color-forest);
+    animation: dotGlow 2s ease-in-out infinite;
+}
+
+@keyframes dotGlow {
+    0%, 100% {
+        box-shadow: 0 0 6px var(--color-forest);
+    }
+    50% {
+        box-shadow: 0 0 12px var(--color-forest-light);
+    }
 }
 
 .users-hud-dot.admin {
-    background: var(--color-primary);
+    background: var(--color-gold);
+    box-shadow: 0 0 10px var(--color-gold);
+    animation: adminDotGlow 2s ease-in-out infinite;
+}
+
+@keyframes adminDotGlow {
+    0%, 100% {
+        box-shadow: 0 0 8px var(--color-gold);
+    }
+    50% {
+        box-shadow: 0 0 15px var(--color-gold-light);
+    }
 }
 
 .users-hud-name {
@@ -138,14 +205,24 @@
 }
 
 .users-hud-empty {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
+    font-family: var(--font-body);
     color: var(--color-text-muted);
     font-style: italic;
+    text-align: center;
+    padding: 5px 0;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .canvas-container {
         height: 60vh;
+    }
+
+    .users-hud {
+        top: 10px;
+        left: 10px;
+        padding: 12px 14px;
+        min-width: 140px;
     }
 }
