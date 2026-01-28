@@ -2,7 +2,7 @@
 // Editor de mapas - Renderizado e interacción del canvas
 // ==========================================
 
-import { DEFAULT_IMAGE_TRANSFORM, DEFAULT_GRID_CONFIG, ZOOM_MIN, ZOOM_MAX } from '../config.js';
+import { DEFAULT_IMAGE_TRANSFORM, DEFAULT_GRID_CONFIG, DEFAULT_DISTANCE_CONFIG, ZOOM_MIN, ZOOM_MAX } from '../config.js';
 
 export class MapEditor {
     constructor(canvasId, isEditable = true) {
@@ -24,6 +24,9 @@ export class MapEditor {
 
         // Configuración de la cuadrícula
         this.gridConfig = { ...DEFAULT_GRID_CONFIG };
+
+        // Configuración de distancia por celda
+        this.distanceConfig = { ...DEFAULT_DISTANCE_CONFIG };
 
         // Estado del arrastre
         this.isDragging = false;
@@ -184,6 +187,18 @@ export class MapEditor {
     }
 
     // ==========================================
+    // Controles de Distancia
+    // ==========================================
+
+    setDistanceSize(value) {
+        this.distanceConfig.squareSize = parseInt(value);
+    }
+
+    setDistanceUnit(value) {
+        this.distanceConfig.unit = value;
+    }
+
+    // ==========================================
     // Eventos del Mouse
     // ==========================================
 
@@ -307,25 +322,24 @@ export class MapEditor {
         this.ctx.lineWidth = lineWidth;
         this.ctx.globalAlpha = opacity;
 
-        const startX = (this.imageTransform.x % size) + offsetX;
-        const startY = (this.imageTransform.y % size) + offsetY;
+        // Tamaño de celda fijo en el canvas (no cambia con zoom)
+        // La cuadrícula se dibuja con tamaño fijo sobre todo el canvas
+        const cellSize = size;
+
+        // Calcular offset para alinear con la posición deseada
+        const startX = ((offsetX % cellSize) + cellSize) % cellSize;
+        const startY = ((offsetY % cellSize) + cellSize) % cellSize;
 
         this.ctx.beginPath();
 
-        for (let x = startX; x < this.canvas.width; x += size) {
-            this.ctx.moveTo(x, 0);
-            this.ctx.lineTo(x, this.canvas.height);
-        }
-        for (let x = startX - size; x > 0; x -= size) {
+        // Líneas verticales
+        for (let x = startX; x <= this.canvas.width; x += cellSize) {
             this.ctx.moveTo(x, 0);
             this.ctx.lineTo(x, this.canvas.height);
         }
 
-        for (let y = startY; y < this.canvas.height; y += size) {
-            this.ctx.moveTo(0, y);
-            this.ctx.lineTo(this.canvas.width, y);
-        }
-        for (let y = startY - size; y > 0; y -= size) {
+        // Líneas horizontales
+        for (let y = startY; y <= this.canvas.height; y += cellSize) {
             this.ctx.moveTo(0, y);
             this.ctx.lineTo(this.canvas.width, y);
         }
@@ -338,9 +352,12 @@ export class MapEditor {
     // Métodos para cargar/guardar estado
     // ==========================================
 
-    loadState(imageData, imageTransform, gridConfig) {
+    loadState(imageData, imageTransform, gridConfig, distanceConfig) {
         if (gridConfig) {
             this.gridConfig = { ...this.gridConfig, ...gridConfig };
+        }
+        if (distanceConfig) {
+            this.distanceConfig = { ...this.distanceConfig, ...distanceConfig };
         }
         if (imageTransform) {
             this.imageTransform = { ...this.imageTransform, ...imageTransform };
@@ -356,7 +373,8 @@ export class MapEditor {
         return {
             imageData: this.imageDataUrl,
             imageTransform: this.imageTransform,
-            gridConfig: this.gridConfig
+            gridConfig: this.gridConfig,
+            distanceConfig: this.distanceConfig
         };
     }
 }

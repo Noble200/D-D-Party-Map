@@ -85,68 +85,35 @@
     color: var(--color-secondary);
 }
 
-/* ==========================================
-   MODE TOGGLE - Selector de modo Edit/Master
-   ========================================== */
+/* Controles de distancia */
+.distance-group label {
+    margin-bottom: var(--spacing-sm);
+}
 
-.mode-toggle {
+.distance-inputs {
     display: flex;
-    background: var(--color-bg-dark);
-    border-radius: var(--radius-lg);
-    padding: 4px;
-    margin-bottom: var(--spacing-md);
+    gap: var(--spacing-sm);
+    align-items: center;
 }
 
-.mode-toggle-btn {
-    flex: 1;
-    padding: 10px 15px;
-    border: none;
-    border-radius: var(--radius-md);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    background: transparent;
-    color: var(--color-text-muted);
-}
-
-.mode-toggle-btn.active {
-    background: var(--color-primary);
-    color: white;
-}
-
-.mode-toggle-btn:hover:not(.active) {
+.distance-inputs input[type="number"] {
+    width: 80px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
     background: var(--color-bg-light);
     color: var(--color-text);
+    font-size: 0.9rem;
 }
 
-/* Indicador de modo Master */
-.mode-indicator {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background: var(--color-bg-dark);
-    border-radius: var(--radius-md);
-    margin-bottom: var(--spacing-md);
-}
-
-.mode-indicator-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--color-success);
-    animation: pulse 2s infinite;
-}
-
-.mode-indicator-text {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+.distance-inputs select {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-light);
+    color: var(--color-text);
+    font-size: 0.9rem;
 }
 
 /* Responsive */

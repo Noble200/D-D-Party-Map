@@ -10,7 +10,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 
 // Importar módulos
-const { initDB, migrateRoomMapsData } = require('./db/database');
+const { initDB, migrateRoomMapsData, updateRoomActivity, cleanupInactiveRooms } = require('./db/database');
 const roomRoutes = require('./routes/rooms');
 const userRoutes = require('./routes/users');
 
@@ -58,13 +58,20 @@ io.on('connection', (socket) => {
     console.log('Usuario conectado:', socket.id);
 
     // Unirse a una sala
-    socket.on('join-room', ({ roomCode, userType, userName, userId, characterName }) => {
+    socket.on('join-room', async ({ roomCode, userType, userName, userId, characterName }) => {
         socket.join(roomCode);
         socket.roomCode = roomCode;
         socket.userType = userType;
         socket.userName = userName || (userType === 'admin' ? 'Admin' : 'Jugador');
         socket.userId = userId || null;
         socket.characterName = characterName || null;
+
+        // Actualizar última actividad de la sala en la base de datos
+        try {
+            await updateRoomActivity(roomCode);
+        } catch (err) {
+            console.error('Error actualizando actividad de sala:', err);
+        }
 
         // Inicializar sala si no existe
         if (!roomUsers[roomCode]) {
@@ -144,6 +151,21 @@ function getUsersList(roomCode) {
     };
 }
 
+// Limpieza periódica de salas inactivas (cada 24 horas)
+const CLEANUP_INTERVAL = 24 * 60 * 60 * 1000; // 24 horas en ms
+const DAYS_INACTIVE = 7; // Eliminar salas sin actividad por 7 días
+
+async function runCleanup() {
+    try {
+        const deleted = await cleanupInactiveRooms(DAYS_INACTIVE);
+        if (deleted.length > 0) {
+            console.log(`Salas eliminadas por inactividad: ${deleted.map(r => r.code).join(', ')}`);
+        }
+    } catch (err) {
+        console.error('Error en limpieza de salas:', err);
+    }
+}
+
 // Iniciar servidor
 initDB().then(async () => {
     // Migrar datos de mapas existentes (solo si hay datos sin migrar)
@@ -156,7 +178,12 @@ initDB().then(async () => {
         console.log('Migración de mapas ya completada o sin datos');
     }
 
+    // Ejecutar limpieza al iniciar y luego cada 24 horas
+    runCleanup();
+    setInterval(runCleanup, CLEANUP_INTERVAL);
+
     server.listen(PORT, '0.0.0.0', () => {
         console.log(`Servidor corriendo en puerto ${PORT}`);
+        console.log(`Limpieza automática configurada: salas inactivas por ${DAYS_INACTIVE}+ días serán eliminadas`);
     });
 }).catch(console.error);

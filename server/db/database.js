@@ -25,8 +25,28 @@ async function initDB() {
                 image_transform JSONB DEFAULT '{"x": 0, "y": 0, "scale": 1, "rotation": 0}',
                 grid_config JSONB DEFAULT '{"size": 50, "opacity": 0.5, "color": "#ffffff", "lineWidth": 1, "visible": true, "offsetX": 0, "offsetY": 0}',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        `);
+
+        // Agregar columna last_activity si no existe (migración)
+        await client.query(`
+            DO $$
+            BEGIN
+                IF NOT EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                    WHERE table_name = 'rooms' AND column_name = 'last_activity'
+                ) THEN
+                    ALTER TABLE rooms ADD COLUMN last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+                    UPDATE rooms SET last_activity = COALESCE(updated_at, created_at);
+                END IF;
+            END $$;
+        `);
+
+        // Índice para optimizar búsqueda de salas inactivas
+        await client.query(`
+            CREATE INDEX IF NOT EXISTS idx_rooms_last_activity ON rooms(last_activity);
         `);
 
         // Tabla de usuarios persistentes
@@ -147,6 +167,52 @@ async function listRoomsByAdmin(adminPassword) {
         [adminPassword]
     );
     return result.rows;
+}
+
+// Actualizar última actividad de una sala (cuando alguien se conecta)
+async function updateRoomActivity(code) {
+    await pool.query(
+        'UPDATE rooms SET last_activity = CURRENT_TIMESTAMP WHERE code = $1',
+        [code.toUpperCase()]
+    );
+}
+
+// Eliminar salas inactivas (sin conexiones en más de X días)
+async function cleanupInactiveRooms(daysInactive = 7) {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        // Obtener salas a eliminar para logging
+        const toDelete = await client.query(
+            `SELECT code, name, last_activity FROM rooms
+             WHERE last_activity < NOW() - INTERVAL '1 day' * $1`,
+            [daysInactive]
+        );
+
+        if (toDelete.rows.length > 0) {
+            // Las tablas relacionadas (maps, characters) se eliminan automáticamente
+            // gracias a ON DELETE CASCADE
+            const result = await client.query(
+                `DELETE FROM rooms
+                 WHERE last_activity < NOW() - INTERVAL '1 day' * $1
+                 RETURNING code, name`,
+                [daysInactive]
+            );
+
+            await client.query('COMMIT');
+            console.log(`Limpieza: ${result.rows.length} salas inactivas eliminadas`);
+            return result.rows;
+        }
+
+        await client.query('COMMIT');
+        return [];
+    } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+    } finally {
+        client.release();
+    }
 }
 
 // ==========================================
@@ -396,6 +462,8 @@ module.exports = {
     verifyAdminAccess,
     updateRoom,
     listRoomsByAdmin,
+    updateRoomActivity,
+    cleanupInactiveRooms,
     // Usuarios
     createOrGetUser,
     getUserByHash,

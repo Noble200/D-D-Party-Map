@@ -6,14 +6,13 @@ import { MapEditor } from '../core/MapEditor.js';
 import { screenManager } from '../core/ScreenManager.js';
 import { apiClient } from '../core/ApiClient.js';
 import { socketClient } from '../core/SocketClient.js';
-import { ADMIN_MODES } from '../config.js';
+import { DEFAULT_DISTANCE_CONFIG } from '../config.js';
 import { showNotification, copyToClipboard } from '../utils/helpers.js';
 
 class AdminEditorView {
     constructor(app) {
         this.app = app;
         this.editor = null;
-        this.currentMode = ADMIN_MODES.EDIT;
         this.initialized = false;
         this.currentMapId = null;
         this.currentMapName = '';
@@ -115,36 +114,14 @@ class AdminEditorView {
             document.getElementById('gridOffsetYValue').textContent = e.target.value;
         });
 
-        // Mode toggle
-        document.getElementById('btnModeEdit')?.addEventListener('click', () => {
-            this.setMode(ADMIN_MODES.EDIT);
+        // Controles de distancia
+        document.getElementById('distanceSize')?.addEventListener('input', (e) => {
+            this.editor?.setDistanceSize(e.target.value);
         });
 
-        document.getElementById('btnModeMaster')?.addEventListener('click', () => {
-            this.setMode(ADMIN_MODES.MASTER);
+        document.getElementById('distanceUnit')?.addEventListener('change', (e) => {
+            this.editor?.setDistanceUnit(e.target.value);
         });
-    }
-
-    // Cambiar modo Edit/Master
-    setMode(mode) {
-        this.currentMode = mode;
-
-        const btnEdit = document.getElementById('btnModeEdit');
-        const btnMaster = document.getElementById('btnModeMaster');
-        const toolbar = document.querySelector('.toolbar');
-        const modeIndicator = document.getElementById('modeIndicator');
-
-        if (mode === ADMIN_MODES.EDIT) {
-            btnEdit?.classList.add('active');
-            btnMaster?.classList.remove('active');
-            toolbar?.classList.remove('master-mode');
-            if (modeIndicator) modeIndicator.style.display = 'none';
-        } else {
-            btnEdit?.classList.remove('active');
-            btnMaster?.classList.add('active');
-            toolbar?.classList.add('master-mode');
-            if (modeIndicator) modeIndicator.style.display = 'flex';
-        }
     }
 
     // Mostrar vista con datos de la sala y mapa
@@ -164,6 +141,7 @@ class AdminEditorView {
 
         this.updateImageControls();
         this.updateGridControls();
+        this.updateDistanceControls();
     }
 
     // Cargar un mapa específico
@@ -223,6 +201,13 @@ class AdminEditorView {
                 ? JSON.parse(mapData.gridConfig)
                 : mapData.gridConfig;
             this.editor.gridConfig = { ...gridConfig };
+        }
+
+        if (mapData.distanceConfig) {
+            const distanceConfig = typeof mapData.distanceConfig === 'string'
+                ? JSON.parse(mapData.distanceConfig)
+                : mapData.distanceConfig;
+            this.editor.distanceConfig = { ...DEFAULT_DISTANCE_CONFIG, ...distanceConfig };
         }
 
         this.editor.render();
@@ -298,6 +283,7 @@ class AdminEditorView {
         this.loadActiveMap().then(() => {
             this.updateImageControls();
             this.updateGridControls();
+            this.updateDistanceControls();
         });
     }
 
@@ -352,11 +338,39 @@ class AdminEditorView {
         setText('gridOffsetYValue', gc.offsetY);
     }
 
+    // Actualizar controles de distancia en la UI
+    updateDistanceControls() {
+        if (!this.editor) return;
+
+        const dc = this.editor.distanceConfig;
+
+        const distanceSize = document.getElementById('distanceSize');
+        const distanceUnit = document.getElementById('distanceUnit');
+
+        if (distanceSize) distanceSize.value = dc.squareSize;
+        if (distanceUnit) distanceUnit.value = dc.unit;
+    }
+
     // Guardar mapa en el servidor
     async saveMap() {
         const room = this.app.currentRoom;
         const password = this.app.adminPassword;
-        if (!room || !password || !this.editor) return;
+
+        if (!room) {
+            showNotification('Error: no hay sala activa', 'error');
+            console.error('saveMap: no room');
+            return;
+        }
+        if (!password) {
+            showNotification('Error: sin contraseña de admin', 'error');
+            console.error('saveMap: no password');
+            return;
+        }
+        if (!this.editor) {
+            showNotification('Error: editor no inicializado', 'error');
+            console.error('saveMap: no editor');
+            return;
+        }
 
         try {
             const state = this.editor.getState();
@@ -371,7 +385,8 @@ class AdminEditorView {
                     {
                         imageData: state.imageData,
                         imageTransform: state.imageTransform,
-                        gridConfig: state.gridConfig
+                        gridConfig: state.gridConfig,
+                        distanceConfig: state.distanceConfig
                     }
                 );
             } else {
@@ -382,7 +397,8 @@ class AdminEditorView {
                     this.currentMapName || 'Mapa Principal',
                     state.imageData,
                     state.imageTransform,
-                    state.gridConfig
+                    state.gridConfig,
+                    state.distanceConfig
                 );
 
                 if (result.success && result.map) {
@@ -393,15 +409,20 @@ class AdminEditorView {
             }
 
             if (result.success) {
+                // Si actualizamos un mapa existente, también activarlo para que los jugadores vean los cambios
+                if (this.currentMapId) {
+                    await apiClient.activateMap(room.code, this.currentMapId, password);
+                }
                 showNotification('Cambios guardados', 'success');
                 // Notificar a los jugadores que el mapa cambió
                 socketClient.notifyMapUpdate();
             } else {
                 showNotification(result.error || 'Error al guardar', 'error');
+                console.error('saveMap error:', result);
             }
         } catch (error) {
             showNotification('Error al guardar', 'error');
-            console.error(error);
+            console.error('saveMap exception:', error);
         }
     }
 

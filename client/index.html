@@ -133,18 +133,6 @@
                     <h2>Editor</h2>
                 </div>
 
-                <!-- Mode Toggle: Edit / Master -->
-                <section class="tool-section">
-                    <div class="mode-toggle">
-                        <button id="btnModeEdit" class="mode-toggle-btn active">Edit</button>
-                        <button id="btnModeMaster" class="mode-toggle-btn">Master</button>
-                    </div>
-                    <div id="modeIndicator" class="mode-indicator" style="display: none;">
-                        <div class="mode-indicator-dot"></div>
-                        <span class="mode-indicator-text">Modo presentación activo</span>
-                    </div>
-                </section>
-
                 <!-- Info de sala -->
                 <section class="tool-section room-info">
                     <h3>Sala: <span id="adminRoomName">-</span></h3>
@@ -210,6 +198,23 @@
                     <div class="control-group">
                         <label for="gridOffsetY">Offset Y: <span id="gridOffsetYValue">0</span>px</label>
                         <input type="range" id="gridOffsetY" min="-100" max="100" value="0">
+                    </div>
+                </section>
+
+                <!-- Distancia por cuadrado -->
+                <section class="tool-section">
+                    <h3>Escala de Distancia</h3>
+                    <div class="control-group distance-group">
+                        <label>Cada cuadrado equivale a:</label>
+                        <div class="distance-inputs">
+                            <input type="number" id="distanceSize" value="5" min="1" max="1000">
+                            <select id="distanceUnit">
+                                <option value="feet">pies</option>
+                                <option value="meters">metros</option>
+                                <option value="km">kilómetros</option>
+                                <option value="miles">millas</option>
+                            </select>
+                        </div>
                     </div>
                 </section>
 
