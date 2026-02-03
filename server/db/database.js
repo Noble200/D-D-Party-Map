@@ -92,6 +92,66 @@ async function initDB() {
             )
         `);
 
+        // Tabla de NPCs
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS npcs (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                room_code VARCHAR(10) REFERENCES rooms(code) ON DELETE CASCADE,
+                name VARCHAR(255) NOT NULL,
+                type VARCHAR(50) DEFAULT 'neutral',
+                description TEXT,
+                notes TEXT,
+                npc_data JSONB DEFAULT '{}',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Tabla de notas de sesion
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS session_notes (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                room_code VARCHAR(10) REFERENCES rooms(code) ON DELETE CASCADE,
+                title VARCHAR(255) NOT NULL,
+                content TEXT,
+                category VARCHAR(50) DEFAULT 'general',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Tabla de historial de tiradas de dados
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS dice_rolls (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                room_code VARCHAR(10) REFERENCES rooms(code) ON DELETE CASCADE,
+                user_name VARCHAR(255),
+                character_name VARCHAR(255),
+                roll_type VARCHAR(50),
+                dice_formula VARCHAR(50) NOT NULL,
+                results INTEGER[],
+                modifier INTEGER DEFAULT 0,
+                total INTEGER NOT NULL,
+                is_private BOOLEAN DEFAULT false,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        // Tabla de tracker de iniciativa/combate
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS combat_tracker (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                room_code VARCHAR(10) REFERENCES rooms(code) ON DELETE CASCADE,
+                is_active BOOLEAN DEFAULT false,
+                current_turn INTEGER DEFAULT 0,
+                round_number INTEGER DEFAULT 1,
+                combatants JSONB DEFAULT '[]',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(room_code)
+            )
+        `);
+
         // Índices para optimización
         await client.query(`
             CREATE INDEX IF NOT EXISTS idx_characters_user_id ON characters(user_id);
@@ -99,6 +159,10 @@ async function initDB() {
             CREATE INDEX IF NOT EXISTS idx_maps_room_code ON maps(room_code);
             CREATE INDEX IF NOT EXISTS idx_maps_is_active ON maps(room_code, is_active);
             CREATE INDEX IF NOT EXISTS idx_users_hash ON users(user_hash);
+            CREATE INDEX IF NOT EXISTS idx_npcs_room_code ON npcs(room_code);
+            CREATE INDEX IF NOT EXISTS idx_session_notes_room_code ON session_notes(room_code);
+            CREATE INDEX IF NOT EXISTS idx_dice_rolls_room_code ON dice_rolls(room_code);
+            CREATE INDEX IF NOT EXISTS idx_combat_tracker_room_code ON combat_tracker(room_code);
         `);
 
         console.log('Base de datos inicializada correctamente');
@@ -426,6 +490,217 @@ async function deleteMap(mapId) {
     return result.rows[0] || null;
 }
 
+// ==========================================
+// FUNCIONES DE NPCs
+// ==========================================
+
+// Crear NPC
+async function createNpc(roomCode, data) {
+    const { name, type, description, notes, npcData } = data;
+    const result = await pool.query(
+        `INSERT INTO npcs (room_code, name, type, description, notes, npc_data)
+         VALUES ($1, $2, $3, $4, $5, $6)
+         RETURNING *`,
+        [roomCode.toUpperCase(), name, type || 'neutral', description || '', notes || '',
+         npcData ? JSON.stringify(npcData) : '{}']
+    );
+    return result.rows[0];
+}
+
+// Listar NPCs de una sala
+async function getNpcs(roomCode) {
+    const result = await pool.query(
+        'SELECT * FROM npcs WHERE room_code = $1 ORDER BY created_at DESC',
+        [roomCode.toUpperCase()]
+    );
+    return result.rows;
+}
+
+// Obtener NPC por ID
+async function getNpcById(npcId) {
+    const result = await pool.query(
+        'SELECT * FROM npcs WHERE id = $1',
+        [npcId]
+    );
+    return result.rows[0] || null;
+}
+
+// Actualizar NPC
+async function updateNpc(npcId, data) {
+    const { name, type, description, notes, npcData } = data;
+    const result = await pool.query(
+        `UPDATE npcs SET
+            name = COALESCE($2, name),
+            type = COALESCE($3, type),
+            description = COALESCE($4, description),
+            notes = COALESCE($5, notes),
+            npc_data = COALESCE($6, npc_data),
+            updated_at = CURRENT_TIMESTAMP
+         WHERE id = $1 RETURNING *`,
+        [npcId, name, type, description, notes,
+         npcData ? JSON.stringify(npcData) : null]
+    );
+    return result.rows[0] || null;
+}
+
+// Eliminar NPC
+async function deleteNpc(npcId) {
+    const result = await pool.query(
+        'DELETE FROM npcs WHERE id = $1 RETURNING *',
+        [npcId]
+    );
+    return result.rows[0] || null;
+}
+
+// ==========================================
+// FUNCIONES DE JUGADORES DE SALA
+// ==========================================
+
+// Obtener todos los jugadores de una sala con sus personajes
+async function getRoomPlayers(roomCode) {
+    const result = await pool.query(
+        `SELECT c.id, c.character_name, c.character_data, c.completion_percent,
+                u.player_name, u.id as user_id
+         FROM characters c
+         JOIN users u ON c.user_id = u.id
+         WHERE c.room_code = $1
+         ORDER BY c.created_at DESC`,
+        [roomCode.toUpperCase()]
+    );
+    return result.rows;
+}
+
+// ==========================================
+// FUNCIONES DE NOTAS DE SESION
+// ==========================================
+
+// Crear nota de sesion
+async function createSessionNote(roomCode, data) {
+    const { title, content, category } = data;
+    const result = await pool.query(
+        `INSERT INTO session_notes (room_code, title, content, category)
+         VALUES ($1, $2, $3, $4)
+         RETURNING *`,
+        [roomCode.toUpperCase(), title, content || '', category || 'general']
+    );
+    return result.rows[0];
+}
+
+// Listar notas de una sala
+async function getSessionNotes(roomCode) {
+    const result = await pool.query(
+        'SELECT * FROM session_notes WHERE room_code = $1 ORDER BY updated_at DESC',
+        [roomCode.toUpperCase()]
+    );
+    return result.rows;
+}
+
+// Actualizar nota
+async function updateSessionNote(noteId, data) {
+    const { title, content, category } = data;
+    const result = await pool.query(
+        `UPDATE session_notes SET
+            title = COALESCE($2, title),
+            content = COALESCE($3, content),
+            category = COALESCE($4, category),
+            updated_at = CURRENT_TIMESTAMP
+         WHERE id = $1 RETURNING *`,
+        [noteId, title, content, category]
+    );
+    return result.rows[0] || null;
+}
+
+// Eliminar nota
+async function deleteSessionNote(noteId) {
+    const result = await pool.query(
+        'DELETE FROM session_notes WHERE id = $1 RETURNING *',
+        [noteId]
+    );
+    return result.rows[0] || null;
+}
+
+// ==========================================
+// FUNCIONES DE TIRADAS DE DADOS
+// ==========================================
+
+// Guardar tirada de dados
+async function saveDiceRoll(roomCode, data) {
+    const { userName, characterName, rollType, diceFormula, results, modifier, total, isPrivate } = data;
+    const result = await pool.query(
+        `INSERT INTO dice_rolls (room_code, user_name, character_name, roll_type, dice_formula, results, modifier, total, is_private)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+         RETURNING *`,
+        [roomCode.toUpperCase(), userName, characterName, rollType, diceFormula, results, modifier || 0, total, isPrivate || false]
+    );
+    return result.rows[0];
+}
+
+// Obtener historial de tiradas (ultimas 50)
+async function getDiceRollHistory(roomCode, limit = 50) {
+    const result = await pool.query(
+        `SELECT * FROM dice_rolls WHERE room_code = $1 AND is_private = false
+         ORDER BY created_at DESC LIMIT $2`,
+        [roomCode.toUpperCase(), limit]
+    );
+    return result.rows;
+}
+
+// ==========================================
+// FUNCIONES DE TRACKER DE COMBATE
+// ==========================================
+
+// Obtener o crear tracker de combate
+async function getCombatTracker(roomCode) {
+    let result = await pool.query(
+        'SELECT * FROM combat_tracker WHERE room_code = $1',
+        [roomCode.toUpperCase()]
+    );
+
+    if (result.rows.length === 0) {
+        // Crear tracker si no existe
+        result = await pool.query(
+            `INSERT INTO combat_tracker (room_code, combatants)
+             VALUES ($1, '[]')
+             RETURNING *`,
+            [roomCode.toUpperCase()]
+        );
+    }
+
+    return result.rows[0];
+}
+
+// Actualizar tracker de combate
+async function updateCombatTracker(roomCode, data) {
+    const { isActive, currentTurn, roundNumber, combatants } = data;
+    const result = await pool.query(
+        `UPDATE combat_tracker SET
+            is_active = COALESCE($2, is_active),
+            current_turn = COALESCE($3, current_turn),
+            round_number = COALESCE($4, round_number),
+            combatants = COALESCE($5, combatants),
+            updated_at = CURRENT_TIMESTAMP
+         WHERE room_code = $1 RETURNING *`,
+        [roomCode.toUpperCase(), isActive, currentTurn, roundNumber,
+         combatants ? JSON.stringify(combatants) : null]
+    );
+    return result.rows[0] || null;
+}
+
+// Resetear tracker de combate
+async function resetCombatTracker(roomCode) {
+    const result = await pool.query(
+        `UPDATE combat_tracker SET
+            is_active = false,
+            current_turn = 0,
+            round_number = 1,
+            combatants = '[]',
+            updated_at = CURRENT_TIMESTAMP
+         WHERE room_code = $1 RETURNING *`,
+        [roomCode.toUpperCase()]
+    );
+    return result.rows[0] || null;
+}
+
 // Migrar datos de sala existente a tabla maps (ejecutar una vez)
 async function migrateRoomMapsData() {
     const client = await pool.connect();
@@ -480,5 +755,25 @@ module.exports = {
     setActiveMap,
     updateMap,
     deleteMap,
-    migrateRoomMapsData
+    migrateRoomMapsData,
+    // NPCs
+    createNpc,
+    getNpcs,
+    getNpcById,
+    updateNpc,
+    deleteNpc,
+    // Jugadores de sala
+    getRoomPlayers,
+    // Notas de sesion
+    createSessionNote,
+    getSessionNotes,
+    updateSessionNote,
+    deleteSessionNote,
+    // Tiradas de dados
+    saveDiceRoll,
+    getDiceRollHistory,
+    // Tracker de combate
+    getCombatTracker,
+    updateCombatTracker,
+    resetCombatTracker
 };

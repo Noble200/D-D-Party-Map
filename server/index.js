@@ -10,7 +10,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 
 // Importar módulos
-const { initDB, migrateRoomMapsData, updateRoomActivity, cleanupInactiveRooms } = require('./db/database');
+const { initDB, migrateRoomMapsData, updateRoomActivity, cleanupInactiveRooms, saveDiceRoll } = require('./db/database');
 const roomRoutes = require('./routes/rooms');
 const userRoutes = require('./routes/users');
 
@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
         roomUsers[roomCode][socket.id] = {
             type: userType,
             name: socket.userName,
-            odeleteduserId: socket.userId,
+            userId: socket.userId,
             characterName: socket.characterName
         };
 
@@ -112,6 +112,70 @@ io.on('connection', (socket) => {
         // Notificar a todos los jugadores (excepto al admin que envió)
         socket.to(roomCode).emit('active-map-changed', { mapId });
         console.log(`Mapa activo cambiado en sala ${roomCode} a ${mapId}`);
+    });
+
+    // Admin inicia la partida
+    socket.on('start-game', ({ roomCode, mapId }) => {
+        // Notificar a todos los jugadores que la partida inicio
+        socket.to(roomCode).emit('game-started', { mapId });
+        console.log(`Partida iniciada en sala ${roomCode} con mapa ${mapId}`);
+    });
+
+    // Tirada de dados
+    socket.on('dice-roll', async ({ roomCode, rollData }) => {
+        try {
+            // Guardar en base de datos
+            const saved = await saveDiceRoll(roomCode, rollData);
+
+            // Preparar datos para emitir
+            const rollResult = {
+                id: saved.id,
+                userName: rollData.userName,
+                characterName: rollData.characterName,
+                rollType: rollData.rollType,
+                diceFormula: rollData.diceFormula,
+                results: rollData.results,
+                modifier: rollData.modifier,
+                total: rollData.total,
+                isPrivate: rollData.isPrivate,
+                createdAt: saved.created_at
+            };
+
+            // Emitir a todos o solo al que tiro (si es privado)
+            if (rollData.isPrivate) {
+                // Solo emitir al admin y al que tiro
+                socket.emit('dice-rolled', rollResult);
+                // Emitir a admins de la sala
+                const adminSockets = Object.entries(roomUsers[roomCode] || {})
+                    .filter(([_, u]) => u.type === 'admin')
+                    .map(([id]) => id);
+                adminSockets.forEach(adminId => {
+                    if (adminId !== socket.id) {
+                        io.to(adminId).emit('dice-rolled', rollResult);
+                    }
+                });
+            } else {
+                // Emitir a todos en la sala
+                io.to(roomCode).emit('dice-rolled', rollResult);
+            }
+
+            console.log(`Tirada de dados en ${roomCode}: ${rollData.diceFormula} = ${rollData.total}`);
+        } catch (error) {
+            console.error('Error guardando tirada de dados:', error);
+            socket.emit('dice-roll-error', { error: 'Error al guardar tirada' });
+        }
+    });
+
+    // Actualizar tracker de combate (sincronizar con todos)
+    socket.on('combat-update', ({ roomCode, tracker }) => {
+        // Emitir a todos en la sala (incluyendo al que envio)
+        io.to(roomCode).emit('combat-updated', tracker);
+        console.log(`Combat tracker actualizado en sala ${roomCode}`);
+    });
+
+    // Notificar turno actual en combate
+    socket.on('combat-turn', ({ roomCode, currentTurn, combatantName }) => {
+        io.to(roomCode).emit('combat-turn-changed', { currentTurn, combatantName });
     });
 });
 

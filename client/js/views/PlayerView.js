@@ -30,11 +30,9 @@ class PlayerView {
     }
 
     bindEvents() {
-        // Volver al inicio
+        // Volver al menu de sala
         document.getElementById('btnBackFromPlayer')?.addEventListener('click', () => {
-            socketClient.leaveRoom();
-            this.app.clearRoom();
-            screenManager.show('home');
+            screenManager.show('roomMenu');
         });
 
         // Abrir hoja de personaje

@@ -165,6 +165,148 @@ class ApiClient {
         });
         return response.json();
     }
+
+    // ==========================================
+    // NPCs
+    // ==========================================
+
+    // Listar NPCs de la sala
+    async getNpcs(roomCode, adminPassword) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/npcs/list`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword })
+        });
+        return response.json();
+    }
+
+    // Crear nuevo NPC
+    async createNpc(roomCode, adminPassword, data) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/npcs`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword, ...data })
+        });
+        return response.json();
+    }
+
+    // Actualizar NPC
+    async updateNpc(roomCode, npcId, adminPassword, data) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/npcs/${npcId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword, ...data })
+        });
+        return response.json();
+    }
+
+    // Eliminar NPC
+    async deleteNpc(roomCode, npcId, adminPassword) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/npcs/${npcId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword })
+        });
+        return response.json();
+    }
+
+    // ==========================================
+    // JUGADORES DE SALA
+    // ==========================================
+
+    // Listar jugadores de la sala
+    async getRoomPlayers(roomCode, adminPassword) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/players`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword })
+        });
+        return response.json();
+    }
+
+    // ==========================================
+    // NOTAS DE SESION
+    // ==========================================
+
+    // Listar notas
+    async getSessionNotes(roomCode, adminPassword) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/notes/list`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword })
+        });
+        return response.json();
+    }
+
+    // Crear nota
+    async createSessionNote(roomCode, adminPassword, data) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/notes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword, ...data })
+        });
+        return response.json();
+    }
+
+    // Actualizar nota
+    async updateSessionNote(roomCode, noteId, adminPassword, data) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/notes/${noteId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword, ...data })
+        });
+        return response.json();
+    }
+
+    // Eliminar nota
+    async deleteSessionNote(roomCode, noteId, adminPassword) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/notes/${noteId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword })
+        });
+        return response.json();
+    }
+
+    // ==========================================
+    // HISTORIAL DE DADOS
+    // ==========================================
+
+    // Obtener historial de tiradas
+    async getDiceRollHistory(roomCode, limit = 50) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/dice/history?limit=${limit}`);
+        return response.json();
+    }
+
+    // ==========================================
+    // TRACKER DE COMBATE
+    // ==========================================
+
+    // Obtener tracker de combate
+    async getCombatTracker(roomCode) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/combat`);
+        return response.json();
+    }
+
+    // Actualizar tracker
+    async updateCombatTracker(roomCode, adminPassword, data) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/combat`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword, ...data })
+        });
+        return response.json();
+    }
+
+    // Resetear tracker
+    async resetCombatTracker(roomCode, adminPassword) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/combat/reset`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword })
+        });
+        return response.json();
+    }
 }
 
 // Exportar instancia única

@@ -87,6 +87,435 @@
     </div>
 
     <!-- ==========================================
+         PANTALLA MENU DE SALA (Admin y Jugador)
+         ========================================== -->
+    <div id="roomMenuScreen" class="screen">
+        <div class="room-menu-container">
+            <header class="room-menu-header">
+                <button id="btnExitRoom" class="btn btn-small">Salir</button>
+                <div class="room-menu-info">
+                    <h1 id="roomMenuName">Nombre de la Sala</h1>
+                    <span id="roomMenuCode" class="room-code-badge">CODIGO</span>
+                </div>
+            </header>
+
+            <main class="room-menu-content">
+                <!-- Mensaje de estado de partida -->
+                <div id="gameStatusMessage" class="game-status-message hidden">
+                    <p>Esperando a que el DM inicie la partida...</p>
+                </div>
+
+                <!-- Menu de opciones -->
+                <div class="room-menu-grid">
+                    <!-- Opciones de Admin -->
+                    <div id="adminMenuOptions" class="menu-options admin-options hidden">
+                        <button id="btnManageMaps" class="menu-btn">
+                            <span class="menu-btn-title">Mapas</span>
+                            <span class="menu-btn-desc">Crear y gestionar mapas</span>
+                        </button>
+                        <button id="btnManageNpcs" class="menu-btn">
+                            <span class="menu-btn-title">NPCs</span>
+                            <span class="menu-btn-desc">Crear personajes no jugadores</span>
+                        </button>
+                        <button id="btnStartGame" class="menu-btn menu-btn-primary">
+                            <span class="menu-btn-title">Iniciar Partida</span>
+                            <span class="menu-btn-desc">Comenzar sesion de juego</span>
+                        </button>
+                        <button id="btnViewPlayers" class="menu-btn">
+                            <span class="menu-btn-title">Jugadores</span>
+                            <span class="menu-btn-desc">Ver lista de jugadores</span>
+                        </button>
+                        <button id="btnSessionNotes" class="menu-btn">
+                            <span class="menu-btn-title">Notas</span>
+                            <span class="menu-btn-desc">Notas de la sesion</span>
+                        </button>
+                        <button id="btnDiceRoller" class="menu-btn">
+                            <span class="menu-btn-title">Dados</span>
+                            <span class="menu-btn-desc">Tirar dados</span>
+                        </button>
+                        <button id="btnCombatTracker" class="menu-btn">
+                            <span class="menu-btn-title">Combate</span>
+                            <span class="menu-btn-desc">Tracker de iniciativa</span>
+                        </button>
+                    </div>
+
+                    <!-- Opciones de Jugador -->
+                    <div id="playerMenuOptions" class="menu-options player-options hidden">
+                        <button id="btnEditCharacter" class="menu-btn menu-btn-primary">
+                            <span class="menu-btn-title">Mi Personaje</span>
+                            <span class="menu-btn-desc">Editar ficha de personaje</span>
+                        </button>
+                        <button id="btnPlayerDice" class="menu-btn">
+                            <span class="menu-btn-title">Dados</span>
+                            <span class="menu-btn-desc">Tirar dados</span>
+                        </button>
+                        <button id="btnPlayerInventory" class="menu-btn">
+                            <span class="menu-btn-title">Inventario</span>
+                            <span class="menu-btn-desc">Mis objetos</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lista de usuarios conectados -->
+                <div class="room-menu-users">
+                    <h3>Conectados (<span id="roomMenuUsersCount">0</span>)</h3>
+                    <div id="roomMenuUsersList" class="users-list">
+                        <!-- Lista dinamica -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: GESTION DE MAPAS
+         ========================================== -->
+    <div id="mapsManagerModal" class="modal">
+        <div class="modal-content modal-large">
+            <h2>Gestion de Mapas</h2>
+            <div id="mapsManagerList" class="maps-manager-grid">
+                <!-- Lista de mapas -->
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCreateNewMap" class="btn btn-primary">Crear Nuevo Mapa</button>
+                <button id="btnCloseMapsManager" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: GESTION DE NPCs
+         ========================================== -->
+    <div id="npcsManagerModal" class="modal">
+        <div class="modal-content modal-large">
+            <h2>Gestion de NPCs</h2>
+            <div id="npcsManagerList" class="npcs-manager-grid">
+                <!-- Lista de NPCs -->
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCreateNewNpc" class="btn btn-primary">Crear Nuevo NPC</button>
+                <button id="btnCloseNpcsManager" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: FORMULARIO DE NPC
+         ========================================== -->
+    <div id="npcFormModal" class="modal">
+        <div class="modal-content">
+            <h2 id="npcFormTitle">Nuevo NPC</h2>
+            <div class="form-group">
+                <label for="npcName">Nombre</label>
+                <input type="text" id="npcName" placeholder="Nombre del NPC">
+            </div>
+            <div class="form-group">
+                <label for="npcType">Tipo</label>
+                <select id="npcType">
+                    <option value="friendly">Amigable</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="hostile">Hostil</option>
+                    <option value="merchant">Comerciante</option>
+                    <option value="quest">Quest Giver</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="npcDescription">Descripcion</label>
+                <textarea id="npcDescription" rows="3" placeholder="Descripcion del NPC"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="npcNotes">Notas (solo DM)</label>
+                <textarea id="npcNotes" rows="3" placeholder="Notas privadas"></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCancelNpcForm" class="btn">Cancelar</button>
+                <button id="btnSaveNpcForm" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: LISTA DE JUGADORES (Admin)
+         ========================================== -->
+    <div id="playersListModal" class="modal">
+        <div class="modal-content modal-large">
+            <h2>Jugadores de la Sala</h2>
+            <div id="playersListContent" class="players-list-grid">
+                <!-- Lista de jugadores -->
+            </div>
+            <div class="modal-buttons">
+                <button id="btnClosePlayersList" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: SELECCIONAR MAPA PARA INICIAR
+         ========================================== -->
+    <div id="startGameModal" class="modal">
+        <div class="modal-content">
+            <h2>Iniciar Partida</h2>
+            <p>Selecciona el mapa para comenzar:</p>
+            <div id="startGameMapsList" class="start-game-maps">
+                <!-- Lista de mapas disponibles -->
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCancelStartGame" class="btn">Cancelar</button>
+                <button id="btnConfirmStartGame" class="btn btn-primary" disabled>Iniciar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: NOTAS DE SESION
+         ========================================== -->
+    <div id="sessionNotesModal" class="modal">
+        <div class="modal-content modal-large">
+            <h2>Notas de Sesion</h2>
+            <div class="notes-categories">
+                <button class="note-category-btn active" data-category="all">Todas</button>
+                <button class="note-category-btn" data-category="general">General</button>
+                <button class="note-category-btn" data-category="plot">Trama</button>
+                <button class="note-category-btn" data-category="combat">Combate</button>
+                <button class="note-category-btn" data-category="loot">Tesoro</button>
+            </div>
+            <div id="sessionNotesList" class="session-notes-list">
+                <!-- Lista de notas -->
+            </div>
+            <div class="modal-buttons">
+                <button id="btnNewNote" class="btn btn-primary">Nueva Nota</button>
+                <button id="btnCloseSessionNotes" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: FORMULARIO DE NOTA
+         ========================================== -->
+    <div id="noteFormModal" class="modal">
+        <div class="modal-content">
+            <h2 id="noteFormTitle">Nueva Nota</h2>
+            <div class="form-group">
+                <label for="noteTitle">Titulo</label>
+                <input type="text" id="noteTitle" placeholder="Titulo de la nota">
+            </div>
+            <div class="form-group">
+                <label for="noteCategory">Categoria</label>
+                <select id="noteCategory">
+                    <option value="general">General</option>
+                    <option value="plot">Trama</option>
+                    <option value="combat">Combate</option>
+                    <option value="loot">Tesoro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="noteContent">Contenido</label>
+                <textarea id="noteContent" rows="8" placeholder="Escribe tu nota aqui..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCancelNoteForm" class="btn">Cancelar</button>
+                <button id="btnSaveNoteForm" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: TIRADOR DE DADOS
+         ========================================== -->
+    <div id="diceRollerModal" class="modal">
+        <div class="modal-content modal-large">
+            <h2>Tirador de Dados</h2>
+            <div class="dice-roller-container">
+                <!-- Botones de dados rapidos -->
+                <div class="dice-quick-buttons">
+                    <button class="dice-btn" data-dice="d4">d4</button>
+                    <button class="dice-btn" data-dice="d6">d6</button>
+                    <button class="dice-btn" data-dice="d8">d8</button>
+                    <button class="dice-btn" data-dice="d10">d10</button>
+                    <button class="dice-btn" data-dice="d12">d12</button>
+                    <button class="dice-btn" data-dice="d20">d20</button>
+                    <button class="dice-btn" data-dice="d100">d100</button>
+                </div>
+
+                <!-- Formula personalizada -->
+                <div class="dice-custom">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="diceCount">Cantidad</label>
+                            <input type="number" id="diceCount" value="1" min="1" max="20">
+                        </div>
+                        <div class="form-group">
+                            <label for="diceType">Tipo</label>
+                            <select id="diceType">
+                                <option value="4">d4</option>
+                                <option value="6">d6</option>
+                                <option value="8">d8</option>
+                                <option value="10">d10</option>
+                                <option value="12">d12</option>
+                                <option value="20" selected>d20</option>
+                                <option value="100">d100</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="diceModifier">Modificador</label>
+                            <input type="number" id="diceModifier" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rollType">Tipo de tirada</label>
+                        <select id="rollType">
+                            <option value="">Normal</option>
+                            <option value="attack">Ataque</option>
+                            <option value="damage">Dano</option>
+                            <option value="save">Salvacion</option>
+                            <option value="skill">Habilidad</option>
+                            <option value="initiative">Iniciativa</option>
+                        </select>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="privateRoll">
+                        <label for="privateRoll">Tirada privada (solo DM ve)</label>
+                    </div>
+                    <button id="btnRollDice" class="btn btn-primary">Tirar Dados</button>
+                </div>
+
+                <!-- Resultado -->
+                <div id="diceResult" class="dice-result hidden">
+                    <div class="dice-result-formula"></div>
+                    <div class="dice-result-rolls"></div>
+                    <div class="dice-result-total"></div>
+                </div>
+
+                <!-- Historial -->
+                <div class="dice-history">
+                    <h4>Historial</h4>
+                    <div id="diceHistoryList" class="dice-history-list">
+                        <!-- Historial de tiradas -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCloseDiceRoller" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: TRACKER DE COMBATE
+         ========================================== -->
+    <div id="combatTrackerModal" class="modal">
+        <div class="modal-content modal-large">
+            <h2>Tracker de Combate</h2>
+            <div class="combat-tracker-container">
+                <!-- Info de combate -->
+                <div class="combat-info">
+                    <span>Ronda: <strong id="combatRound">1</strong></span>
+                    <span id="combatStatus" class="combat-status">Inactivo</span>
+                </div>
+
+                <!-- Lista de combatientes -->
+                <div id="combatantsList" class="combatants-list">
+                    <!-- Lista de combatientes -->
+                </div>
+
+                <!-- Controles de admin -->
+                <div id="combatAdminControls" class="combat-controls hidden">
+                    <button id="btnAddCombatant" class="btn btn-small">Agregar</button>
+                    <button id="btnNextTurn" class="btn btn-small btn-primary">Siguiente Turno</button>
+                    <button id="btnStartCombat" class="btn btn-small">Iniciar Combate</button>
+                    <button id="btnEndCombat" class="btn btn-small btn-danger">Terminar</button>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCloseCombatTracker" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: AGREGAR COMBATIENTE
+         ========================================== -->
+    <div id="addCombatantModal" class="modal">
+        <div class="modal-content">
+            <h2>Agregar Combatiente</h2>
+            <div class="form-group">
+                <label for="combatantName">Nombre</label>
+                <input type="text" id="combatantName" placeholder="Nombre del combatiente">
+            </div>
+            <div class="form-group">
+                <label for="combatantInitiative">Iniciativa</label>
+                <input type="number" id="combatantInitiative" value="10">
+            </div>
+            <div class="form-group">
+                <label for="combatantType">Tipo</label>
+                <select id="combatantType">
+                    <option value="player">Jugador</option>
+                    <option value="npc">NPC Aliado</option>
+                    <option value="enemy">Enemigo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="combatantHP">HP (opcional)</label>
+                <input type="number" id="combatantHP" placeholder="Puntos de golpe">
+            </div>
+            <div class="modal-buttons">
+                <button id="btnCancelAddCombatant" class="btn">Cancelar</button>
+                <button id="btnConfirmAddCombatant" class="btn btn-primary">Agregar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: INVENTARIO
+         ========================================== -->
+    <div id="inventoryModal" class="modal">
+        <div class="modal-content modal-large">
+            <h2 id="inventoryTitle">Mi Inventario</h2>
+            <div class="inventory-container">
+                <!-- Oro y monedas -->
+                <div class="inventory-currency">
+                    <div class="currency-item">
+                        <label>PP</label>
+                        <input type="number" id="currencyPP" value="0" min="0">
+                    </div>
+                    <div class="currency-item">
+                        <label>GP</label>
+                        <input type="number" id="currencyGP" value="0" min="0">
+                    </div>
+                    <div class="currency-item">
+                        <label>EP</label>
+                        <input type="number" id="currencyEP" value="0" min="0">
+                    </div>
+                    <div class="currency-item">
+                        <label>SP</label>
+                        <input type="number" id="currencySP" value="0" min="0">
+                    </div>
+                    <div class="currency-item">
+                        <label>CP</label>
+                        <input type="number" id="currencyCP" value="0" min="0">
+                    </div>
+                </div>
+
+                <!-- Lista de items -->
+                <div id="inventoryItemsList" class="inventory-items-list">
+                    <!-- Lista de items -->
+                </div>
+
+                <!-- Agregar item -->
+                <div class="inventory-add-item">
+                    <input type="text" id="newItemName" placeholder="Nombre del objeto">
+                    <input type="number" id="newItemQty" value="1" min="1" placeholder="Cant.">
+                    <button id="btnAddItem" class="btn btn-small btn-primary">Agregar</button>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="btnSaveInventory" class="btn btn-primary">Guardar</button>
+                <button id="btnCloseInventory" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
          PANTALLA ADMIN VIEWER (Visualización igual que jugador)
          ========================================== -->
     <div id="adminViewerScreen" class="screen">

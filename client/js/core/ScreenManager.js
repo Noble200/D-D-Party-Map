@@ -6,6 +6,7 @@ class ScreenManager {
     constructor() {
         this.screens = {
             home: document.getElementById('homeScreen'),
+            roomMenu: document.getElementById('roomMenuScreen'),
             adminViewer: document.getElementById('adminViewerScreen'),
             adminEditor: document.getElementById('adminEditorScreen'),
             player: document.getElementById('playerScreen')

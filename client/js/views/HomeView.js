@@ -102,7 +102,7 @@ class HomeView {
             if (data.success) {
                 this.app.setRoom(data.room, password, true);
                 this.hideModal('createRoom');
-                screenManager.show('adminViewer');
+                screenManager.show('roomMenu');
                 showNotification(`Sala creada: ${data.room.code}`, 'success');
 
                 // Limpiar formulario
@@ -133,7 +133,7 @@ class HomeView {
             if (data.success) {
                 this.app.setRoom(data.room, password, true);
                 this.hideModal('accessAdmin');
-                screenManager.show('adminViewer');
+                screenManager.show('roomMenu');
                 showNotification('Acceso concedido', 'success');
 
                 // Limpiar formulario
@@ -201,7 +201,7 @@ class HomeView {
             this.app.playerName = playerName;
             this.app.characterName = characterName;
 
-            screenManager.show('player');
+            screenManager.show('roomMenu');
             showNotification('Conectado a la sala', 'success');
 
             // Solo limpiar código, mantener nombres para conveniencia

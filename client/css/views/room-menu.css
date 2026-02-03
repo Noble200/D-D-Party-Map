@@ -1,0 +1,923 @@
+/* ==========================================
+   Vista de Menu de Sala - Estilos D&D
+   ========================================== */
+
+/* Container principal */
+.room-menu-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(180deg, var(--color-bg-dark) 0%, var(--color-bg-medium) 100%);
+    overflow: hidden;
+}
+
+/* Header */
+.room-menu-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
+    border-bottom: 3px solid var(--color-gold-dark);
+    position: relative;
+}
+
+.room-menu-header::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+}
+
+.room-menu-info {
+    flex: 1;
+    text-align: center;
+}
+
+.room-menu-info h1 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--color-gold);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 5px;
+}
+
+/* Content */
+.room-menu-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+}
+
+/* Game status message */
+.game-status-message {
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
+    border: 2px solid var(--color-gold-dark);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+    animation: magicPulse 3s infinite;
+}
+
+.game-status-message p {
+    font-family: var(--font-body);
+    color: var(--color-parchment);
+    font-size: 1.1rem;
+}
+
+.game-status-message.hidden {
+    display: none;
+}
+
+/* Menu grid */
+.room-menu-grid {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: var(--spacing-xl);
+}
+
+.menu-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.menu-options.hidden {
+    display: none;
+}
+
+/* Menu buttons */
+.menu-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl);
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
+    border: 3px solid var(--border-ornate);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    min-height: 120px;
+    text-align: center;
+}
+
+.menu-btn:hover {
+    border-color: var(--color-gold);
+    box-shadow: var(--shadow-glow-gold);
+    transform: translateY(-4px);
+}
+
+.menu-btn-title {
+    font-family: var(--font-title);
+    font-size: 1.3rem;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: 1px;
+}
+
+.menu-btn-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.menu-btn-primary {
+    background: linear-gradient(180deg, var(--color-gold-dark) 0%, #7a5a15 100%);
+    border-color: var(--color-gold);
+}
+
+.menu-btn-primary .menu-btn-title {
+    color: var(--color-parchment);
+}
+
+.menu-btn-primary:hover {
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    box-shadow: var(--shadow-glow-gold), var(--shadow-glow-fire);
+}
+
+.menu-btn-primary:hover .menu-btn-title {
+    color: var(--color-text-dark);
+}
+
+/* Users section */
+.room-menu-users {
+    width: 100%;
+    max-width: 600px;
+    background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
+    border: 2px solid var(--border-ornate);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+}
+
+.room-menu-users h3 {
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-stone);
+}
+
+.users-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-light);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid;
+}
+
+.user-item.user-admin {
+    border-left-color: var(--color-gold);
+}
+
+.user-item.user-player {
+    border-left-color: var(--color-forest);
+}
+
+.user-role {
+    font-family: var(--font-title);
+    font-size: 0.8rem;
+    color: var(--color-gold);
+    background: var(--color-bg-dark);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.user-character {
+    font-family: var(--font-body);
+    color: var(--color-parchment);
+    font-weight: 600;
+}
+
+.user-name {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.no-users {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: var(--spacing-md);
+    font-style: italic;
+}
+
+/* ==========================================
+   MODAL: Maps Manager Grid
+   ========================================== */
+
+.maps-manager-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    max-height: 400px;
+    overflow-y: auto;
+    padding: var(--spacing-sm);
+}
+
+.map-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-bg-light);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.map-card:hover {
+    border-color: var(--color-gold-dark);
+}
+
+.map-card.active {
+    border-color: var(--color-gold);
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, rgba(212, 167, 38, 0.1) 100%);
+}
+
+.map-card-info h4 {
+    font-family: var(--font-body);
+    color: var(--color-parchment);
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.active-badge {
+    font-size: 0.7rem;
+    color: var(--color-gold);
+    background: var(--color-bg-dark);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+}
+
+.map-card-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+/* ==========================================
+   MODAL: NPCs Manager
+   ========================================== */
+
+.npcs-manager-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    max-height: 400px;
+    overflow-y: auto;
+    padding: var(--spacing-sm);
+}
+
+.npc-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-bg-light);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.npc-card:hover {
+    border-color: var(--color-gold-dark);
+}
+
+.npc-card-info {
+    flex: 1;
+}
+
+.npc-card-info h4 {
+    font-family: var(--font-body);
+    color: var(--color-parchment);
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.npc-type {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    margin-right: var(--spacing-sm);
+}
+
+.npc-type-friendly { background: var(--color-forest); color: var(--color-parchment); }
+.npc-type-neutral { background: var(--color-bg-dark); color: var(--color-text-muted); border: 1px solid var(--border-stone); }
+.npc-type-hostile { background: var(--color-blood); color: var(--color-parchment); }
+.npc-type-merchant { background: var(--color-gold-dark); color: var(--color-text-dark); }
+.npc-type-quest { background: var(--color-magic); color: var(--color-parchment); }
+
+.npc-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-sm);
+}
+
+.npc-card-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+/* ==========================================
+   MODAL: Players List
+   ========================================== */
+
+.players-list-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    max-height: 400px;
+    overflow-y: auto;
+    padding: var(--spacing-sm);
+}
+
+.player-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-bg-light);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--color-forest);
+}
+
+.player-info h4 {
+    font-family: var(--font-body);
+    color: var(--color-parchment);
+    font-size: 1rem;
+}
+
+.player-real-name {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.player-stats {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.player-class {
+    font-size: 0.85rem;
+    color: var(--color-gold);
+}
+
+.player-level {
+    font-size: 0.8rem;
+    background: var(--color-bg-dark);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+}
+
+/* ==========================================
+   MODAL: Start Game
+   ========================================== */
+
+.start-game-maps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-lg) 0;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.start-game-map-option {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-bg-light);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.start-game-map-option:hover {
+    border-color: var(--color-gold-dark);
+}
+
+.start-game-map-option.selected {
+    border-color: var(--color-gold);
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, rgba(212, 167, 38, 0.15) 100%);
+    box-shadow: inset 0 0 10px rgba(212, 167, 38, 0.2);
+}
+
+.start-game-map-option .map-name {
+    font-family: var(--font-body);
+    color: var(--color-parchment);
+}
+
+/* ==========================================
+   Empty list state
+   ========================================== */
+
+.empty-list {
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* ==========================================
+   Danger button
+   ========================================== */
+
+.btn-danger {
+    background: linear-gradient(180deg, var(--color-blood) 0%, #5a1428 100%);
+    border-color: var(--color-blood-light);
+    color: var(--color-parchment);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(180deg, var(--color-blood-light) 0%, var(--color-blood) 100%);
+    box-shadow: 0 0 15px rgba(139, 30, 63, 0.5);
+}
+
+/* ==========================================
+   Hidden utility
+   ========================================== */
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================
+   NOTAS DE SESION
+   ========================================== */
+
+.notes-categories {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.note-category-btn {
+    padding: 6px 14px;
+    background: var(--color-bg-light);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: 0.85rem;
+}
+
+.note-category-btn:hover,
+.note-category-btn.active {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+}
+
+.session-notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    max-height: 350px;
+    overflow-y: auto;
+    padding: var(--spacing-sm);
+}
+
+.note-card {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-bg-light);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--color-gold);
+}
+
+.note-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-sm);
+}
+
+.note-card h4 {
+    font-family: var(--font-body);
+    color: var(--color-parchment);
+    font-size: 1rem;
+}
+
+.note-category-badge {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    background: var(--color-bg-dark);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+}
+
+.note-card p {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.note-card-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+/* ==========================================
+   TIRADOR DE DADOS
+   ========================================== */
+
+.dice-roller-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.dice-quick-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.dice-btn {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
+    border: 3px solid var(--border-ornate);
+    border-radius: var(--radius-md);
+    color: var(--color-gold);
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.dice-btn:hover {
+    border-color: var(--color-gold);
+    box-shadow: var(--shadow-glow-gold);
+    transform: scale(1.1);
+}
+
+.dice-custom {
+    background: var(--color-bg-light);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-stone);
+}
+
+.dice-custom .form-row {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.dice-custom .form-group {
+    flex: 1;
+}
+
+.dice-result {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
+    border: 3px solid var(--color-gold);
+    border-radius: var(--radius-lg);
+    animation: epicReveal 0.3s ease-out;
+}
+
+.dice-result-formula {
+    font-family: var(--font-body);
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.dice-result-rolls {
+    font-family: var(--font-body);
+    color: var(--color-parchment);
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.dice-result-total {
+    font-family: var(--font-display);
+    color: var(--color-gold);
+    font-size: 3rem;
+    text-shadow: var(--shadow-glow-gold);
+}
+
+.dice-history {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dice-history h4 {
+    font-family: var(--font-title);
+    color: var(--color-gold);
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.dice-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.dice-history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-light);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+}
+
+.dice-history-item .roller-name {
+    color: var(--color-parchment);
+}
+
+.dice-history-item .roll-info {
+    color: var(--color-text-muted);
+}
+
+.dice-history-item .roll-total {
+    color: var(--color-gold);
+    font-weight: bold;
+}
+
+/* ==========================================
+   TRACKER DE COMBATE
+   ========================================== */
+
+.combat-tracker-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.combat-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-bg-light);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-stone);
+}
+
+.combat-status {
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.combat-status.active {
+    background: var(--color-blood);
+    color: var(--color-parchment);
+    animation: fireFlicker 2s infinite;
+}
+
+.combatants-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.combatant-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-bg-light);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.combatant-card.current-turn {
+    border-color: var(--color-gold);
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, rgba(212, 167, 38, 0.15) 100%);
+    box-shadow: var(--shadow-glow-gold);
+}
+
+.combatant-initiative {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-dark);
+    border-radius: 50%;
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    color: var(--color-gold);
+}
+
+.combatant-info {
+    flex: 1;
+}
+
+.combatant-info h4 {
+    font-family: var(--font-body);
+    color: var(--color-parchment);
+    font-size: 1rem;
+}
+
+.combatant-type {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+}
+
+.combatant-type.player { background: var(--color-forest); color: var(--color-parchment); }
+.combatant-type.npc { background: var(--color-gold-dark); color: var(--color-text-dark); }
+.combatant-type.enemy { background: var(--color-blood); color: var(--color-parchment); }
+
+.combatant-hp {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.combatant-hp input {
+    width: 60px;
+    padding: 4px 8px;
+    background: var(--color-bg-dark);
+    border: 1px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    text-align: center;
+}
+
+.combatant-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.combat-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ==========================================
+   INVENTARIO
+   ========================================== */
+
+.inventory-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.inventory-currency {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    padding: var(--spacing-md);
+    background: var(--color-bg-light);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-ornate);
+}
+
+.currency-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.currency-item label {
+    font-family: var(--font-title);
+    color: var(--color-gold);
+    font-size: 0.9rem;
+}
+
+.currency-item input {
+    width: 60px;
+    padding: 6px;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    text-align: center;
+    font-size: 1rem;
+}
+
+.inventory-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.inventory-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-light);
+    border: 1px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+}
+
+.inventory-item-name {
+    flex: 1;
+    color: var(--color-parchment);
+}
+
+.inventory-item-qty {
+    width: 50px;
+    padding: 4px;
+    background: var(--color-bg-dark);
+    border: 1px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    text-align: center;
+}
+
+.inventory-add-item {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.inventory-add-item input[type="text"] {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+}
+
+.inventory-add-item input[type="number"] {
+    width: 60px;
+    padding: 8px;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    text-align: center;
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+
+@media (max-width: 768px) {
+    .menu-options {
+        grid-template-columns: 1fr;
+    }
+
+    .room-menu-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .room-menu-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .menu-btn {
+        min-height: 100px;
+        padding: var(--spacing-lg);
+    }
+
+    .dice-quick-buttons {
+        gap: var(--spacing-xs);
+    }
+
+    .dice-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    .inventory-currency {
+        flex-wrap: wrap;
+    }
+}

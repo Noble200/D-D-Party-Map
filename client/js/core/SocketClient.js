@@ -10,6 +10,10 @@ class SocketClient {
         this.onUsersUpdated = null;
         this.onMapChanged = null;
         this.onActiveMapChanged = null;
+        this.onDiceRolled = null;
+        this.onCombatUpdated = null;
+        this.onCombatTurnChanged = null;
+        this.onGameStarted = null;
     }
 
     // Conectar al servidor
@@ -50,6 +54,38 @@ class SocketClient {
             console.log('Mapa activo cambiado:', data);
             if (this.onActiveMapChanged) {
                 this.onActiveMapChanged(data);
+            }
+        });
+
+        // Escuchar tiradas de dados
+        this.socket.on('dice-rolled', (data) => {
+            console.log('Dado tirado:', data);
+            if (this.onDiceRolled) {
+                this.onDiceRolled(data);
+            }
+        });
+
+        // Escuchar actualizaciones de combate
+        this.socket.on('combat-updated', (data) => {
+            console.log('Combate actualizado:', data);
+            if (this.onCombatUpdated) {
+                this.onCombatUpdated(data);
+            }
+        });
+
+        // Escuchar cambio de turno en combate
+        this.socket.on('combat-turn', (data) => {
+            console.log('Turno de combate:', data);
+            if (this.onCombatTurnChanged) {
+                this.onCombatTurnChanged(data);
+            }
+        });
+
+        // Escuchar inicio de partida
+        this.socket.on('game-started', (data) => {
+            console.log('Partida iniciada:', data);
+            if (this.onGameStarted) {
+                this.onGameStarted(data);
             }
         });
     }

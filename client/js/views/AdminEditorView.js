@@ -41,9 +41,9 @@ class AdminEditorView {
     }
 
     bindEvents() {
-        // Volver a la vista de admin (no al home)
+        // Volver al menu de sala
         document.getElementById('btnBackFromAdmin')?.addEventListener('click', () => {
-            screenManager.show('adminViewer');
+            screenManager.show('roomMenu');
         });
 
         // Copiar código

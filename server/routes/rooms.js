@@ -7,6 +7,8 @@ const router = express.Router();
 const roomController = require('../controllers/roomController');
 const characterController = require('../controllers/characterController');
 const mapController = require('../controllers/mapController');
+const npcController = require('../controllers/npcController');
+const gameController = require('../controllers/gameController');
 
 // Listar salas de un admin (por contraseña) - DEBE IR ANTES de :code
 router.post('/list', roomController.listRooms);
@@ -57,5 +59,64 @@ router.put('/:code/maps/:mapId/activate', mapController.activateMap);
 
 // Eliminar mapa (admin)
 router.delete('/:code/maps/:mapId', mapController.deleteMap);
+
+// ==========================================
+// Rutas de NPCs
+// ==========================================
+
+// Listar NPCs de la sala (admin)
+router.post('/:code/npcs/list', npcController.getNpcs);
+
+// Crear nuevo NPC (admin)
+router.post('/:code/npcs', npcController.createNpc);
+
+// Actualizar NPC (admin)
+router.put('/:code/npcs/:npcId', npcController.updateNpc);
+
+// Eliminar NPC (admin)
+router.delete('/:code/npcs/:npcId', npcController.deleteNpc);
+
+// ==========================================
+// Rutas de jugadores de sala
+// ==========================================
+
+// Listar jugadores de la sala (admin)
+router.post('/:code/players', npcController.getPlayers);
+
+// ==========================================
+// Rutas de notas de sesion
+// ==========================================
+
+// Listar notas (admin)
+router.post('/:code/notes/list', gameController.getSessionNotes);
+
+// Crear nota (admin)
+router.post('/:code/notes', gameController.createSessionNote);
+
+// Actualizar nota (admin)
+router.put('/:code/notes/:noteId', gameController.updateSessionNote);
+
+// Eliminar nota (admin)
+router.delete('/:code/notes/:noteId', gameController.deleteSessionNote);
+
+// ==========================================
+// Rutas de dados
+// ==========================================
+
+// Obtener historial de tiradas
+router.get('/:code/dice/history', gameController.getDiceRollHistory);
+
+// ==========================================
+// Rutas de tracker de combate
+// ==========================================
+
+// Obtener tracker de combate
+router.get('/:code/combat', gameController.getCombatTracker);
+
+// Actualizar tracker (admin)
+router.put('/:code/combat', gameController.updateCombatTracker);
+
+// Resetear tracker (admin)
+router.post('/:code/combat/reset', gameController.resetCombatTracker);
 
 module.exports = router;

@@ -177,12 +177,8 @@ class AdminViewerView {
     }
 
     leaveRoom() {
-        socketClient.leaveRoom();
-        this.app.currentRoom = null;
-        this.app.adminPassword = null;
-        this.app.isAdmin = false;
-        this.currentMapId = null;
-        screenManager.show('home');
+        // Volver al menu de sala, no al home
+        screenManager.show('roomMenu');
     }
 }
 

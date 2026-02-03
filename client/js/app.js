@@ -4,6 +4,7 @@
 
 import { screenManager } from './core/ScreenManager.js';
 import { HomeView } from './views/HomeView.js';
+import { RoomMenuView } from './views/RoomMenuView.js';
 import { AdminViewerView } from './views/AdminViewerView.js';
 import { AdminEditorView } from './views/AdminEditorView.js';
 import { PlayerView } from './views/PlayerView.js';
@@ -20,6 +21,7 @@ class DnDMapApp {
 
         // Vistas
         this.homeView = null;
+        this.roomMenuView = null;
         this.adminViewerView = null;
         this.adminEditorView = null;
         this.playerView = null;
@@ -34,6 +36,7 @@ class DnDMapApp {
     init() {
         // Inicializar vistas
         this.homeView = new HomeView(this);
+        this.roomMenuView = new RoomMenuView(this);
         this.adminViewerView = new AdminViewerView(this);
         this.adminEditorView = new AdminEditorView(this);
         this.playerView = new PlayerView(this);
@@ -53,6 +56,10 @@ class DnDMapApp {
     // Callback cuando cambia la pantalla
     onScreenChange(screenName) {
         switch (screenName) {
+            case 'roomMenu':
+                this.roomMenuView.init();
+                this.roomMenuView.show(this.currentRoom);
+                break;
             case 'adminViewer':
                 this.adminViewerView.init();
                 this.adminViewerView.show(this.currentRoom);
