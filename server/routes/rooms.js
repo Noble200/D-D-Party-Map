@@ -13,6 +13,9 @@ const gameController = require('../controllers/gameController');
 // Listar salas de un admin (por contraseña) - DEBE IR ANTES de :code
 router.post('/list', roomController.listRooms);
 
+// Listar salas activas (público)
+router.get('/active', roomController.listActiveRooms);
+
 // Crear nueva sala
 router.post('/', roomController.createRoom);
 

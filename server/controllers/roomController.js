@@ -98,10 +98,22 @@ async function listRooms(req, res) {
     }
 }
 
+// Listar salas activas (público)
+async function listActiveRooms(req, res) {
+    try {
+        const rooms = await db.listActiveRooms();
+        res.json({ success: true, rooms });
+    } catch (error) {
+        console.error('Error listando salas activas:', error);
+        res.status(500).json({ error: 'Error al listar salas' });
+    }
+}
+
 module.exports = {
     createRoom,
     verifyAdmin,
     getRoom,
     updateRoom,
-    listRooms
+    listRooms,
+    listActiveRooms
 };

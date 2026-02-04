@@ -56,6 +56,12 @@ class ApiClient {
         return response.json();
     }
 
+    // Listar salas activas (público)
+    async getActiveRooms() {
+        const response = await fetch(`${API_URL}/rooms/active`);
+        return response.json();
+    }
+
     // ==========================================
     // USUARIOS
     // ==========================================

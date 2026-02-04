@@ -233,6 +233,14 @@ async function listRoomsByAdmin(adminPassword) {
     return result.rows;
 }
 
+// Listar todas las salas activas (públicas, solo nombre y código)
+async function listActiveRooms() {
+    const result = await pool.query(
+        'SELECT code, name, created_at FROM rooms ORDER BY last_activity DESC LIMIT 50'
+    );
+    return result.rows;
+}
+
 // Actualizar última actividad de una sala (cuando alguien se conecta)
 async function updateRoomActivity(code) {
     await pool.query(
@@ -748,6 +756,7 @@ module.exports = {
     verifyAdminAccess,
     updateRoom,
     listRoomsByAdmin,
+    listActiveRooms,
     updateRoomActivity,
     cleanupInactiveRooms,
     // Usuarios
