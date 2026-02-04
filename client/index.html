@@ -518,16 +518,20 @@
          ========================================== -->
     <div id="adminViewerScreen" class="screen">
         <div class="user-container">
-            <!-- Barra superior con controles de admin -->
-            <header class="user-header admin-viewer-header">
+            <!-- Barra superior compacta -->
+            <header class="user-header user-header-compact admin-viewer-header">
                 <button id="btnBackFromAdminViewer" class="btn btn-small">Salir</button>
                 <h2 id="adminViewerRoomName">Sala</h2>
-                <span id="adminViewerRoomCode" class="room-code-badge">CODIGO</span>
 
-                <div class="admin-actions">
-                    <button id="btnCopyCodeViewer" class="btn btn-small">Copiar Código</button>
-                    <button id="btnChangeMap" class="btn btn-small">Cambiar Mapa</button>
-                    <button id="btnEditMap" class="btn btn-small btn-primary">Editar Mapa</button>
+                <!-- Menu hamburguesa para admin -->
+                <div class="header-menu">
+                    <button id="btnAdminMenu" class="btn-menu" aria-label="Menu">
+                        <span class="menu-icon"></span>
+                    </button>
+                    <div id="adminMenuDropdown" class="menu-dropdown hidden">
+                        <button id="btnChangeMap" class="menu-item">Cambiar Mapa</button>
+                        <button id="btnEditMap" class="menu-item">Editar Mapa</button>
+                    </div>
                 </div>
             </header>
 
@@ -667,11 +671,10 @@
          ========================================== -->
     <div id="playerScreen" class="screen">
         <div class="user-container">
-            <!-- Barra superior mínima -->
-            <header class="user-header">
+            <!-- Barra superior compacta -->
+            <header class="user-header user-header-compact">
                 <button id="btnBackFromPlayer" class="btn btn-small">Salir</button>
                 <h2 id="playerRoomName">Sala</h2>
-                <span id="playerRoomCode" class="room-code-badge">CODIGO</span>
                 <button id="btnCharacterSheet" class="btn btn-character">
                     Ficha de Personaje
                     <span id="characterIncomplete" class="incomplete-indicator"></span>

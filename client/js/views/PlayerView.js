@@ -47,7 +47,6 @@ class PlayerView {
         if (!room) return;
 
         document.getElementById('playerRoomName').textContent = room.name;
-        document.getElementById('playerRoomCode').textContent = room.code;
 
         // Conectar al socket con datos de usuario
         socketClient.onUsersUpdated = (users) => this.updateUsersUI(users);

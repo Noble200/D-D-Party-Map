@@ -7,7 +7,7 @@ import { MapEditor } from '../core/MapEditor.js';
 import { apiClient } from '../core/ApiClient.js';
 import { socketClient } from '../core/SocketClient.js';
 import { screenManager } from '../core/ScreenManager.js';
-import { showNotification, copyToClipboard } from '../utils/helpers.js';
+import { showNotification } from '../utils/helpers.js';
 
 class AdminViewerView {
     constructor(app) {
@@ -31,19 +31,29 @@ class AdminViewerView {
             this.leaveRoom();
         });
 
-        // Botón copiar código
-        document.getElementById('btnCopyCodeViewer')?.addEventListener('click', () => {
-            copyToClipboard(this.app.currentRoom.code);
-            showNotification('Código copiado', 'success');
+        // Menu hamburguesa
+        const menuBtn = document.getElementById('btnAdminMenu');
+        const menuDropdown = document.getElementById('adminMenuDropdown');
+
+        menuBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuDropdown?.classList.toggle('hidden');
+        });
+
+        // Cerrar menu al hacer click fuera
+        document.addEventListener('click', () => {
+            menuDropdown?.classList.add('hidden');
         });
 
         // Botón cambiar mapa
         document.getElementById('btnChangeMap')?.addEventListener('click', () => {
+            menuDropdown?.classList.add('hidden');
             this.openMapSelector();
         });
 
         // Botón editar mapa
         document.getElementById('btnEditMap')?.addEventListener('click', () => {
+            menuDropdown?.classList.add('hidden');
             this.goToEditor();
         });
 
@@ -56,9 +66,8 @@ class AdminViewerView {
     }
 
     async show(room) {
-        // Mostrar info de sala
+        // Mostrar nombre de sala
         document.getElementById('adminViewerRoomName').textContent = room.name;
-        document.getElementById('adminViewerRoomCode').textContent = room.code;
 
         // Cargar mapa activo
         await this.loadActiveMap();
