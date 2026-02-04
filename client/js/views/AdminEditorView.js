@@ -7,7 +7,7 @@ import { screenManager } from '../core/ScreenManager.js';
 import { apiClient } from '../core/ApiClient.js';
 import { socketClient } from '../core/SocketClient.js';
 import { DEFAULT_DISTANCE_CONFIG } from '../config.js';
-import { showNotification, copyToClipboard } from '../utils/helpers.js';
+import { showNotification } from '../utils/helpers.js';
 
 class AdminEditorView {
     constructor(app) {
@@ -44,14 +44,6 @@ class AdminEditorView {
         // Volver al menu de sala
         document.getElementById('btnBackFromAdmin')?.addEventListener('click', () => {
             screenManager.show('roomMenu');
-        });
-
-        // Copiar código
-        document.getElementById('btnCopyCode')?.addEventListener('click', async () => {
-            const code = document.getElementById('adminRoomCode')?.textContent;
-            if (code && await copyToClipboard(code)) {
-                showNotification('Código copiado', 'success');
-            }
         });
 
         // Guardar cambios
@@ -132,9 +124,6 @@ class AdminEditorView {
     // Mostrar vista con datos de la sala y mapa
     async show(room, mapId = null) {
         if (!room) return;
-
-        document.getElementById('adminRoomName').textContent = room.name;
-        document.getElementById('adminRoomCode').textContent = room.code;
 
         // Si se especifica un mapId, cargar ese mapa
         if (mapId) {
@@ -229,63 +218,7 @@ class AdminEditorView {
 
     // Actualizar UI con datos de la sala (compatibilidad)
     updateUI() {
-        const room = this.app.currentRoom;
-        if (!room) return;
-
-        document.getElementById('adminRoomName').textContent = room.name;
-        document.getElementById('adminRoomCode').textContent = room.code;
-
-        // Conectar al socket y unirse a la sala
-        socketClient.onUsersUpdated = (users) => this.updateUsersUI(users);
-        socketClient.joinRoom(room.code, 'admin');
-    }
-
-    // Actualizar HUD de usuarios conectados
-    updateUsersUI(users) {
-        const countEl = document.getElementById('usersHudCount');
-        const listEl = document.getElementById('usersHudList');
-
-        if (countEl) countEl.textContent = users.total || 0;
-
-        if (listEl) {
-            let html = '';
-
-            // Mostrar admins
-            if (users.admins?.length > 0) {
-                html += '<div class="users-hud-group">';
-                html += '<span class="users-hud-group-label">Admin</span>';
-                users.admins.forEach(admin => {
-                    const name = typeof admin === 'object' ? admin.name : admin;
-                    html += `<div class="users-hud-item"><span class="users-hud-dot admin"></span><span class="users-hud-name">${this.escapeHtml(name)}</span></div>`;
-                });
-                html += '</div>';
-            }
-
-            // Mostrar jugadores
-            if (users.players?.length > 0) {
-                html += '<div class="users-hud-group">';
-                html += '<span class="users-hud-group-label">Jugadores</span>';
-                users.players.forEach(player => {
-                    const name = typeof player === 'object' ? player.name : player;
-                    const charName = typeof player === 'object' ? player.characterName : null;
-                    const displayName = charName ? `${charName} (${name})` : name;
-                    html += `<div class="users-hud-item"><span class="users-hud-dot"></span><span class="users-hud-name">${this.escapeHtml(displayName)}</span></div>`;
-                });
-                html += '</div>';
-            }
-
-            if (!html) {
-                html = '<div class="users-hud-empty">Sin usuarios</div>';
-            }
-
-            listEl.innerHTML = html;
-        }
-    }
-
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text || '';
-        return div.innerHTML;
+        // Ya no muestra info de sala en el editor
     }
 
     // Cargar datos de la sala en el editor (compatibilidad)
