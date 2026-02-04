@@ -158,10 +158,14 @@ class AdminEditorView {
                     this.currentMapId = map.id;
                     this.currentMapName = map.name;
                     this.loadMapData(map);
+                } else {
+                    // Mapa no encontrado, limpiar editor
+                    this.clearEditor();
                 }
             }
         } catch (error) {
             console.error('Error al cargar mapa:', error);
+            this.clearEditor();
         }
     }
 
@@ -175,18 +179,42 @@ class AdminEditorView {
                 this.currentMapName = result.map.name;
                 this.loadMapData(result.map);
             } else {
-                // No hay mapa activo, crear uno nuevo al guardar
+                // No hay mapa activo, limpiar editor
                 this.currentMapId = null;
                 this.currentMapName = 'Mapa Principal';
+                this.clearEditor();
             }
         } catch (error) {
             console.error('Error al cargar mapa activo:', error);
+            this.clearEditor();
         }
+    }
+
+    // Limpiar el editor a estado vacío
+    clearEditor() {
+        if (!this.editor) return;
+
+        this.editor.image = null;
+        this.editor.imageTransform = { x: 0, y: 0, scale: 1, rotation: 0 };
+        this.editor.gridConfig = {
+            size: 50,
+            opacity: 0.5,
+            color: '#ffffff',
+            lineWidth: 1,
+            visible: true,
+            offsetX: 0,
+            offsetY: 0
+        };
+        this.editor.distanceConfig = { ...DEFAULT_DISTANCE_CONFIG };
+        this.editor.render();
     }
 
     // Cargar datos del mapa en el editor
     loadMapData(mapData) {
         if (!this.editor) return;
+
+        // Siempre limpiar primero para evitar datos residuales
+        this.clearEditor();
 
         if (mapData.imageData) {
             this.editor.loadImageFromData(mapData.imageData);
