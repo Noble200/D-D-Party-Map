@@ -93,66 +93,72 @@
         <div class="room-menu-container">
             <header class="room-menu-header">
                 <button id="btnExitRoom" class="btn btn-small">Salir</button>
-                <div class="room-menu-info">
-                    <h1 id="roomMenuName">Nombre de la Sala</h1>
-                    <span id="roomMenuCode" class="room-code-badge">CODIGO</span>
+                <h1 id="roomMenuName">Nombre de la Sala</h1>
+                <div class="room-code-section">
+                    <span id="roomMenuCode" class="room-code-text">CODIGO</span>
+                    <button id="btnCopyRoomCode" class="btn btn-small btn-copy">Copiar</button>
                 </div>
             </header>
 
             <main class="room-menu-content">
-                <!-- Mensaje de estado de partida -->
+                <!-- Mensaje de estado de partida (para jugadores) -->
                 <div id="gameStatusMessage" class="game-status-message hidden">
                     <p>Esperando a que el DM inicie la partida...</p>
                 </div>
 
-                <!-- Menu de opciones -->
-                <div class="room-menu-grid">
-                    <!-- Opciones de Admin -->
-                    <div id="adminMenuOptions" class="menu-options admin-options hidden">
-                        <button id="btnManageMaps" class="menu-btn">
-                            <span class="menu-btn-title">Mapas</span>
-                            <span class="menu-btn-desc">Crear y gestionar mapas</span>
-                        </button>
-                        <button id="btnManageNpcs" class="menu-btn">
-                            <span class="menu-btn-title">NPCs</span>
-                            <span class="menu-btn-desc">Crear personajes no jugadores</span>
-                        </button>
-                        <button id="btnStartGame" class="menu-btn menu-btn-primary">
-                            <span class="menu-btn-title">Iniciar Partida</span>
-                            <span class="menu-btn-desc">Comenzar sesion de juego</span>
-                        </button>
-                        <button id="btnViewPlayers" class="menu-btn">
-                            <span class="menu-btn-title">Jugadores</span>
-                            <span class="menu-btn-desc">Ver lista de jugadores</span>
-                        </button>
-                        <button id="btnSessionNotes" class="menu-btn">
-                            <span class="menu-btn-title">Notas</span>
-                            <span class="menu-btn-desc">Notas de la sesion</span>
-                        </button>
+                <!-- Layout de dos columnas: opciones y usuarios -->
+                <div class="room-menu-layout">
+                    <!-- Columna izquierda: Menu de opciones -->
+                    <div class="room-menu-options-column">
+                        <!-- Opciones de Admin -->
+                        <div id="adminMenuOptions" class="menu-options admin-options hidden">
+                            <button id="btnManageMaps" class="menu-btn">
+                                <span class="menu-btn-title">Mapas</span>
+                                <span class="menu-btn-desc">Crear y gestionar mapas</span>
+                            </button>
+                            <button id="btnManageNpcs" class="menu-btn">
+                                <span class="menu-btn-title">NPCs</span>
+                                <span class="menu-btn-desc">Crear personajes no jugadores</span>
+                            </button>
+                            <button id="btnStartGame" class="menu-btn menu-btn-primary">
+                                <span class="menu-btn-title">Iniciar Partida</span>
+                                <span class="menu-btn-desc">Comenzar sesion de juego</span>
+                            </button>
+                            <button id="btnViewPlayers" class="menu-btn">
+                                <span class="menu-btn-title">Jugadores</span>
+                                <span class="menu-btn-desc">Ver lista de jugadores</span>
+                            </button>
+                            <button id="btnSessionNotes" class="menu-btn">
+                                <span class="menu-btn-title">Notas</span>
+                                <span class="menu-btn-desc">Notas de la sesion</span>
+                            </button>
+                        </div>
+
+                        <!-- Opciones de Jugador -->
+                        <div id="playerMenuOptions" class="menu-options player-options hidden">
+                            <button id="btnEditCharacter" class="menu-btn menu-btn-primary">
+                                <span class="menu-btn-title">Mi Personaje</span>
+                                <span class="menu-btn-desc">Editar ficha de personaje</span>
+                            </button>
+                            <button id="btnPlayerDice" class="menu-btn">
+                                <span class="menu-btn-title">Dados</span>
+                                <span class="menu-btn-desc">Tirar dados</span>
+                            </button>
+                            <button id="btnPlayerInventory" class="menu-btn">
+                                <span class="menu-btn-title">Inventario</span>
+                                <span class="menu-btn-desc">Mis objetos</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Opciones de Jugador -->
-                    <div id="playerMenuOptions" class="menu-options player-options hidden">
-                        <button id="btnEditCharacter" class="menu-btn menu-btn-primary">
-                            <span class="menu-btn-title">Mi Personaje</span>
-                            <span class="menu-btn-desc">Editar ficha de personaje</span>
-                        </button>
-                        <button id="btnPlayerDice" class="menu-btn">
-                            <span class="menu-btn-title">Dados</span>
-                            <span class="menu-btn-desc">Tirar dados</span>
-                        </button>
-                        <button id="btnPlayerInventory" class="menu-btn">
-                            <span class="menu-btn-title">Inventario</span>
-                            <span class="menu-btn-desc">Mis objetos</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Lista de usuarios conectados -->
-                <div class="room-menu-users">
-                    <h3>Conectados (<span id="roomMenuUsersCount">0</span>)</h3>
-                    <div id="roomMenuUsersList" class="users-list">
-                        <!-- Lista dinamica -->
+                    <!-- Columna derecha: Usuarios conectados -->
+                    <div class="room-menu-users-column">
+                        <div class="room-menu-users">
+                            <h3>Conectados (<span id="roomMenuUsersCount">0</span>)</h3>
+                            <div id="roomMenuUsersList" class="users-list">
+                                <!-- Lista dinamica -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>

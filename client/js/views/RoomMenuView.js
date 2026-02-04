@@ -76,6 +76,19 @@ class RoomMenuView {
             this.exitRoom();
         });
 
+        // Boton copiar codigo
+        document.getElementById('btnCopyRoomCode')?.addEventListener('click', async () => {
+            const code = document.getElementById('roomMenuCode')?.textContent;
+            if (code) {
+                try {
+                    await navigator.clipboard.writeText(code);
+                    showNotification('Codigo copiado', 'success');
+                } catch (err) {
+                    showNotification('Error al copiar', 'error');
+                }
+            }
+        });
+
         // === Botones de Admin ===
         document.getElementById('btnManageMaps')?.addEventListener('click', () => {
             this.openMapsManager();

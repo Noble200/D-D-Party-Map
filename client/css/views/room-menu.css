@@ -15,6 +15,7 @@
 .room-menu-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--spacing-lg);
     padding: var(--spacing-lg) var(--spacing-xl);
     background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
@@ -32,17 +33,37 @@
     background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
 }
 
-.room-menu-info {
+.room-menu-header h1 {
     flex: 1;
     text-align: center;
-}
-
-.room-menu-info h1 {
     font-family: var(--font-display);
     font-size: 2rem;
     color: var(--color-gold);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: 5px;
+    margin: 0;
+}
+
+/* Seccion del codigo de sala */
+.room-code-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.room-code-text {
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    color: var(--color-gold);
+    letter-spacing: 3px;
+    padding: 8px 16px;
+    background: var(--color-bg-light);
+    border: 2px solid var(--color-gold-dark);
+    border-radius: var(--radius-sm);
+}
+
+.btn-copy {
+    padding: 8px 12px;
+    font-size: 0.75rem;
 }
 
 /* Content */
@@ -50,9 +71,30 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: var(--spacing-xl);
     overflow-y: auto;
+}
+
+/* Layout de dos columnas */
+.room-menu-layout {
+    display: flex;
+    gap: var(--spacing-xl);
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Columna de opciones (izquierda) */
+.room-menu-options-column {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Columna de usuarios (derecha) */
+.room-menu-users-column {
+    width: 300px;
+    flex-shrink: 0;
 }
 
 /* Game status message */
@@ -75,13 +117,7 @@
     display: none;
 }
 
-/* Menu grid */
-.room-menu-grid {
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: var(--spacing-xl);
-}
-
+/* Menu options */
 .menu-options {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -148,7 +184,7 @@
 /* Users section */
 .room-menu-users {
     width: 100%;
-    max-width: 600px;
+    height: 100%;
     background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
     border: 2px solid var(--border-ornate);
     border-radius: var(--radius-lg);
@@ -887,18 +923,41 @@
    Responsive
    ========================================== */
 
+@media (max-width: 900px) {
+    .room-menu-layout {
+        flex-direction: column;
+    }
+
+    .room-menu-users-column {
+        width: 100%;
+        order: -1;
+    }
+
+    .room-menu-users {
+        max-height: 200px;
+    }
+}
+
 @media (max-width: 768px) {
     .menu-options {
         grid-template-columns: 1fr;
     }
 
     .room-menu-header {
-        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--spacing-md);
+    }
+
+    .room-menu-header h1 {
+        font-size: 1.5rem;
+        order: -1;
+        width: 100%;
         text-align: center;
     }
 
-    .room-menu-info h1 {
-        font-size: 1.5rem;
+    .room-code-section {
+        order: 1;
     }
 
     .menu-btn {
