@@ -390,17 +390,28 @@ function calculateCompletion(data) {
 
 // Crear nuevo mapa
 async function createMap(roomCode, name, imageData = null, imageTransform = null, gridConfig = null, distanceConfig = null) {
+    const code = roomCode.toUpperCase();
+
+    // Primero obtener el siguiente display_order
+    const orderResult = await pool.query(
+        'SELECT COALESCE(MAX(display_order), 0) + 1 as next_order FROM maps WHERE room_code = $1',
+        [code]
+    );
+    const nextOrder = orderResult.rows[0].next_order;
+
+    // Insertar el mapa
     const result = await pool.query(
         `INSERT INTO maps (room_code, name, image_data, image_transform, grid_config, distance_config, is_active, display_order)
-         VALUES ($1, $2, $3, COALESCE($4, '{"x": 0, "y": 0, "scale": 1, "rotation": 0}'::jsonb),
-                 COALESCE($5, '{"size": 50, "opacity": 0.5, "color": "#ffffff", "lineWidth": 1, "visible": true, "offsetX": 0, "offsetY": 0}'::jsonb),
-                 COALESCE($6, '{"squareSize": 5, "unit": "feet"}'::jsonb),
-                 false, (SELECT COALESCE(MAX(display_order), 0) + 1 FROM maps WHERE room_code = $1))
+         VALUES ($1::varchar(10), $2, $3, COALESCE($4::jsonb, '{"x": 0, "y": 0, "scale": 1, "rotation": 0}'::jsonb),
+                 COALESCE($5::jsonb, '{"size": 50, "opacity": 0.5, "color": "#ffffff", "lineWidth": 1, "visible": true, "offsetX": 0, "offsetY": 0}'::jsonb),
+                 COALESCE($6::jsonb, '{"squareSize": 5, "unit": "feet"}'::jsonb),
+                 false, $7)
          RETURNING *`,
-        [roomCode.toUpperCase(), name, imageData,
+        [code, name, imageData,
          imageTransform ? JSON.stringify(imageTransform) : null,
          gridConfig ? JSON.stringify(gridConfig) : null,
-         distanceConfig ? JSON.stringify(distanceConfig) : null]
+         distanceConfig ? JSON.stringify(distanceConfig) : null,
+         nextOrder]
     );
     return result.rows[0];
 }

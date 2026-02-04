@@ -85,17 +85,22 @@ async function createMap(req, res) {
         const { code } = req.params;
         const { adminPassword, name, imageData, imageTransform, gridConfig, distanceConfig } = req.body;
 
+        console.log('Creando mapa - code:', code, 'name:', name, 'hasPassword:', !!adminPassword);
+
         if (!adminPassword || !name) {
+            console.log('Faltan datos: adminPassword:', !!adminPassword, 'name:', !!name);
             return res.status(400).json({ error: 'Se requiere adminPassword y name' });
         }
 
         // Verificar acceso de admin
         const room = await db.verifyAdminAccess(code, adminPassword);
+        console.log('Verificacion admin:', !!room);
         if (!room) {
             return res.status(403).json({ error: 'Acceso denegado' });
         }
 
         const map = await db.createMap(code, name, imageData, imageTransform, gridConfig, distanceConfig);
+        console.log('Mapa creado:', map?.id);
 
         res.json({
             success: true,
@@ -113,8 +118,9 @@ async function createMap(req, res) {
             }
         });
     } catch (error) {
-        console.error('Error al crear mapa:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        console.error('Error al crear mapa:', error.message);
+        console.error('Stack:', error.stack);
+        res.status(500).json({ error: 'Error interno del servidor', details: error.message });
     }
 }
 
