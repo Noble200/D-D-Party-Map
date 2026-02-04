@@ -322,13 +322,17 @@ export class MapEditor {
         this.ctx.lineWidth = lineWidth;
         this.ctx.globalAlpha = opacity;
 
-        // Tamaño de celda fijo en el canvas (no cambia con zoom)
-        // La cuadrícula se dibuja con tamaño fijo sobre todo el canvas
-        const cellSize = size;
+        // La cuadrícula escala con la imagen para que todos vean las mismas distancias
+        // El tamaño de celda se multiplica por la escala de la imagen
+        const cellSize = size * this.imageTransform.scale;
 
-        // Calcular offset para alinear con la posición deseada
-        const startX = ((offsetX % cellSize) + cellSize) % cellSize;
-        const startY = ((offsetY % cellSize) + cellSize) % cellSize;
+        // Calcular offset considerando la posición de la imagen y el offset configurado
+        const baseX = this.imageTransform.x + (offsetX * this.imageTransform.scale);
+        const baseY = this.imageTransform.y + (offsetY * this.imageTransform.scale);
+
+        // Calcular el inicio de la cuadrícula para que se alinee con la imagen
+        const startX = baseX % cellSize;
+        const startY = baseY % cellSize;
 
         this.ctx.beginPath();
 
@@ -337,9 +341,19 @@ export class MapEditor {
             this.ctx.moveTo(x, 0);
             this.ctx.lineTo(x, this.canvas.height);
         }
+        // Líneas hacia la izquierda si es necesario
+        for (let x = startX - cellSize; x >= 0; x -= cellSize) {
+            this.ctx.moveTo(x, 0);
+            this.ctx.lineTo(x, this.canvas.height);
+        }
 
         // Líneas horizontales
         for (let y = startY; y <= this.canvas.height; y += cellSize) {
+            this.ctx.moveTo(0, y);
+            this.ctx.lineTo(this.canvas.width, y);
+        }
+        // Líneas hacia arriba si es necesario
+        for (let y = startY - cellSize; y >= 0; y -= cellSize) {
             this.ctx.moveTo(0, y);
             this.ctx.lineTo(this.canvas.width, y);
         }

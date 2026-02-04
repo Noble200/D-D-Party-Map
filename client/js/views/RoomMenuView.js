@@ -489,8 +489,10 @@ class RoomMenuView {
             if (result.success) {
                 showNotification('Mapa creado', 'success');
                 this.hideModal('mapForm');
-                await this.loadMaps();
-                this.renderMapsList();
+                this.hideModal('mapsManager');
+                // Navegar directamente al editor con el nuevo mapa
+                this.app.adminEditorView.currentMapId = result.map.id;
+                screenManager.show('adminEditor');
             } else {
                 showNotification(result.error || 'Error al crear mapa', 'error');
             }

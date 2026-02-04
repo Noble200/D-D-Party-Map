@@ -129,14 +129,6 @@
                             <span class="menu-btn-title">Notas</span>
                             <span class="menu-btn-desc">Notas de la sesion</span>
                         </button>
-                        <button id="btnDiceRoller" class="menu-btn">
-                            <span class="menu-btn-title">Dados</span>
-                            <span class="menu-btn-desc">Tirar dados</span>
-                        </button>
-                        <button id="btnCombatTracker" class="menu-btn">
-                            <span class="menu-btn-title">Combate</span>
-                            <span class="menu-btn-desc">Tracker de iniciativa</span>
-                        </button>
                     </div>
 
                     <!-- Opciones de Jugador -->
@@ -562,12 +554,18 @@
                     <h2>Editor</h2>
                 </div>
 
-                <!-- Info de sala -->
+                <!-- Info de sala y mapa -->
                 <section class="tool-section room-info">
                     <h3>Sala: <span id="adminRoomName">-</span></h3>
                     <p class="room-code">Código: <strong id="adminRoomCode">-</strong></p>
                     <button id="btnCopyCode" class="btn btn-small">Copiar Código</button>
-                    <button id="btnSaveRoom" class="btn btn-primary">Guardar Cambios</button>
+                </section>
+
+                <!-- Guardar mapa -->
+                <section class="tool-section save-section">
+                    <h3>Mapa Actual</h3>
+                    <input type="text" id="mapNameEditor" class="map-name-input" placeholder="Nombre del mapa">
+                    <button id="btnSaveRoom" class="btn btn-save-map">Guardar Mapa</button>
                 </section>
 
                 
@@ -596,8 +594,9 @@
                 <section class="tool-section">
                     <h3>Cuadrícula</h3>
                     <div class="control-group">
-                        <label for="gridSize">Tamaño de celda: <span id="gridSizeValue">50</span>px</label>
+                        <label for="gridSize">Tamaño base de celda: <span id="gridSizeValue">50</span>px</label>
                         <input type="range" id="gridSize" min="20" max="150" value="50">
+                        <small class="control-hint">La cuadrícula escala con el mapa</small>
                     </div>
                     <div class="control-group">
                         <label for="gridOpacity">Opacidad: <span id="gridOpacityValue">50</span>%</label>

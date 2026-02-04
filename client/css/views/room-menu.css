@@ -63,7 +63,6 @@
     padding: var(--spacing-lg) var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
     text-align: center;
-    animation: magicPulse 3s infinite;
 }
 
 .game-status-message p {

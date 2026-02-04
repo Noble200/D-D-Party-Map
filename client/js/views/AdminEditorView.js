@@ -59,6 +59,11 @@ class AdminEditorView {
             this.saveMap();
         });
 
+        // Actualizar nombre del mapa cuando cambia el input
+        document.getElementById('mapNameEditor')?.addEventListener('change', (e) => {
+            this.currentMapName = e.target.value.trim() || 'Mapa Principal';
+        });
+
         // Cargar imagen
         document.getElementById('imageInput')?.addEventListener('change', (e) => {
             this.editor?.loadImage(e);
@@ -142,6 +147,15 @@ class AdminEditorView {
         this.updateImageControls();
         this.updateGridControls();
         this.updateDistanceControls();
+        this.updateMapNameUI();
+    }
+
+    // Actualizar nombre del mapa en la UI
+    updateMapNameUI() {
+        const mapNameInput = document.getElementById('mapNameEditor');
+        if (mapNameInput) {
+            mapNameInput.value = this.currentMapName || 'Mapa Principal';
+        }
     }
 
     // Cargar un mapa específico
@@ -372,6 +386,12 @@ class AdminEditorView {
             return;
         }
 
+        // Obtener nombre del mapa desde el input
+        const mapNameInput = document.getElementById('mapNameEditor');
+        if (mapNameInput && mapNameInput.value.trim()) {
+            this.currentMapName = mapNameInput.value.trim();
+        }
+
         try {
             const state = this.editor.getState();
             let result;
@@ -383,6 +403,7 @@ class AdminEditorView {
                     this.currentMapId,
                     password,
                     {
+                        name: this.currentMapName,
                         imageData: state.imageData,
                         imageTransform: state.imageTransform,
                         gridConfig: state.gridConfig,
