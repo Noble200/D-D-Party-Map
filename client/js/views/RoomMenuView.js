@@ -108,7 +108,7 @@ class RoomMenuView {
 
         // === Boton de Jugador ===
         document.getElementById('btnEditCharacter')?.addEventListener('click', () => {
-            this.app.characterSheet?.open();
+            this.app.characterSheet?.show();
         });
 
         // === Modal Gestion de Mapas ===
