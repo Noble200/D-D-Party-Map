@@ -747,6 +747,55 @@ async function migrateRoomMapsData() {
     }
 }
 
+// ==========================================
+// FUNCIONES DE ADMIN
+// ==========================================
+
+// Obtener todas las salas con detalles completos
+async function adminGetAllRooms() {
+    const result = await pool.query(`
+        SELECT
+            r.code, r.name, r.created_at, r.updated_at, r.last_activity,
+            (SELECT COUNT(*) FROM maps WHERE room_code = r.code) as maps_count,
+            (SELECT COUNT(*) FROM characters WHERE room_code = r.code) as characters_count
+        FROM rooms r
+        ORDER BY r.last_activity DESC
+    `);
+    return result.rows;
+}
+
+// Eliminar sala por código (admin)
+async function adminDeleteRoom(code) {
+    const result = await pool.query(
+        'DELETE FROM rooms WHERE code = $1 RETURNING code, name',
+        [code.toUpperCase()]
+    );
+    return result.rows[0] || null;
+}
+
+// Obtener estadísticas generales
+async function adminGetStats() {
+    const stats = await pool.query(`
+        SELECT
+            (SELECT COUNT(*) FROM rooms) as total_rooms,
+            (SELECT COUNT(*) FROM users) as total_users,
+            (SELECT COUNT(*) FROM maps) as total_maps,
+            (SELECT COUNT(*) FROM characters) as total_characters,
+            (SELECT COUNT(*) FROM rooms WHERE last_activity > NOW() - INTERVAL '24 hours') as active_rooms_24h,
+            (SELECT COUNT(*) FROM rooms WHERE last_activity > NOW() - INTERVAL '7 days') as active_rooms_7d
+    `);
+    return stats.rows[0];
+}
+
+// Eliminar múltiples salas
+async function adminDeleteMultipleRooms(codes) {
+    const result = await pool.query(
+        'DELETE FROM rooms WHERE code = ANY($1) RETURNING code, name',
+        [codes.map(c => c.toUpperCase())]
+    );
+    return result.rows;
+}
+
 module.exports = {
     pool,
     initDB,
@@ -795,5 +844,10 @@ module.exports = {
     // Tracker de combate
     getCombatTracker,
     updateCombatTracker,
-    resetCombatTracker
+    resetCombatTracker,
+    // Admin
+    adminGetAllRooms,
+    adminDeleteRoom,
+    adminGetStats,
+    adminDeleteMultipleRooms
 };

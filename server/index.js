@@ -13,6 +13,8 @@ const { Server } = require('socket.io');
 const { initDB, migrateRoomMapsData, updateRoomActivity, cleanupInactiveRooms, saveDiceRoll } = require('./db/database');
 const roomRoutes = require('./routes/rooms');
 const userRoutes = require('./routes/users');
+const adminRoutes = require('./routes/admin');
+const { ipRestriction } = require('./middleware/ipRestriction');
 
 const app = express();
 const server = http.createServer(app);
@@ -35,12 +37,18 @@ app.use(express.json({ limit: '50mb' }));
 
 app.use('/api/rooms', roomRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/admin', adminRoutes);
 
 // ==========================================
 // ARCHIVOS ESTÁTICOS (después de API)
 // ==========================================
 
 app.use(express.static(path.join(__dirname, '../client')));
+
+// Ruta protegida para panel de admin (restricción por IP)
+app.get('/admin-panel', ipRestriction, (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/admin-panel.html'));
+});
 
 // Ruta catch-all para SPA
 app.get('*', (req, res) => {

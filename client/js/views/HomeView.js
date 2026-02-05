@@ -12,12 +12,10 @@ class HomeView {
         this.app = app;
         this.modals = {
             createRoom: document.getElementById('createRoomModal'),
-            accessAdmin: document.getElementById('accessAdminModal'),
-            accessRoomList: document.getElementById('accessRoomListModal')
+            accessAdmin: document.getElementById('accessAdminModal')
         };
         this.bindEvents();
         this.restorePlayerName();
-        this.loadActiveRooms();
     }
 
     // Restaurar nombre guardado del jugador
@@ -66,14 +64,6 @@ class HomeView {
         });
         document.getElementById('btnConfirmAccess')?.addEventListener('click', () => {
             this.accessAsAdmin();
-        });
-
-        // Modal acceder desde lista de salas
-        document.getElementById('btnCancelAccessList')?.addEventListener('click', () => {
-            this.hideModal('accessRoomList');
-        });
-        document.getElementById('btnConfirmAccessList')?.addEventListener('click', () => {
-            this.accessFromRoomList();
         });
 
         // Cerrar modales con click fuera
@@ -151,83 +141,6 @@ class HomeView {
                 document.getElementById('accessAdminPassword').value = '';
             } else {
                 showNotification(data.error, 'error');
-            }
-        } catch (error) {
-            showNotification('Error de conexión con el servidor', 'error');
-            console.error(error);
-        }
-    }
-
-    // Cargar salas activas
-    async loadActiveRooms() {
-        const container = document.getElementById('activeRoomsList');
-        if (!container) return;
-
-        try {
-            const data = await apiClient.getActiveRooms();
-
-            if (data.success && data.rooms.length > 0) {
-                container.innerHTML = data.rooms.map(room => `
-                    <div class="room-card" data-code="${room.code}" data-name="${room.name}">
-                        <div class="room-card-name">${room.name}</div>
-                        <div class="room-card-date">${this.formatDate(room.created_at)}</div>
-                    </div>
-                `).join('');
-
-                // Añadir eventos de clic a cada tarjeta
-                container.querySelectorAll('.room-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const code = card.dataset.code;
-                        const name = card.dataset.name;
-                        this.showAccessRoomListModal(code, name);
-                    });
-                });
-            } else {
-                container.innerHTML = '<p class="no-rooms">No hay salas activas</p>';
-            }
-        } catch (error) {
-            console.error('Error cargando salas activas:', error);
-            container.innerHTML = '<p class="no-rooms">Error al cargar salas</p>';
-        }
-    }
-
-    // Formatear fecha
-    formatDate(dateStr) {
-        const date = new Date(dateStr);
-        return date.toLocaleDateString('es-ES', {
-            day: 'numeric',
-            month: 'short'
-        });
-    }
-
-    // Mostrar modal de acceso desde lista
-    showAccessRoomListModal(code, name) {
-        document.getElementById('accessRoomListCode').value = code;
-        document.getElementById('accessRoomListName').textContent = name;
-        document.getElementById('accessRoomListPassword').value = '';
-        this.showModal('accessRoomList');
-    }
-
-    // Acceder desde la lista de salas
-    async accessFromRoomList() {
-        const code = document.getElementById('accessRoomListCode').value;
-        const password = document.getElementById('accessRoomListPassword').value;
-
-        if (!password) {
-            showNotification('Ingresa la contraseña', 'error');
-            return;
-        }
-
-        try {
-            const data = await apiClient.verifyAdmin(code, password);
-
-            if (data.success) {
-                this.app.setRoom(data.room, password, true);
-                this.hideModal('accessRoomList');
-                screenManager.show('roomMenu');
-                showNotification('Acceso concedido', 'success');
-            } else {
-                showNotification(data.error || 'Contraseña incorrecta', 'error');
             }
         } catch (error) {
             showNotification('Error de conexión con el servidor', 'error');
