@@ -712,22 +712,65 @@ class RoomMenuView {
         if (!container) return;
 
         if (players.length === 0) {
-            container.innerHTML = '<div class="empty-list">No hay jugadores registrados</div>';
+            container.innerHTML = '<div class="empty-list">No hay personajes registrados</div>';
             return;
         }
 
-        container.innerHTML = players.map(player => `
-            <div class="player-card">
-                <div class="player-info">
-                    <h4>${player.characterName || 'Sin personaje'}</h4>
-                    <span class="player-real-name">${player.playerName || 'Desconocido'}</span>
+        // Helper para obtener modificador de atributo
+        const getMod = (score) => {
+            const mod = Math.floor((score - 10) / 2);
+            return mod >= 0 ? `+${mod}` : mod.toString();
+        };
+
+        container.innerHTML = players.map(player => {
+            const data = player.characterData || {};
+            const abilities = data.abilities || {};
+            const combat = data.combat || {};
+
+            return `
+                <div class="player-card character-card-detailed">
+                    <div class="character-header">
+                        <h4>${this.escapeHtml(player.characterName) || 'Sin nombre'}</h4>
+                        <span class="player-real-name">(${this.escapeHtml(player.playerName) || 'Desconocido'})</span>
+                    </div>
+
+                    <div class="character-basic-info">
+                        <span class="character-race">${data.race || '-'}</span>
+                        <span class="character-class">${data.class || '-'}</span>
+                        <span class="character-level">Nv. ${data.level || 1}</span>
+                    </div>
+
+                    <div class="character-combat-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">CA</span>
+                            <span class="stat-value">${combat.armorClass || 10}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">HP</span>
+                            <span class="stat-value">${combat.hpCurrent || 0}/${combat.hpMax || 0}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Velocidad</span>
+                            <span class="stat-value">${combat.speed || 30}</span>
+                        </div>
+                    </div>
+
+                    <div class="character-abilities">
+                        <div class="ability-mini">FUE: ${abilities.strength || 10} (${getMod(abilities.strength || 10)})</div>
+                        <div class="ability-mini">DES: ${abilities.dexterity || 10} (${getMod(abilities.dexterity || 10)})</div>
+                        <div class="ability-mini">CON: ${abilities.constitution || 10} (${getMod(abilities.constitution || 10)})</div>
+                        <div class="ability-mini">INT: ${abilities.intelligence || 10} (${getMod(abilities.intelligence || 10)})</div>
+                        <div class="ability-mini">SAB: ${abilities.wisdom || 10} (${getMod(abilities.wisdom || 10)})</div>
+                        <div class="ability-mini">CAR: ${abilities.charisma || 10} (${getMod(abilities.charisma || 10)})</div>
+                    </div>
+
+                    <div class="character-completion">
+                        <span class="completion-label">Ficha completada:</span>
+                        <span class="completion-value">${player.completionPercent || 0}%</span>
+                    </div>
                 </div>
-                <div class="player-stats">
-                    <span class="player-class">${player.characterData?.class || '-'}</span>
-                    <span class="player-level">Nv. ${player.characterData?.level || 1}</span>
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     // === INICIAR PARTIDA ===
