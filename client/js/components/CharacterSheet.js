@@ -501,14 +501,16 @@ class CharacterSheet {
             const characterData = this.getCharacterData();
             const characterName = characterData.name || 'Sin nombre';
 
-            if (!this.app.currentUser?.id) {
-                showNotification('Error: Usuario no identificado', 'error');
+            // Usar playerName para identificar (no requiere hash)
+            const playerName = this.app.playerName;
+            if (!playerName) {
+                showNotification('Error: Nombre de jugador no identificado', 'error');
                 return;
             }
 
-            const result = await apiClient.saveCharacter(
+            const result = await apiClient.saveCharacterByPlayerName(
                 this.app.currentRoom.code,
-                this.app.currentUser.hash,
+                playerName,
                 characterName,
                 characterData
             );
@@ -532,13 +534,14 @@ class CharacterSheet {
     // Cargar personaje del servidor
     async loadFromServer() {
         try {
-            if (!this.app.currentUser?.hash || !this.app.currentRoom?.code) {
+            const playerName = this.app.playerName;
+            if (!playerName || !this.app.currentRoom?.code) {
                 return null;
             }
 
-            const result = await apiClient.getCharacter(
+            const result = await apiClient.getCharacterByPlayerName(
                 this.app.currentRoom.code,
-                this.app.currentUser.hash
+                playerName
             );
 
             if (result.success && result.character) {

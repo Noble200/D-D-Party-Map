@@ -5,7 +5,7 @@
 import { apiClient } from '../core/ApiClient.js';
 import { screenManager } from '../core/ScreenManager.js';
 import { showNotification } from '../utils/helpers.js';
-import { getUserHash, setPlayerName, getPlayerName, setUserId } from '../utils/userIdentity.js';
+import { setPlayerName, getPlayerName } from '../utils/userIdentity.js';
 
 class HomeView {
     constructor(app) {
@@ -178,22 +178,11 @@ class HomeView {
                 return;
             }
 
-            // Identificar usuario con hash persistente
-            const userHash = getUserHash();
-            const userResult = await apiClient.identifyUser(userHash, playerName);
-
-            if (!userResult.success) {
-                showNotification('Error al identificar usuario', 'error');
-                return;
-            }
-
-            // Guardar datos del usuario
+            // Guardar nombre del jugador localmente para conveniencia
             setPlayerName(playerName);
-            setUserId(userResult.user.id);
 
+            // Ya no necesitamos hash - el personaje se vincula por playerName + roomCode
             this.app.currentUser = {
-                id: userResult.user.id,
-                hash: userHash,
                 playerName: playerName
             };
 

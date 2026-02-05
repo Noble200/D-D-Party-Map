@@ -74,13 +74,29 @@ class ApiClient {
     // PERSONAJES
     // ==========================================
 
-    // Obtener personaje de usuario en sala
+    // Obtener personaje por nombre de jugador (nuevo metodo simplificado)
+    async getCharacterByPlayerName(roomCode, playerName) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/character?playerName=${encodeURIComponent(playerName)}`);
+        return response.json();
+    }
+
+    // Guardar personaje por nombre de jugador (nuevo metodo simplificado)
+    async saveCharacterByPlayerName(roomCode, playerName, characterName, characterData) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/character`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ playerName, characterName, characterData })
+        });
+        return response.json();
+    }
+
+    // Obtener personaje de usuario en sala (legacy)
     async getCharacter(roomCode, userId) {
         const response = await fetch(`${API_URL}/rooms/${roomCode}/characters/${userId}`);
         return response.json();
     }
 
-    // Crear o actualizar personaje
+    // Crear o actualizar personaje (legacy)
     async saveCharacter(roomCode, userId, characterName, characterData) {
         const response = await fetch(`${API_URL}/rooms/${roomCode}/characters`, {
             method: 'POST',

@@ -115,8 +115,89 @@ async function updateCharacter(req, res) {
     }
 }
 
+// Obtener personaje por nombre de jugador
+async function getCharacterByPlayer(req, res) {
+    try {
+        const { code } = req.params;
+        const { playerName } = req.query;
+
+        if (!playerName) {
+            return res.status(400).json({ error: 'Se requiere playerName' });
+        }
+
+        const character = await db.getCharacterByPlayerName(playerName, code);
+
+        if (!character) {
+            return res.json({
+                success: true,
+                character: null
+            });
+        }
+
+        res.json({
+            success: true,
+            character: {
+                id: character.id,
+                characterName: character.character_name,
+                characterData: character.character_data,
+                completionPercent: character.completion_percent,
+                playerName: character.player_name,
+                createdAt: character.created_at,
+                updatedAt: character.updated_at
+            }
+        });
+    } catch (error) {
+        console.error('Error al obtener personaje por nombre:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+// Guardar personaje por nombre de jugador
+async function saveCharacterByPlayer(req, res) {
+    try {
+        const { code } = req.params;
+        const { playerName, characterName, characterData } = req.body;
+
+        if (!playerName || !characterName) {
+            return res.status(400).json({ error: 'Se requiere playerName y characterName' });
+        }
+
+        // Verificar que la sala existe
+        const room = await db.getRoomByCode(code);
+        if (!room) {
+            return res.status(404).json({ error: 'Sala no encontrada' });
+        }
+
+        // Guardar personaje (crea usuario si no existe)
+        const character = await db.saveCharacterByPlayerName(
+            playerName,
+            code,
+            characterName,
+            characterData || {}
+        );
+
+        res.json({
+            success: true,
+            character: {
+                id: character.id,
+                characterName: character.character_name,
+                characterData: character.character_data,
+                completionPercent: character.completion_percent,
+                playerName: character.player_name,
+                createdAt: character.created_at,
+                updatedAt: character.updated_at
+            }
+        });
+    } catch (error) {
+        console.error('Error al guardar personaje por nombre:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
 module.exports = {
     getCharacter,
     saveCharacter,
-    updateCharacter
+    updateCharacter,
+    getCharacterByPlayer,
+    saveCharacterByPlayer
 };

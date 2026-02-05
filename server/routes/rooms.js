@@ -32,10 +32,16 @@ router.get('/:code', roomController.getRoom);
 // Rutas de personajes
 // ==========================================
 
-// Obtener personaje de usuario en sala
+// Obtener personaje por nombre de jugador (nueva ruta simplificada)
+router.get('/:code/character', characterController.getCharacterByPlayer);
+
+// Guardar personaje por nombre de jugador (nueva ruta simplificada)
+router.post('/:code/character', characterController.saveCharacterByPlayer);
+
+// Obtener personaje de usuario en sala (legacy - por userId)
 router.get('/:code/characters/:userId', characterController.getCharacter);
 
-// Crear o actualizar personaje
+// Crear o actualizar personaje (legacy - por userId)
 router.post('/:code/characters', characterController.saveCharacter);
 
 // Actualizar personaje específico

@@ -392,6 +392,57 @@ function calculateCompletion(data) {
     return Math.round((filled / requiredFields.length) * 100);
 }
 
+// Obtener personaje por nombre de jugador y sala
+async function getCharacterByPlayerName(playerName, roomCode) {
+    const result = await pool.query(
+        `SELECT c.*, u.player_name
+         FROM characters c
+         JOIN users u ON c.user_id = u.id
+         WHERE LOWER(u.player_name) = LOWER($1) AND c.room_code = $2`,
+        [playerName, roomCode.toUpperCase()]
+    );
+    return result.rows[0] || null;
+}
+
+// Guardar personaje por nombre de jugador (crea usuario si no existe)
+async function saveCharacterByPlayerName(playerName, roomCode, characterName, characterData = {}) {
+    // Buscar usuario existente por nombre (case-insensitive)
+    let userResult = await pool.query(
+        'SELECT * FROM users WHERE LOWER(player_name) = LOWER($1)',
+        [playerName]
+    );
+
+    let user;
+    if (userResult.rows.length > 0) {
+        user = userResult.rows[0];
+        // Actualizar last_seen
+        await pool.query(
+            'UPDATE users SET last_seen = CURRENT_TIMESTAMP WHERE id = $1',
+            [user.id]
+        );
+    } else {
+        // Crear nuevo usuario con un hash generado
+        const generatedHash = require('crypto').randomUUID();
+        userResult = await pool.query(
+            'INSERT INTO users (user_hash, player_name) VALUES ($1, $2) RETURNING *',
+            [generatedHash, playerName]
+        );
+        user = userResult.rows[0];
+    }
+
+    // Crear o actualizar personaje
+    const result = await pool.query(
+        `INSERT INTO characters (user_id, room_code, character_name, character_data, completion_percent)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (user_id, room_code)
+         DO UPDATE SET character_name = $3, character_data = $4, completion_percent = $5, updated_at = CURRENT_TIMESTAMP
+         RETURNING *`,
+        [user.id, roomCode.toUpperCase(), characterName, JSON.stringify(characterData), calculateCompletion(characterData)]
+    );
+
+    return { ...result.rows[0], player_name: playerName };
+}
+
 // ==========================================
 // FUNCIONES DE MAPAS
 // ==========================================
@@ -816,6 +867,8 @@ module.exports = {
     getCharacter,
     updateCharacter,
     calculateCompletion,
+    getCharacterByPlayerName,
+    saveCharacterByPlayerName,
     // Mapas
     createMap,
     getMaps,
