@@ -3,6 +3,7 @@
 // ==========================================
 
 const { Pool } = require('pg');
+const crypto = require('crypto');
 
 // Configuración del pool de conexiones
 const pool = new Pool({
@@ -422,7 +423,7 @@ async function saveCharacterByPlayerName(playerName, roomCode, characterName, ch
         );
     } else {
         // Crear nuevo usuario con un hash generado
-        const generatedHash = require('crypto').randomUUID();
+        const generatedHash = crypto.randomUUID();
         userResult = await pool.query(
             'INSERT INTO users (user_hash, player_name) VALUES ($1, $2) RETURNING *',
             [generatedHash, playerName]
