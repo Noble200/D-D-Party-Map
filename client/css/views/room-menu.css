@@ -941,6 +941,22 @@
     width: 100%;
 }
 
+/* Input number wrapper dentro de opciones de dados */
+.dice-options-section .input-number-wrapper {
+    display: flex;
+}
+
+.dice-options-section .input-number-wrapper input {
+    border-radius: 0;
+    text-align: center;
+}
+
+.dice-options-section .input-number-btn {
+    min-height: 32px;
+    width: 28px;
+    font-size: 0.9rem;
+}
+
 .dice-options-section .checkbox-group {
     margin-top: var(--spacing-xs);
 }
@@ -1340,6 +1356,7 @@
 .inventory-add-item {
     display: flex;
     gap: var(--spacing-sm);
+    align-items: stretch;
 }
 
 .inventory-add-item input[type="text"] {
@@ -1351,14 +1368,20 @@
     color: var(--color-text);
 }
 
-.inventory-add-item input[type="number"] {
-    width: 60px;
-    padding: 8px;
-    background: var(--color-bg-dark);
-    border: 2px solid var(--border-stone);
-    border-radius: var(--radius-sm);
-    color: var(--color-text);
+.inventory-add-item .input-number-wrapper {
+    width: 90px;
+    flex-shrink: 0;
+}
+
+.inventory-add-item .input-number-wrapper input {
+    width: 100%;
+    padding: 8px 4px;
     text-align: center;
+}
+
+.inventory-add-item .input-number-btn {
+    min-height: 100%;
+    width: 24px;
 }
 
 /* ==========================================

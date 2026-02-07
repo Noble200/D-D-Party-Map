@@ -10,6 +10,7 @@ import { AdminEditorView } from './views/AdminEditorView.js';
 import { PlayerView } from './views/PlayerView.js';
 import { CharacterSheet } from './components/CharacterSheet.js';
 import { MapSelector } from './components/MapSelector.js';
+import { initNumberInputControls } from './utils/helpers.js';
 
 class DnDMapApp {
     constructor() {
@@ -95,4 +96,5 @@ class DnDMapApp {
 // Inicializar la aplicación cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new DnDMapApp();
+    initNumberInputControls();
 });

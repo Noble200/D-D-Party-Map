@@ -429,7 +429,11 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="diceModifier">Modificador</label>
-                                <input type="number" id="diceModifier" value="0">
+                                <div class="input-number-wrapper">
+                                    <button type="button" class="input-number-btn" data-action="decrement" data-target="diceModifier">-</button>
+                                    <input type="number" id="diceModifier" value="0">
+                                    <button type="button" class="input-number-btn" data-action="increment" data-target="diceModifier">+</button>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="rollType">Tipo de tirada</label>
@@ -443,7 +447,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group checkbox-group">
+                        <div class="checkbox-group">
                             <input type="checkbox" id="privateRoll">
                             <label for="privateRoll">Tirada privada (solo DM ve)</label>
                         </div>
@@ -509,7 +513,11 @@
             </div>
             <div class="form-group">
                 <label for="combatantInitiative">Iniciativa</label>
-                <input type="number" id="combatantInitiative" value="10">
+                <div class="input-number-wrapper">
+                    <button type="button" class="input-number-btn" data-action="decrement" data-target="combatantInitiative">-</button>
+                    <input type="number" id="combatantInitiative" value="10">
+                    <button type="button" class="input-number-btn" data-action="increment" data-target="combatantInitiative">+</button>
+                </div>
             </div>
             <div class="form-group">
                 <label for="combatantType">Tipo</label>
@@ -521,7 +529,11 @@
             </div>
             <div class="form-group">
                 <label for="combatantHP">HP (opcional)</label>
-                <input type="number" id="combatantHP" placeholder="Puntos de golpe">
+                <div class="input-number-wrapper">
+                    <button type="button" class="input-number-btn" data-action="decrement" data-target="combatantHP">-</button>
+                    <input type="number" id="combatantHP" placeholder="HP">
+                    <button type="button" class="input-number-btn" data-action="increment" data-target="combatantHP">+</button>
+                </div>
             </div>
             <div class="modal-buttons">
                 <button id="btnCancelAddCombatant" class="btn">Cancelar</button>
@@ -569,7 +581,11 @@
                 <!-- Agregar item -->
                 <div class="inventory-add-item">
                     <input type="text" id="newItemName" placeholder="Nombre del objeto">
-                    <input type="number" id="newItemQty" value="1" min="1" placeholder="Cant.">
+                    <div class="input-number-wrapper input-number-compact">
+                        <button type="button" class="input-number-btn" data-action="decrement" data-target="newItemQty">-</button>
+                        <input type="number" id="newItemQty" value="1" min="1">
+                        <button type="button" class="input-number-btn" data-action="increment" data-target="newItemQty">+</button>
+                    </div>
                     <button id="btnAddItem" class="btn btn-small btn-primary">Agregar</button>
                 </div>
             </div>

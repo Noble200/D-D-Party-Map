@@ -291,25 +291,389 @@ input[type="file"] {
 }
 
 /* ==========================================
-   CHECKBOX
+   INPUT NUMBER - Flechas personalizadas
+   ========================================== */
+
+/* Contenedor para input number con controles custom */
+.input-number-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.input-number-wrapper input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    text-align: center;
+    border-radius: 0;
+    margin: 0;
+    flex: 1;
+}
+
+.input-number-wrapper input[type="number"]::-webkit-outer-spin-button,
+.input-number-wrapper input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Botones de control */
+.input-number-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 100%;
+    min-height: 38px;
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
+    border: 2px solid var(--border-stone);
+    color: var(--color-gold);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: 1rem;
+    font-weight: bold;
+    user-select: none;
+}
+
+.input-number-btn:first-child {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    border-right: none;
+}
+
+.input-number-btn:last-child {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    border-left: none;
+}
+
+.input-number-btn:hover {
+    background: linear-gradient(180deg, var(--color-gold-dark) 0%, var(--color-gold) 100%);
+    color: var(--color-bg-dark);
+    border-color: var(--color-gold);
+}
+
+.input-number-btn:active {
+    transform: scale(0.9);
+    background: var(--color-gold);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Efecto de pulso al hacer click */
+@keyframes numberBtnPulse {
+    0% { box-shadow: 0 0 0 0 rgba(212, 167, 38, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(212, 167, 38, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(212, 167, 38, 0); }
+}
+
+.input-number-btn:focus {
+    outline: none;
+    animation: numberBtnPulse 0.4s ease-out;
+}
+
+/* Estilos para inputs number sin wrapper (fallback mejorado) */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 15px rgba(212, 167, 38, 0.2);
+}
+
+input[type="number"]:hover:not(:focus) {
+    border-color: var(--border-ornate);
+}
+
+/* ==========================================
+   CHECKBOX PERSONALIZADO - Estilo D&D
    ========================================== */
 
 .checkbox-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .checkbox-group input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: var(--color-gold);
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin-bottom: 0;
     cursor: pointer;
+    user-select: none;
+    color: var(--color-text-muted);
+    transition: color var(--transition-fast);
+}
+
+.checkbox-group label:hover {
+    color: var(--color-parchment);
+}
+
+/* Caja del checkbox personalizado */
+.checkbox-group label::before {
+    content: '';
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.checkbox-group label:hover::before {
+    border-color: var(--color-gold-dark);
+    box-shadow: 0 0 8px rgba(212, 167, 38, 0.2);
+}
+
+/* Estado checked */
+.checkbox-group input[type="checkbox"]:checked + label::before {
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    border-color: var(--color-gold-light);
+    box-shadow: 0 0 10px rgba(212, 167, 38, 0.4);
+}
+
+/* Checkmark con animacion */
+.checkbox-group input[type="checkbox"]:checked + label::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    width: 6px;
+    height: 12px;
+    border: solid var(--color-bg-dark);
+    border-width: 0 3px 3px 0;
+    transform: translateY(-60%) rotate(45deg);
+    animation: checkmarkPop 0.2s ease-out;
+}
+
+.checkbox-group label {
+    position: relative;
+}
+
+@keyframes checkmarkPop {
+    0% {
+        transform: translateY(-60%) rotate(45deg) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-60%) rotate(45deg) scale(1.2);
+    }
+    100% {
+        transform: translateY(-60%) rotate(45deg) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Focus visible para accesibilidad */
+.checkbox-group input[type="checkbox"]:focus-visible + label::before {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   SELECT PERSONALIZADO - Estilo D&D
+   ========================================== */
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    padding: 10px 40px 10px 14px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4a726'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    min-width: 120px;
+}
+
+select:hover {
+    border-color: var(--color-gold-dark);
+    background-color: var(--color-bg-light);
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 15px rgba(212, 167, 38, 0.3);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f0c845'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+/* Animacion de la flecha al abrir */
+select:focus {
+    animation: selectFocus 0.2s ease-out;
+}
+
+@keyframes selectFocus {
+    0% { background-position: right 10px center; }
+    50% { background-position: right 10px bottom 40%; }
+    100% { background-position: right 10px center; }
+}
+
+/* Opciones del select */
+select option {
+    background: var(--color-bg-dark);
+    color: var(--color-text);
+    padding: 10px;
+}
+
+select option:hover,
+select option:checked {
+    background: var(--color-gold-dark);
+    color: var(--color-bg-dark);
+}
+
+/* Select deshabilitado */
+select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--color-bg-medium);
+}
+
+/* ==========================================
+   RADIO BUTTONS PERSONALIZADOS
+   ========================================== */
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.radio-group.horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.radio-group input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    color: var(--color-text-muted);
+    transition: color var(--transition-fast);
+    position: relative;
+}
+
+.radio-group label:hover {
+    color: var(--color-parchment);
+}
+
+/* Circulo del radio */
+.radio-group label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+}
+
+.radio-group label:hover::before {
+    border-color: var(--color-gold-dark);
+    box-shadow: 0 0 8px rgba(212, 167, 38, 0.2);
+}
+
+/* Estado checked del radio */
+.radio-group input[type="radio"]:checked + label::before {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 10px rgba(212, 167, 38, 0.4);
+}
+
+/* Punto interior del radio */
+.radio-group input[type="radio"]:checked + label::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    border-radius: 50%;
+    animation: radioPop 0.2s ease-out;
+}
+
+@keyframes radioPop {
+    0% {
+        transform: translateY(-50%) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-50%) scale(1.3);
+    }
+    100% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Focus visible para accesibilidad */
+.radio-group input[type="radio"]:focus-visible + label::before {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   INPUT NUMBER COMPACT - Para espacios reducidos
+   ========================================== */
+
+.input-number-compact {
+    max-width: 100px;
+}
+
+.input-number-compact .input-number-btn {
+    width: 26px;
+    min-height: 32px;
+    font-size: 0.9rem;
+}
+
+.input-number-compact input[type="number"] {
+    padding: 6px 4px;
+    font-size: 0.9rem;
 }
 
 /* ==========================================
