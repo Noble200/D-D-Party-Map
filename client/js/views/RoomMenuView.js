@@ -1030,30 +1030,36 @@ class RoomMenuView {
     // ==========================================
 
     async openDiceRoller() {
-        // Inicializar DiceRoller3D si no existe
-        if (!this.diceRoller3D) {
-            this.diceRoller3D = new DiceRoller3D('dice3dCanvas');
-
-            // Callback cuando cambia la lista de dados
-            this.diceRoller3D.onDiceListChanged = (selectedDice) => {
-                this.renderSelectedDice(selectedDice);
-                this.updateRollButton(selectedDice.length > 0);
-            };
-
-            // Callback cuando termina una tirada
-            this.diceRoller3D.onRollComplete = (rollData) => {
-                this.handleRollComplete(rollData);
-            };
+        // Destruir instancia previa si existe para reinicializar
+        if (this.diceRoller3D) {
+            this.diceRoller3D.destroy();
         }
+
+        // Crear nueva instancia
+        this.diceRoller3D = new DiceRoller3D('dice3dCanvas');
+
+        // Callback cuando cambia la lista de dados
+        this.diceRoller3D.onDiceListChanged = (selectedDice) => {
+            this.renderSelectedDice(selectedDice);
+            this.updateRollButton(selectedDice.length > 0);
+        };
+
+        // Callback cuando termina una tirada
+        this.diceRoller3D.onRollComplete = (rollData) => {
+            this.handleRollComplete(rollData);
+        };
 
         await this.loadDiceHistory();
         this.renderDiceHistory();
         this.renderSelectedDice([]);
         this.updateRollButton(false);
         document.getElementById('diceResult')?.classList.add('hidden');
+
+        // Mostrar modal primero
         this.showModal('diceRoller');
 
-        // Inicializar el canvas 3D despues de mostrar el modal
+        // Esperar un momento y luego inicializar el canvas 3D
+        await new Promise(resolve => setTimeout(resolve, 150));
         await this.diceRoller3D.init();
     }
 

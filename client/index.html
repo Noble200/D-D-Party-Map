@@ -41,6 +41,66 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Boton de prueba de dados -->
+            <div class="home-tools">
+                <button id="btnTestDice" class="btn btn-ornate">Probar Dados 3D</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: PRUEBA DE DADOS 3D - FULLSCREEN
+         ========================================== -->
+    <div id="testDiceModal" class="modal">
+        <div class="modal-content modal-dice-3d">
+            <div class="dice-roller-container">
+                <!-- Canvas 3D de dados - FULLSCREEN -->
+                <div id="testDice3dCanvas" class="dice-3d-canvas"></div>
+
+                <!-- Boton de cerrar flotante -->
+                <button id="btnCloseTestDice" class="dice-close-btn">X</button>
+
+                <!-- Panel de control flotante -->
+                <div class="dice-control-panel">
+                    <!-- Botones para agregar dados -->
+                    <div class="dice-add-section">
+                        <span class="dice-section-label">Agregar dados:</span>
+                        <div class="dice-quick-buttons">
+                            <button class="dice-btn test-dice-add-btn" data-dice="d4">d4</button>
+                            <button class="dice-btn test-dice-add-btn" data-dice="d6">d6</button>
+                            <button class="dice-btn test-dice-add-btn" data-dice="d8">d8</button>
+                            <button class="dice-btn test-dice-add-btn" data-dice="d10">d10</button>
+                            <button class="dice-btn test-dice-add-btn" data-dice="d12">d12</button>
+                            <button class="dice-btn test-dice-add-btn" data-dice="d20">d20</button>
+                            <button class="dice-btn test-dice-add-btn" data-dice="d100">d100</button>
+                        </div>
+                    </div>
+
+                    <!-- Lista de dados seleccionados -->
+                    <div class="dice-selected-section">
+                        <div class="dice-selected-header">
+                            <span class="dice-section-label">Dados a lanzar:</span>
+                            <button id="btnTestClearDice" class="btn btn-small btn-clear-dice">Limpiar</button>
+                        </div>
+                        <div id="testDiceSelectedList" class="dice-selected-list">
+                            <span class="dice-empty-message">Haz click en los dados para agregarlos</span>
+                        </div>
+                    </div>
+
+                    <!-- Boton de lanzar -->
+                    <button id="btnTestRollDice" class="btn btn-primary btn-roll-all" disabled>
+                        Lanzar Dados
+                    </button>
+
+                    <!-- Resultado -->
+                    <div id="testDiceResult" class="dice-result hidden">
+                        <div class="dice-result-formula"></div>
+                        <div class="dice-result-rolls"></div>
+                        <div class="dice-result-total"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -318,16 +378,26 @@
     </div>
 
     <!-- ==========================================
-         MODAL: TIRADOR DE DADOS 3D
+         MODAL: TIRADOR DE DADOS 3D - FULLSCREEN
          ========================================== -->
     <div id="diceRollerModal" class="modal">
         <div class="modal-content modal-dice-3d">
-            <h2>Tirador de Dados</h2>
             <div class="dice-roller-container">
-                <!-- Canvas 3D de dados -->
+                <!-- Canvas 3D de dados - FULLSCREEN -->
                 <div id="dice3dCanvas" class="dice-3d-canvas"></div>
 
-                <!-- Panel de control -->
+                <!-- Boton de cerrar flotante -->
+                <button id="btnCloseDiceRoller" class="dice-close-btn">X</button>
+
+                <!-- Historial flotante -->
+                <div class="dice-history">
+                    <h4>Historial</h4>
+                    <div id="diceHistoryList" class="dice-history-list">
+                        <!-- Historial de tiradas -->
+                    </div>
+                </div>
+
+                <!-- Panel de control flotante -->
                 <div class="dice-control-panel">
                     <!-- Botones para agregar dados -->
                     <div class="dice-add-section">
@@ -391,17 +461,6 @@
                         <div class="dice-result-total"></div>
                     </div>
                 </div>
-
-                <!-- Historial -->
-                <div class="dice-history">
-                    <h4>Historial</h4>
-                    <div id="diceHistoryList" class="dice-history-list">
-                        <!-- Historial de tiradas -->
-                    </div>
-                </div>
-            </div>
-            <div class="modal-buttons">
-                <button id="btnCloseDiceRoller" class="btn">Cerrar</button>
             </div>
         </div>
     </div>

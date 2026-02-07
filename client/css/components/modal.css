@@ -202,3 +202,40 @@
             0 0 0 transparent;
     }
 }
+
+/* ==========================================
+   Modal Dados 3D Fullscreen - Override styles
+   ========================================== */
+
+/* Cuando el modal de dados esta activo, completamente transparente */
+#testDiceModal.active,
+#diceRollerModal.active {
+    background: transparent !important;
+    backdrop-filter: none !important;
+}
+
+.modal-dice-3d {
+    background: none !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    max-width: none !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    animation: none !important;
+    pointer-events: none;
+}
+
+/* Permitir clicks en los controles */
+.modal-dice-3d .dice-control-panel,
+.modal-dice-3d .dice-close-btn,
+.modal-dice-3d .dice-history,
+.modal-dice-3d .dice-result,
+.modal-dice-3d .dice-3d-canvas {
+    pointer-events: auto;
+}
+
+.modal-dice-3d::before,
+.modal-dice-3d::after {
+    display: none !important;
+}

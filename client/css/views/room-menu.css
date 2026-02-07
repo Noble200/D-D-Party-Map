@@ -701,52 +701,84 @@
 }
 
 /* ==========================================
-   TIRADOR DE DADOS 3D
+   TIRADOR DE DADOS 3D - FULLSCREEN
    ========================================== */
 
-/* Modal especifico para dados */
+/* Modal especifico para dados - fullscreen */
 .modal-dice-3d {
-    max-width: 900px;
-    width: 95vw;
+    max-width: none;
+    width: 100vw;
+    height: 100vh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
 }
 
 .dice-roller-container {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    grid-template-rows: auto auto;
-    gap: var(--spacing-lg);
-}
-
-/* Canvas 3D de dados */
-.dice-3d-canvas {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    height: 400px;
-    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
-    border: 3px solid var(--border-ornate);
-    border-radius: var(--radius-lg);
-    position: relative;
-    overflow: hidden;
-}
-
-.dice-3d-canvas canvas {
-    width: 100% !important;
-    height: 100% !important;
-}
-
-/* Panel de control lateral */
-.dice-control-panel {
-    grid-column: 2;
-    grid-row: 1;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 
-/* Seccion de agregar dados */
+/* Canvas 3D de dados - FULLSCREEN OVERLAY TRANSPARENTE */
+.dice-3d-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent !important;
+    z-index: 9000;
+}
+
+/* El canvas/iframe interno debe ocupar todo */
+.dice-3d-canvas canvas,
+.dice-3d-canvas iframe {
+    background: transparent !important;
+}
+
+/* Estilos para canvas e iframe de DiceBox */
+.dice-3d-canvas canvas,
+.dice-3d-canvas iframe {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    display: block !important;
+}
+
+/* Panel de control flotante sobre el canvas */
+.dice-control-panel {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    z-index: 9100;
+    background: rgba(15, 13, 10, 0.95);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-gold-dark);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Botones de dados en fila compacta */
 .dice-add-section {
     background: var(--color-bg-light);
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     border-radius: var(--radius-md);
     border: 2px solid var(--border-stone);
 }
@@ -755,26 +787,27 @@
     display: block;
     font-family: var(--font-title);
     color: var(--color-gold);
-    font-size: 0.9rem;
-    margin-bottom: var(--spacing-sm);
+    font-size: 0.85rem;
+    margin-bottom: var(--spacing-xs);
+    text-align: center;
 }
 
 .dice-quick-buttons {
     display: flex;
-    gap: var(--spacing-xs);
+    gap: 6px;
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .dice-btn {
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
     background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
     border: 2px solid var(--border-ornate);
     border-radius: var(--radius-md);
     color: var(--color-gold);
     font-family: var(--font-title);
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all var(--transition-fast);
 }
@@ -787,30 +820,31 @@
 
 .dice-btn:active {
     transform: scale(0.95);
+    background: var(--color-gold);
+    color: var(--color-bg-dark);
 }
 
-/* Seccion de dados seleccionados */
+/* Dados seleccionados - inline */
 .dice-selected-section {
     background: var(--color-bg-light);
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     border-radius: var(--radius-md);
     border: 2px solid var(--border-stone);
-    flex: 1;
-    min-height: 120px;
 }
 
 .dice-selected-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
 }
 
 .btn-clear-dice {
-    font-size: 0.75rem;
-    padding: 4px 10px;
+    font-size: 0.7rem;
+    padding: 3px 8px;
     background: var(--color-bg-dark);
     border: 1px solid var(--border-stone);
+    margin-top: 0;
 }
 
 .btn-clear-dice:hover {
@@ -821,47 +855,49 @@
 .dice-selected-list {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-xs);
-    min-height: 40px;
+    gap: 6px;
+    min-height: 36px;
+    align-items: center;
 }
 
 .dice-empty-message {
     color: var(--color-text-muted);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-style: italic;
     width: 100%;
     text-align: center;
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-xs) 0;
 }
 
-/* Chip de dado seleccionado */
+/* Chip de dado - mas pequeno */
 .dice-chip {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
+    gap: 4px;
+    padding: 4px 8px;
     background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
     border: 2px solid var(--color-gold);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     font-family: var(--font-title);
     color: var(--color-gold);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     animation: epicReveal 0.2s ease-out;
 }
 
 .dice-chip-remove {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     background: var(--color-blood);
     border: none;
     border-radius: 50%;
     color: white;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all var(--transition-fast);
+    line-height: 1;
 }
 
 .dice-chip-remove:hover {
@@ -869,10 +905,16 @@
     transform: scale(1.1);
 }
 
-/* Opciones de tirada */
+/* Opciones y boton en fila */
+.dice-options-row {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: flex-end;
+}
+
 .dice-options-section {
     background: var(--color-bg-light);
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     border-radius: var(--radius-md);
     border: 2px solid var(--border-stone);
 }
@@ -880,7 +922,6 @@
 .dice-options-section .form-row {
     display: flex;
     gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
 }
 
 .dice-options-section .form-group {
@@ -888,22 +929,33 @@
 }
 
 .dice-options-section .form-group label {
-    font-size: 0.8rem;
-    margin-bottom: 4px;
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+    display: block;
 }
 
 .dice-options-section input,
 .dice-options-section select {
-    font-size: 0.85rem;
-    padding: 6px 8px;
+    font-size: 0.8rem;
+    padding: 5px 6px;
+    width: 100%;
 }
 
-/* Boton de lanzar todos */
+.dice-options-section .checkbox-group {
+    margin-top: var(--spacing-xs);
+}
+
+.dice-options-section .checkbox-group label {
+    font-size: 0.75rem;
+}
+
+/* Boton de lanzar */
 .btn-roll-all {
-    font-size: 1.1rem;
-    padding: 14px 20px;
+    font-size: 1rem;
+    padding: 12px 16px;
     font-family: var(--font-title);
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    margin-top: var(--spacing-xs);
 }
 
 .btn-roll-all:disabled {
@@ -916,70 +968,125 @@
     transform: none;
 }
 
-/* Resultado de tirada */
+/* Resultado de tirada - flotante en el centro */
 .dice-result {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    padding: var(--spacing-lg);
-    background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    background: rgba(15, 13, 10, 0.95);
     border: 3px solid var(--color-gold);
     border-radius: var(--radius-lg);
-    animation: epicReveal 0.3s ease-out;
+    animation: diceResultPop 0.5s ease-out;
+    z-index: 9150;
+    backdrop-filter: blur(10px);
+    min-width: 200px;
+    box-shadow: 0 0 40px rgba(212, 167, 38, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes diceResultPop {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
 .dice-result-formula {
     font-family: var(--font-body);
     color: var(--color-text-muted);
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-bottom: var(--spacing-xs);
 }
 
 .dice-result-rolls {
     font-family: var(--font-body);
     color: var(--color-parchment);
-    font-size: 1rem;
-    margin-bottom: var(--spacing-xs);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
 }
 
 .dice-result-total {
     font-family: var(--font-display);
     color: var(--color-gold);
-    font-size: 2.5rem;
+    font-size: 3rem;
     text-shadow: var(--shadow-glow-gold);
 }
 
-/* Historial en la parte inferior */
+/* Boton de cerrar flotante */
+.dice-close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9200;
+    width: 50px;
+    height: 50px;
+    background: rgba(15, 13, 10, 0.95);
+    border: 2px solid var(--color-gold-dark);
+    border-radius: 50%;
+    color: var(--color-gold);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.dice-close-btn:hover {
+    background: var(--color-gold);
+    color: var(--color-bg-dark);
+    transform: scale(1.1);
+}
+
+/* Historial - flotante a la izquierda */
 .dice-history {
-    grid-column: 2;
-    grid-row: 2;
-    max-height: 150px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 200px;
+    max-height: 250px;
     overflow-y: auto;
-    background: var(--color-bg-light);
-    padding: var(--spacing-md);
+    background: rgba(15, 13, 10, 0.95);
+    padding: var(--spacing-sm);
     border-radius: var(--radius-md);
-    border: 2px solid var(--border-stone);
+    border: 2px solid var(--color-gold-dark);
+    backdrop-filter: blur(10px);
+    z-index: 9100;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
 }
 
 .dice-history h4 {
     font-family: var(--font-title);
     color: var(--color-gold);
-    font-size: 0.9rem;
-    margin-bottom: var(--spacing-sm);
+    font-size: 0.8rem;
+    margin-bottom: var(--spacing-xs);
 }
 
 .dice-history-list {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
+    gap: 4px;
 }
 
 .dice-history-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: 4px 8px;
     background: var(--color-bg-medium);
     border-radius: var(--radius-sm);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
 }
 
 .dice-history-user {
@@ -988,11 +1095,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-width: 100px;
 }
 
 .dice-history-formula {
     color: var(--color-text-muted);
-    margin: 0 var(--spacing-sm);
+    margin: 0 var(--spacing-xs);
 }
 
 .dice-history-total {
@@ -1001,42 +1109,34 @@
     font-family: var(--font-title);
 }
 
-/* Animacion de tirada */
-@keyframes diceRolling {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(10deg); }
-    75% { transform: rotate(-10deg); }
-}
-
-.dice-rolling {
-    animation: diceRolling 0.1s linear infinite;
-}
-
-/* Responsive para dados 3D */
-@media (max-width: 800px) {
-    .modal-dice-3d {
-        max-width: 100vw;
-    }
-
-    .dice-roller-container {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-    }
-
-    .dice-3d-canvas {
-        grid-column: 1;
-        grid-row: 1;
-        height: 250px;
-    }
-
+/* Responsive para dados 3D fullscreen */
+@media (max-width: 600px) {
     .dice-control-panel {
-        grid-column: 1;
-        grid-row: 2;
+        bottom: 10px;
+        width: 95%;
+        padding: var(--spacing-sm);
+    }
+
+    .dice-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 0.8rem;
     }
 
     .dice-history {
-        grid-column: 1;
-        grid-row: 3;
+        width: 150px;
+        max-height: 150px;
+        top: 10px;
+        left: 10px;
+        font-size: 0.75rem;
+    }
+
+    .dice-close-btn {
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
     }
 }
 

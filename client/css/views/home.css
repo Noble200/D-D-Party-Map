@@ -278,6 +278,33 @@
 }
 
 /* ==========================================
+   BOTON DE HERRAMIENTAS / PRUEBA
+   ========================================== */
+
+.home-tools {
+    margin-top: var(--spacing-xl);
+    position: relative;
+    z-index: 1;
+}
+
+.home-tools .btn-ornate {
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-dark) 100%);
+    border: 2px solid var(--color-gold-dark);
+    color: var(--color-gold);
+    font-size: 0.9rem;
+    padding: 12px 24px;
+    opacity: 0.8;
+    transition: all var(--transition-normal);
+}
+
+.home-tools .btn-ornate:hover {
+    opacity: 1;
+    border-color: var(--color-gold);
+    box-shadow: var(--shadow-glow-gold);
+    transform: translateY(-2px);
+}
+
+/* ==========================================
    RESPONSIVE
    ========================================== */
 

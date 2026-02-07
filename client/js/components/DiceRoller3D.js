@@ -7,8 +7,9 @@ class DiceRoller3D {
         this.containerId = containerId;
         this.diceBox = null;
         this.initialized = false;
-        this.selectedDice = []; // Lista de dados seleccionados para lanzar
+        this.selectedDice = [];
         this.isRolling = false;
+        this.DiceBoxClass = null;
 
         // Callbacks
         this.onRollComplete = null;
@@ -17,27 +18,40 @@ class DiceRoller3D {
 
     // Inicializar Fantastic Dice
     async init() {
-        if (this.initialized) return true;
+        if (this.initialized && this.diceBox) {
+            return true;
+        }
 
         try {
             // Importar dinamicamente desde CDN
-            const { default: DiceBox } = await import(
-                'https://unpkg.com/@3d-dice/dice-box@1.1.3/dist/dice-box.es.min.js'
-            );
+            if (!this.DiceBoxClass) {
+                const module = await import(
+                    'https://unpkg.com/@3d-dice/dice-box@1.1.3/dist/dice-box.es.min.js'
+                );
+                this.DiceBoxClass = module.default;
+            }
 
-            // Crear contenedor si no existe
+            // Verificar contenedor
             const container = document.getElementById(this.containerId);
             if (!container) {
-                console.error('Contenedor de dados no encontrado:', this.containerId);
+                console.error('Contenedor no encontrado:', this.containerId);
                 return false;
             }
 
-            // Configurar DiceBox
-            this.diceBox = new DiceBox(`#${this.containerId}`, {
-                assetPath: 'https://unpkg.com/@3d-dice/dice-box@1.1.3/dist/assets/',
-                theme: 'default',
+            // Esperar a que el contenedor tenga dimensiones
+            await this.waitForContainer(container);
+
+            // Limpiar contenedor previo
+            container.innerHTML = '';
+
+            // Crear DiceBox con configuracion correcta
+            // origin debe ser la URL base de donde vienen los assets
+            this.diceBox = new this.DiceBoxClass({
+                assetPath: '/assets/',
+                origin: 'https://unpkg.com/@3d-dice/dice-box@1.1.3/dist',
+                container: `#${this.containerId}`,
                 scale: 6,
-                gravity: 2,
+                gravity: 1.5,
                 mass: 1,
                 friction: 0.8,
                 restitution: 0.5,
@@ -47,15 +61,17 @@ class DiceRoller3D {
                 throwForce: 6,
                 startingHeight: 10,
                 settleTimeout: 5000,
-                offscreen: true,
                 delay: 10,
                 enableShadows: true,
-                shadowTransparency: 0.8
+                theme: 'default',
+                themeColor: '#d4a726',
+                // Fondo transparente para overlay
+                alpha: true
             });
 
             await this.diceBox.init();
 
-            // Escuchar cuando termina la tirada
+            // Callback cuando termina la tirada
             this.diceBox.onRollComplete = (results) => {
                 this.handleRollComplete(results);
             };
@@ -69,11 +85,30 @@ class DiceRoller3D {
         }
     }
 
+    // Esperar a que el contenedor tenga dimensiones
+    waitForContainer(container, maxAttempts = 30) {
+        return new Promise((resolve) => {
+            let attempts = 0;
+            const check = () => {
+                attempts++;
+                const rect = container.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    resolve(true);
+                } else if (attempts < maxAttempts) {
+                    setTimeout(check, 50);
+                } else {
+                    console.warn('Contenedor sin dimensiones');
+                    resolve(false);
+                }
+            };
+            setTimeout(check, 100);
+        });
+    }
+
     // Agregar un dado a la lista
     addDice(diceType) {
         if (this.isRolling) return;
 
-        // Validar tipo de dado
         const validDice = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'];
         if (!validDice.includes(diceType)) {
             console.error('Tipo de dado invalido:', diceType);
@@ -90,41 +125,36 @@ class DiceRoller3D {
         }
     }
 
-    // Quitar un dado de la lista por indice
+    // Quitar un dado de la lista
     removeDice(index) {
         if (this.isRolling) return;
 
         if (index >= 0 && index < this.selectedDice.length) {
             this.selectedDice.splice(index, 1);
-
             if (this.onDiceListChanged) {
                 this.onDiceListChanged(this.selectedDice);
             }
         }
     }
 
-    // Limpiar todos los dados seleccionados
+    // Limpiar todos los dados
     clearDice() {
         if (this.isRolling) return;
-
         this.selectedDice = [];
-
         if (this.onDiceListChanged) {
             this.onDiceListChanged(this.selectedDice);
         }
     }
 
-    // Obtener la notacion de dados (ej: "2d6+1d20")
+    // Obtener notacion de dados
     getDiceNotation() {
         if (this.selectedDice.length === 0) return '';
 
-        // Agrupar por tipo
         const counts = {};
         this.selectedDice.forEach(die => {
             counts[die.type] = (counts[die.type] || 0) + 1;
         });
 
-        // Construir notacion
         const parts = [];
         Object.entries(counts).forEach(([type, count]) => {
             parts.push(`${count}${type}`);
@@ -133,7 +163,7 @@ class DiceRoller3D {
         return parts.join('+');
     }
 
-    // Lanzar los dados seleccionados
+    // Lanzar dados
     async roll(modifier = 0) {
         if (!this.initialized) {
             const success = await this.init();
@@ -154,71 +184,51 @@ class DiceRoller3D {
 
         try {
             // Limpiar dados anteriores
-            this.diceBox.clear();
+            if (this.diceBox) {
+                this.diceBox.clear();
+            }
 
-            // Construir notacion de dados
-            const notation = this.getDiceNotation();
+            // Construir array de dados para mejor compatibilidad
+            // Formato: [{ sides: 20 }, { sides: 6 }, ...]
+            const diceArray = this.selectedDice.map(die => {
+                const sides = parseInt(die.type.replace('d', ''));
+                return { sides };
+            });
 
-            // Lanzar dados
-            const results = await this.diceBox.roll(notation);
+            console.log('Lanzando dados:', diceArray);
+
+            // Lanzar usando array de objetos
+            const results = await this.diceBox.roll(diceArray);
             return results;
         } catch (error) {
-            console.error('Error al lanzar dados:', error);
+            console.error('Error al lanzar:', error);
             this.isRolling = false;
             return null;
         }
     }
 
-    // Lanzar un dado rapido (sin agregarlo a la lista)
-    async quickRoll(diceType, count = 1) {
-        if (!this.initialized) {
-            const success = await this.init();
-            if (!success) return null;
-        }
-
-        if (this.isRolling) {
-            console.warn('Ya hay una tirada en progreso');
-            return null;
-        }
-
-        this.isRolling = true;
-
-        try {
-            this.diceBox.clear();
-            const notation = `${count}${diceType}`;
-            const results = await this.diceBox.roll(notation);
-            return results;
-        } catch (error) {
-            console.error('Error en tirada rapida:', error);
-            this.isRolling = false;
-            return null;
-        }
-    }
-
-    // Manejar resultado de tirada
+    // Manejar resultado
     handleRollComplete(results) {
         this.isRolling = false;
 
         if (!results || results.length === 0) return;
 
-        // Calcular total
         let total = 0;
         const rolls = [];
 
+        // La estructura de dice-box es plana: cada resultado es un dado individual
+        // { groupId, rollId, sides, theme, themeColor, value }
         results.forEach(result => {
-            if (result.rolls) {
-                result.rolls.forEach(roll => {
-                    total += roll.value;
-                    rolls.push({
-                        type: result.die || 'd20',
-                        value: roll.value
-                    });
-                });
-            }
+            const value = result.value;
+            total += value;
+            rolls.push({
+                type: `d${result.sides}`,
+                value: value
+            });
         });
 
         const rollData = {
-            notation: this.getDiceNotation() || results.map(r => `1${r.die || 'd20'}`).join('+'),
+            notation: this.getDiceNotation() || results.map(r => `1d${r.sides}`).join('+'),
             rolls,
             total,
             timestamp: Date.now()
@@ -229,37 +239,30 @@ class DiceRoller3D {
         }
     }
 
-    // Limpiar el canvas de dados
+    // Limpiar canvas
     clear() {
         if (this.diceBox) {
-            this.diceBox.clear();
-        }
-    }
-
-    // Ocultar el contenedor
-    hide() {
-        const container = document.getElementById(this.containerId);
-        if (container) {
-            container.style.display = 'none';
-        }
-    }
-
-    // Mostrar el contenedor
-    show() {
-        const container = document.getElementById(this.containerId);
-        if (container) {
-            container.style.display = 'block';
+            try {
+                this.diceBox.clear();
+            } catch (e) {
+                // Ignorar errores
+            }
         }
     }
 
     // Destruir instancia
     destroy() {
         if (this.diceBox) {
-            this.diceBox.clear();
+            try {
+                this.diceBox.clear();
+            } catch (e) {
+                // Ignorar
+            }
             this.diceBox = null;
         }
         this.initialized = false;
         this.selectedDice = [];
+        this.isRolling = false;
     }
 }
 
