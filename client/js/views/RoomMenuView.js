@@ -6,6 +6,7 @@ import { apiClient } from '../core/ApiClient.js';
 import { socketClient } from '../core/SocketClient.js';
 import { screenManager } from '../core/ScreenManager.js';
 import { showNotification } from '../utils/helpers.js';
+import { DiceRoller3D } from '../components/DiceRoller3D.js';
 
 class RoomMenuView {
     constructor(app) {
@@ -23,6 +24,7 @@ class RoomMenuView {
 
         // Estado para dados
         this.diceHistory = [];
+        this.diceRoller3D = null; // Se inicializa al abrir el modal
 
         // Estado para combate
         this.combatants = [];
@@ -194,7 +196,7 @@ class RoomMenuView {
             this.saveNote();
         });
 
-        // === TIRADOR DE DADOS ===
+        // === TIRADOR DE DADOS 3D ===
         document.getElementById('btnDiceRoller')?.addEventListener('click', () => {
             this.openDiceRoller();
         });
@@ -204,19 +206,25 @@ class RoomMenuView {
         });
 
         document.getElementById('btnCloseDiceRoller')?.addEventListener('click', () => {
-            this.hideModal('diceRoller');
+            this.closeDiceRoller();
         });
 
-        // Botones de dados rapidos
-        document.querySelectorAll('.dice-btn').forEach(btn => {
+        // Botones para agregar dados a la lista
+        document.querySelectorAll('.dice-add-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const dice = e.target.dataset.dice;
-                this.quickRoll(dice);
+                this.addDiceToList(dice);
             });
         });
 
+        // Boton para limpiar dados seleccionados
+        document.getElementById('btnClearDice')?.addEventListener('click', () => {
+            this.clearSelectedDice();
+        });
+
+        // Boton para lanzar todos los dados
         document.getElementById('btnRollDice')?.addEventListener('click', () => {
-            this.rollCustomDice();
+            this.rollAllDice();
         });
 
         // === TRACKER DE COMBATE ===
@@ -1018,14 +1026,180 @@ class RoomMenuView {
     }
 
     // ==========================================
-    // TIRADOR DE DADOS
+    // TIRADOR DE DADOS 3D
     // ==========================================
 
     async openDiceRoller() {
+        // Inicializar DiceRoller3D si no existe
+        if (!this.diceRoller3D) {
+            this.diceRoller3D = new DiceRoller3D('dice3dCanvas');
+
+            // Callback cuando cambia la lista de dados
+            this.diceRoller3D.onDiceListChanged = (selectedDice) => {
+                this.renderSelectedDice(selectedDice);
+                this.updateRollButton(selectedDice.length > 0);
+            };
+
+            // Callback cuando termina una tirada
+            this.diceRoller3D.onRollComplete = (rollData) => {
+                this.handleRollComplete(rollData);
+            };
+        }
+
         await this.loadDiceHistory();
         this.renderDiceHistory();
+        this.renderSelectedDice([]);
+        this.updateRollButton(false);
         document.getElementById('diceResult')?.classList.add('hidden');
         this.showModal('diceRoller');
+
+        // Inicializar el canvas 3D despues de mostrar el modal
+        await this.diceRoller3D.init();
+    }
+
+    closeDiceRoller() {
+        if (this.diceRoller3D) {
+            this.diceRoller3D.clear();
+            this.diceRoller3D.clearDice();
+        }
+        this.hideModal('diceRoller');
+    }
+
+    // Agregar un dado a la lista de seleccionados
+    addDiceToList(diceType) {
+        if (this.diceRoller3D) {
+            this.diceRoller3D.addDice(diceType);
+        }
+    }
+
+    // Limpiar todos los dados seleccionados
+    clearSelectedDice() {
+        if (this.diceRoller3D) {
+            this.diceRoller3D.clearDice();
+            this.diceRoller3D.clear();
+        }
+        document.getElementById('diceResult')?.classList.add('hidden');
+    }
+
+    // Renderizar la lista de dados seleccionados
+    renderSelectedDice(selectedDice) {
+        const container = document.getElementById('diceSelectedList');
+        if (!container) return;
+
+        if (selectedDice.length === 0) {
+            container.innerHTML = '<span class="dice-empty-message">Haz click en los dados para agregarlos</span>';
+            return;
+        }
+
+        container.innerHTML = selectedDice.map((die, index) => `
+            <span class="dice-chip" data-index="${index}">
+                ${die.type}
+                <button class="dice-chip-remove" data-index="${index}">x</button>
+            </span>
+        `).join('');
+
+        // Bind eventos para quitar dados
+        container.querySelectorAll('.dice-chip-remove').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const index = parseInt(e.target.dataset.index);
+                this.removeDiceFromList(index);
+            });
+        });
+    }
+
+    // Quitar un dado de la lista
+    removeDiceFromList(index) {
+        if (this.diceRoller3D) {
+            this.diceRoller3D.removeDice(index);
+        }
+    }
+
+    // Actualizar estado del boton de lanzar
+    updateRollButton(enabled) {
+        const btn = document.getElementById('btnRollDice');
+        if (btn) {
+            btn.disabled = !enabled;
+        }
+    }
+
+    // Lanzar todos los dados seleccionados
+    async rollAllDice() {
+        if (!this.diceRoller3D) return;
+
+        const modifier = parseInt(document.getElementById('diceModifier')?.value) || 0;
+        const rollType = document.getElementById('rollType')?.value || '';
+        const isPrivate = document.getElementById('privateRoll')?.checked || false;
+
+        // Guardar info para despues
+        this.pendingRollInfo = {
+            modifier,
+            rollType,
+            isPrivate,
+            notation: this.diceRoller3D.getDiceNotation()
+        };
+
+        // Deshabilitar boton mientras lanza
+        this.updateRollButton(false);
+
+        // Lanzar dados 3D
+        await this.diceRoller3D.roll(modifier);
+    }
+
+    // Manejar resultado de tirada
+    handleRollComplete(rollData) {
+        const info = this.pendingRollInfo || {};
+        const modifier = info.modifier || 0;
+        const total = rollData.total + modifier;
+
+        // Mostrar resultado en UI
+        this.showDiceResult(rollData.notation, rollData.rolls, modifier, total);
+
+        // Emitir por socket para que otros vean
+        const userName = this.app.isAdmin ? 'DM' : this.app.playerName;
+        const characterName = this.app.characterName || null;
+
+        socketClient.emit('dice-roll', {
+            roomCode: this.app.currentRoom.code,
+            userName,
+            characterName,
+            rollType: info.rollType || '',
+            diceFormula: rollData.notation,
+            results: rollData.rolls.map(r => r.value),
+            modifier,
+            total,
+            isPrivate: info.isPrivate || false
+        });
+
+        // Re-habilitar boton
+        const hasSelectedDice = this.diceRoller3D?.selectedDice?.length > 0;
+        this.updateRollButton(hasSelectedDice);
+
+        // Limpiar dados seleccionados despues de tirar
+        if (this.diceRoller3D) {
+            this.diceRoller3D.clearDice();
+        }
+
+        this.pendingRollInfo = null;
+    }
+
+    // Mostrar resultado de tirada
+    showDiceResult(notation, rolls, modifier, total) {
+        const resultContainer = document.getElementById('diceResult');
+        if (!resultContainer) return;
+
+        resultContainer.classList.remove('hidden');
+
+        const formulaStr = notation + (modifier ? (modifier > 0 ? '+' : '') + modifier : '');
+        const rollsStr = rolls.map(r => `${r.value}`).join(', ');
+
+        resultContainer.querySelector('.dice-result-formula').textContent = formulaStr;
+        resultContainer.querySelector('.dice-result-rolls').textContent = `[${rollsStr}]${modifier ? ` ${modifier > 0 ? '+' : ''}${modifier}` : ''}`;
+        resultContainer.querySelector('.dice-result-total').textContent = total;
+
+        // Animacion
+        resultContainer.classList.add('dice-result-animate');
+        setTimeout(() => resultContainer.classList.remove('dice-result-animate'), 500);
     }
 
     async loadDiceHistory() {
@@ -1056,66 +1230,6 @@ class RoomMenuView {
                 <span class="dice-history-total">${roll.total}</span>
             </div>
         `).join('');
-    }
-
-    quickRoll(dice) {
-        const diceValue = parseInt(dice.replace('d', ''));
-        this.performRoll(1, diceValue, 0, '');
-    }
-
-    rollCustomDice() {
-        const count = parseInt(document.getElementById('diceCount').value) || 1;
-        const type = parseInt(document.getElementById('diceType').value) || 20;
-        const modifier = parseInt(document.getElementById('diceModifier').value) || 0;
-        const rollType = document.getElementById('rollType').value;
-        const isPrivate = document.getElementById('privateRoll').checked;
-
-        this.performRoll(count, type, modifier, rollType, isPrivate);
-    }
-
-    performRoll(count, diceType, modifier, rollType, isPrivate = false) {
-        // Generar tirada localmente
-        const results = [];
-        for (let i = 0; i < count; i++) {
-            results.push(Math.floor(Math.random() * diceType) + 1);
-        }
-        const sum = results.reduce((a, b) => a + b, 0);
-        const total = sum + modifier;
-
-        // Mostrar resultado localmente
-        this.showDiceResult(count, diceType, modifier, results, total, rollType);
-
-        // Emitir por socket
-        const userName = this.app.isAdmin ? 'DM' : this.app.playerName;
-        const characterName = this.app.characterName || null;
-
-        socketClient.emit('dice-roll', {
-            roomCode: this.app.currentRoom.code,
-            userName,
-            characterName,
-            rollType,
-            diceFormula: `${count}d${diceType}`,
-            results,
-            modifier,
-            total,
-            isPrivate
-        });
-    }
-
-    showDiceResult(count, diceType, modifier, results, total, rollType) {
-        const resultContainer = document.getElementById('diceResult');
-        if (!resultContainer) return;
-
-        resultContainer.classList.remove('hidden');
-
-        const formula = `${count}d${diceType}${modifier ? (modifier > 0 ? '+' : '') + modifier : ''}`;
-        resultContainer.querySelector('.dice-result-formula').textContent = formula;
-        resultContainer.querySelector('.dice-result-rolls').textContent = `[${results.join(', ')}]${modifier ? ` ${modifier > 0 ? '+' : ''}${modifier}` : ''}`;
-        resultContainer.querySelector('.dice-result-total').textContent = total;
-
-        // Animacion
-        resultContainer.classList.add('dice-result-animate');
-        setTimeout(() => resultContainer.classList.remove('dice-result-animate'), 500);
     }
 
     onDiceRolled(data) {

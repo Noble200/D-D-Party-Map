@@ -701,31 +701,80 @@
 }
 
 /* ==========================================
-   TIRADOR DE DADOS
+   TIRADOR DE DADOS 3D
    ========================================== */
 
+/* Modal especifico para dados */
+.modal-dice-3d {
+    max-width: 900px;
+    width: 95vw;
+}
+
 .dice-roller-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: auto auto;
+    gap: var(--spacing-lg);
+}
+
+/* Canvas 3D de dados */
+.dice-3d-canvas {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    height: 400px;
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+    border: 3px solid var(--border-ornate);
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.dice-3d-canvas canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Panel de control lateral */
+.dice-control-panel {
+    grid-column: 2;
+    grid-row: 1;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
+}
+
+/* Seccion de agregar dados */
+.dice-add-section {
+    background: var(--color-bg-light);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-stone);
+}
+
+.dice-section-label {
+    display: block;
+    font-family: var(--font-title);
+    color: var(--color-gold);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-sm);
 }
 
 .dice-quick-buttons {
     display: flex;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .dice-btn {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
-    border: 3px solid var(--border-ornate);
+    border: 2px solid var(--border-ornate);
     border-radius: var(--radius-md);
     color: var(--color-gold);
     font-family: var(--font-title);
-    font-size: 1.2rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: all var(--transition-fast);
 }
@@ -736,26 +785,141 @@
     transform: scale(1.1);
 }
 
-.dice-custom {
+.dice-btn:active {
+    transform: scale(0.95);
+}
+
+/* Seccion de dados seleccionados */
+.dice-selected-section {
     background: var(--color-bg-light);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-stone);
+    flex: 1;
+    min-height: 120px;
+}
+
+.dice-selected-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.btn-clear-dice {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    background: var(--color-bg-dark);
+    border: 1px solid var(--border-stone);
+}
+
+.btn-clear-dice:hover {
+    border-color: var(--color-blood);
+    color: var(--color-blood-light);
+}
+
+.dice-selected-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    min-height: 40px;
+}
+
+.dice-empty-message {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    width: 100%;
+    text-align: center;
+    padding: var(--spacing-md) 0;
+}
+
+/* Chip de dado seleccionado */
+.dice-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
+    border: 2px solid var(--color-gold);
+    border-radius: var(--radius-md);
+    font-family: var(--font-title);
+    color: var(--color-gold);
+    font-size: 0.95rem;
+    animation: epicReveal 0.2s ease-out;
+}
+
+.dice-chip-remove {
+    width: 18px;
+    height: 18px;
+    background: var(--color-blood);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.dice-chip-remove:hover {
+    background: var(--color-blood-light);
+    transform: scale(1.1);
+}
+
+/* Opciones de tirada */
+.dice-options-section {
+    background: var(--color-bg-light);
+    padding: var(--spacing-md);
     border-radius: var(--radius-md);
     border: 2px solid var(--border-stone);
 }
 
-.dice-custom .form-row {
+.dice-options-section .form-row {
     display: flex;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
 }
 
-.dice-custom .form-group {
+.dice-options-section .form-group {
     flex: 1;
 }
 
+.dice-options-section .form-group label {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+}
+
+.dice-options-section input,
+.dice-options-section select {
+    font-size: 0.85rem;
+    padding: 6px 8px;
+}
+
+/* Boton de lanzar todos */
+.btn-roll-all {
+    font-size: 1.1rem;
+    padding: 14px 20px;
+    font-family: var(--font-title);
+    letter-spacing: 2px;
+}
+
+.btn-roll-all:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn-roll-all:disabled:hover {
+    transform: none;
+}
+
+/* Resultado de tirada */
 .dice-result {
     text-align: center;
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
     background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
     border: 3px solid var(--color-gold);
     border-radius: var(--radius-lg);
@@ -765,33 +929,40 @@
 .dice-result-formula {
     font-family: var(--font-body);
     color: var(--color-text-muted);
-    font-size: 1rem;
-    margin-bottom: var(--spacing-sm);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-xs);
 }
 
 .dice-result-rolls {
     font-family: var(--font-body);
     color: var(--color-parchment);
-    font-size: 1.2rem;
-    margin-bottom: var(--spacing-sm);
+    font-size: 1rem;
+    margin-bottom: var(--spacing-xs);
 }
 
 .dice-result-total {
     font-family: var(--font-display);
     color: var(--color-gold);
-    font-size: 3rem;
+    font-size: 2.5rem;
     text-shadow: var(--shadow-glow-gold);
 }
 
+/* Historial en la parte inferior */
 .dice-history {
-    max-height: 200px;
+    grid-column: 2;
+    grid-row: 2;
+    max-height: 150px;
     overflow-y: auto;
+    background: var(--color-bg-light);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-stone);
 }
 
 .dice-history h4 {
     font-family: var(--font-title);
     color: var(--color-gold);
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-bottom: var(--spacing-sm);
 }
 
@@ -804,23 +975,69 @@
 .dice-history-item {
     display: flex;
     justify-content: space-between;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: var(--color-bg-light);
+    align-items: center;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-bg-medium);
     border-radius: var(--radius-sm);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
-.dice-history-item .roller-name {
+.dice-history-user {
     color: var(--color-parchment);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.dice-history-item .roll-info {
+.dice-history-formula {
     color: var(--color-text-muted);
+    margin: 0 var(--spacing-sm);
 }
 
-.dice-history-item .roll-total {
+.dice-history-total {
     color: var(--color-gold);
     font-weight: bold;
+    font-family: var(--font-title);
+}
+
+/* Animacion de tirada */
+@keyframes diceRolling {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(10deg); }
+    75% { transform: rotate(-10deg); }
+}
+
+.dice-rolling {
+    animation: diceRolling 0.1s linear infinite;
+}
+
+/* Responsive para dados 3D */
+@media (max-width: 800px) {
+    .modal-dice-3d {
+        max-width: 100vw;
+    }
+
+    .dice-roller-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+
+    .dice-3d-canvas {
+        grid-column: 1;
+        grid-row: 1;
+        height: 250px;
+    }
+
+    .dice-control-panel {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .dice-history {
+        grid-column: 1;
+        grid-row: 3;
+    }
 }
 
 /* ==========================================
@@ -1088,16 +1305,6 @@
     .menu-btn {
         min-height: 100px;
         padding: var(--spacing-lg);
-    }
-
-    .dice-quick-buttons {
-        gap: var(--spacing-xs);
-    }
-
-    .dice-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 1rem;
     }
 
     .inventory-currency {
