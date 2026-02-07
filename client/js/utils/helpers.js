@@ -28,7 +28,8 @@ export async function copyToClipboard(text) {
 // Inicializar controles de numero personalizados
 export function initNumberInputControls() {
     document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.input-number-btn');
+        // Soporta tanto .input-number-btn como .ability-btn
+        const btn = e.target.closest('.input-number-btn, .ability-btn');
         if (!btn) return;
 
         const action = btn.dataset.action;

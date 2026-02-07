@@ -947,32 +947,56 @@
                         <div class="abilities-grid">
                             <div class="ability-box">
                                 <label>Fuerza</label>
-                                <input type="number" id="abilityStrength" min="1" max="30" value="10">
+                                <div class="ability-input-wrapper">
+                                    <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityStrength">-</button>
+                                    <input type="number" id="abilityStrength" min="1" max="30" value="10">
+                                    <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityStrength">+</button>
+                                </div>
                                 <span class="ability-modifier" id="modStrength">+0</span>
                             </div>
                             <div class="ability-box">
                                 <label>Destreza</label>
-                                <input type="number" id="abilityDexterity" min="1" max="30" value="10">
+                                <div class="ability-input-wrapper">
+                                    <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityDexterity">-</button>
+                                    <input type="number" id="abilityDexterity" min="1" max="30" value="10">
+                                    <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityDexterity">+</button>
+                                </div>
                                 <span class="ability-modifier" id="modDexterity">+0</span>
                             </div>
                             <div class="ability-box">
                                 <label>Constitución</label>
-                                <input type="number" id="abilityConstitution" min="1" max="30" value="10">
+                                <div class="ability-input-wrapper">
+                                    <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityConstitution">-</button>
+                                    <input type="number" id="abilityConstitution" min="1" max="30" value="10">
+                                    <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityConstitution">+</button>
+                                </div>
                                 <span class="ability-modifier" id="modConstitution">+0</span>
                             </div>
                             <div class="ability-box">
                                 <label>Inteligencia</label>
-                                <input type="number" id="abilityIntelligence" min="1" max="30" value="10">
+                                <div class="ability-input-wrapper">
+                                    <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityIntelligence">-</button>
+                                    <input type="number" id="abilityIntelligence" min="1" max="30" value="10">
+                                    <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityIntelligence">+</button>
+                                </div>
                                 <span class="ability-modifier" id="modIntelligence">+0</span>
                             </div>
                             <div class="ability-box">
                                 <label>Sabiduría</label>
-                                <input type="number" id="abilityWisdom" min="1" max="30" value="10">
+                                <div class="ability-input-wrapper">
+                                    <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityWisdom">-</button>
+                                    <input type="number" id="abilityWisdom" min="1" max="30" value="10">
+                                    <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityWisdom">+</button>
+                                </div>
                                 <span class="ability-modifier" id="modWisdom">+0</span>
                             </div>
                             <div class="ability-box">
                                 <label>Carisma</label>
-                                <input type="number" id="abilityCharisma" min="1" max="30" value="10">
+                                <div class="ability-input-wrapper">
+                                    <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityCharisma">-</button>
+                                    <input type="number" id="abilityCharisma" min="1" max="30" value="10">
+                                    <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityCharisma">+</button>
+                                </div>
                                 <span class="ability-modifier" id="modCharisma">+0</span>
                             </div>
                         </div>

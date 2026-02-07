@@ -133,15 +133,76 @@
     letter-spacing: 1px;
 }
 
+/* Wrapper para input de atributo con botones */
+.ability-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
 .ability-box input {
-    width: 60px;
+    width: 55px;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    padding: 8px;
+    padding: 8px 4px;
     background: var(--color-bg-medium);
-    border: 1px solid var(--border-stone);
+    border: 2px solid var(--border-stone);
+    border-radius: 0;
     color: var(--color-text);
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.ability-box input::-webkit-outer-spin-button,
+.ability-box input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.ability-box input:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 10px rgba(212, 167, 38, 0.3);
+}
+
+/* Botones de incremento/decremento para atributos */
+.ability-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 42px;
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-dark) 100%);
+    border: 2px solid var(--border-stone);
+    color: var(--color-gold);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.2rem;
+    font-weight: bold;
+    user-select: none;
+}
+
+.ability-btn-down {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    border-right: none;
+}
+
+.ability-btn-up {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    border-left: none;
+}
+
+.ability-btn:hover {
+    background: linear-gradient(180deg, var(--color-gold-dark) 0%, var(--color-gold) 100%);
+    color: var(--color-bg-dark);
+    border-color: var(--color-gold);
+}
+
+.ability-btn:active {
+    transform: scale(0.9);
+    background: var(--color-gold);
 }
 
 .ability-modifier {
@@ -283,10 +344,51 @@
     gap: 10px;
 }
 
+/* Checkboxes de tiradas de muerte */
 .death-save-checks input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
     cursor: pointer;
+    background: var(--color-bg-medium);
+    border: 2px solid var(--border-stone);
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.death-save-checks input[type="checkbox"]:hover {
+    border-color: var(--color-gold-dark);
+    box-shadow: 0 0 8px rgba(212, 167, 38, 0.3);
+}
+
+.death-save-checks input[type="checkbox"]:checked {
+    border-color: var(--color-gold);
+}
+
+/* Éxitos - verde */
+.death-save-row:first-child .death-save-checks input[type="checkbox"]:checked {
+    background: linear-gradient(180deg, var(--color-forest-light) 0%, var(--color-forest) 100%);
+    border-color: var(--color-forest-light);
+}
+
+/* Fracasos - rojo */
+.death-save-row:last-child .death-save-checks input[type="checkbox"]:checked {
+    background: linear-gradient(180deg, var(--color-blood-light) 0%, var(--color-blood) 100%);
+    border-color: var(--color-blood-light);
+}
+
+.death-save-checks input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: var(--color-parchment);
+    border-radius: 50%;
 }
 
 /* Tiradas de salvación */
@@ -319,9 +421,40 @@
     border: 1px solid var(--border-stone);
 }
 
+/* Checkbox de tiradas de salvación */
 .save-item input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    background: var(--color-bg-medium);
+    border: 2px solid var(--border-stone);
+    border-radius: 3px;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.save-item input[type="checkbox"]:hover {
+    border-color: var(--color-gold-dark);
+}
+
+.save-item input[type="checkbox"]:checked {
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    border-color: var(--color-gold-light);
+}
+
+.save-item input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--color-bg-dark);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
 }
 
 .save-item label {
@@ -352,14 +485,63 @@
     border: 1px solid var(--border-stone);
 }
 
+/* Checkboxes personalizados para habilidades */
 .skill-prof, .skill-exp {
-    width: 14px;
-    height: 14px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
+    background: var(--color-bg-medium);
+    border: 2px solid var(--border-stone);
+    border-radius: 3px;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.skill-prof:hover, .skill-exp:hover {
+    border-color: var(--color-gold-dark);
+    box-shadow: 0 0 5px rgba(212, 167, 38, 0.2);
+}
+
+.skill-prof:checked {
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    border-color: var(--color-gold-light);
+}
+
+.skill-prof:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--color-bg-dark);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
 }
 
 .skill-exp {
-    opacity: 0.6;
+    opacity: 0.5;
+    border-radius: 50%;
+}
+
+.skill-exp:checked {
+    opacity: 1;
+    background: linear-gradient(180deg, var(--color-magic) 0%, #3d2850 100%);
+    border-color: #7a5a9a;
+}
+
+.skill-exp:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 6px;
+    height: 6px;
+    background: var(--color-parchment);
+    border-radius: 50%;
 }
 
 .skill-item:hover .skill-exp {
@@ -526,6 +708,38 @@
         transform: scale(1.2);
         opacity: 0.7;
     }
+}
+
+/* Selects de la ficha de personaje */
+.character-sheet select {
+    width: 100%;
+    padding: 10px 40px 10px 14px;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4a726'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 18px;
+}
+
+.character-sheet select:hover {
+    border-color: var(--color-gold-dark);
+    background-color: var(--color-bg-light);
+}
+
+.character-sheet select:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 10px rgba(212, 167, 38, 0.3);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f0c845'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
 }
 
 /* Textareas */
