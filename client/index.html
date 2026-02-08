@@ -852,12 +852,13 @@
                 <div class="tab-content" id="characterTabContent">
                     <!-- TAB: Básico -->
                     <div class="tab-pane active" data-tab="basic">
-                        <div class="form-row">
-                            <div class="form-group">
+                        <!-- Fila 1: Nombre y Clase -->
+                        <div class="form-row basic-row-1">
+                            <div class="form-group form-group-name">
                                 <label for="charName">Nombre del Personaje</label>
                                 <input type="text" id="charName" placeholder="Nombre">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group form-group-class">
                                 <label for="charClass">Clase</label>
                                 <select id="charClass">
                                     <option value="">Seleccionar...</option>
@@ -876,7 +877,7 @@
                                     <option value="Artificer">Artífice</option>
                                 </select>
                             </div>
-                            <div class="form-group form-group-small">
+                            <div class="form-group form-group-level">
                                 <label>Nivel</label>
                                 <div class="level-input-wrapper">
                                     <button type="button" class="level-btn level-btn-down" data-action="decrement">-</button>
@@ -885,7 +886,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row">
+                        <!-- Fila 2: Raza, Trasfondo, Alineamiento -->
+                        <div class="form-row basic-row-2">
                             <div class="form-group">
                                 <label for="charRace">Raza</label>
                                 <select id="charRace">
@@ -923,6 +925,7 @@
                                     <option value="Other">Otro</option>
                                 </select>
                                 <input type="text" id="charBackgroundCustom" class="custom-input hidden" placeholder="Escribe tu trasfondo...">
+                            </div>
                             <div class="form-group">
                                 <label for="charAlignment">Alineamiento</label>
                                 <select id="charAlignment">
