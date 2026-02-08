@@ -524,24 +524,24 @@
 
 .skill-exp {
     opacity: 0.5;
-    border-radius: 50%;
 }
 
 .skill-exp:checked {
     opacity: 1;
-    background: linear-gradient(180deg, var(--color-magic) 0%, #3d2850 100%);
-    border-color: #7a5a9a;
+    background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    border-color: var(--color-gold-light);
 }
 
 .skill-exp:checked::after {
     content: '';
     position: absolute;
-    left: 4px;
-    top: 4px;
-    width: 6px;
-    height: 6px;
-    background: var(--color-parchment);
-    border-radius: 50%;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--color-bg-dark);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
 }
 
 .skill-item:hover .skill-exp {
