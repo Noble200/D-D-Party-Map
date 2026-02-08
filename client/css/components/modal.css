@@ -146,6 +146,37 @@
     opacity: 0.7;
 }
 
+/* Selects en form-group */
+.form-group select {
+    width: 100%;
+    padding: 12px 40px 12px 14px;
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-dark);
+    color: var(--color-text);
+    font-size: 1rem;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4a726'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+}
+
+.form-group select:hover {
+    border-color: var(--color-gold-dark);
+    background-color: var(--color-bg-light);
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 20px rgba(212, 167, 38, 0.2);
+}
+
 /* Input de código - estilo especial de runa */
 .form-group input[id*="Code"] {
     text-transform: uppercase;

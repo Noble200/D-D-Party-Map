@@ -3,7 +3,7 @@
 // ==========================================
 
 import { apiClient } from '../core/ApiClient.js';
-import { showNotification, initCustomSelects } from '../utils/helpers.js';
+import { showNotification } from '../utils/helpers.js';
 import { DEFAULT_CHARACTER, SKILL_ABILITIES } from '../config.js';
 
 class CharacterSheet {
@@ -112,8 +112,6 @@ class CharacterSheet {
 
     show() {
         this.modal.classList.add('active');
-        // Inicializar selects personalizados
-        initCustomSelects('#characterSheetModal select');
         // Actualizar todos los cálculos al mostrar
         this.updateAllCalculations();
     }
