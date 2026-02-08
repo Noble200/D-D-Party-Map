@@ -205,6 +205,94 @@
     background: var(--color-gold);
 }
 
+/* Botones de nivel */
+.level-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.level-input-wrapper input {
+    width: 50px;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 8px 4px;
+    background: var(--color-bg-medium);
+    border: 2px solid var(--border-stone);
+    border-radius: 0;
+    color: var(--color-gold);
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.level-input-wrapper input::-webkit-outer-spin-button,
+.level-input-wrapper input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.level-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-dark) 100%);
+    border: 2px solid var(--border-stone);
+    color: var(--color-gold);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.2rem;
+    font-weight: bold;
+    user-select: none;
+}
+
+.level-btn-down {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    border-right: none;
+}
+
+.level-btn-up {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    border-left: none;
+}
+
+.level-btn:hover {
+    background: linear-gradient(180deg, var(--color-gold-dark) 0%, var(--color-gold) 100%);
+    color: var(--color-bg-dark);
+    border-color: var(--color-gold);
+}
+
+.level-btn:active {
+    transform: scale(0.9);
+    background: var(--color-gold);
+}
+
+/* Campos custom para raza/trasfondo "Otro" */
+.custom-input {
+    margin-top: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--color-gold-dark);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 10px rgba(212, 167, 38, 0.3);
+}
+
+.custom-input.hidden {
+    display: none;
+}
+
 .ability-modifier {
     display: block;
     margin-top: 8px;

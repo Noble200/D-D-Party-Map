@@ -45,6 +45,12 @@ class CharacterSheet {
         // Listener de nivel para bonus de competencia
         document.getElementById('charLevel').addEventListener('change', () => this.updateAllCalculations());
 
+        // Listeners de botones de nivel +/-
+        this.initLevelButtons();
+
+        // Listeners para campos custom (raza/trasfondo "Otro")
+        this.initCustomFieldListeners();
+
         // Listeners de tiradas de salvación
         this.initSavingThrowListeners();
 
@@ -94,6 +100,65 @@ class CharacterSheet {
                 checkbox.addEventListener('change', () => this.updateSavingThrows());
             }
         });
+    }
+
+    // Botones de nivel +/-
+    initLevelButtons() {
+        const levelInput = document.getElementById('charLevel');
+        const btnDown = this.modal.querySelector('.level-btn-down');
+        const btnUp = this.modal.querySelector('.level-btn-up');
+
+        if (btnDown) {
+            btnDown.addEventListener('click', () => {
+                const current = parseInt(levelInput.value) || 1;
+                if (current > 1) {
+                    levelInput.value = current - 1;
+                    this.updateAllCalculations();
+                }
+            });
+        }
+
+        if (btnUp) {
+            btnUp.addEventListener('click', () => {
+                const current = parseInt(levelInput.value) || 1;
+                if (current < 20) {
+                    levelInput.value = current + 1;
+                    this.updateAllCalculations();
+                }
+            });
+        }
+    }
+
+    // Campos custom para "Otra" raza y "Otro" trasfondo
+    initCustomFieldListeners() {
+        const raceSelect = document.getElementById('charRace');
+        const raceCustom = document.getElementById('charRaceCustom');
+        const bgSelect = document.getElementById('charBackground');
+        const bgCustom = document.getElementById('charBackgroundCustom');
+
+        if (raceSelect && raceCustom) {
+            raceSelect.addEventListener('change', () => {
+                if (raceSelect.value === 'Other') {
+                    raceCustom.classList.remove('hidden');
+                    raceCustom.focus();
+                } else {
+                    raceCustom.classList.add('hidden');
+                    raceCustom.value = '';
+                }
+            });
+        }
+
+        if (bgSelect && bgCustom) {
+            bgSelect.addEventListener('change', () => {
+                if (bgSelect.value === 'Other') {
+                    bgCustom.classList.remove('hidden');
+                    bgCustom.focus();
+                } else {
+                    bgCustom.classList.add('hidden');
+                    bgCustom.value = '';
+                }
+            });
+        }
     }
 
     switchTab(tabName) {
@@ -325,12 +390,24 @@ class CharacterSheet {
 
     // Obtener datos del formulario
     getCharacterData() {
+        // Obtener raza (custom si es "Other")
+        const raceSelect = document.getElementById('charRace')?.value || '';
+        const raceCustom = document.getElementById('charRaceCustom')?.value || '';
+        const race = raceSelect === 'Other' ? raceCustom : raceSelect;
+
+        // Obtener trasfondo (custom si es "Other")
+        const bgSelect = document.getElementById('charBackground')?.value || '';
+        const bgCustom = document.getElementById('charBackgroundCustom')?.value || '';
+        const background = bgSelect === 'Other' ? bgCustom : bgSelect;
+
         return {
             name: document.getElementById('charName')?.value || '',
             class: document.getElementById('charClass')?.value || '',
             level: parseInt(document.getElementById('charLevel')?.value) || 1,
-            race: document.getElementById('charRace')?.value || '',
-            background: document.getElementById('charBackground')?.value || '',
+            race: race,
+            raceCustom: raceSelect === 'Other' ? raceCustom : '',
+            background: background,
+            backgroundCustom: bgSelect === 'Other' ? bgCustom : '',
             alignment: document.getElementById('charAlignment')?.value || '',
             xp: parseInt(document.getElementById('charXP')?.value) || 0,
 
@@ -416,8 +493,33 @@ class CharacterSheet {
         document.getElementById('charName').value = data.name || '';
         document.getElementById('charClass').value = data.class || '';
         document.getElementById('charLevel').value = data.level || 1;
-        document.getElementById('charRace').value = data.race || '';
-        document.getElementById('charBackground').value = data.background || '';
+
+        // Raza - verificar si es custom
+        const raceSelect = document.getElementById('charRace');
+        const raceCustom = document.getElementById('charRaceCustom');
+        if (data.raceCustom) {
+            raceSelect.value = 'Other';
+            raceCustom.value = data.raceCustom;
+            raceCustom.classList.remove('hidden');
+        } else {
+            raceSelect.value = data.race || '';
+            raceCustom.value = '';
+            raceCustom.classList.add('hidden');
+        }
+
+        // Trasfondo - verificar si es custom
+        const bgSelect = document.getElementById('charBackground');
+        const bgCustom = document.getElementById('charBackgroundCustom');
+        if (data.backgroundCustom) {
+            bgSelect.value = 'Other';
+            bgCustom.value = data.backgroundCustom;
+            bgCustom.classList.remove('hidden');
+        } else {
+            bgSelect.value = data.background || '';
+            bgCustom.value = '';
+            bgCustom.classList.add('hidden');
+        }
+
         document.getElementById('charAlignment').value = data.alignment || '';
         document.getElementById('charXP').value = data.xp || 0;
 
