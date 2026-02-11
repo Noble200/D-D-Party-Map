@@ -34,7 +34,7 @@ class DnDMapApp {
         this.init();
     }
 
-    init() {
+    async init() {
         // Inicializar vistas
         this.homeView = new HomeView(this);
         this.roomMenuView = new RoomMenuView(this);
@@ -42,9 +42,9 @@ class DnDMapApp {
         this.adminEditorView = new AdminEditorView(this);
         this.playerView = new PlayerView(this);
 
-        // Inicializar componentes
+        // Inicializar componentes (CharacterSheet es async para cargar JSON de razas)
         this.characterSheet = new CharacterSheet(this);
-        this.characterSheet.init();
+        await this.characterSheet.init();
         this.mapSelector = new MapSelector(this);
         this.mapSelector.init();
 

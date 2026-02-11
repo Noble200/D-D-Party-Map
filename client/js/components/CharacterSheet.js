@@ -122,6 +122,9 @@ class CharacterSheet {
         const raceSelect = document.getElementById('charRace');
         const raceKey = raceSelect.value;
 
+        console.log('onRaceChange llamado, raza:', raceKey);
+        console.log('raceData cargado:', this.raceDataLoaded);
+
         // Limpiar bonificadores anteriores
         this.clearRaceBonuses();
 
@@ -132,7 +135,10 @@ class CharacterSheet {
         }
 
         const raceInfo = this.getRaceInfo(raceKey);
+        console.log('raceInfo obtenido:', raceInfo);
+
         if (!raceInfo) {
+            console.warn('No se encontró info para la raza:', raceKey);
             this.hideRaceInfo();
             this.hideSubraceSelect();
             return;
@@ -140,9 +146,14 @@ class CharacterSheet {
 
         // Mostrar u ocultar selector de subraza
         if (raceInfo.subraces) {
+            console.log('Raza tiene subrrazas:', Object.keys(raceInfo.subraces));
             this.populateSubraces(raceInfo.subraces);
             this.showSubraceSelect();
+            // También mostrar info de la raza base y aplicar bonificadores base
+            this.applyRaceBonuses(raceInfo);
+            this.updateRaceInfo(raceInfo);
         } else {
+            console.log('Raza sin subrrazas, aplicando bonificadores directamente');
             this.hideSubraceSelect();
             // Aplicar bonificadores de raza base
             this.applyRaceBonuses(raceInfo);
