@@ -1,0 +1,880 @@
+{
+  "Acolyte": {
+    "name": "Acólito",
+    "description": "Has pasado tu vida al servicio de un templo dedicado a un dios o panteón específico. Actúas como intermediario entre el reino de lo sagrado y el mundo de los mortales.",
+    "skillProficiencies": ["insight", "religion"],
+    "toolProficiencies": [],
+    "languages": {
+      "choose": 2,
+      "from": "any"
+    },
+    "equipment": [
+      "Símbolo sagrado",
+      "Libro de oraciones o rueda de plegarias",
+      "5 barritas de incienso",
+      "Vestiduras",
+      "Ropa común",
+      "Bolsa con 15 po"
+    ],
+    "startingGold": 15,
+    "feature": {
+      "name": "Refugio de los Fieles",
+      "description": "Como acólito, mereces el respeto de aquellos que comparten tu fe y puedes realizar las ceremonias religiosas de tu deidad. Tus compañeros de aventuras y tú podéis recibir sanación gratuita y atención en un templo, santuario, u otra presencia establecida de tu fe. Aquellos que comparten tu religión te podrán proporcionar un estilo de vida modesto."
+    },
+    "personalityTraits": [
+      "Idolatro a un héroe en particular de mi fe, y hago referencia constantemente a las vivencias y el ejemplo de esa persona.",
+      "Puedo encontrar un objetivo común hasta con los enemigos más feroces, empatizar con ellos y trabajar siempre hacia la paz.",
+      "Veo presagios en cualquier acontecimiento y acción. Los dioses tratan de hablar con nosotros, sólo tenemos que escuchar.",
+      "Nada puede hacer tambalear mi actitud optimista.",
+      "Cito (o incorrectamente cito) los textos sagrados y proverbios en casi cualquier situación.",
+      "Soy tolerante (o intolerante) hacia otras religiones y respeto (o condeno) la adoración de otros dioses.",
+      "He disfrutado de la buena comida, bebida y la alta sociedad entre la élite de mi templo. Me incomoda la vida ruda.",
+      "He pasado tanto tiempo en el templo que tengo poca experiencia práctica en el trato con personas del mundo exterior."
+    ],
+    "ideals": [
+      { "name": "Tradición", "description": "Las antiguas tradiciones de culto y sacrificio deben ser preservadas y defendidas.", "alignment": "Legal" },
+      { "name": "Caridad", "description": "Yo siempre trato de ayudar a los necesitados, sin importar el coste personal.", "alignment": "Bueno" },
+      { "name": "Cambio", "description": "Debemos ayudar para que se logren los cambios que los dioses maquilan constantemente para el mundo.", "alignment": "Caótico" },
+      { "name": "Poder", "description": "Espero llegar algún día a la cima de la jerarquía religiosa de mi fe.", "alignment": "Legal" },
+      { "name": "Fe", "description": "Confío en que mi deidad guiará mis acciones. Tengo fe en que si trabajo duro, las cosas irán bien.", "alignment": "Legal" },
+      { "name": "Aspiración", "description": "Trato de probarme a mí mismo ser merecedor de los favores de mi dios, comparando mis acciones con sus enseñanzas.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "Daría mi vida para recuperar una antigua reliquia de mi fe que se perdió hace mucho tiempo.",
+      "Algún día me vengaré de la corrupta jerarquía del templo que me tachó de hereje.",
+      "Le debo mi vida al sacerdote que me acogió cuando mis padres murieron.",
+      "Todo lo que hago es para la gente común.",
+      "Haré cualquier cosa para proteger el templo donde serví.",
+      "Busco preservar un texto sagrado que mis enemigos consideran herético y tratan de destruir."
+    ],
+    "flaws": [
+      "Juzgo a otros con dureza, y a mí mismo aún más severamente.",
+      "Pongo demasiada confianza en quienes ejercen el poder dentro de la jerarquía de mi templo.",
+      "Mi piedad a veces me lleva a confiar ciegamente en los que profesan la fe en mi Dios.",
+      "Soy inflexible en mi pensamiento.",
+      "Soy desconfiado con los extraños y espero lo peor de ellos.",
+      "Una vez que tengo un objetivo, me obsesiono con él en detrimento de todo lo demás en mi vida."
+    ]
+  },
+
+  "GuildArtisan": {
+    "name": "Artesano Gremial",
+    "description": "Eres miembro de un gremio de artesanos, especializado en un campo particular. Eres una parte bien establecida del mundo mercantil, liberado por tu talento y riqueza de las limitaciones de la sociedad feudal.",
+    "skillProficiencies": ["insight", "persuasion"],
+    "toolProficiencies": [],
+    "toolProficiencyChoices": {
+      "choose": 1,
+      "from": "artisan"
+    },
+    "languages": {
+      "choose": 1,
+      "from": "any"
+    },
+    "equipment": [
+      "Set de herramientas de artesano (a elección)",
+      "Carta de introducción del gremio",
+      "Ropa de viaje",
+      "Bolsa con 15 po"
+    ],
+    "startingGold": 15,
+    "feature": {
+      "name": "Membresía del Gremio",
+      "description": "Como miembro de un gremio establecido y respetado, tus compañeros de gremio te proveerán alojamiento y comida si la necesitas y pagarán por tu funeral si es necesario. Los gremios a menudo poseen gran peso político. Si eres acusado de un crimen, tu gremio te apoyará si es factible presentar una buena defensa. También ganas acceso a poderosas figuras políticas a través del gremio. Debes pagar 5 po por mes al gremio."
+    },
+    "guildOccupations": [
+      "Alquimistas y boticarios",
+      "Armeros, cerrajeros y orfebres",
+      "Cerveceros, destiladores y vinateros",
+      "Calígrafos, escribas y escribanos",
+      "Carpinteros, techadores y yeseros",
+      "Cartógrafos, topógrafos y delineantes",
+      "Zapateros y remendones",
+      "Cocineros y panaderos",
+      "Vidrieros y sopladores de vidrio",
+      "Joyeros y talladores de gemas",
+      "Desolladores, peleteros y curtidores",
+      "Albañiles y canteros",
+      "Pintores, rotulistas y retratistas",
+      "Alfareros y azulejeros",
+      "Carpinteros de barcos y fabricantes de velas",
+      "Herreros y forjadores",
+      "Hojalateros, estañeros y vertedores",
+      "Fabricantes de ruedas y vagones",
+      "Tejedores y tintoreros",
+      "Talladores, toneleros y fabricantes de arcos"
+    ],
+    "personalityTraits": [
+      "Creo que cualquier cosa que valga la pena hacerse, vale la pena hacerlo bien. No puedo evitarlo, soy un perfeccionista.",
+      "Soy un engreído que mira con desprecio a aquellos que no pueden apreciar el arte.",
+      "Siempre quiero saber cómo funcionan las cosas y qué mueve a la gente.",
+      "Conozco cientos de ingeniosos aforismos y tengo un proverbio para cada ocasión.",
+      "Soy grosero con la gente que no tiene mi compromiso por el trabajo duro y las reglas justas.",
+      "Me gusta hablar largo y tendido sobre mi profesión.",
+      "No me separo con facilidad de mi dinero y regatearé para conseguir el mejor trato posible.",
+      "Soy bien conocido por mi trabajo, y quiero asegurarme de que todo el mundo lo aprecia."
+    ],
+    "ideals": [
+      { "name": "Comunidad", "description": "Es el deber de todas las personas civilizadas reforzar los vínculos de la comunidad y la seguridad de la civilización.", "alignment": "Legal" },
+      { "name": "Generosidad", "description": "Mis talentos me fueron dados para que pudiera usarlos para beneficiar al mundo.", "alignment": "Bueno" },
+      { "name": "Libertad", "description": "Cada uno debería ser libre de perseguir su propio estilo de vida.", "alignment": "Caótico" },
+      { "name": "Avaricia", "description": "Sólo estoy en esto por el dinero.", "alignment": "Maligno" },
+      { "name": "Gente", "description": "Estoy comprometido con la gente que me importa, no con un ideal.", "alignment": "Neutral" },
+      { "name": "Aspiración", "description": "Trabajo duro para ser el mejor en mi oficio.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "El taller donde aprendí mi oficio es el lugar más importante en el mundo para mí.",
+      "Creé una gran obra para alguien, y después lo encontré indigno de recibirla. Todavía busco a alguien que sea digno.",
+      "Le debo mucho a mi gremio por convertirme en la persona que ahora soy.",
+      "Busco riquezas para asegurarme el amor de alguien.",
+      "Algún día, volveré a mi gremio y probaré que soy el más grande artesano.",
+      "Me vengaré de las malvadas fuerzas que destruyeron mi lugar de trabajo y arruinaron mi estilo de vida."
+    ],
+    "flaws": [
+      "Haré cualquier cosa para poner mis manos sobre algo raro o valioso.",
+      "Rápidamente asumo que la gente trata de engañarme.",
+      "Nadie debe saber que una vez robé de las arcas del gremio.",
+      "Nunca estoy satisfecho con lo que tengo, siempre quiero más.",
+      "Mataría para adquirir un título de nobleza.",
+      "Estoy horriblemente celoso de cualquiera que pueda eclipsar mi trabajo manual."
+    ],
+    "variant": {
+      "name": "Mercader del Gremio",
+      "description": "En lugar de a un gremio de artesanos, podrías pertenecer a un gremio de comerciantes, mercaderes o dueños de caravanas. En lugar de competencia con herramientas de artesano, podrías ser competente con herramientas de navegación, o un idioma adicional."
+    }
+  },
+
+  "Entertainer": {
+    "name": "Artista",
+    "description": "Te creces frente a una audiencia. Sabes cómo deleitarlos, entretenerlos e incluso cómo inspirarlos. Tu poesía puede agitar los corazones, tu música eleva sus espíritus, tus pasos de danza cautivan.",
+    "skillProficiencies": ["acrobatics", "performance"],
+    "toolProficiencies": ["kit de disfraz"],
+    "toolProficiencyChoices": {
+      "choose": 1,
+      "from": "musical instruments"
+    },
+    "languages": null,
+    "equipment": [
+      "Instrumento musical (a elección)",
+      "Favor de un admirador (carta de amor, mechón de pelo o baratija)",
+      "Disfraz",
+      "Bolsa con 15 po"
+    ],
+    "startingGold": 15,
+    "feature": {
+      "name": "A Petición Popular",
+      "description": "Siempre puedes encontrar un lugar para actuar, generalmente en una posada o taberna, pero posiblemente en un circo, teatro o incluso en la corte de un noble. Recibirás alojamiento y comida modesta o confortable gratuitos, siempre y cuando actúes cada noche. Tu actuación te convierte en algo así como una figura local."
+    },
+    "artisticSpecialties": [
+      "Actor",
+      "Bailarín",
+      "Tragafuegos",
+      "Bufón",
+      "Malabarista",
+      "Instrumentista",
+      "Poeta",
+      "Cantante",
+      "Narrador",
+      "Acróbata"
+    ],
+    "personalityTraits": [
+      "Conozco una historia relevante para casi todas las situaciones.",
+      "Cada vez que vengo a un lugar nuevo, colecciono rumores locales y difundo chismes.",
+      "Soy un romántico empedernido, siempre en busca de 'ese alguien especial'.",
+      "Nadie permanece enfadado conmigo o a mi alrededor durante mucho tiempo, ya que puedo disipar cualquier cantidad de tensión.",
+      "Me encanta un buen insulto, incluso uno dirigido a mí.",
+      "Mi carácter se amarga si no soy el centro de atención.",
+      "Sólo me conformo con la perfección.",
+      "Puedo cambiar mi estado de ánimo o mi manera de pensar tan rápido como cambio la tonalidad de una canción."
+    ],
+    "ideals": [
+      { "name": "Belleza", "description": "Cuando actúo, hago del mundo algo mejor de lo que era.", "alignment": "Bueno" },
+      { "name": "Tradición", "description": "Las historias, leyendas y canciones del pasado nunca deberían ser olvidadas, porque nos enseñan quiénes somos.", "alignment": "Legal" },
+      { "name": "Creatividad", "description": "El mundo está necesitado de ideas nuevas y acciones audaces.", "alignment": "Caótico" },
+      { "name": "Codicia", "description": "Sólo estoy en esto por el dinero y la fama.", "alignment": "Maligno" },
+      { "name": "Personas", "description": "Me gusta ver las sonrisas en las caras de las personas cuando actúo. Eso es todo lo que importa.", "alignment": "Neutral" },
+      { "name": "Honestidad", "description": "El arte debe reflejar el alma; debe salir de dentro y revelar lo que realmente somos.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "Mi instrumento es mi posesión más preciada y me recuerda a alguien que amo.",
+      "Alguien robó mi preciado instrumento, y algún día lo recuperaré.",
+      "Quiero ser famoso, cueste lo que cueste.",
+      "Idolatro a un héroe de los viejos cuentos y mido mis actos conforme a los suyos.",
+      "Haré cualquier cosa para demostrarle mi superioridad a mi odiado rival.",
+      "Haría cualquier cosa por los demás miembros de mi antiguo grupo de teatro."
+    ],
+    "flaws": [
+      "Haré cualquier cosa para obtener fama y renombre.",
+      "Me pierdo por una cara bonita.",
+      "Un escándalo me impide volver a mi hogar. Este tipo de problemas parecen perseguirme.",
+      "Una vez ridiculicé a un noble que todavía quiere mi cabeza. Fue un error que probablemente vuelva a repetir.",
+      "Tengo problemas para mantener mis verdaderos sentimientos ocultos. Mi afilada lengua me suele meter en líos.",
+      "A pesar de mis esfuerzos, para mis amigos no soy una persona de fiar."
+    ],
+    "variant": {
+      "name": "Gladiador",
+      "description": "Un gladiador es tan artista como cualquier juglar, capacitado para convertir las artes del combate en un espectáculo. Puedes sustituir el instrumento musical del equipo por un arma barata pero poco común, como un tridente o una red."
+    }
+  },
+
+  "Charlatan": {
+    "name": "Charlatán",
+    "description": "Siempre has tenido mano con la gente. Sabes qué los motiva, puedes desentrañar los deseos de sus corazones tras apenas unos minutos de conversación. Es un talento útil que estás perfectamente dispuesto a utilizar en tu favor.",
+    "skillProficiencies": ["deception", "sleightOfHand"],
+    "toolProficiencies": ["kit de disfraz", "kit de falsificación"],
+    "languages": null,
+    "equipment": [
+      "Ropa fina",
+      "Kit de disfraz",
+      "Herramientas de estafa (dados cargados, cartas marcadas, etc.)",
+      "Bolsa con 15 po"
+    ],
+    "startingGold": 15,
+    "feature": {
+      "name": "Identidad Falsa",
+      "description": "Te has creado una segunda identidad que incluye documentación, contactos establecidos y disfraces que te permiten asumir ese personaje. Además, puedes falsificar documentos oficiales y cartas personales, siempre y cuando hayas visto un ejemplo de la clase de documento o escritura que estás tratando de copiar."
+    },
+    "favoriteSchemes": [
+      "Hago trampa en los juegos de azar.",
+      "Falsifico monedas o documentos.",
+      "Me introduzco en la vida de la gente para aprovecharme de su debilidad y 'asegurar' sus fortunas.",
+      "Cambio de identidad con tanta facilidad como cambio de ropa.",
+      "Hago estafas de prestidigitador en las esquinas de las calles.",
+      "Convenzo a la gente de que la basura sin valor bien vale su dinero duramente ganado."
+    ],
+    "personalityTraits": [
+      "Me enamoro con facilidad y siempre estoy persiguiendo alguien.",
+      "Tengo una broma para cada ocasión, en especial en ocasiones en las que el humor es inapropiado.",
+      "La adulación es mi truco preferido para conseguir lo que quiero.",
+      "Soy un jugador nato que no puede resistirse a arriesgarse por una potencial recompensa.",
+      "Miento sobre casi todo, incluso cuando no hay una buena razón para hacerlo.",
+      "El sarcasmo y los insultos son mis armas predilectas.",
+      "Llevo encima varios símbolos sagrados e invoco a cualquier deidad que pueda resultarme útil en el momento.",
+      "Me meto en el bolsillo cualquier cosa que parezca que pueda tener algún valor."
+    ],
+    "ideals": [
+      { "name": "Independencia", "description": "Soy un espíritu libre, nadie me dice lo que he de hacer.", "alignment": "Caótico" },
+      { "name": "Equidad", "description": "Nunca estafo a gente que no se pueda permitir el lujo de perder unas cuantas monedas.", "alignment": "Legal" },
+      { "name": "Caridad", "description": "Distribuyo el dinero que adquiero a la gente que realmente lo necesita.", "alignment": "Bueno" },
+      { "name": "Creatividad", "description": "Nunca utilizo la misma estafa dos veces.", "alignment": "Caótico" },
+      { "name": "Amistad", "description": "Los bienes materiales van y vienen. Los vínculos de la amistad duran para siempre.", "alignment": "Bueno" },
+      { "name": "Aspiración", "description": "Estoy decidido a hacer algo de mí mismo.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "He esquilmado a la persona equivocada y debo asegurarme que este individuo nunca se cruce conmigo.",
+      "Le debo todo a mi mentor, una persona horrible que probablemente esté pudriéndose en alguna cárcel.",
+      "En algún lugar por ahí, tengo un hijo que no me conoce. Estoy haciendo un mundo mejor para él o ella.",
+      "Provengo de una familia noble, y un día reclamaré mis tierras y el título que me robaron.",
+      "Una persona poderosa mató a alguien a quien amaba. Algún día tendré mi venganza.",
+      "Estafé y arruiné a una persona que no lo merecía. He tratado de expiar mis malas acciones."
+    ],
+    "flaws": [
+      "No puedo resistirme a una cara bonita.",
+      "Siempre estoy endeudado. Gasto mis mal adquiridas ganancias en lujos decadentes más rápido de lo que las obtengo.",
+      "Estoy convencido de que nadie me puede engañar del modo en que yo engaño a los demás.",
+      "Soy demasiado codicioso para mi propia seguridad. No puedo resistir a arriesgarme si hay dinero involucrado.",
+      "No puedo resistirme a estafar a la gente que es más poderosa que yo.",
+      "Odio admitirlo, pero voy a correr y conservar mi propio pellejo si las cosas se ponen difíciles."
+    ]
+  },
+
+  "Criminal": {
+    "name": "Criminal",
+    "description": "Eres un criminal experimentado con un historial delictivo. Has pasado mucho tiempo entre criminales y todavía tienes contactos dentro del mundo criminal.",
+    "skillProficiencies": ["deception", "stealth"],
+    "toolProficiencies": ["herramientas de ladrón"],
+    "toolProficiencyChoices": {
+      "choose": 1,
+      "from": "gaming sets"
+    },
+    "languages": null,
+    "equipment": [
+      "Barreta",
+      "Ropa común oscura con capucha",
+      "Bolsa con 15 po"
+    ],
+    "startingGold": 15,
+    "feature": {
+      "name": "Contacto Criminal",
+      "description": "Tienes un contacto de confianza que actúa como enlace con una red de delincuentes. Sabes cómo hacerles llegar mensajes y te los envíen mediante ese contacto, incluso a grandes distancias; conoces los mensajeros locales, conductores de caravana corruptos y marineros de mala muerte que te pueden entregar mensajes."
+    },
+    "criminalSpecialties": [
+      "Chantajista",
+      "Ladrón",
+      "Sicario",
+      "Matón",
+      "Asaltador de caminos",
+      "Asesino a sueldo",
+      "Carterista",
+      "Contrabandista"
+    ],
+    "personalityTraits": [
+      "Siempre tengo un plan sobre qué hacer cuando las cosas van mal.",
+      "Siempre estoy tranquilo, no importa cuál sea la situación. Nunca levanto la voz o dejo que mis emociones me controlen.",
+      "La primera cosa que hago en un lugar nuevo es tomar nota de las ubicaciones de todo lo valioso.",
+      "Prefiero hacer un nuevo amigo que un nuevo enemigo.",
+      "Soy increíblemente lento en fiarme de alguien. Aquellos que parecen los más justos a menudo tienen más que ocultar.",
+      "No presto atención a los riesgos de una situación. Nunca me digan las posibilidades de tener o no éxito.",
+      "La mejor manera de que llegue a hacer algo es decirme que no puedo hacerlo.",
+      "Golpeo al menor insulto."
+    ],
+    "ideals": [
+      { "name": "Honor", "description": "No robo a otros de mi grupo.", "alignment": "Legal" },
+      { "name": "Libertad", "description": "Las cadenas están hechas para romperse, así como aquellos que las forjan.", "alignment": "Caótico" },
+      { "name": "Caridad", "description": "Robo a los ricos para poder ayudar a las personas necesitadas.", "alignment": "Bueno" },
+      { "name": "Codicia", "description": "Haré todo lo necesario para convertirme en alguien rico.", "alignment": "Maligno" },
+      { "name": "Personas", "description": "Soy leal a mis amigos, no a los ideales.", "alignment": "Neutral" },
+      { "name": "Redención", "description": "Hay una chispa de bondad en todos.", "alignment": "Bueno" }
+    ],
+    "bonds": [
+      "Estoy tratando de saldar una vieja deuda que le debo a un generoso benefactor.",
+      "Mis mal obtenidas ganancias son para mantener a mi familia.",
+      "Algo importante me fue substraído y mi objetivo es robarlo de nuevo.",
+      "Seré el ladrón más grande que jamás haya existido.",
+      "Soy culpable de un terrible crimen. Espero que pueda redimirme por ello.",
+      "Alguien que amaba murió a causa de un error que cometí. Nunca volverá a suceder."
+    ],
+    "flaws": [
+      "Cuando veo algo valioso, no puedo pensar en nada más que en la forma de robarlo.",
+      "Cuando me enfrento a una elección entre el dinero y mis amigos, por lo general elijo el dinero.",
+      "Si hay un plan, lo olvidaré. Si no lo olvido, lo ignoraré.",
+      "Tengo un 'algo' que revela cuándo estoy mintiendo.",
+      "Cuando las cosas se ponen feas, doy la vuelta y corro.",
+      "Una persona inocente está en la cárcel por un crimen que cometí. Y no me arrepiento de ello."
+    ],
+    "variant": {
+      "name": "Espía",
+      "description": "Aunque tus capacidades no son muy diferentes de las de un ladrón o contrabandista, aprendiste y practicaste en un contexto muy diferente: el de un agente de espionaje."
+    }
+  },
+
+  "Hermit": {
+    "name": "Ermitaño",
+    "description": "Vivías en la reclusión, ya sea en una comunidad resguardada como un monasterio o completamente solo, por una parte importante de tu vida. Encontraste quietud, soledad, y quizá alguna de las respuestas que buscabas.",
+    "skillProficiencies": ["medicine", "religion"],
+    "toolProficiencies": ["kit de herboristería"],
+    "languages": {
+      "choose": 1,
+      "from": "any"
+    },
+    "equipment": [
+      "Rollo de pergamino con notas de estudios o plegarias",
+      "Frazada de invierno",
+      "Ropa común",
+      "Kit de herboristería",
+      "Bolsa con 5 po"
+    ],
+    "startingGold": 5,
+    "feature": {
+      "name": "Descubrimiento",
+      "description": "La reclusión pacífica de tu extendido aislamiento te dio acceso a un único y poderoso descubrimiento. Podría ser una gran verdad acerca del cosmos, las deidades, los seres poderosos de otros planos o las fuerzas de la naturaleza. Podría ser un sitio que nadie más vio nunca, o información potencialmente dañina."
+    },
+    "lifeOfSeclusion": [
+      "Buscaba iluminación espiritual.",
+      "Estaba participando de un estilo de vida comunal de acuerdo con los dictados de una orden religiosa.",
+      "Fui exiliado por un crimen que no cometí.",
+      "Me retiré de la sociedad después de un evento que alteró mi vida.",
+      "Necesitaba un lugar tranquilo para trabajar en mi pintura, literatura, música o manifiesto.",
+      "Necesitaba armonizar con la naturaleza, lejos de la civilización.",
+      "Era el cuidador de una reliquia o ruina antigua.",
+      "Era un peregrino en busca de una persona, lugar o reliquia de importancia espiritual."
+    ],
+    "personalityTraits": [
+      "Estuve aislado por tanto tiempo que raramente hablo, prefiriendo los gestos y algún gruñido ocasional.",
+      "Estoy absolutamente calmado, incluso ante el desastre.",
+      "El líder de mi comunidad tenía algo sabio que decir sobre todos los temas, y estoy deseoso de compartir su sabiduría.",
+      "Siento tremenda empatía por todos los que sufren.",
+      "No soy consciente de la etiqueta y las expectativas sociales.",
+      "Conecto todo lo que me ocurre con un gran plan cósmico.",
+      "A menudo me pierdo en mis propios pensamientos, sin ser consciente de mi entorno.",
+      "Trabajo en una gran teoría filosófica y amo compartir mis ideas."
+    ],
+    "ideals": [
+      { "name": "Bien Mayor", "description": "Mis dones están destinados a ser compartidos con todos, no a ser usados para mi propio beneficio.", "alignment": "Bueno" },
+      { "name": "Lógica", "description": "Las emociones no deben nublar nuestro sentido de lo que es correcto y verdadero, o nuestro razonamiento lógico.", "alignment": "Legal" },
+      { "name": "Libre Pensamiento", "description": "La investigación y la curiosidad son los pilares del progreso.", "alignment": "Caótico" },
+      { "name": "Poder", "description": "La soledad y la contemplación son caminos para el poder místico o mágico.", "alignment": "Maligno" },
+      { "name": "Vive y Deja Vivir", "description": "Inmiscuirse en los asuntos de otros sólo genera problemas.", "alignment": "Neutral" },
+      { "name": "Auto-Conocimiento", "description": "Si te conoces a ti mismo, no hay nada más que conocer.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "Nada es más importante que los demás miembros de mi orden o asociación ermitaña.",
+      "Me recluí para ocultarme de aquellos que aun me deben estar dando caza. Algún día deberé confrontarlos.",
+      "Aun busco la iluminación que perseguía durante mi reclusión, y aun me elude.",
+      "Entré en reclusión porque amaba a alguien a quien no podía tener.",
+      "Si aquello que descubrí saliera a la luz, traería la ruina al mundo.",
+      "Mi aislamiento me ha dado una gran comprensión sobre un gran mal que solo yo puedo destruir."
+    ],
+    "flaws": [
+      "Ahora que he regresado al mundo, disfruto sus deleites quizás demasiado.",
+      "Tengo pensamientos obscuros y sanguinarios que mi aislamiento y meditación no pudieron remediar.",
+      "Soy dogmático en cuanto a mis pensamientos y filosofía.",
+      "Permito que mi necesidad por ganar discusiones se anteponga a la amistad y la armonía.",
+      "Podría arriesgar mucho para descubrir un poco de conocimiento perdido.",
+      "Me gusta guardar secretos y no los compartiría con nadie."
+    ]
+  },
+
+  "Outlander": {
+    "name": "Forastero",
+    "description": "Creciste en las tierras salvajes, lejos de la civilización y del confort de la ciudad y la tecnología. Has sido testigo de la migración de rebaños grandes como bosques enteros, sobrevivido a un clima más extremo que el que cualquier habitante de la ciudad haya podido padecer.",
+    "skillProficiencies": ["athletics", "survival"],
+    "toolProficiencies": [],
+    "toolProficiencyChoices": {
+      "choose": 1,
+      "from": "musical instruments"
+    },
+    "languages": {
+      "choose": 1,
+      "from": "any"
+    },
+    "equipment": [
+      "Bastón",
+      "Trampa de caza",
+      "Trofeo de un animal que mataste",
+      "Ropa de viajero",
+      "Bolsa con 10 po"
+    ],
+    "startingGold": 10,
+    "feature": {
+      "name": "Viajero",
+      "description": "Tienes una excelente memoria para los mapas y la geografía y siempre puedes recordar la disposición general del terreno, los asentamientos y otras circunstancias de entorno. Además, puedes encontrar comida y agua fresca para ti y para otras cinco personas cada día, siempre y cuando la tierra tenga recursos disponibles."
+    },
+    "origins": [
+      "Guardabosques",
+      "Trampero",
+      "Colono",
+      "Guía",
+      "Exiliado o paria",
+      "Cazarrecompensas",
+      "Peregrino",
+      "Nómada",
+      "Cazador-recolector",
+      "Saqueador"
+    ],
+    "personalityTraits": [
+      "Me impulsa una pasión por los viajes que me condujo muy lejos de mi hogar.",
+      "Cuido a mis amigos como si fueran una camada de cachorros recién nacidos.",
+      "Una vez corrí veinticinco millas sin parar para advertir a mi clan que una horda de orcos se aproximaba. Lo haría de nuevo.",
+      "Tengo una lección para cada situación, extraída a partir de la observación de la naturaleza.",
+      "No tengo muy buena opinión de la gente adinerada o de buenos modales.",
+      "Siempre estoy cogiendo cosas, toqueteándolas con aire ausente y, a veces, rompiéndolas.",
+      "Me siento mucho más cómodo con los animales que con las personas.",
+      "Fui, de hecho, criado por los lobos."
+    ],
+    "ideals": [
+      { "name": "Cambio", "description": "La vida es como las estaciones del año, en constante cambio, y debemos cambiar con ella.", "alignment": "Caótico" },
+      { "name": "Bien Mayor", "description": "Es responsabilidad de cada persona procurar la máxima felicidad para la totalidad de la tribu.", "alignment": "Bueno" },
+      { "name": "Honor", "description": "Si me deshonro a mí mismo, deshonro a todo mi clan.", "alignment": "Legal" },
+      { "name": "Poder", "description": "Los más fuertes están destinados a gobernar.", "alignment": "Maligno" },
+      { "name": "Naturaleza", "description": "El mundo natural es más importante que todas las creaciones de la civilización.", "alignment": "Neutral" },
+      { "name": "Gloria", "description": "Debo ganar gloria en batalla, para mí y para mi clan.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "Mi familia, clan o tribu es lo más importante en mi vida, incluso cuando están lejos de mí.",
+      "Una agresión contra las tierras vírgenes de mi hogar es una agresión contra mi persona.",
+      "Arrojaré mi terrible ira sobre los criminales que destruyeron mi patria.",
+      "Soy el último de mi tribu y a mí me corresponde asegurar que sus nombres se conviertan en leyenda.",
+      "Sufro unas espantosas visiones de un desastre que se avecina y haré cualquier cosa para evitarlo.",
+      "Es mi deber de proporcionar descendencia a mi tribu para su perpetuación."
+    ],
+    "flaws": [
+      "Soy demasiado aficionado a la cerveza, el vino y otras bebidas embriagantes.",
+      "No hay lugar para la precaución cuando se vive al máximo.",
+      "Recuerdo todos los insultos que he recibido y albergo un resentimiento silencioso hacia toda persona que alguna vez me ha ofendido.",
+      "Tardo mucho en confiar en los miembros de otras razas, tribus y sociedades.",
+      "La violencia es mi respuesta a casi cualquier desafío.",
+      "No esperes que salve a los que no se puede salvarse sí mismos. Es la manera en la que la naturaleza hace que el fuerte prospere."
+    ]
+  },
+
+  "FolkHero": {
+    "name": "Héroe del Pueblo",
+    "description": "Vienes de una clase social humilde, pero estás destinado para mucho más. Ya la gente de tu pueblo natal te considera como su campeón, y tú destino te llama a estar en contra de los tiranos y los monstruos que amenazan a la gente común.",
+    "skillProficiencies": ["animalHandling", "survival"],
+    "toolProficiencies": ["vehículos (terrestres)"],
+    "toolProficiencyChoices": {
+      "choose": 1,
+      "from": "artisan"
+    },
+    "languages": null,
+    "equipment": [
+      "Herramientas de artesano (a elección)",
+      "Pala",
+      "Olla de hierro",
+      "Ropa común",
+      "Bolsa con 10 po"
+    ],
+    "startingGold": 10,
+    "feature": {
+      "name": "Hospitalidad Rústica",
+      "description": "Dado que vienes de las filas de la gente común, encajas entre ellos con facilidad. Puedes encontrar un lugar para esconderte, descansar o recuperarte entre otros plebeyos. Te protegerán de la ley o de cualquier otra persona que te busque, aunque no arriesgarán sus vidas por ti."
+    },
+    "definingEvents": [
+      "Me alcé en contra de los agentes de un tirano.",
+      "Salvé a la gente durante un desastre natural.",
+      "Me quedé solo contra un terrible monstruo.",
+      "Le robé a un mercader corrupto para ayudar a los pobres.",
+      "Encabecé una milicia para luchar contra un ejército invasor.",
+      "Entré en el castillo de un tirano y robé armas para armar al pueblo.",
+      "Entrené al campesinado a utilizar instrumentos de la granja como armas.",
+      "Un señor rescindió un decreto impopular después que dirigí un acto simbólico de protesta.",
+      "Un celestial, un hada, o alguna criatura similar me dio una bendición o me reveló mi origen secreto.",
+      "Fui reclutado en el ejército de un señor, me alcé con el liderazgo y fui elogiado por mi heroísmo."
+    ],
+    "personalityTraits": [
+      "Juzgo a la gente por sus acciones, no sus palabras.",
+      "Si alguien está en problemas, siempre estoy dispuesto a prestar ayuda.",
+      "Cuando me propongo algo, lo persigo sin importarme lo que se interponga en mi camino.",
+      "Tengo un fuerte sentido del juego limpio y siempre trato de encontrar la solución más equitativa a las discusiones.",
+      "Tengo confianza en mis propias capacidades y haré lo que pueda para inspirar confianza en los demás.",
+      "Pensar es para otros. Yo prefiero la acción.",
+      "Hago mal uso de palabras largas en un intento de parecer más inteligente.",
+      "Me aburro fácilmente. ¿Cuándo voy a seguir adelante con mi destino?"
+    ],
+    "ideals": [
+      { "name": "Respeto", "description": "Las personas merecen ser tratadas con dignidad y respeto.", "alignment": "Bueno" },
+      { "name": "Equidad", "description": "Nadie debe tener un trato preferencial ante la ley y nadie está por encima de la ley.", "alignment": "Legal" },
+      { "name": "Libertad", "description": "A los tiranos no se les debe permitir oprimir al pueblo.", "alignment": "Caótico" },
+      { "name": "Poder", "description": "Si me hago fuerte, podré tomar lo que quiero, lo que yo merezco.", "alignment": "Maligno" },
+      { "name": "Sinceridad", "description": "No hay nada bueno en pretender ser algo que no soy.", "alignment": "Neutral" },
+      { "name": "Destino", "description": "Nada ni nadie me puede desviar de mi más alta vocación.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "Tengo una familia, pero no tengo ni idea de dónde están. Un día, espero volver a verlos.",
+      "He trabajado la tierra, yo amo la tierra, y la protegeré.",
+      "Un orgulloso noble una vez me dio una terrible paliza, y voy a vengarme de cualquier bravucón que me encuentre.",
+      "Mis herramientas son símbolos de mi vida pasada, y los llevo por lo que nunca voy a olvidar mis raíces.",
+      "Protejo a quienes no pueden protegerse a sí mismos.",
+      "Me gustaría que mi novia de la infancia hubiera venido conmigo a perseguir mi destino."
+    ],
+    "flaws": [
+      "El tirano que gobierna mi tierra no se detendrá ante nada con tal de verme muerto.",
+      "Estoy convencido de la importancia de mi destino, y ciego frente a mis carencias y el riesgo de fracasar.",
+      "Las personas que me conocieron cuando era joven conocen mi vergonzoso secreto, así que nunca puedo volver a casa.",
+      "Tengo una debilidad por los vicios de la ciudad, especialmente por la bebida en grandes cantidades.",
+      "En secreto, creo que las cosas estarían mejor si yo fuera un tirano con su señorío.",
+      "Tengo problemas para confiar en mis aliados."
+    ]
+  },
+
+  "Urchin": {
+    "name": "Huérfano",
+    "description": "Creciste en las calles solo, huérfano y pobre. No tenías a nadie que te cuidara o te proveyese, así que aprendiste a proveerte por ti mismo. Luchaste ferozmente por la comida y sobreviviste contra toda posibilidad.",
+    "skillProficiencies": ["sleightOfHand", "stealth"],
+    "toolProficiencies": ["kit de disfraz", "herramientas de ladrón"],
+    "languages": null,
+    "equipment": [
+      "Cuchillo pequeño",
+      "Mapa de la ciudad donde creciste",
+      "Ratón como mascota",
+      "Símbolo para recordar a tus padres",
+      "Ropa común",
+      "Bolsa con 10 po"
+    ],
+    "startingGold": 10,
+    "feature": {
+      "name": "Secretos de la Ciudad",
+      "description": "Conoces los patrones y flujos secretos de las ciudades, y puedes encontrar pasadizos a través de la masa urbana que otros pasarían por alto. Cuando no estás en combate, puedes viajar a través de dos puntos en la ciudad el doble de rápido de lo que tu velocidad te permitiría normalmente."
+    },
+    "personalityTraits": [
+      "Escondo trozos de comida y baratijas en mis bolsillos.",
+      "Hago un montón de preguntas.",
+      "Me gusta escabullirme en pequeños huecos donde nadie puede alcanzarme.",
+      "Duermo con mi espalda contra un árbol o un muro, con todas mis cosas envueltas en un paquete entre mis brazos.",
+      "Como como un cerdo y tengo malos modales.",
+      "Pienso que todos los que son amables conmigo esconden un propósito maligno.",
+      "No me gusta bañarme.",
+      "Digo francamente lo que otros insinúan o esconden."
+    ],
+    "ideals": [
+      { "name": "Respeto", "description": "Todo el mundo, sin importar su riqueza, merece respeto.", "alignment": "Bueno" },
+      { "name": "Comunidad", "description": "Tenemos que cuidarnos el uno al otro, porque nadie más lo hará.", "alignment": "Legal" },
+      { "name": "Cambio", "description": "Los que están abajo ascienden y los poderosos que están arriba son derribados. El cambio es la naturaleza de las cosas.", "alignment": "Caótico" },
+      { "name": "Retribución", "description": "Los ricos necesitan que les muestren cómo son la vida y la muerte en las cloacas.", "alignment": "Maligno" },
+      { "name": "Gente", "description": "Ayudo a quienes me ayudan, eso es lo que nos mantiene vivos.", "alignment": "Neutral" },
+      { "name": "Aspiración", "description": "Voy a probar que merezco una vida mejor.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "Mi pueblo o ciudad es mi hogar, y lucharé para defenderlo.",
+      "Mantengo un orfanato para evitar que otros soporten lo que yo tuve que soportar.",
+      "Le debo mi vida a otro huérfano que me enseñó a vivir en las calles.",
+      "Tengo una deuda que nunca podré pagar con alguien que me tuvo lástima.",
+      "Escapé de mi vida de pobreza robándole a alguien importante, y me buscan por eso.",
+      "Nadie tendría que soportar una vida tan dura como la mía."
+    ],
+    "flaws": [
+      "Si me veo superado en número, correré por mi vida.",
+      "Un oro me parece un montón de dinero, y haré casi cualquier cosa por más de eso.",
+      "Nunca confiaré totalmente en nadie más que en mí mismo.",
+      "Preferiría matar a alguien mientras duerme a enfrentarme en un combate justo.",
+      "Si yo necesito algo más que lo que lo necesita su dueño, no es un robo.",
+      "La gente que no puede cuidarse de sí misma obtiene lo que merece."
+    ]
+  },
+
+  "Sailor": {
+    "name": "Marinero",
+    "description": "Navegaste en una nave marítima por años. Enfrentaste poderosas tormentas, monstruos de las profundidades y a aquellos que quisieron hundir tu trabajo en las infinitas profundidades. Tu primer amor es la lejana línea del horizonte.",
+    "skillProficiencies": ["athletics", "perception"],
+    "toolProficiencies": ["herramientas de navegante", "vehículos (acuáticos)"],
+    "languages": null,
+    "equipment": [
+      "Clava (barra de madera o metal)",
+      "50 pies de cuerda de seda",
+      "Amuleto de la suerte",
+      "Ropa común",
+      "Bolsa con 10 po"
+    ],
+    "startingGold": 10,
+    "feature": {
+      "name": "Pasaje Marítimo",
+      "description": "Cuando lo necesites, puedes asegurar un pasaje gratis en un barco para ti y tus compañeros de aventuras. Podrías navegar en la nave en la que serviste, o en otra con la que tengas buenas relaciones. A cambio de tu pasaje gratuito, se espera que tú y tus compañeros sirvan a la tripulación durante el viaje."
+    },
+    "personalityTraits": [
+      "Mis amigos saben que pueden confiar en mí, sin importar la ocasión.",
+      "Trabajo duro para poder divertirme cuando el trabajo esté hecho.",
+      "Disfruto viajar a nuevos puertos y hacer nuevos amigos junto a jarras de cerveza.",
+      "Deformo la verdad por el bien de una buena historia.",
+      "Para mí, una pelea de taberna es una buena manera de conocer una nueva ciudad.",
+      "Nunca dejo pasar a un apostador amistoso.",
+      "Mi habla es tan desagradable como el cuello de un otyugh.",
+      "Me gusta el trabajo bien hecho. Sobre todo si puedo convencer a otro de que lo haga."
+    ],
+    "ideals": [
+      { "name": "Respeto", "description": "Lo que mantiene una nave funcionando es el respeto mutuo entre capitán y tripulación.", "alignment": "Bueno" },
+      { "name": "Equidad", "description": "Todos trabajamos, así que todos compartimos la recompensa.", "alignment": "Legal" },
+      { "name": "Libertad", "description": "El mar es libertad, la libertad de ir a cualquier lado y hacer cualquier cosa.", "alignment": "Caótico" },
+      { "name": "Autoridad", "description": "Soy un predador, y los demás barcos en el mar, mi presa.", "alignment": "Maligno" },
+      { "name": "Gente", "description": "Estoy comprometido con mi tripulación, no con un ideal.", "alignment": "Neutral" },
+      { "name": "Aspiración", "description": "Algún día, tendré mi propio barco y forjaré mi propio destino.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "Soy leal primero a mi capitán. Todo lo demás está en segundo plano.",
+      "El barco es lo más importante, las tripulaciones y los capitanes van y vienen.",
+      "Siempre recordaré mi primer barco.",
+      "En un puerto tengo un amante cuyos ojos casi le roban mi corazón al mar.",
+      "Me estafaron mi justa parte de las ganancias, y quiero cobrar mi deuda.",
+      "Despiadados piratas asesinaron a mi tripulación y mi capitán, hundieron mi barco y me abandonaron. La venganza será mía."
+    ],
+    "flaws": [
+      "Seguiré las órdenes, incluso si creo que son equivocadas.",
+      "Diré cualquier cosa para evitar tener que trabajar de más.",
+      "Una vez que alguien cuestiona mi coraje, nunca me retracto, sin importar lo peligrosa de la situación.",
+      "Una vez que comienzo a beber, es muy difícil que pare.",
+      "No puedo evitar guardarme monedas sueltas y otras baratijas que encuentro.",
+      "Mi orgullo probablemente me llevará a la destrucción."
+    ],
+    "variant": {
+      "name": "Pirata",
+      "description": "Pasaste tu juventud bajo la influencia de un temerario pirata. Te has permitido el saqueo en altamar y has enviado a más de un alma culpable a una tumba salada.",
+      "alternativeFeature": {
+        "name": "Mala Reputación",
+        "description": "No importa donde vayas, la gente te teme por tu reputación. Cuando estés en un asentamiento civilizado, puedes realizar crímenes menores impunemente, dado que la mayoría de la gente no reportará tu actividad a las autoridades."
+      }
+    }
+  },
+
+  "Noble": {
+    "name": "Noble",
+    "description": "Entiendes de riqueza, poder y privilegio. Tienes un título nobiliario, y tu familia posee tierras, recauda impuestos y ejerce un significativo poder político.",
+    "skillProficiencies": ["history", "persuasion"],
+    "toolProficiencies": [],
+    "toolProficiencyChoices": {
+      "choose": 1,
+      "from": "gaming sets"
+    },
+    "languages": {
+      "choose": 1,
+      "from": "any"
+    },
+    "equipment": [
+      "Ropa fina",
+      "Anillo con sello",
+      "Pergamino con genealogía",
+      "Monedero con 25 po"
+    ],
+    "startingGold": 25,
+    "feature": {
+      "name": "Posición de Privilegio",
+      "description": "Gracias a tu cuna noble, la gente tiende a pensar lo mejor de ti. Eres bienvenido en la alta sociedad. La gente común hace todo lo posible para que te sientas cómodo, y otras personas de alta cuna te tratan como miembro de la misma esfera social. Puedes asegurar una audiencia con un noble local si es necesario."
+    },
+    "personalityTraits": [
+      "Mi elocuente adulación hace sentir a mi interlocutor la persona más importante y maravillosa del mundo.",
+      "La gente común me quiere por mi amabilidad y generosidad.",
+      "Nadie que mire mi regia postura puede dudar que esté por encima de las sucias masas.",
+      "Hago grandes esfuerzos para lucir siempre lo mejor posible y seguir las últimas modas.",
+      "No me gusta ensuciarme las manos, y no seré atrapado jamás en alojamientos inadecuados.",
+      "A pesar de mi noble cuna, no me coloco por encima del resto de la gente. Todos tenemos la misma sangre.",
+      "Mi favor, una vez perdido, es para siempre.",
+      "Si me haces daño, te aplastaré, arruinaré tu nombre y salaré a tus campos."
+    ],
+    "ideals": [
+      { "name": "Respeto", "description": "Se me debe respeto debido a mi posición, pero toda la gente debe ser tratada con dignidad.", "alignment": "Bueno" },
+      { "name": "Responsabilidad", "description": "Es mi deber respetar a la autoridad de aquellos por encima de mí, así como los que están por debajo deben respetarme.", "alignment": "Legal" },
+      { "name": "Independencia", "description": "Debo probar que puedo encargarme de mí mismo, sin la protección de mi familia.", "alignment": "Caótico" },
+      { "name": "Poder", "description": "Si obtengo más poder, nadie podrá decirme qué hacer.", "alignment": "Maligno" },
+      { "name": "Familia", "description": "La sangre fluye más espesa que el agua.", "alignment": "Cualquiera" },
+      { "name": "Obligación Noble", "description": "Es mi deber proteger y cuidar a aquellos por debajo de mí.", "alignment": "Bueno" }
+    ],
+    "bonds": [
+      "Afrontaré cualquier reto con tal de conseguir la aprobación de mi familia.",
+      "La alianza de mi Casa con otra familia noble debe ser mantenida a cualquier precio.",
+      "Nadie es más importante que los otros miembros de mi familia.",
+      "Estoy enamorado/a de un heredero de una familia que es despreciada por la mía.",
+      "Mi lealtad a la corona es inquebrantable.",
+      "La gente común debe verme como un héroe de la gente."
+    ],
+    "flaws": [
+      "Secretamente pienso que todo el mundo está por debajo de mí.",
+      "Escondo un secreto verdaderamente escandaloso que podría arruinar a mi familia para siempre.",
+      "Muy a menudo escucho velados insultos y amenazas en cada palabra que me dirigen y me enfado con rapidez.",
+      "Tengo un insaciable apetito por los placeres carnales.",
+      "Es un hecho que el mundo gira a mi alrededor.",
+      "Debido a mis palabras y acciones, suelo traer la vergüenza a mi familia."
+    ],
+    "variant": {
+      "name": "Caballero",
+      "description": "El título de caballero es uno de los títulos nobiliarios más bajos, pero puede ser una senda hacia un estatus mayor.",
+      "alternativeFeature": {
+        "name": "Seguidores",
+        "description": "Tienes el servicio de tres seguidores leales a tu familia. Estos seguidores pueden ser asistentes o mensajeros, y uno podría ser un mayordomo. No lucharán por ti ni te seguirán hacia lugares obviamente peligrosos."
+      }
+    }
+  },
+
+  "Sage": {
+    "name": "Sabio",
+    "description": "Pasaste años aprendiendo la sabiduría del multiverso. Has rastreado manuscritos, estudiado pergaminos y escuchado a los mayores expertos en los temas que te interesan. Tus esfuerzos te han hecho un maestro en tus campos de estudio.",
+    "skillProficiencies": ["arcana", "history"],
+    "toolProficiencies": [],
+    "languages": {
+      "choose": 2,
+      "from": "any"
+    },
+    "equipment": [
+      "Tintero",
+      "Pluma",
+      "Cuchillo pequeño",
+      "Carta de un colega muerto con una pregunta sin responder",
+      "Ropa común",
+      "Bolsa con 10 po"
+    ],
+    "startingGold": 10,
+    "feature": {
+      "name": "Investigador",
+      "description": "Cuando intentas aprender o recordar un fragmento de información, si no sabes nada sobre el tema, a menudo sí sabes a dónde o de quién puedes obtenerlo. Por lo general, esta información viene de una biblioteca, scriptorium, universidad o un sabio u otra persona o criatura culta."
+    },
+    "specialties": [
+      "Alquimista",
+      "Astrónomo",
+      "Académico desacreditado",
+      "Bibliotecario",
+      "Profesor",
+      "Investigador",
+      "Aprendiz de mago",
+      "Escriba"
+    ],
+    "personalityTraits": [
+      "Uso polisílabos para dar la impresión de gran erudición.",
+      "He leído todos los libros de las mayores bibliotecas del mundo, o me gusta presumir que lo he hecho.",
+      "Estoy acostumbrado a ayudar a aquellos que no son tan inteligentes como yo, y explico pacientemente cualquier cosa.",
+      "No hay nada que me guste más que un buen misterio.",
+      "Estoy dispuesto a escuchar todas las partes de una discusión antes de formarme un juicio propio.",
+      "Yo... hablo… lentamente... cuando hablo... para idiotas,... que... casi... todos... lo son... comparándose... conmigo.",
+      "Me siento horriblemente incómodo en situaciones sociales.",
+      "Estoy convencido de que la gente siempre está tratando de robar mis secretos."
+    ],
+    "ideals": [
+      { "name": "Conocimiento", "description": "El camino hacia el poder y la autosuperación es a través del conocimiento.", "alignment": "Neutral" },
+      { "name": "Belleza", "description": "Lo que es bello nos lleva más allá de sí mismo hacia lo que es verdadero.", "alignment": "Bueno" },
+      { "name": "Lógica", "description": "Las emociones no deben nublar nuestro pensamiento lógico.", "alignment": "Legal" },
+      { "name": "Sin Límites", "description": "Nada debe estorbar la posibilidad infinita inherente a toda existencia.", "alignment": "Caótico" },
+      { "name": "Poder", "description": "El conocimiento es el camino hacia el poder y la dominación.", "alignment": "Maligno" },
+      { "name": "Auto-Mejora", "description": "El objetivo de una vida de estudio es la mejora de uno mismo.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "Es mi deber proteger a mis estudiantes.",
+      "Poseo un texto antiguo que contiene terribles secretos que no deben caer en las manos equivocadas.",
+      "Trabajo para preservar una biblioteca, universidad, scriptorium o monasterio.",
+      "El trabajo de mi vida es una serie de tomos relacionados con un campo específico del saber.",
+      "He estado buscando la respuesta a cierta pregunta toda mi vida.",
+      "Vendí mi alma por conocimiento. Espero realizar grandes hazañas para ganarla de nuevo."
+    ],
+    "flaws": [
+      "Me distraigo fácilmente por la promesa de información.",
+      "La mayoría de la gente grita y corre cuando ve un demonio. Yo me detengo y tomo notas sobre su anatomía.",
+      "Revelar un secreto antiguo podría arruinar el mundo.",
+      "Ignoro las soluciones obvias en favor de las complicadas.",
+      "Hablo sin pensar realmente en mis palabras, lo que invariablemente insulta a otros.",
+      "No puedo guardar un secreto para salvar mi vida, o la de nadie."
+    ]
+  },
+
+  "Soldier": {
+    "name": "Soldado",
+    "description": "La guerra ha sido tu vida durante tanto tiempo como te interesa recordar. Te entrenaste como joven, estudiaste el uso de armas y armaduras, y aprendiste técnicas básicas de supervivencia, incluyendo cómo mantenerte vivo en el campo de batalla.",
+    "skillProficiencies": ["athletics", "intimidation"],
+    "toolProficiencies": ["vehículos (terrestres)"],
+    "toolProficiencyChoices": {
+      "choose": 1,
+      "from": "gaming sets"
+    },
+    "languages": null,
+    "equipment": [
+      "Insignia de rango",
+      "Trofeo tomado de un enemigo caído",
+      "Set de dados de hueso o baraja de cartas",
+      "Ropa común",
+      "Bolsa con 10 po"
+    ],
+    "startingGold": 10,
+    "feature": {
+      "name": "Rango Militar",
+      "description": "Tienes un rango militar de tu carrera como soldado. Los soldados leales a tu antigua organización militar todavía reconocen tu autoridad e influencia, y te tratan con respeto si son de menor rango. Puedes invocar tu rango para ejercer influencia sobre otros soldados y requisar equipo simple o caballos para uso temporal."
+    },
+    "militarySpecialties": [
+      "Oficial",
+      "Explorador",
+      "Infantería",
+      "Caballería",
+      "Sanador",
+      "Intendente",
+      "Portaestandarte",
+      "Cocinero de apoyo"
+    ],
+    "personalityTraits": [
+      "Siempre soy educado y respetuoso.",
+      "Estoy marcado por la guerra. Tengo problemas para controlar mis emociones.",
+      "Los amigos que luchen a mi lado son dignos de morir por ellos.",
+      "Me enfrento a los problemas de cara. Una solución directa es el mejor camino al éxito.",
+      "Disfruto siendo fuerte y rompiendo cosas.",
+      "Tengo un sentido del humor muy negro.",
+      "Me enfrento a los problemas de cara. Una solución directa es el mejor camino al éxito.",
+      "He perdido demasiados amigos, y me cuesta hacer nuevos."
+    ],
+    "ideals": [
+      { "name": "Bien Mayor", "description": "Nuestra suerte es poner nuestras vidas en defensa de otros.", "alignment": "Bueno" },
+      { "name": "Responsabilidad", "description": "Hago lo que debo hacer y obedezco a la autoridad justa.", "alignment": "Legal" },
+      { "name": "Independencia", "description": "Cuando la gente sigue órdenes ciegamente, abrazan una especie de tiranía.", "alignment": "Caótico" },
+      { "name": "Poder", "description": "En la vida, como en la guerra, el más fuerte gana.", "alignment": "Maligno" },
+      { "name": "Vive y Deja Vivir", "description": "Los ideales no valen la pena morir ni matar por ellos.", "alignment": "Neutral" },
+      { "name": "Nación", "description": "Mi ciudad, nación o pueblo es todo lo que importa.", "alignment": "Cualquiera" }
+    ],
+    "bonds": [
+      "Daría mi vida por las personas con las que serví.",
+      "Alguien me salvó la vida en el campo de batalla. Hasta el día de hoy, nunca dejaré a un amigo atrás.",
+      "Mi honor es mi vida.",
+      "Nunca olvidaré la aplastante derrota que mi compañía sufrió o los enemigos que la infligieron.",
+      "Aquellos que luchan a mi lado son por quienes vale la pena morir.",
+      "Lucho por aquellos que no pueden luchar por sí mismos."
+    ],
+    "flaws": [
+      "El monstruoso enemigo que enfrentamos en batalla aún me hace temblar de miedo.",
+      "Tengo poco respeto por cualquiera que no sea un guerrero probado.",
+      "Cometí un terrible error en batalla que costó muchas vidas, y haré lo que sea para mantener ese error en secreto.",
+      "Mi odio hacia mis enemigos es ciego e irracional.",
+      "Obedezco la ley, incluso si la ley causa miseria.",
+      "Prefiero comer mi armadura a admitir que estoy equivocado."
+    ]
+  }
+}

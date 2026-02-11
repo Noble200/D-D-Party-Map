@@ -1,0 +1,1911 @@
+{
+  "Barbarian": {
+    "name": "Bárbaro",
+    "hitDie": "d12",
+    "primaryAbility": "strength",
+    "savingThrows": ["strength", "constitution"],
+    "armorProficiencies": ["ligera", "media", "escudos"],
+    "weaponProficiencies": ["armas sencillas", "armas marciales"],
+    "toolProficiencies": [],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["animalHandling", "athletics", "intimidation", "nature", "perception", "survival"]
+    },
+    "startingHP": 12,
+    "hpPerLevel": 7,
+    "spellcasting": null,
+    "features": {
+      "1": [
+        {
+          "name": "Furia",
+          "description": "En tu turno, puedes entrar en furia como acción adicional. Mientras estés en furia: ventaja en tiradas de Fuerza y salvaciones de Fuerza, bonus a daño cuerpo a cuerpo con Fuerza, resistencia a daño contundente/cortante/perforante. Dura 1 minuto."
+        },
+        {
+          "name": "Defensa sin Armadura",
+          "description": "Sin armadura, tu CA es 10 + modificador de Destreza + modificador de Constitución. Puedes usar escudo."
+        }
+      ],
+      "2": [
+        {
+          "name": "Ataque Temerario",
+          "description": "Cuando hagas tu primer ataque en tu turno, puedes atacar temerariamente. Tienes ventaja en tiradas de ataque cuerpo a cuerpo con Fuerza, pero los ataques contra ti tienen ventaja hasta tu siguiente turno."
+        },
+        {
+          "name": "Sentido del Peligro",
+          "description": "Tienes ventaja en tiradas de salvación de Destreza contra efectos que puedas ver, como trampas y conjuros. No puedes estar cegado, ensordecido o incapacitado."
+        }
+      ],
+      "3": [
+        {
+          "name": "Camino Primigenio",
+          "description": "Elige un camino primigenio: Berserker, Guerrero Totémico, Guardián Ancestral, Fanático del Celo, Heraldo de la Tormenta, Bestia, etc."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "5": [
+        {
+          "name": "Ataque Extra",
+          "description": "Puedes atacar dos veces en lugar de una cuando uses la acción de Atacar en tu turno."
+        },
+        {
+          "name": "Movimiento Rápido",
+          "description": "Tu velocidad aumenta en 10 pies mientras no lleves armadura pesada."
+        }
+      ],
+      "7": [
+        {
+          "name": "Instinto Salvaje",
+          "description": "Tienes ventaja en tiradas de iniciativa. Además, si estás sorprendido y no incapacitado, puedes actuar normalmente en tu primer turno si entras en furia antes de hacer nada más."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "9": [
+        {
+          "name": "Crítico Brutal",
+          "description": "Puedes tirar un dado de daño de arma adicional cuando determines el daño extra de un golpe crítico con un ataque cuerpo a cuerpo."
+        }
+      ],
+      "11": [
+        {
+          "name": "Furia Implacable",
+          "description": "Tu furia puede mantenerte luchando a pesar de heridas graves. Si caes a 0 PG mientras estás en furia y no mueres, puedes hacer una tirada de salvación de Constitución CD 10. Si tienes éxito, caes a 1 PG en su lugar. La CD aumenta en 5 cada vez que usas este rasgo."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "13": [
+        {
+          "name": "Crítico Brutal (2 dados)",
+          "description": "Puedes tirar dos dados de daño de arma adicionales cuando determines el daño extra de un golpe crítico con un ataque cuerpo a cuerpo."
+        }
+      ],
+      "15": [
+        {
+          "name": "Furia Persistente",
+          "description": "Tu furia es tan feroz que solo termina antes si caes inconsciente o si eliges terminarla."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "17": [
+        {
+          "name": "Crítico Brutal (3 dados)",
+          "description": "Puedes tirar tres dados de daño de arma adicionales cuando determines el daño extra de un golpe crítico con un ataque cuerpo a cuerpo."
+        }
+      ],
+      "18": [
+        {
+          "name": "Fuerza Indomable",
+          "description": "Si tu total en una prueba de Fuerza es menor que tu puntuación de Fuerza, puedes usar esa puntuación en lugar del total."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Campeón Primigenio",
+          "description": "Encarnas el poder de las tierras salvajes. Tu Fuerza y Constitución aumentan en 4. Tu máximo para esas puntuaciones es ahora 24."
+        }
+      ]
+    },
+    "ragesPerDay": {
+      "1": 2, "3": 3, "6": 4, "12": 5, "17": 6, "20": "ilimitado"
+    },
+    "rageDamage": {
+      "1": 2, "9": 3, "16": 4
+    }
+  },
+
+  "Bard": {
+    "name": "Bardo",
+    "hitDie": "d8",
+    "primaryAbility": "charisma",
+    "savingThrows": ["dexterity", "charisma"],
+    "armorProficiencies": ["ligera"],
+    "weaponProficiencies": ["armas sencillas", "ballestas de mano", "espadas largas", "estoques", "espadas cortas"],
+    "toolProficiencies": ["tres instrumentos musicales a elección"],
+    "skillChoices": {
+      "choose": 3,
+      "from": ["all"]
+    },
+    "startingHP": 8,
+    "hpPerLevel": 5,
+    "spellcasting": {
+      "ability": "charisma",
+      "type": "known",
+      "ritual": true,
+      "focus": "instrumento musical",
+      "cantripsKnown": {
+        "1": 2, "4": 3, "10": 4
+      },
+      "spellsKnown": {
+        "1": 4, "2": 5, "3": 6, "4": 7, "5": 8, "6": 9, "7": 10, "8": 11, "9": 12, "10": 14, "11": 15, "13": 16, "14": 18, "15": 19, "17": 20, "18": 22
+      },
+      "spellSlots": {
+        "1": {"1": 2},
+        "2": {"1": 3},
+        "3": {"1": 4, "2": 2},
+        "4": {"1": 4, "2": 3},
+        "5": {"1": 4, "2": 3, "3": 2},
+        "6": {"1": 4, "2": 3, "3": 3},
+        "7": {"1": 4, "2": 3, "3": 3, "4": 1},
+        "8": {"1": 4, "2": 3, "3": 3, "4": 2},
+        "9": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 1},
+        "10": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2},
+        "11": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1},
+        "13": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1},
+        "15": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1},
+        "17": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1, "9": 1},
+        "18": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 1, "7": 1, "8": 1, "9": 1},
+        "19": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 1, "8": 1, "9": 1},
+        "20": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 2, "8": 1, "9": 1}
+      }
+    },
+    "features": {
+      "1": [
+        {
+          "name": "Inspiración de Bardo",
+          "description": "Puedes inspirar a otros con tu música o palabras. Una criatura que pueda oírte gana un dado de Inspiración de Bardo (d6) que puede añadir a una tirada de característica, ataque o salvación. Usos igual a tu modificador de Carisma (mínimo 1)."
+        }
+      ],
+      "2": [
+        {
+          "name": "Canto de Reposo",
+          "description": "Durante un descanso corto, tú y aliados que puedan oírte recuperan PG extra igual a 1d6 al gastar Dados de Golpe."
+        },
+        {
+          "name": "Aprendiz de Todo",
+          "description": "Añade la mitad de tu bonus de competencia (redondeado abajo) a cualquier tirada de característica que no incluya ya tu bonus de competencia."
+        }
+      ],
+      "3": [
+        {
+          "name": "Colegio de Bardos",
+          "description": "Elige un colegio: Conocimiento, Valor, Espadas, Susurros, Elocuencia, Creación, etc."
+        },
+        {
+          "name": "Pericia",
+          "description": "Elige dos competencias de habilidad. Tu bonus de competencia se duplica para tiradas con esas habilidades."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "5": [
+        {
+          "name": "Inspiración de Bardo (d8)",
+          "description": "Tu dado de Inspiración de Bardo aumenta a d8."
+        },
+        {
+          "name": "Fuente de Inspiración",
+          "description": "Recuperas todos tus usos de Inspiración de Bardo con un descanso corto o largo."
+        }
+      ],
+      "6": [
+        {
+          "name": "Contraencanto",
+          "description": "Como acción, puedes iniciar una actuación que dura hasta el final de tu siguiente turno. Durante ese tiempo, tú y aliados a 30 pies tienen ventaja en salvaciones contra ser asustados o encantados."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "9": [
+        {
+          "name": "Canto de Reposo (d8)",
+          "description": "Tu dado de Canto de Reposo aumenta a d8."
+        }
+      ],
+      "10": [
+        {
+          "name": "Inspiración de Bardo (d10)",
+          "description": "Tu dado de Inspiración de Bardo aumenta a d10."
+        },
+        {
+          "name": "Pericia",
+          "description": "Elige dos competencias de habilidad adicionales para duplicar tu bonus de competencia."
+        },
+        {
+          "name": "Secretos Mágicos",
+          "description": "Elige dos conjuros de cualquier clase. Cuentan como conjuros de bardo para ti."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "13": [
+        {
+          "name": "Canto de Reposo (d10)",
+          "description": "Tu dado de Canto de Reposo aumenta a d10."
+        }
+      ],
+      "14": [
+        {
+          "name": "Secretos Mágicos",
+          "description": "Elige dos conjuros adicionales de cualquier clase."
+        }
+      ],
+      "15": [
+        {
+          "name": "Inspiración de Bardo (d12)",
+          "description": "Tu dado de Inspiración de Bardo aumenta a d12."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "17": [
+        {
+          "name": "Canto de Reposo (d12)",
+          "description": "Tu dado de Canto de Reposo aumenta a d12."
+        }
+      ],
+      "18": [
+        {
+          "name": "Secretos Mágicos",
+          "description": "Elige dos conjuros adicionales de cualquier clase."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Inspiración Superior",
+          "description": "Cuando tires iniciativa y no tengas usos de Inspiración de Bardo, recuperas un uso."
+        }
+      ]
+    },
+    "bardicInspirationDie": {
+      "1": "d6", "5": "d8", "10": "d10", "15": "d12"
+    },
+    "songOfRestDie": {
+      "2": "d6", "9": "d8", "13": "d10", "17": "d12"
+    }
+  },
+
+  "Cleric": {
+    "name": "Clérigo",
+    "hitDie": "d8",
+    "primaryAbility": "wisdom",
+    "savingThrows": ["wisdom", "charisma"],
+    "armorProficiencies": ["ligera", "media", "escudos"],
+    "weaponProficiencies": ["armas sencillas"],
+    "toolProficiencies": [],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["history", "insight", "medicine", "persuasion", "religion"]
+    },
+    "startingHP": 8,
+    "hpPerLevel": 5,
+    "spellcasting": {
+      "ability": "wisdom",
+      "type": "prepared",
+      "ritual": true,
+      "focus": "símbolo sagrado",
+      "cantripsKnown": {
+        "1": 3, "4": 4, "10": 5
+      },
+      "preparedSpells": "nivel de clérigo + modificador de Sabiduría",
+      "spellSlots": {
+        "1": {"1": 2},
+        "2": {"1": 3},
+        "3": {"1": 4, "2": 2},
+        "4": {"1": 4, "2": 3},
+        "5": {"1": 4, "2": 3, "3": 2},
+        "6": {"1": 4, "2": 3, "3": 3},
+        "7": {"1": 4, "2": 3, "3": 3, "4": 1},
+        "8": {"1": 4, "2": 3, "3": 3, "4": 2},
+        "9": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 1},
+        "10": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2},
+        "11": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1},
+        "13": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1},
+        "15": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1},
+        "17": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1, "9": 1},
+        "18": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 1, "7": 1, "8": 1, "9": 1},
+        "19": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 1, "8": 1, "9": 1},
+        "20": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 2, "8": 1, "9": 1}
+      }
+    },
+    "features": {
+      "1": [
+        {
+          "name": "Dominio Divino",
+          "description": "Elige un dominio relacionado con tu deidad: Conocimiento, Engaño, Guerra, Luz, Naturaleza, Tempestad, Vida, Muerte, Arcano, Forja, Tumba, Orden, Paz, Crepúsculo."
+        }
+      ],
+      "2": [
+        {
+          "name": "Canalizar Divinidad",
+          "description": "Ganas la capacidad de canalizar energía divina. Comienzas con Expulsar Muertos Vivientes y un efecto del dominio. 1 uso por descanso corto/largo."
+        },
+        {
+          "name": "Expulsar Muertos Vivientes",
+          "description": "Como acción, presentas tu símbolo sagrado. Cada muerto viviente que pueda verte u oírte a 30 pies debe hacer salvación de Sabiduría o huir durante 1 minuto."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "5": [
+        {
+          "name": "Destruir Muertos Vivientes (CR 1/2)",
+          "description": "Cuando un muerto viviente falla su salvación contra Expulsar Muertos Vivientes, es destruido instantáneamente si su CR es 1/2 o menor."
+        }
+      ],
+      "6": [
+        {
+          "name": "Canalizar Divinidad (2 usos)",
+          "description": "Puedes usar Canalizar Divinidad dos veces entre descansos."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        },
+        {
+          "name": "Destruir Muertos Vivientes (CR 1)",
+          "description": "Destruyes muertos vivientes de CR 1 o menor con Expulsar."
+        }
+      ],
+      "10": [
+        {
+          "name": "Intervención Divina",
+          "description": "Puedes llamar a tu deidad para que intervenga. Describe la ayuda que buscas y tira d100. Si el resultado es igual o menor a tu nivel de clérigo, tu deidad interviene. Si funciona, no puedes usar esta característica de nuevo en 7 días."
+        }
+      ],
+      "11": [
+        {
+          "name": "Destruir Muertos Vivientes (CR 2)",
+          "description": "Destruyes muertos vivientes de CR 2 o menor con Expulsar."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "14": [
+        {
+          "name": "Destruir Muertos Vivientes (CR 3)",
+          "description": "Destruyes muertos vivientes de CR 3 o menor con Expulsar."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "17": [
+        {
+          "name": "Destruir Muertos Vivientes (CR 4)",
+          "description": "Destruyes muertos vivientes de CR 4 o menor con Expulsar."
+        }
+      ],
+      "18": [
+        {
+          "name": "Canalizar Divinidad (3 usos)",
+          "description": "Puedes usar Canalizar Divinidad tres veces entre descansos."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Intervención Divina Mejorada",
+          "description": "Tu llamada a tu deidad tiene éxito automáticamente, sin necesidad de tirada."
+        }
+      ]
+    },
+    "channelDivinityUses": {
+      "1": 1, "6": 2, "18": 3
+    },
+    "destroyUndeadCR": {
+      "5": "1/2", "8": 1, "11": 2, "14": 3, "17": 4
+    }
+  },
+
+  "Druid": {
+    "name": "Druida",
+    "hitDie": "d8",
+    "primaryAbility": "wisdom",
+    "savingThrows": ["intelligence", "wisdom"],
+    "armorProficiencies": ["ligera", "media", "escudos (no metálicos)"],
+    "weaponProficiencies": ["bastones", "cimitarras", "clavas", "dagas", "dardos", "hoces", "jabalinas", "mazas", "ondas"],
+    "toolProficiencies": ["kit de herborista"],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["arcana", "animalHandling", "insight", "medicine", "nature", "perception", "religion", "survival"]
+    },
+    "startingHP": 8,
+    "hpPerLevel": 5,
+    "spellcasting": {
+      "ability": "wisdom",
+      "type": "prepared",
+      "ritual": true,
+      "focus": "foco druídico",
+      "cantripsKnown": {
+        "1": 2, "4": 3, "10": 4
+      },
+      "preparedSpells": "nivel de druida + modificador de Sabiduría",
+      "spellSlots": {
+        "1": {"1": 2},
+        "2": {"1": 3},
+        "3": {"1": 4, "2": 2},
+        "4": {"1": 4, "2": 3},
+        "5": {"1": 4, "2": 3, "3": 2},
+        "6": {"1": 4, "2": 3, "3": 3},
+        "7": {"1": 4, "2": 3, "3": 3, "4": 1},
+        "8": {"1": 4, "2": 3, "3": 3, "4": 2},
+        "9": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 1},
+        "10": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2},
+        "11": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1},
+        "13": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1},
+        "15": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1},
+        "17": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1, "9": 1},
+        "18": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 1, "7": 1, "8": 1, "9": 1},
+        "19": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 1, "8": 1, "9": 1},
+        "20": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 2, "8": 1, "9": 1}
+      }
+    },
+    "features": {
+      "1": [
+        {
+          "name": "Druídico",
+          "description": "Conoces el druídico, el lenguaje secreto de los druidas. Puedes hablar el idioma y usarlo para dejar mensajes ocultos."
+        }
+      ],
+      "2": [
+        {
+          "name": "Forma Salvaje",
+          "description": "Puedes usar tu acción para transformarte mágicamente en una bestia que hayas visto antes. Puedes usar esta característica dos veces por descanso corto/largo. Tu nivel de druida determina las bestias en las que puedes transformarte."
+        },
+        {
+          "name": "Círculo Druídico",
+          "description": "Elige un círculo druídico: Tierra, Luna, Sueños, Pastores, Esporas, Estrellas, Incendio."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        },
+        {
+          "name": "Mejora de Forma Salvaje",
+          "description": "Puedes transformarte en bestias con CR hasta 1/2 (sin velocidad de vuelo)."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        },
+        {
+          "name": "Mejora de Forma Salvaje",
+          "description": "Puedes transformarte en bestias con CR hasta 1."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "18": [
+        {
+          "name": "Cuerpo Atemporal",
+          "description": "La magia primigenia que manejas hace que envejezcas más lentamente. Por cada 10 años que pasen, tu cuerpo solo envejece 1 año."
+        },
+        {
+          "name": "Lanzamiento de Bestia",
+          "description": "Puedes lanzar muchos de tus conjuros de druida en cualquier forma que asumas usando Forma Salvaje."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Archidruida",
+          "description": "Puedes usar tu Forma Salvaje un número ilimitado de veces. Además, puedes ignorar los componentes verbales y somáticos de tus conjuros de druida, así como cualquier componente material que no tenga coste."
+        }
+      ]
+    },
+    "wildShapeMaxCR": {
+      "2": "1/4 (sin velocidad de vuelo o nado)",
+      "4": "1/2 (sin velocidad de vuelo)",
+      "8": "1"
+    }
+  },
+
+  "Fighter": {
+    "name": "Guerrero",
+    "hitDie": "d10",
+    "primaryAbility": "strength",
+    "secondaryAbility": "dexterity",
+    "savingThrows": ["strength", "constitution"],
+    "armorProficiencies": ["todas las armaduras", "escudos"],
+    "weaponProficiencies": ["armas sencillas", "armas marciales"],
+    "toolProficiencies": [],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["acrobatics", "animalHandling", "athletics", "history", "insight", "intimidation", "perception", "survival"]
+    },
+    "startingHP": 10,
+    "hpPerLevel": 6,
+    "spellcasting": null,
+    "features": {
+      "1": [
+        {
+          "name": "Estilo de Combate",
+          "description": "Adopta un estilo de combate: Arquería (+2 a ataques a distancia), Defensa (+1 CA con armadura), Duelo (+2 daño a una mano), Combate con Arma Grande (repetir 1-2 en daño), Protección, Combate con Dos Armas."
+        },
+        {
+          "name": "Segundo Aliento",
+          "description": "Como acción adicional, recuperas PG igual a 1d10 + nivel de guerrero. Una vez por descanso corto/largo."
+        }
+      ],
+      "2": [
+        {
+          "name": "Oleada de Acción",
+          "description": "Puedes tomar una acción adicional en tu turno. Una vez por descanso corto/largo."
+        }
+      ],
+      "3": [
+        {
+          "name": "Arquetipo Marcial",
+          "description": "Elige un arquetipo: Campeón, Maestro de Batalla, Caballero Arcano, Samurái, Caballero, etc."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "5": [
+        {
+          "name": "Ataque Extra",
+          "description": "Puedes atacar dos veces en lugar de una cuando uses la acción de Atacar."
+        }
+      ],
+      "6": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "9": [
+        {
+          "name": "Indomable",
+          "description": "Puedes repetir una tirada de salvación fallida. Una vez por descanso largo. Debes usar el nuevo resultado."
+        }
+      ],
+      "11": [
+        {
+          "name": "Ataque Extra (2)",
+          "description": "Puedes atacar tres veces cuando uses la acción de Atacar."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "13": [
+        {
+          "name": "Indomable (2 usos)",
+          "description": "Puedes usar Indomable dos veces entre descansos largos."
+        }
+      ],
+      "14": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "17": [
+        {
+          "name": "Oleada de Acción (2 usos)",
+          "description": "Puedes usar Oleada de Acción dos veces entre descansos cortos/largos."
+        },
+        {
+          "name": "Indomable (3 usos)",
+          "description": "Puedes usar Indomable tres veces entre descansos largos."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Ataque Extra (3)",
+          "description": "Puedes atacar cuatro veces cuando uses la acción de Atacar."
+        }
+      ]
+    },
+    "actionSurgeUses": {
+      "2": 1, "17": 2
+    },
+    "indomitableUses": {
+      "9": 1, "13": 2, "17": 3
+    },
+    "extraAttacks": {
+      "5": 2, "11": 3, "20": 4
+    },
+    "subclasses": {
+      "EldritchKnight": {
+        "name": "Caballero Arcano",
+        "spellcasting": {
+          "ability": "intelligence",
+          "type": "known",
+          "cantripsKnown": {"3": 2, "10": 3},
+          "spellsKnown": {"3": 3, "4": 4, "7": 5, "8": 6, "10": 7, "11": 8, "13": 9, "14": 10, "16": 11, "19": 12, "20": 13},
+          "spellSlots": {
+            "3": {"1": 2},
+            "4": {"1": 3},
+            "7": {"1": 4, "2": 2},
+            "10": {"1": 4, "2": 3},
+            "13": {"1": 4, "2": 3, "3": 2},
+            "16": {"1": 4, "2": 3, "3": 3},
+            "19": {"1": 4, "2": 3, "3": 3, "4": 1}
+          },
+          "restrictions": "Abjuración y Evocación principalmente"
+        }
+      }
+    }
+  },
+
+  "Monk": {
+    "name": "Monje",
+    "hitDie": "d8",
+    "primaryAbility": "dexterity",
+    "secondaryAbility": "wisdom",
+    "savingThrows": ["strength", "dexterity"],
+    "armorProficiencies": [],
+    "weaponProficiencies": ["armas sencillas", "espadas cortas"],
+    "toolProficiencies": ["un tipo de herramientas de artesano o un instrumento musical"],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["acrobatics", "athletics", "history", "insight", "religion", "stealth"]
+    },
+    "startingHP": 8,
+    "hpPerLevel": 5,
+    "spellcasting": null,
+    "features": {
+      "1": [
+        {
+          "name": "Defensa sin Armadura",
+          "description": "Sin armadura ni escudo, tu CA es 10 + modificador de Destreza + modificador de Sabiduría."
+        },
+        {
+          "name": "Artes Marciales",
+          "description": "Puedes usar Destreza en lugar de Fuerza para ataques y daño con armas de monje y ataques desarmados. Tu dado de daño de artes marciales comienza en d4. Cuando uses la acción de Atacar con un arma de monje o ataque desarmado, puedes hacer un ataque desarmado como acción adicional."
+        }
+      ],
+      "2": [
+        {
+          "name": "Ki",
+          "description": "Tu entrenamiento te permite canalizar ki. Tienes puntos de ki igual a tu nivel de monje. Se recuperan tras un descanso corto o largo."
+        },
+        {
+          "name": "Ráfaga de Golpes",
+          "description": "Gasta 1 ki para hacer dos ataques desarmados como acción adicional."
+        },
+        {
+          "name": "Defensa Paciente",
+          "description": "Gasta 1 ki para usar Esquivar como acción adicional."
+        },
+        {
+          "name": "Paso del Viento",
+          "description": "Gasta 1 ki para usar Retirada o Carrera como acción adicional, y tu salto se duplica este turno."
+        },
+        {
+          "name": "Movimiento sin Armadura",
+          "description": "Tu velocidad aumenta en 10 pies sin armadura ni escudo."
+        }
+      ],
+      "3": [
+        {
+          "name": "Tradición Monástica",
+          "description": "Elige una tradición: Mano Abierta, Sombra, Cuatro Elementos, Ebrio, Kensei, Sol, Misericordia, Astral."
+        },
+        {
+          "name": "Desviar Proyectiles",
+          "description": "Puedes usar tu reacción para desviar o atrapar proyectiles, reduciendo el daño en 1d10 + mod DES + nivel de monje. Si reduces el daño a 0, puedes gastar 1 ki para lanzar el proyectil como ataque."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        },
+        {
+          "name": "Caída Lenta",
+          "description": "Puedes usar tu reacción para reducir daño por caída en 5 × nivel de monje."
+        }
+      ],
+      "5": [
+        {
+          "name": "Ataque Extra",
+          "description": "Puedes atacar dos veces cuando uses la acción de Atacar."
+        },
+        {
+          "name": "Golpe Aturdidor",
+          "description": "Cuando golpeas a una criatura con un ataque de arma de monje, puedes gastar 1 ki para intentar aturdirla. Debe hacer salvación de Constitución o queda aturdida hasta el final de tu siguiente turno."
+        }
+      ],
+      "6": [
+        {
+          "name": "Golpes de Ki",
+          "description": "Tus ataques desarmados cuentan como mágicos para superar resistencias e inmunidades."
+        },
+        {
+          "name": "Movimiento sin Armadura (+15 pies)",
+          "description": "Tu velocidad sin armadura aumenta a +15 pies."
+        }
+      ],
+      "7": [
+        {
+          "name": "Evasión",
+          "description": "Cuando hagas una salvación de Destreza por la mitad de daño, no recibes daño si tienes éxito y solo la mitad si fallas."
+        },
+        {
+          "name": "Quietud Mental",
+          "description": "Puedes usar tu acción para terminar un efecto que te tenga encantado o asustado."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "9": [
+        {
+          "name": "Mejora de Movimiento sin Armadura",
+          "description": "Ganas la capacidad de moverte por superficies verticales y sobre líquidos sin caer durante el movimiento."
+        }
+      ],
+      "10": [
+        {
+          "name": "Pureza de Cuerpo",
+          "description": "Eres inmune a enfermedades y veneno."
+        },
+        {
+          "name": "Movimiento sin Armadura (+20 pies)",
+          "description": "Tu velocidad sin armadura aumenta a +20 pies."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "13": [
+        {
+          "name": "Lengua del Sol y la Luna",
+          "description": "Aprendes a tocar el ki de otras mentes. Puedes entender todos los idiomas hablados y cualquier criatura que entienda un idioma puede entenderte."
+        }
+      ],
+      "14": [
+        {
+          "name": "Salvación de Diamante",
+          "description": "Tu dominio del ki te otorga competencia en todas las tiradas de salvación. Además, cuando falles una salvación, puedes gastar 1 ki para repetirla."
+        },
+        {
+          "name": "Movimiento sin Armadura (+25 pies)",
+          "description": "Tu velocidad sin armadura aumenta a +25 pies."
+        }
+      ],
+      "15": [
+        {
+          "name": "Cuerpo Atemporal",
+          "description": "Tu ki te sustenta. No sufres los efectos de la vejez y no puedes ser envejecido mágicamente. Sin embargo, puedes morir de viejo. Ya no necesitas comida ni agua."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "18": [
+        {
+          "name": "Cuerpo Vacío",
+          "description": "Puedes usar tu acción y gastar 4 ki para volverte invisible durante 1 minuto. Durante este tiempo, tienes resistencia a todo el daño excepto daño de fuerza. Puedes gastar 8 ki para lanzar el conjuro Proyección Astral sin componentes materiales."
+        },
+        {
+          "name": "Movimiento sin Armadura (+30 pies)",
+          "description": "Tu velocidad sin armadura aumenta a +30 pies."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Yo Perfecto",
+          "description": "Cuando tires iniciativa y no tengas puntos de ki, recuperas 4 puntos de ki."
+        }
+      ]
+    },
+    "martialArtsDie": {
+      "1": "d4", "5": "d6", "11": "d8", "17": "d10"
+    },
+    "kiPoints": "nivel de monje",
+    "unarmoredMovement": {
+      "2": 10, "6": 15, "10": 20, "14": 25, "18": 30
+    }
+  },
+
+  "Paladin": {
+    "name": "Paladín",
+    "hitDie": "d10",
+    "primaryAbility": "strength",
+    "secondaryAbility": "charisma",
+    "savingThrows": ["wisdom", "charisma"],
+    "armorProficiencies": ["todas las armaduras", "escudos"],
+    "weaponProficiencies": ["armas sencillas", "armas marciales"],
+    "toolProficiencies": [],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["athletics", "insight", "intimidation", "medicine", "persuasion", "religion"]
+    },
+    "startingHP": 10,
+    "hpPerLevel": 6,
+    "spellcasting": {
+      "ability": "charisma",
+      "type": "prepared",
+      "ritual": false,
+      "focus": "símbolo sagrado",
+      "startLevel": 2,
+      "preparedSpells": "modificador de Carisma + la mitad del nivel de paladín (redondeado abajo)",
+      "spellSlots": {
+        "2": {"1": 2},
+        "3": {"1": 3},
+        "5": {"1": 4, "2": 2},
+        "7": {"1": 4, "2": 3},
+        "9": {"1": 4, "2": 3, "3": 2},
+        "11": {"1": 4, "2": 3, "3": 3},
+        "13": {"1": 4, "2": 3, "3": 3, "4": 1},
+        "15": {"1": 4, "2": 3, "3": 3, "4": 2},
+        "17": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 1},
+        "19": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2}
+      }
+    },
+    "features": {
+      "1": [
+        {
+          "name": "Sentido Divino",
+          "description": "Como acción, puedes detectar la presencia de celestiales, demonios y muertos vivientes a 60 pies que no estén tras cobertura total. Usos: 1 + mod CAR por descanso largo."
+        },
+        {
+          "name": "Imposición de Manos",
+          "description": "Tienes una reserva de poder curativo igual a 5 × nivel de paladín. Como acción, puedes tocar a una criatura y restaurar cualquier cantidad de PG de esa reserva. También puedes gastar 5 PG de la reserva para curar una enfermedad o neutralizar un veneno."
+        }
+      ],
+      "2": [
+        {
+          "name": "Estilo de Combate",
+          "description": "Adopta un estilo de combate: Defensa (+1 CA con armadura), Duelo (+2 daño a una mano), Combate con Arma Grande (repetir 1-2 en daño), Protección, Lucha con Bendición."
+        },
+        {
+          "name": "Lanzamiento de Conjuros",
+          "description": "Ganas la capacidad de lanzar conjuros de paladín usando Carisma como habilidad de conjuros."
+        },
+        {
+          "name": "Castigo Divino",
+          "description": "Cuando golpeas con un arma cuerpo a cuerpo, puedes gastar un espacio de conjuro para infligir 2d8 de daño radiante extra (+1d8 por nivel de espacio sobre 1º, máx 5d8). +1d8 adicional contra demonios o muertos vivientes."
+        }
+      ],
+      "3": [
+        {
+          "name": "Juramento Sagrado",
+          "description": "Elige un juramento: Devoción, Antiguos, Venganza, Corona, Conquista, Redención, Gloria, Vigía."
+        },
+        {
+          "name": "Salud Divina",
+          "description": "La magia divina que fluye a través de ti te hace inmune a las enfermedades."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "5": [
+        {
+          "name": "Ataque Extra",
+          "description": "Puedes atacar dos veces cuando uses la acción de Atacar."
+        }
+      ],
+      "6": [
+        {
+          "name": "Aura de Protección",
+          "description": "Tú y aliados amistosos a 10 pies ganan bonus a tiradas de salvación igual a tu modificador de Carisma (mínimo +1). Debes estar consciente."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "10": [
+        {
+          "name": "Aura de Coraje",
+          "description": "Tú y aliados amistosos a 10 pies no pueden ser asustados mientras estés consciente."
+        }
+      ],
+      "11": [
+        {
+          "name": "Castigo Divino Mejorado",
+          "description": "Estás tan imbuido de poder divino que todos tus ataques con arma cuerpo a cuerpo infligen 1d8 de daño radiante extra."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "14": [
+        {
+          "name": "Toque Purificador",
+          "description": "Puedes usar tu acción para terminar un conjuro sobre ti mismo o una criatura voluntaria que toques. Puedes usar esta característica un número de veces igual a tu modificador de Carisma (mínimo 1). Recuperas usos tras un descanso largo."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "18": [
+        {
+          "name": "Mejora de Auras",
+          "description": "El alcance de tus auras (Protección y Coraje) aumenta a 30 pies."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ]
+    },
+    "layOnHandsPool": "5 × nivel de paladín",
+    "auraRange": {
+      "6": 10, "18": 30
+    }
+  },
+
+  "Ranger": {
+    "name": "Explorador",
+    "hitDie": "d10",
+    "primaryAbility": "dexterity",
+    "secondaryAbility": "wisdom",
+    "savingThrows": ["strength", "dexterity"],
+    "armorProficiencies": ["ligera", "media", "escudos"],
+    "weaponProficiencies": ["armas sencillas", "armas marciales"],
+    "toolProficiencies": [],
+    "skillChoices": {
+      "choose": 3,
+      "from": ["animalHandling", "athletics", "insight", "investigation", "nature", "perception", "stealth", "survival"]
+    },
+    "startingHP": 10,
+    "hpPerLevel": 6,
+    "spellcasting": {
+      "ability": "wisdom",
+      "type": "known",
+      "ritual": false,
+      "focus": null,
+      "startLevel": 2,
+      "spellsKnown": {
+        "2": 2, "3": 3, "5": 4, "7": 5, "9": 6, "11": 7, "13": 8, "15": 9, "17": 10, "19": 11
+      },
+      "spellSlots": {
+        "2": {"1": 2},
+        "3": {"1": 3},
+        "5": {"1": 4, "2": 2},
+        "7": {"1": 4, "2": 3},
+        "9": {"1": 4, "2": 3, "3": 2},
+        "11": {"1": 4, "2": 3, "3": 3},
+        "13": {"1": 4, "2": 3, "3": 3, "4": 1},
+        "15": {"1": 4, "2": 3, "3": 3, "4": 2},
+        "17": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 1},
+        "19": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2}
+      }
+    },
+    "features": {
+      "1": [
+        {
+          "name": "Enemigo Predilecto",
+          "description": "Elige un tipo de enemigo predilecto: aberraciones, bestias, celestiales, constructos, dragones, elementales, hadas, demonios, gigantes, limos, monstruosidades, muertos vivientes, plantas. Tienes ventaja en tiradas de Supervivencia para rastrearlos y en tiradas de Inteligencia para recordar información sobre ellos. Aprendes un idioma hablado por tus enemigos."
+        },
+        {
+          "name": "Explorador Natural",
+          "description": "Elige un tipo de terreno predilecto: ártico, costa, desierto, bosque, pradera, montaña, pantano, subterráneo. En ese terreno: el terreno difícil no ralentiza a tu grupo, no puedes perderte excepto por magia, permaneces alerta incluso durante otras actividades, puedes moverte sigilosamente a paso normal, encuentras el doble de comida al buscar, y al rastrear aprendes números exactos y cuánto hace que pasaron."
+        }
+      ],
+      "2": [
+        {
+          "name": "Estilo de Combate",
+          "description": "Elige un estilo: Arquería (+2 a ataques a distancia), Defensa (+1 CA con armadura), Duelo (+2 daño a una mano), Combate con Dos Armas."
+        },
+        {
+          "name": "Lanzamiento de Conjuros",
+          "description": "Ganas la capacidad de lanzar conjuros de explorador usando Sabiduría como habilidad de conjuros."
+        }
+      ],
+      "3": [
+        {
+          "name": "Arquetipo de Explorador",
+          "description": "Elige un arquetipo: Cazador, Señor de las Bestias, Caminante del Horizonte, Acechador Sombrío, Enjambre, Guardián de Drakewarden."
+        },
+        {
+          "name": "Conciencia Primigenia",
+          "description": "Puedes usar tu acción y gastar un espacio de conjuro para concentrarte en la región a tu alrededor. Durante 1 minuto por nivel del espacio, puedes sentir si los siguientes tipos de criaturas están a 1 milla: aberraciones, celestiales, dragones, elementales, hadas, demonios, muertos vivientes. Esto no revela su ubicación o número."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "5": [
+        {
+          "name": "Ataque Extra",
+          "description": "Puedes atacar dos veces cuando uses la acción de Atacar."
+        }
+      ],
+      "6": [
+        {
+          "name": "Enemigo Predilecto Mejorado",
+          "description": "Elige un tipo adicional de enemigo predilecto. También puedes elegir humanoides o dos razas de humanoides."
+        },
+        {
+          "name": "Explorador Natural Mejorado",
+          "description": "Elige un tipo adicional de terreno predilecto."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        },
+        {
+          "name": "Zancada Terrestre",
+          "description": "Moverte a través de terreno difícil no mágico no te cuesta movimiento extra. También puedes pasar a través de plantas no mágicas sin ser ralentizado y sin recibir daño de espinas o peligros similares."
+        }
+      ],
+      "10": [
+        {
+          "name": "Ocultarse a Plena Vista",
+          "description": "Puedes pasar 1 minuto creando camuflaje para ti mismo. Debes tener acceso a barro, tierra, plantas, hollín y otros materiales naturales. Una vez camuflado, puedes intentar esconderte presionándote contra una superficie sólida que sea al menos tan alta y ancha como tú. Ganas +10 a tiradas de Sigilo."
+        },
+        {
+          "name": "Explorador Natural Mejorado",
+          "description": "Elige un tipo adicional de terreno predilecto."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "14": [
+        {
+          "name": "Enemigo Predilecto Mejorado",
+          "description": "Elige un tipo adicional de enemigo predilecto."
+        },
+        {
+          "name": "Evasión",
+          "description": "Cuando hagas una salvación de Destreza por la mitad de daño, no recibes daño si tienes éxito y solo la mitad si fallas."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "18": [
+        {
+          "name": "Sentidos Salvajes",
+          "description": "Ganas sentidos sobrenaturales que te ayudan a luchar contra criaturas que no puedes ver. Cuando atacas a una criatura que no puedes ver, tu incapacidad de verla no impone desventaja a tus tiradas de ataque contra ella. También eres consciente de la ubicación de cualquier criatura invisible a 30 pies, siempre que la criatura no esté escondida de ti y no estés cegado o ensordecido."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Cazador de Enemigos",
+          "description": "Te vuelves un cazador inigualable de tus enemigos. Una vez en cada uno de tus turnos, puedes añadir tu modificador de Sabiduría a la tirada de ataque o de daño de un ataque que hagas contra uno de tus enemigos predilectos. Puedes elegir usar esta característica antes o después de la tirada, pero antes de que se apliquen los efectos."
+        }
+      ]
+    }
+  },
+
+  "Rogue": {
+    "name": "Pícaro",
+    "hitDie": "d8",
+    "primaryAbility": "dexterity",
+    "savingThrows": ["dexterity", "intelligence"],
+    "armorProficiencies": ["ligera"],
+    "weaponProficiencies": ["armas sencillas", "ballestas de mano", "espadas largas", "estoques", "espadas cortas"],
+    "toolProficiencies": ["herramientas de ladrón"],
+    "skillChoices": {
+      "choose": 4,
+      "from": ["acrobatics", "athletics", "deception", "insight", "intimidation", "investigation", "perception", "performance", "persuasion", "sleightOfHand", "stealth"]
+    },
+    "startingHP": 8,
+    "hpPerLevel": 5,
+    "spellcasting": null,
+    "features": {
+      "1": [
+        {
+          "name": "Pericia",
+          "description": "Elige dos competencias de habilidad o una habilidad y herramientas de ladrón. Tu bonus de competencia se duplica para tiradas con ellas."
+        },
+        {
+          "name": "Ataque Furtivo",
+          "description": "Una vez por turno, puedes infligir 1d6 de daño extra a una criatura que golpees con un ataque si tienes ventaja en la tirada de ataque. El ataque debe usar un arma sutil o a distancia. No necesitas ventaja si un enemigo del objetivo está a 5 pies de él y ese enemigo no está incapacitado."
+        },
+        {
+          "name": "Jerga de Ladrones",
+          "description": "Conoces la jerga de ladrones, un lenguaje secreto. Incluye símbolos y códigos que parecen normales."
+        }
+      ],
+      "2": [
+        {
+          "name": "Acción Astuta",
+          "description": "Puedes usar tu acción adicional para Carrera, Retirada o Esconderse."
+        }
+      ],
+      "3": [
+        {
+          "name": "Arquetipo de Pícaro",
+          "description": "Elige un arquetipo: Ladrón, Asesino, Embaucador Arcano, Maestro del Espionaje, Investigador, Alma Cuchillada, Fantasma."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "5": [
+        {
+          "name": "Esquiva Asombrosa",
+          "description": "Cuando un atacante que puedas ver te golpea con un ataque, puedes usar tu reacción para reducir el daño a la mitad."
+        }
+      ],
+      "6": [
+        {
+          "name": "Pericia",
+          "description": "Elige dos competencias adicionales de habilidad para duplicar tu bonus de competencia."
+        }
+      ],
+      "7": [
+        {
+          "name": "Evasión",
+          "description": "Cuando hagas una salvación de Destreza por la mitad de daño, no recibes daño si tienes éxito y solo la mitad si fallas."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "10": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "11": [
+        {
+          "name": "Talento Fiable",
+          "description": "Cuando hagas una tirada de característica que te permita añadir tu bonus de competencia, puedes tratar cualquier resultado de 9 o menos en el d20 como un 10."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "14": [
+        {
+          "name": "Sentido Ciego",
+          "description": "Si puedes oír, eres consciente de la ubicación de cualquier criatura escondida o invisible a 10 pies de ti."
+        }
+      ],
+      "15": [
+        {
+          "name": "Mente Escurridiza",
+          "description": "Ganas competencia en tiradas de salvación de Sabiduría."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "18": [
+        {
+          "name": "Escurridizo",
+          "description": "Ningún ataque tiene ventaja contra ti mientras no estés incapacitado."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Golpe de Suerte",
+          "description": "Si tu ataque falla a un objetivo a tu alcance, puedes convertir el fallo en un golpe. Alternativamente, si fallas una tirada de característica, puedes tratar el resultado del d20 como un 20. Una vez uses esta característica, no puedes volver a usarla hasta terminar un descanso corto o largo."
+        }
+      ]
+    },
+    "sneakAttackDice": {
+      "1": 1, "3": 2, "5": 3, "7": 4, "9": 5, "11": 6, "13": 7, "15": 8, "17": 9, "19": 10
+    },
+    "subclasses": {
+      "ArcaneTrickster": {
+        "name": "Embaucador Arcano",
+        "spellcasting": {
+          "ability": "intelligence",
+          "type": "known",
+          "cantripsKnown": {"3": 3, "10": 4},
+          "spellsKnown": {"3": 3, "4": 4, "7": 5, "8": 6, "10": 7, "11": 8, "13": 9, "14": 10, "16": 11, "19": 12, "20": 13},
+          "spellSlots": {
+            "3": {"1": 2},
+            "4": {"1": 3},
+            "7": {"1": 4, "2": 2},
+            "10": {"1": 4, "2": 3},
+            "13": {"1": 4, "2": 3, "3": 2},
+            "16": {"1": 4, "2": 3, "3": 3},
+            "19": {"1": 4, "2": 3, "3": 3, "4": 1}
+          },
+          "restrictions": "Encantamiento e Ilusión principalmente"
+        }
+      }
+    }
+  },
+
+  "Sorcerer": {
+    "name": "Hechicero",
+    "hitDie": "d6",
+    "primaryAbility": "charisma",
+    "savingThrows": ["constitution", "charisma"],
+    "armorProficiencies": [],
+    "weaponProficiencies": ["dagas", "dardos", "ondas", "bastones", "ballestas ligeras"],
+    "toolProficiencies": [],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["arcana", "deception", "insight", "intimidation", "persuasion", "religion"]
+    },
+    "startingHP": 6,
+    "hpPerLevel": 4,
+    "spellcasting": {
+      "ability": "charisma",
+      "type": "known",
+      "ritual": false,
+      "focus": "foco arcano",
+      "cantripsKnown": {
+        "1": 4, "4": 5, "10": 6
+      },
+      "spellsKnown": {
+        "1": 2, "2": 3, "3": 4, "4": 5, "5": 6, "6": 7, "7": 8, "8": 9, "9": 10, "10": 11, "11": 12, "13": 13, "15": 14, "17": 15
+      },
+      "spellSlots": {
+        "1": {"1": 2},
+        "2": {"1": 3},
+        "3": {"1": 4, "2": 2},
+        "4": {"1": 4, "2": 3},
+        "5": {"1": 4, "2": 3, "3": 2},
+        "6": {"1": 4, "2": 3, "3": 3},
+        "7": {"1": 4, "2": 3, "3": 3, "4": 1},
+        "8": {"1": 4, "2": 3, "3": 3, "4": 2},
+        "9": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 1},
+        "10": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2},
+        "11": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1},
+        "13": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1},
+        "15": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1},
+        "17": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1, "9": 1},
+        "18": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 1, "7": 1, "8": 1, "9": 1},
+        "19": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 1, "8": 1, "9": 1},
+        "20": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 2, "8": 1, "9": 1}
+      }
+    },
+    "features": {
+      "1": [
+        {
+          "name": "Origen de Hechicería",
+          "description": "Elige un origen: Linaje Dracónico, Magia Salvaje, Mente Aberrante, Alma Divina, Relojería, Tormenta, Sombra."
+        }
+      ],
+      "2": [
+        {
+          "name": "Fuente de Magia",
+          "description": "Tienes puntos de hechicería igual a tu nivel de hechicero. Puedes usarlos para crear espacios de conjuro adicionales o para alimentar la Metamagia."
+        },
+        {
+          "name": "Flexibilidad de Conjuros",
+          "description": "Puedes convertir espacios de conjuro en puntos de hechicería (espacio de nivel 1 = 1 punto, nivel 2 = 2 puntos, etc.). También puedes gastar puntos para crear espacios (2 puntos = nivel 1, 3 = nivel 2, 5 = nivel 3, 6 = nivel 4, 7 = nivel 5). No puedes crear espacios superiores a nivel 5."
+        }
+      ],
+      "3": [
+        {
+          "name": "Metamagia",
+          "description": "Elige dos opciones de Metamagia para modificar tus conjuros. Ganas otra a nivel 10 y 17."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "10": [
+        {
+          "name": "Metamagia",
+          "description": "Elige una opción adicional de Metamagia."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "17": [
+        {
+          "name": "Metamagia",
+          "description": "Elige una opción adicional de Metamagia."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Restauración de Hechicería",
+          "description": "Recuperas 4 puntos de hechicería gastados cuando terminas un descanso corto."
+        }
+      ]
+    },
+    "sorceryPoints": "nivel de hechicero",
+    "metamagicOptions": [
+      {"name": "Conjuro Cuidadoso", "cost": 1, "description": "Las criaturas elegidas (hasta tu mod CHA) tienen éxito automático en salvaciones del conjuro"},
+      {"name": "Conjuro Distante", "cost": 1, "description": "Duplica el alcance del conjuro. Si es de toque, se vuelve de 30 pies"},
+      {"name": "Conjuro Potenciado", "cost": 1, "description": "Repite hasta tu mod CHA dados de daño que salgan 1 o 2"},
+      {"name": "Conjuro Extendido", "cost": 1, "description": "Duplica la duración del conjuro (máximo 24 horas)"},
+      {"name": "Conjuro Intensificado", "cost": 3, "description": "Un objetivo tiene desventaja en la primera salvación contra el conjuro"},
+      {"name": "Conjuro Acelerado", "cost": 2, "description": "Cambia tiempo de lanzamiento de 1 acción a 1 acción adicional"},
+      {"name": "Conjuro Sutil", "cost": 1, "description": "Lanza sin componentes verbales ni somáticos"},
+      {"name": "Conjuro Duplicado", "cost": 1, "description": "Apunta a una segunda criatura con un conjuro de un solo objetivo que no tenga alcance de tí mismo"}
+    ],
+    "metamagicKnown": {
+      "3": 2, "10": 3, "17": 4
+    }
+  },
+
+  "Warlock": {
+    "name": "Brujo",
+    "hitDie": "d8",
+    "primaryAbility": "charisma",
+    "savingThrows": ["wisdom", "charisma"],
+    "armorProficiencies": ["ligera"],
+    "weaponProficiencies": ["armas sencillas"],
+    "toolProficiencies": [],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["arcana", "deception", "history", "intimidation", "investigation", "nature", "religion"]
+    },
+    "startingHP": 8,
+    "hpPerLevel": 5,
+    "spellcasting": {
+      "ability": "charisma",
+      "type": "known",
+      "ritual": false,
+      "focus": "foco arcano",
+      "pactMagic": true,
+      "cantripsKnown": {
+        "1": 2, "4": 3, "10": 4
+      },
+      "spellsKnown": {
+        "1": 2, "2": 3, "3": 4, "4": 5, "5": 6, "6": 7, "7": 8, "8": 9, "9": 10, "11": 11, "13": 12, "15": 13, "17": 14, "19": 15
+      },
+      "pactSlots": {
+        "1": {"slots": 1, "level": 1},
+        "2": {"slots": 2, "level": 1},
+        "3": {"slots": 2, "level": 2},
+        "5": {"slots": 2, "level": 3},
+        "7": {"slots": 2, "level": 4},
+        "9": {"slots": 2, "level": 5},
+        "11": {"slots": 3, "level": 5},
+        "17": {"slots": 4, "level": 5}
+      },
+      "mysticArcanum": {
+        "11": {"level": 6},
+        "13": {"level": 7},
+        "15": {"level": 8},
+        "17": {"level": 9}
+      }
+    },
+    "features": {
+      "1": [
+        {
+          "name": "Patrón de Ultratumba",
+          "description": "Elige un patrón: El Archihada, El Celestial, El Demonio, El Gran Antiguo, El Genio, El Fantasma, El No-Muerto, El Insondable."
+        }
+      ],
+      "2": [
+        {
+          "name": "Invocaciones Sobrenaturales",
+          "description": "Ganas dos invocaciones sobrenaturales de tu elección. Algunas requieren nivel mínimo o pacto específico. Ganas más según subes de nivel."
+        }
+      ],
+      "3": [
+        {
+          "name": "Don del Pacto",
+          "description": "Elige un don de tu patrón: Pacto de la Cadena (familiar mejorado), Pacto de la Hoja (arma de pacto), Pacto del Tomo (libro de sombras), Pacto del Talismán."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "11": [
+        {
+          "name": "Arcano Místico (6º)",
+          "description": "Elige un conjuro de 6º nivel de la lista de brujo. Puedes lanzarlo una vez sin gastar espacio de conjuro. Recuperas este uso tras un descanso largo."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "13": [
+        {
+          "name": "Arcano Místico (7º)",
+          "description": "Elige un conjuro de 7º nivel de la lista de brujo. Puedes lanzarlo una vez sin gastar espacio de conjuro."
+        }
+      ],
+      "15": [
+        {
+          "name": "Arcano Místico (8º)",
+          "description": "Elige un conjuro de 8º nivel de la lista de brujo. Puedes lanzarlo una vez sin gastar espacio de conjuro."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "17": [
+        {
+          "name": "Arcano Místico (9º)",
+          "description": "Elige un conjuro de 9º nivel de la lista de brujo. Puedes lanzarlo una vez sin gastar espacio de conjuro."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Maestro Sobrenatural",
+          "description": "Puedes suplicar a tu patrón para recuperar todos tus espacios de conjuro de Magia de Pacto gastados. Debes terminar un descanso corto antes de poder volver a usar esta característica."
+        }
+      ]
+    },
+    "invocationsKnown": {
+      "2": 2, "5": 3, "7": 4, "9": 5, "12": 6, "15": 7, "18": 8
+    }
+  },
+
+  "Wizard": {
+    "name": "Mago",
+    "hitDie": "d6",
+    "primaryAbility": "intelligence",
+    "savingThrows": ["intelligence", "wisdom"],
+    "armorProficiencies": [],
+    "weaponProficiencies": ["dagas", "dardos", "ondas", "bastones", "ballestas ligeras"],
+    "toolProficiencies": [],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["arcana", "history", "insight", "investigation", "medicine", "religion"]
+    },
+    "startingHP": 6,
+    "hpPerLevel": 4,
+    "spellcasting": {
+      "ability": "intelligence",
+      "type": "prepared",
+      "ritual": true,
+      "focus": "foco arcano o libro de conjuros",
+      "spellbook": true,
+      "cantripsKnown": {
+        "1": 3, "4": 4, "10": 5
+      },
+      "spellbookSpells": "6 conjuros de nivel 1 al empezar, +2 por nivel de mago",
+      "preparedSpells": "modificador de Inteligencia + nivel de mago",
+      "spellSlots": {
+        "1": {"1": 2},
+        "2": {"1": 3},
+        "3": {"1": 4, "2": 2},
+        "4": {"1": 4, "2": 3},
+        "5": {"1": 4, "2": 3, "3": 2},
+        "6": {"1": 4, "2": 3, "3": 3},
+        "7": {"1": 4, "2": 3, "3": 3, "4": 1},
+        "8": {"1": 4, "2": 3, "3": 3, "4": 2},
+        "9": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 1},
+        "10": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2},
+        "11": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1},
+        "13": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1},
+        "15": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1},
+        "17": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2, "6": 1, "7": 1, "8": 1, "9": 1},
+        "18": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 1, "7": 1, "8": 1, "9": 1},
+        "19": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 1, "8": 1, "9": 1},
+        "20": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 3, "6": 2, "7": 2, "8": 1, "9": 1}
+      }
+    },
+    "features": {
+      "1": [
+        {
+          "name": "Lanzamiento de Conjuros",
+          "description": "Comienzas con un libro de conjuros con 6 conjuros de nivel 1 de mago. Puedes añadir más conjuros encontrando pergaminos o libros de otros magos."
+        },
+        {
+          "name": "Recuperación Arcana",
+          "description": "Una vez al día durante un descanso corto, puedes recuperar espacios de conjuro con niveles combinados igual o menores a la mitad de tu nivel de mago (redondeado arriba). Ninguno de los espacios puede ser de nivel 6 o superior."
+        }
+      ],
+      "2": [
+        {
+          "name": "Tradición Arcana",
+          "description": "Elige una escuela de magia: Abjuración, Conjuración, Adivinación, Encantamiento, Evocación, Ilusión, Nigromancia, Transmutación, Bladesinging, Cronurgia, Graviturgia, Escriba del Orden, Magia de Guerra."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "18": [
+        {
+          "name": "Dominio de Conjuros",
+          "description": "Elige un conjuro de 1º nivel y uno de 2º nivel de mago de tu libro de conjuros. Puedes lanzarlos a su nivel más bajo sin gastar espacio de conjuro si los tienes preparados. Si quieres lanzarlos a un nivel superior, debes gastar un espacio."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Conjuros Distintivos",
+          "description": "Elige dos conjuros de 3º nivel de mago de tu libro de conjuros como tus conjuros distintivos. Siempre los tienes preparados y no cuentan contra el número de conjuros preparados. Puedes lanzar cada uno una vez sin gastar espacio. Recuperas este uso tras un descanso corto o largo."
+        }
+      ]
+    }
+  },
+
+  "Artificer": {
+    "name": "Artífice",
+    "hitDie": "d8",
+    "primaryAbility": "intelligence",
+    "savingThrows": ["constitution", "intelligence"],
+    "armorProficiencies": ["ligera", "media", "escudos"],
+    "weaponProficiencies": ["armas sencillas"],
+    "toolProficiencies": ["herramientas de ladrón", "herramientas de reparador", "un tipo de herramientas de artesano"],
+    "skillChoices": {
+      "choose": 2,
+      "from": ["arcana", "history", "investigation", "medicine", "nature", "perception", "sleightOfHand"]
+    },
+    "startingHP": 8,
+    "hpPerLevel": 5,
+    "spellcasting": {
+      "ability": "intelligence",
+      "type": "prepared",
+      "ritual": true,
+      "focus": "herramientas de artífice o objeto infundido",
+      "cantripsKnown": {
+        "1": 2, "10": 3, "14": 4
+      },
+      "preparedSpells": "modificador de Inteligencia + la mitad del nivel de artífice (redondeado abajo)",
+      "spellSlots": {
+        "1": {"1": 2},
+        "2": {"1": 2},
+        "3": {"1": 3},
+        "4": {"1": 3},
+        "5": {"1": 4, "2": 2},
+        "6": {"1": 4, "2": 2},
+        "7": {"1": 4, "2": 3},
+        "8": {"1": 4, "2": 3},
+        "9": {"1": 4, "2": 3, "3": 2},
+        "10": {"1": 4, "2": 3, "3": 2},
+        "11": {"1": 4, "2": 3, "3": 3},
+        "12": {"1": 4, "2": 3, "3": 3},
+        "13": {"1": 4, "2": 3, "3": 3, "4": 1},
+        "14": {"1": 4, "2": 3, "3": 3, "4": 1},
+        "15": {"1": 4, "2": 3, "3": 3, "4": 2},
+        "16": {"1": 4, "2": 3, "3": 3, "4": 2},
+        "17": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 1},
+        "18": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 1},
+        "19": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2},
+        "20": {"1": 4, "2": 3, "3": 3, "4": 3, "5": 2}
+      }
+    },
+    "features": {
+      "1": [
+        {
+          "name": "Experto con Herramientas Mágicas",
+          "description": "Puedes usar herramientas de artesano como foco de conjuros. Además, puedes lanzar cualquier conjuro de artífice que conozcas a través de esas herramientas."
+        },
+        {
+          "name": "Lanzamiento de Conjuros",
+          "description": "Usas Inteligencia como habilidad de conjuros. Puedes lanzar rituales. Preparas conjuros cada descanso largo."
+        }
+      ],
+      "2": [
+        {
+          "name": "Infundir Objeto",
+          "description": "Puedes infundir objetos mundanos con ciertos efectos mágicos. Conoces 4 infusiones y puedes tener 2 objetos infundidos activos. Estos números aumentan con nivel."
+        }
+      ],
+      "3": [
+        {
+          "name": "Especialidad de Artífice",
+          "description": "Elige una especialidad: Alquimista, Armero, Artillero, Forjador de Batallas."
+        },
+        {
+          "name": "Experto en Herramientas",
+          "description": "Tu bonus de competencia se duplica para tiradas con herramientas en las que seas competente."
+        }
+      ],
+      "4": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "6": [
+        {
+          "name": "Experto en Herramientas (Concentración)",
+          "description": "Puedes añadir tu modificador de Inteligencia a tiradas de salvación de Constitución para mantener concentración en conjuros."
+        }
+      ],
+      "7": [
+        {
+          "name": "Destello de Genialidad",
+          "description": "Cuando tú u otra criatura que puedas ver a 30 pies haga una tirada de característica o de salvación, puedes usar tu reacción para añadir tu modificador de Inteligencia al resultado. Usos igual a tu mod INT, recuperados tras descanso largo."
+        }
+      ],
+      "8": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "10": [
+        {
+          "name": "Adepto con Objetos Mágicos",
+          "description": "Puedes sintonizar hasta cuatro objetos mágicos a la vez. Además, puedes ignorar todos los requisitos de clase, raza, nivel y conjuros para sintonizar o usar objetos mágicos."
+        }
+      ],
+      "11": [
+        {
+          "name": "Conjuro Almacenado",
+          "description": "Puedes almacenar un conjuro de artífice de nivel 1 o 2 en un objeto que tengas. La criatura que sostenga el objeto puede usar su acción para lanzar el conjuro. El conjuro usa tu habilidad de conjuros. El objeto puede almacenar el conjuro un número de veces igual a 2 × tu mod INT."
+        }
+      ],
+      "12": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "14": [
+        {
+          "name": "Sabio con Objetos Mágicos",
+          "description": "Puedes sintonizar hasta cinco objetos mágicos a la vez."
+        }
+      ],
+      "16": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "18": [
+        {
+          "name": "Maestro con Objetos Mágicos",
+          "description": "Puedes sintonizar hasta seis objetos mágicos a la vez."
+        }
+      ],
+      "19": [
+        {
+          "name": "Incremento de Característica",
+          "description": "Puedes incrementar una característica en 2, o dos características en 1. No puedes superar 20."
+        }
+      ],
+      "20": [
+        {
+          "name": "Alma de Artífice",
+          "description": "Desarrollas una conexión mística con tus objetos mágicos. Mientras tengas al menos un objeto mágico sintonizado: si terminas en 0 PG pero no mueres, puedes usar tu reacción para terminar una de tus infusiones y caer a 1 PG en su lugar. Además, si restaurarías PG a una criatura con un conjuro que haya tocado tus herramientas, la criatura restaura PG adicionales igual a tu mod INT."
+        }
+      ]
+    },
+    "infusionsKnown": {
+      "2": 4, "6": 6, "10": 8, "14": 10, "18": 12
+    },
+    "infusedItems": {
+      "2": 2, "6": 3, "10": 4, "14": 5, "18": 6
+    },
+    "attunementSlots": {
+      "1": 3, "10": 4, "14": 5, "18": 6
+    }
+  }
+}

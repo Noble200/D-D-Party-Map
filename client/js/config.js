@@ -102,6 +102,11 @@ export const DEFAULT_CHARACTER = {
     spellcasting: {
         class: '',
         ability: '',
+        cantripsKnown: [],      // Array de spell keys: ['light', 'fireRay']
+        spellsKnown: [],        // Array de {key, level, prepared}
+        spellSlots: {           // Espacios usados por nivel
+            1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0
+        },
         notes: ''
     },
 

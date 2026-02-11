@@ -1311,10 +1311,11 @@
 
                     <!-- TAB: Conjuros -->
                     <div class="tab-pane" data-tab="spells">
+                        <!-- Stats de Lanzamiento -->
                         <div class="spellcasting-header">
                             <div class="form-group">
-                                <label for="spellcastingClass">Clase de Lanzador</label>
-                                <input type="text" id="spellcastingClass" placeholder="Clase">
+                                <label for="spellcastingClass">Clase Lanzador</label>
+                                <input type="text" id="spellcastingClass" placeholder="Auto" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="spellcastingAbility">Característica</label>
@@ -1334,12 +1335,51 @@
                                 <span class="spell-stat" id="spellAttackBonus">+0</span>
                             </div>
                         </div>
-                        <div class="spells-note">
-                            <p>Usa esta sección para anotar tus conjuros. Los trucos y conjuros preparados se gestionan mejor con una lista aparte.</p>
+
+                        <!-- Espacios de Conjuros -->
+                        <div class="spell-slots-section">
+                            <h5 class="section-title">Espacios de Conjuros</h5>
+                            <div id="spellSlotsContainer">
+                                <p class="no-slots">Selecciona una clase con hechicería para ver tus espacios.</p>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="spellsNotes">Notas de Conjuros</label>
-                            <textarea id="spellsNotes" rows="10" placeholder="Lista tus trucos y conjuros preparados aquí..."></textarea>
+
+                        <!-- Trucos -->
+                        <div class="cantrips-section">
+                            <div class="section-header">
+                                <h5 class="section-title">Trucos</h5>
+                                <span class="counter" id="cantripsCounter">0/0</span>
+                                <button type="button" class="btn-add-spell" id="btnAddCantrip">+ Agregar</button>
+                            </div>
+                            <div id="cantripsList" class="spells-list">
+                                <p class="empty-list">No hay trucos seleccionados.</p>
+                            </div>
+                        </div>
+
+                        <!-- Conjuros -->
+                        <div class="spells-section">
+                            <div class="section-header">
+                                <h5 class="section-title">Conjuros</h5>
+                                <span class="counter" id="spellsCounter">0/0</span>
+                                <button type="button" class="btn-add-spell" id="btnAddSpell">+ Agregar</button>
+                            </div>
+                            <div id="spellsList" class="spells-list">
+                                <p class="empty-list">No hay conjuros seleccionados.</p>
+                            </div>
+                        </div>
+
+                        <!-- Habilidades y Rasgos Automáticos -->
+                        <div class="abilities-section">
+                            <h5 class="section-title">Habilidades y Rasgos</h5>
+                            <div id="abilitiesContainer">
+                                <p class="no-traits">Selecciona una raza, clase y trasfondo para ver tus habilidades.</p>
+                            </div>
+                        </div>
+
+                        <!-- Notas adicionales -->
+                        <div class="form-group spells-notes-section">
+                            <label for="spellsNotes">Notas</label>
+                            <textarea id="spellsNotes" rows="3" placeholder="Notas adicionales sobre tus conjuros..."></textarea>
                         </div>
                     </div>
 
@@ -1381,6 +1421,59 @@
                     </div>
                 </div>
                 <button id="btnSaveCharacter" class="btn btn-primary">Guardar Personaje</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Selector de Conjuros -->
+    <div id="spellSelectorModal" class="modal-overlay">
+        <div class="modal-content spell-selector-modal">
+            <div class="modal-header">
+                <h3>Seleccionar Conjuro</h3>
+                <button type="button" class="btn-close spell-selector-close">&times;</button>
+            </div>
+            <div class="spell-selector-filters">
+                <div class="filter-group">
+                    <label for="spellLevelFilter">Nivel</label>
+                    <select id="spellLevelFilter">
+                        <option value="all">Todos</option>
+                        <option value="0">Trucos</option>
+                        <option value="1">Nivel 1</option>
+                        <option value="2">Nivel 2</option>
+                        <option value="3">Nivel 3</option>
+                        <option value="4">Nivel 4</option>
+                        <option value="5">Nivel 5</option>
+                        <option value="6">Nivel 6</option>
+                        <option value="7">Nivel 7</option>
+                        <option value="8">Nivel 8</option>
+                        <option value="9">Nivel 9</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="spellSchoolFilter">Escuela</label>
+                    <select id="spellSchoolFilter">
+                        <option value="all">Todas</option>
+                        <option value="abjuración">Abjuración</option>
+                        <option value="adivinación">Adivinación</option>
+                        <option value="conjuración">Conjuración</option>
+                        <option value="encantamiento">Encantamiento</option>
+                        <option value="evocación">Evocación</option>
+                        <option value="ilusión">Ilusión</option>
+                        <option value="nigromancia">Nigromancia</option>
+                        <option value="transmutación">Transmutación</option>
+                    </select>
+                </div>
+                <div class="filter-group filter-search">
+                    <label for="spellSearchInput">Buscar</label>
+                    <input type="text" id="spellSearchInput" placeholder="Nombre del conjuro...">
+                </div>
+            </div>
+            <div id="spellSelectorList" class="spell-selector-list">
+                <!-- Lista de conjuros generada dinámicamente -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary spell-selector-close">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnAddSelectedSpells">Agregar Seleccionados</button>
             </div>
         </div>
     </div>

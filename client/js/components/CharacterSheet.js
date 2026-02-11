@@ -20,6 +20,20 @@ class CharacterSheet {
         // Datos de razas cargados desde JSON
         this.raceData = null;
         this.raceDataLoaded = false;
+        // Datos de clases cargados desde JSON
+        this.classData = null;
+        this.classDataLoaded = false;
+        // Datos de conjuros cargados desde JSON
+        this.spellsData = null;
+        this.spellsDataLoaded = false;
+        // Datos de trasfondos cargados desde JSON
+        this.backgroundData = null;
+        this.backgroundDataLoaded = false;
+        // Conjuros seleccionados por el personaje
+        this.selectedCantrips = [];
+        this.selectedSpells = [];
+        // Espacios de conjuros usados
+        this.usedSpellSlots = {};
     }
 
     // Cargar datos de razas desde el archivo JSON
@@ -48,11 +62,85 @@ class CharacterSheet {
         return this.raceData[raceKey] || null;
     }
 
+    // Cargar datos de clases desde el archivo JSON
+    async loadClassData() {
+        if (this.classDataLoaded) return this.classData;
+
+        try {
+            const response = await fetch('/data/classes.json');
+            if (!response.ok) {
+                throw new Error(`Error cargando clases: ${response.status}`);
+            }
+            this.classData = await response.json();
+            this.classDataLoaded = true;
+            console.log('Datos de clases cargados correctamente');
+            return this.classData;
+        } catch (error) {
+            console.error('Error al cargar datos de clases:', error);
+            return null;
+        }
+    }
+
+    // Obtener datos de una clase específica
+    getClassInfo(classKey) {
+        if (!this.classData || !classKey) return null;
+        return this.classData[classKey] || null;
+    }
+
+    // Cargar datos de conjuros desde el archivo JSON
+    async loadSpellsData() {
+        if (this.spellsDataLoaded) return this.spellsData;
+
+        try {
+            const response = await fetch('/data/spells.json');
+            if (!response.ok) {
+                throw new Error(`Error cargando conjuros: ${response.status}`);
+            }
+            this.spellsData = await response.json();
+            this.spellsDataLoaded = true;
+            console.log('Datos de conjuros cargados correctamente');
+            return this.spellsData;
+        } catch (error) {
+            console.error('Error al cargar datos de conjuros:', error);
+            return null;
+        }
+    }
+
+    // Cargar datos de trasfondos desde el archivo JSON
+    async loadBackgroundData() {
+        if (this.backgroundDataLoaded) return this.backgroundData;
+
+        try {
+            const response = await fetch('/data/backgrounds.json');
+            if (!response.ok) {
+                throw new Error(`Error cargando trasfondos: ${response.status}`);
+            }
+            this.backgroundData = await response.json();
+            this.backgroundDataLoaded = true;
+            console.log('Datos de trasfondos cargados correctamente');
+            return this.backgroundData;
+        } catch (error) {
+            console.error('Error al cargar datos de trasfondos:', error);
+            return null;
+        }
+    }
+
+    // Obtener datos de un trasfondo específico
+    getBackgroundInfo(bgKey) {
+        if (!this.backgroundData || !bgKey) return null;
+        return this.backgroundData[bgKey] || null;
+    }
+
     async init() {
         if (this.initialized) return;
 
-        // Cargar datos de razas desde JSON antes de inicializar listeners
-        await this.loadRaceData();
+        // Cargar todos los datos JSON en paralelo
+        await Promise.all([
+            this.loadRaceData(),
+            this.loadClassData(),
+            this.loadSpellsData(),
+            this.loadBackgroundData()
+        ]);
 
         // Tabs
         const tabBtns = this.modal.querySelectorAll('.tab-btn');
@@ -80,8 +168,12 @@ class CharacterSheet {
         // Listeners de habilidades
         this.initSkillListeners();
 
-        // Listener de nivel para bonus de competencia
-        document.getElementById('charLevel').addEventListener('change', () => this.updateAllCalculations());
+        // Listener de nivel para bonus de competencia y actualización de rasgos
+        document.getElementById('charLevel').addEventListener('change', () => {
+            this.updateAllCalculations();
+            this.updateSpellsSection();
+            this.updateHitDice(this.getClassInfo(document.getElementById('charClass')?.value));
+        });
 
         // Listeners de botones de nivel +/-
         this.initLevelButtons();
@@ -97,6 +189,15 @@ class CharacterSheet {
 
         // Listeners de raza y subraza
         this.initRaceListeners();
+
+        // Listeners de clase
+        this.initClassListeners();
+
+        // Listeners de trasfondo
+        this.initBackgroundListeners();
+
+        // Listeners del tab de conjuros
+        this.initSpellsTabListeners();
 
         this.initialized = true;
     }
@@ -159,6 +260,9 @@ class CharacterSheet {
             this.applyRaceBonuses(raceInfo);
             this.updateRaceInfo(raceInfo);
         }
+
+        // Actualizar sección de habilidades automáticas
+        this.updateAbilitiesSection();
     }
 
     onSubraceChange() {
@@ -183,6 +287,9 @@ class CharacterSheet {
             this.applyRaceBonuses(raceInfo);
             this.updateRaceInfo(raceInfo);
         }
+
+        // Actualizar sección de habilidades automáticas
+        this.updateAbilitiesSection();
     }
 
     populateSubraces(subraces) {
@@ -911,6 +1018,9 @@ class CharacterSheet {
             spellcasting: {
                 class: document.getElementById('spellcastingClass')?.value || '',
                 ability: document.getElementById('spellcastingAbility')?.value || '',
+                cantripsKnown: [...this.selectedCantrips],
+                spellsKnown: [...this.selectedSpells],
+                spellSlots: { ...this.usedSpellSlots },
                 notes: document.getElementById('spellsNotes')?.value || ''
             },
 
@@ -1068,6 +1178,14 @@ class CharacterSheet {
             document.getElementById('spellcastingClass').value = data.spellcasting.class || '';
             document.getElementById('spellcastingAbility').value = data.spellcasting.ability || '';
             document.getElementById('spellsNotes').value = data.spellcasting.notes || '';
+
+            // Cargar trucos y conjuros seleccionados
+            this.selectedCantrips = data.spellcasting.cantripsKnown || [];
+            this.selectedSpells = data.spellcasting.spellsKnown || [];
+            this.usedSpellSlots = data.spellcasting.spellSlots || {};
+
+            // Actualizar UI de conjuros
+            this.updateSpellsSection();
         }
 
         // Personalidad
@@ -1155,6 +1273,849 @@ class CharacterSheet {
         if (indicator) {
             // Mostrar indicador si está menos del 70% completo
             indicator.style.display = completionPercent < 70 ? 'inline-block' : 'none';
+        }
+    }
+
+    // ==========================================
+    // Manejo de Clases
+    // ==========================================
+
+    initClassListeners() {
+        const classSelect = document.getElementById('charClass');
+        if (classSelect) {
+            classSelect.addEventListener('change', () => this.onClassChange());
+        }
+    }
+
+    onClassChange() {
+        const classSelect = document.getElementById('charClass');
+        const classKey = classSelect?.value;
+        const classInfo = this.getClassInfo(classKey);
+
+        // Auto-rellenar clase lanzadora si tiene spellcasting
+        const spellcastingClassInput = document.getElementById('spellcastingClass');
+        if (spellcastingClassInput && classInfo?.spellcasting) {
+            spellcastingClassInput.value = classInfo.name;
+        } else if (spellcastingClassInput) {
+            spellcastingClassInput.value = '';
+        }
+
+        // Auto-rellenar característica de lanzamiento
+        const spellcastingAbilitySelect = document.getElementById('spellcastingAbility');
+        if (spellcastingAbilitySelect && classInfo?.spellcasting?.ability) {
+            spellcastingAbilitySelect.value = classInfo.spellcasting.ability;
+        }
+
+        // Aplicar tiradas de salvación con competencia
+        this.applyClassSavingThrows(classInfo);
+
+        // Actualizar dado de golpe
+        this.updateHitDice(classInfo);
+
+        // Actualizar sección de conjuros y habilidades
+        this.updateSpellsSection();
+        this.updateAbilitiesSection();
+    }
+
+    applyClassSavingThrows(classInfo) {
+        // Limpiar todas las tiradas de salvación primero
+        const saves = ['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha'];
+        const abilityMap = {
+            'strength': 'Str',
+            'dexterity': 'Dex',
+            'constitution': 'Con',
+            'intelligence': 'Int',
+            'wisdom': 'Wis',
+            'charisma': 'Cha'
+        };
+
+        saves.forEach(save => {
+            const checkbox = document.getElementById(`saveProf${save}`);
+            if (checkbox) {
+                checkbox.checked = false;
+                checkbox.classList.remove('class-proficiency');
+            }
+        });
+
+        // Aplicar tiradas de salvación de la clase
+        if (classInfo?.savingThrows) {
+            classInfo.savingThrows.forEach(ability => {
+                const saveId = abilityMap[ability];
+                if (saveId) {
+                    const checkbox = document.getElementById(`saveProf${saveId}`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        checkbox.classList.add('class-proficiency');
+                    }
+                }
+            });
+        }
+
+        this.updateSavingThrows();
+    }
+
+    updateHitDice(classInfo) {
+        const hitDiceInput = document.getElementById('hitDice');
+        const level = parseInt(document.getElementById('charLevel')?.value) || 1;
+
+        if (hitDiceInput && classInfo?.hitDie) {
+            hitDiceInput.value = `${level}${classInfo.hitDie}`;
+        }
+    }
+
+    // ==========================================
+    // Manejo de Trasfondos
+    // ==========================================
+
+    initBackgroundListeners() {
+        const bgSelect = document.getElementById('charBackground');
+        if (bgSelect) {
+            bgSelect.addEventListener('change', () => this.onBackgroundChange());
+        }
+    }
+
+    onBackgroundChange() {
+        const bgSelect = document.getElementById('charBackground');
+        const bgKey = bgSelect?.value;
+
+        if (!bgKey || bgKey === 'Other') {
+            this.updateAbilitiesSection();
+            return;
+        }
+
+        const bgInfo = this.getBackgroundInfo(bgKey);
+        if (bgInfo) {
+            // Aplicar competencias de habilidades del trasfondo
+            this.applyBackgroundSkillProficiencies(bgInfo);
+        }
+
+        // Actualizar sección de habilidades
+        this.updateAbilitiesSection();
+    }
+
+    applyBackgroundSkillProficiencies(bgInfo) {
+        if (!bgInfo?.skillProficiencies) return;
+
+        bgInfo.skillProficiencies.forEach(skillKey => {
+            const capitalSkill = skillKey.charAt(0).toUpperCase() + skillKey.slice(1);
+            const skillItem = this.modal.querySelector(`.skill-item[data-skill="${skillKey}"]`) ||
+                              this.modal.querySelector(`#skill${capitalSkill}`)?.closest('.skill-item');
+
+            if (skillItem) {
+                const profCheck = skillItem.querySelector('.skill-prof');
+                if (profCheck && !profCheck.disabled) {
+                    profCheck.checked = true;
+                }
+            }
+        });
+
+        // Recalcular bonuses de habilidades
+        const skillItems = this.modal.querySelectorAll('.skill-item');
+        skillItems.forEach(item => this.updateSkillBonus(item));
+    }
+
+    // ==========================================
+    // Sistema de Rasgos Automáticos
+    // ==========================================
+
+    // Clasificar un rasgo como pasivo o activo
+    classifyTrait(trait) {
+        if (!trait?.description) return 'passive';
+
+        const desc = trait.description.toLowerCase();
+        const activeKeywords = [
+            'como acción', 'acción adicional', 'puedes usar',
+            'una vez por', 'usos igual', 'recuperas', 'gasta',
+            'puedes lanzar', 'como reacción', 'tras descanso',
+            'veces igual', 'cargas'
+        ];
+
+        for (const keyword of activeKeywords) {
+            if (desc.includes(keyword)) return 'active';
+        }
+        return 'passive';
+    }
+
+    // Obtener todos los rasgos del personaje
+    getAllCharacterTraits() {
+        const traits = { passive: [], active: [] };
+
+        // 1. Rasgos raciales
+        const raceKey = document.getElementById('charRace')?.value;
+        const subraceKey = document.getElementById('charSubrace')?.value;
+        const raceInfo = this.getRaceInfo(raceKey);
+
+        if (raceInfo?.traits) {
+            raceInfo.traits.forEach(trait => {
+                const type = this.classifyTrait(trait);
+                traits[type].push({
+                    ...trait,
+                    source: `Raza: ${raceInfo.name}`,
+                    sourceType: 'race'
+                });
+            });
+        }
+
+        if (subraceKey && raceInfo?.subraces?.[subraceKey]?.traits) {
+            const subraceData = raceInfo.subraces[subraceKey];
+            subraceData.traits.forEach(trait => {
+                const type = this.classifyTrait(trait);
+                traits[type].push({
+                    ...trait,
+                    source: `Subraza: ${subraceData.name}`,
+                    sourceType: 'subrace'
+                });
+            });
+        }
+
+        // Agregar visión en la oscuridad como rasgo pasivo si aplica
+        const darkvision = raceInfo?.subraces?.[subraceKey]?.darkvision ?? raceInfo?.darkvision ?? 0;
+        if (darkvision > 0) {
+            const existingDarkvision = traits.passive.find(t => t.name === 'Visión en la Oscuridad');
+            if (!existingDarkvision) {
+                traits.passive.unshift({
+                    name: 'Visión en la Oscuridad',
+                    description: `Puedes ver en luz tenue a 60 pies como si fuera luz brillante, y en oscuridad como si fuera luz tenue. No puedes discernir colores en la oscuridad, solo tonos de gris.`,
+                    source: `Raza: ${raceInfo?.name || 'Desconocida'}`,
+                    sourceType: 'race',
+                    range: darkvision
+                });
+            }
+        }
+
+        // 2. Rasgos de clase por nivel
+        const classKey = document.getElementById('charClass')?.value;
+        const level = parseInt(document.getElementById('charLevel')?.value) || 1;
+        const classInfo = this.getClassInfo(classKey);
+
+        if (classInfo?.features) {
+            for (let lvl = 1; lvl <= level; lvl++) {
+                const levelFeatures = classInfo.features[lvl.toString()];
+                if (levelFeatures) {
+                    levelFeatures.forEach(feature => {
+                        const type = this.classifyTrait(feature);
+                        traits[type].push({
+                            ...feature,
+                            source: `Clase: ${classInfo.name} Nv${lvl}`,
+                            sourceType: 'class',
+                            level: lvl
+                        });
+                    });
+                }
+            }
+        }
+
+        // 3. Rasgo de trasfondo
+        const bgKey = document.getElementById('charBackground')?.value;
+        const bgInfo = this.getBackgroundInfo(bgKey);
+
+        if (bgInfo?.feature) {
+            const type = this.classifyTrait(bgInfo.feature);
+            traits[type].push({
+                ...bgInfo.feature,
+                source: `Trasfondo: ${bgInfo.name}`,
+                sourceType: 'background'
+            });
+        }
+
+        return traits;
+    }
+
+    // Renderizar la sección de habilidades/rasgos
+    updateAbilitiesSection() {
+        const container = document.getElementById('abilitiesContainer');
+        if (!container) return;
+
+        const traits = this.getAllCharacterTraits();
+
+        // Construir HTML
+        let html = '';
+
+        // Sección Pasivas
+        if (traits.passive.length > 0) {
+            html += '<div class="traits-group traits-passive">';
+            html += '<h5 class="traits-group-title">Pasivas</h5>';
+            traits.passive.forEach(trait => {
+                html += this.renderTraitItem(trait, 'passive');
+            });
+            html += '</div>';
+        }
+
+        // Sección Activas
+        if (traits.active.length > 0) {
+            html += '<div class="traits-group traits-active">';
+            html += '<h5 class="traits-group-title">Activas</h5>';
+            traits.active.forEach(trait => {
+                html += this.renderTraitItem(trait, 'active');
+            });
+            html += '</div>';
+        }
+
+        // Mensaje si no hay rasgos
+        if (traits.passive.length === 0 && traits.active.length === 0) {
+            html = '<p class="no-traits">Selecciona una raza, clase y trasfondo para ver tus habilidades.</p>';
+        }
+
+        container.innerHTML = html;
+    }
+
+    renderTraitItem(trait, type) {
+        const sourceIcon = this.getSourceIcon(trait.sourceType);
+        return `
+            <div class="trait-item trait-${type}" data-source-type="${trait.sourceType}">
+                <div class="trait-header">
+                    <span class="trait-icon">${sourceIcon}</span>
+                    <span class="trait-name">${trait.name}</span>
+                    <span class="trait-source">(${trait.source})</span>
+                </div>
+                <p class="trait-description">${trait.description}</p>
+            </div>
+        `;
+    }
+
+    getSourceIcon(sourceType) {
+        switch (sourceType) {
+            case 'race':
+            case 'subrace':
+                return '&#9670;'; // Diamante
+            case 'class':
+                return '&#9733;'; // Estrella
+            case 'background':
+                return '&#9829;'; // Corazón
+            default:
+                return '&#9679;'; // Círculo
+        }
+    }
+
+    // ==========================================
+    // Sistema de Conjuros
+    // ==========================================
+
+    initSpellsTabListeners() {
+        // Botón agregar truco
+        const addCantripBtn = document.getElementById('btnAddCantrip');
+        if (addCantripBtn) {
+            addCantripBtn.addEventListener('click', () => this.openSpellSelector(0));
+        }
+
+        // Botón agregar conjuro
+        const addSpellBtn = document.getElementById('btnAddSpell');
+        if (addSpellBtn) {
+            addSpellBtn.addEventListener('click', () => this.openSpellSelector(null));
+        }
+
+        // Listeners del modal de selección
+        this.initSpellSelectorListeners();
+    }
+
+    initSpellSelectorListeners() {
+        const modal = document.getElementById('spellSelectorModal');
+        if (!modal) return;
+
+        // Cerrar modal
+        const closeBtn = modal.querySelector('.spell-selector-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.closeSpellSelector());
+        }
+
+        // Filtros
+        const levelFilter = document.getElementById('spellLevelFilter');
+        const schoolFilter = document.getElementById('spellSchoolFilter');
+        const searchInput = document.getElementById('spellSearchInput');
+
+        if (levelFilter) {
+            levelFilter.addEventListener('change', () => this.filterSpells());
+        }
+        if (schoolFilter) {
+            schoolFilter.addEventListener('change', () => this.filterSpells());
+        }
+        if (searchInput) {
+            searchInput.addEventListener('input', () => this.filterSpells());
+        }
+
+        // Botón agregar seleccionados
+        const addBtn = document.getElementById('btnAddSelectedSpells');
+        if (addBtn) {
+            addBtn.addEventListener('click', () => this.addSelectedSpells());
+        }
+
+        // Cerrar al hacer click fuera
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) this.closeSpellSelector();
+        });
+    }
+
+    // Obtener límite de trucos según clase y nivel
+    getCantripsLimit() {
+        const classKey = document.getElementById('charClass')?.value;
+        const level = parseInt(document.getElementById('charLevel')?.value) || 1;
+        const classInfo = this.getClassInfo(classKey);
+
+        if (!classInfo?.spellcasting?.cantripsKnown) return 0;
+
+        const cantripsTable = classInfo.spellcasting.cantripsKnown;
+        let maxCantrips = 0;
+
+        for (const [lvl, count] of Object.entries(cantripsTable)) {
+            if (parseInt(lvl) <= level) {
+                maxCantrips = count;
+            }
+        }
+
+        return maxCantrips;
+    }
+
+    // Obtener límite de conjuros según clase y nivel
+    getSpellsLimit() {
+        const classKey = document.getElementById('charClass')?.value;
+        const level = parseInt(document.getElementById('charLevel')?.value) || 1;
+        const classInfo = this.getClassInfo(classKey);
+
+        if (!classInfo?.spellcasting) return { type: 'none', count: 0 };
+
+        const spellcasting = classInfo.spellcasting;
+
+        if (spellcasting.type === 'known' && spellcasting.spellsKnown) {
+            let count = 0;
+            for (const [lvl, num] of Object.entries(spellcasting.spellsKnown)) {
+                if (parseInt(lvl) <= level) count = num;
+            }
+            return { type: 'known', count };
+
+        } else if (spellcasting.type === 'prepared') {
+            const abilityMod = this.getSpellcastingModifier();
+            const count = Math.max(1, level + abilityMod);
+            return { type: 'prepared', count };
+        }
+
+        return { type: 'none', count: 0 };
+    }
+
+    // Obtener modificador de característica de lanzamiento
+    getSpellcastingModifier() {
+        const ability = document.getElementById('spellcastingAbility')?.value;
+        if (!ability) return 0;
+
+        const abilityScore = this.getTotalAbilityScore(ability);
+        return this.calculateModifier(abilityScore);
+    }
+
+    // Obtener espacios de conjuros por nivel
+    getSpellSlots() {
+        const classKey = document.getElementById('charClass')?.value;
+        const level = parseInt(document.getElementById('charLevel')?.value) || 1;
+        const classInfo = this.getClassInfo(classKey);
+
+        if (!classInfo?.spellcasting?.spellSlots) return {};
+
+        const slotsTable = classInfo.spellcasting.spellSlots;
+        let slots = {};
+
+        for (const [lvl, slotsByLevel] of Object.entries(slotsTable)) {
+            if (parseInt(lvl) <= level) {
+                slots = { ...slotsByLevel };
+            }
+        }
+
+        return slots;
+    }
+
+    // Actualizar toda la sección de conjuros
+    updateSpellsSection() {
+        this.updateSpellStats();
+        this.updateSpellSlotsUI();
+        this.updateCantripsCounter();
+        this.updateSpellsCounter();
+        this.renderSelectedCantrips();
+        this.renderSelectedSpells();
+        this.updateAbilitiesSection();
+    }
+
+    // Actualizar UI de espacios de conjuros
+    updateSpellSlotsUI() {
+        const container = document.getElementById('spellSlotsContainer');
+        if (!container) return;
+
+        const slots = this.getSpellSlots();
+
+        if (Object.keys(slots).length === 0) {
+            container.innerHTML = '<p class="no-slots">Esta clase no tiene espacios de conjuros.</p>';
+            return;
+        }
+
+        let html = '<div class="spell-slots-grid">';
+
+        for (let level = 1; level <= 9; level++) {
+            const totalSlots = slots[level.toString()] || 0;
+            if (totalSlots === 0) continue;
+
+            const usedSlots = this.usedSpellSlots[level] || 0;
+
+            html += `<div class="slot-level">`;
+            html += `<span class="slot-level-label">Nv${level}</span>`;
+            html += `<div class="slot-checkboxes">`;
+
+            for (let i = 0; i < totalSlots; i++) {
+                const isUsed = i < usedSlots;
+                html += `<input type="checkbox" class="slot-checkbox"
+                         data-level="${level}" data-index="${i}"
+                         ${isUsed ? 'checked' : ''}>`;
+            }
+
+            html += `</div></div>`;
+        }
+
+        html += '</div>';
+        container.innerHTML = html;
+
+        // Agregar listeners a los checkboxes
+        container.querySelectorAll('.slot-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const level = parseInt(e.target.dataset.level);
+                const index = parseInt(e.target.dataset.index);
+                this.toggleSpellSlot(level, index, e.target.checked);
+            });
+        });
+    }
+
+    toggleSpellSlot(level, index, isUsed) {
+        if (!this.usedSpellSlots[level]) {
+            this.usedSpellSlots[level] = 0;
+        }
+
+        // Contar cuántos están marcados
+        const container = document.getElementById('spellSlotsContainer');
+        const checkboxes = container.querySelectorAll(`.slot-checkbox[data-level="${level}"]`);
+        let count = 0;
+        checkboxes.forEach(cb => {
+            if (cb.checked) count++;
+        });
+
+        this.usedSpellSlots[level] = count;
+    }
+
+    // Actualizar contador de trucos
+    updateCantripsCounter() {
+        const counter = document.getElementById('cantripsCounter');
+        if (!counter) return;
+
+        const limit = this.getCantripsLimit();
+        const current = this.selectedCantrips.length;
+
+        counter.textContent = `${current}/${limit}`;
+        counter.classList.toggle('limit-reached', current >= limit);
+    }
+
+    // Actualizar contador de conjuros
+    updateSpellsCounter() {
+        const counter = document.getElementById('spellsCounter');
+        if (!counter) return;
+
+        const { type, count } = this.getSpellsLimit();
+        const current = this.selectedSpells.filter(s => s.prepared).length;
+
+        if (type === 'none') {
+            counter.textContent = '-';
+        } else if (type === 'known') {
+            counter.textContent = `${this.selectedSpells.length}/${count} conocidos`;
+        } else {
+            counter.textContent = `${current}/${count} preparados`;
+        }
+    }
+
+    // Renderizar trucos seleccionados
+    renderSelectedCantrips() {
+        const container = document.getElementById('cantripsList');
+        if (!container) return;
+
+        if (this.selectedCantrips.length === 0) {
+            container.innerHTML = '<p class="empty-list">No hay trucos seleccionados.</p>';
+            return;
+        }
+
+        let html = '';
+        this.selectedCantrips.forEach((spellKey, index) => {
+            const spell = this.getSpellByKey(spellKey, 'cantrips');
+            if (spell) {
+                html += `
+                    <div class="spell-item cantrip-item" data-key="${spellKey}">
+                        <span class="spell-name">${spell.name}</span>
+                        <span class="spell-school">(${spell.school})</span>
+                        <button class="btn-remove-spell" data-index="${index}" data-type="cantrip">×</button>
+                    </div>
+                `;
+            }
+        });
+
+        container.innerHTML = html;
+
+        // Agregar listeners para eliminar
+        container.querySelectorAll('.btn-remove-spell').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                this.removeCantrip(index);
+            });
+        });
+    }
+
+    // Renderizar conjuros seleccionados
+    renderSelectedSpells() {
+        const container = document.getElementById('spellsList');
+        if (!container) return;
+
+        if (this.selectedSpells.length === 0) {
+            container.innerHTML = '<p class="empty-list">No hay conjuros seleccionados.</p>';
+            return;
+        }
+
+        // Agrupar por nivel
+        const spellsByLevel = {};
+        this.selectedSpells.forEach((spellData, index) => {
+            if (!spellsByLevel[spellData.level]) {
+                spellsByLevel[spellData.level] = [];
+            }
+            spellsByLevel[spellData.level].push({ ...spellData, index });
+        });
+
+        const { type } = this.getSpellsLimit();
+        let html = '';
+
+        for (let level = 1; level <= 9; level++) {
+            const spells = spellsByLevel[level];
+            if (!spells || spells.length === 0) continue;
+
+            html += `<div class="spell-level-group">`;
+            html += `<h6 class="spell-level-title">Nivel ${level}</h6>`;
+
+            spells.forEach(spellData => {
+                const spell = this.getSpellByKey(spellData.key, `level${spellData.level}`);
+                if (spell) {
+                    const preparedClass = spellData.prepared ? 'prepared' : '';
+                    const preparedCheckbox = type === 'prepared' ?
+                        `<input type="checkbox" class="spell-prepared" data-index="${spellData.index}" ${spellData.prepared ? 'checked' : ''}>` : '';
+
+                    html += `
+                        <div class="spell-item ${preparedClass}" data-key="${spellData.key}">
+                            ${preparedCheckbox}
+                            <span class="spell-name">${spell.name}</span>
+                            <span class="spell-school">(${spell.school})</span>
+                            <button class="btn-remove-spell" data-index="${spellData.index}" data-type="spell">×</button>
+                        </div>
+                    `;
+                }
+            });
+
+            html += `</div>`;
+        }
+
+        container.innerHTML = html;
+
+        // Agregar listeners
+        container.querySelectorAll('.btn-remove-spell').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                this.removeSpell(index);
+            });
+        });
+
+        container.querySelectorAll('.spell-prepared').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                this.toggleSpellPrepared(index, e.target.checked);
+            });
+        });
+    }
+
+    // Obtener un conjuro por su key
+    getSpellByKey(key, levelKey) {
+        if (!this.spellsData || !this.spellsData[levelKey]) return null;
+        return this.spellsData[levelKey][key] || null;
+    }
+
+    // Abrir modal de selección de conjuros
+    openSpellSelector(filterLevel = null) {
+        const modal = document.getElementById('spellSelectorModal');
+        if (!modal) return;
+
+        this.selectorFilterLevel = filterLevel;
+        this.selectedSpellsInModal = [];
+
+        // Configurar filtro de nivel
+        const levelFilter = document.getElementById('spellLevelFilter');
+        if (levelFilter) {
+            if (filterLevel === 0) {
+                levelFilter.value = '0';
+                levelFilter.disabled = true;
+            } else {
+                levelFilter.value = 'all';
+                levelFilter.disabled = false;
+            }
+        }
+
+        // Limpiar búsqueda
+        const searchInput = document.getElementById('spellSearchInput');
+        if (searchInput) searchInput.value = '';
+
+        // Limpiar filtro de escuela
+        const schoolFilter = document.getElementById('spellSchoolFilter');
+        if (schoolFilter) schoolFilter.value = 'all';
+
+        // Renderizar lista de conjuros
+        this.renderSpellSelectorList();
+
+        modal.classList.add('active');
+    }
+
+    closeSpellSelector() {
+        const modal = document.getElementById('spellSelectorModal');
+        if (modal) {
+            modal.classList.remove('active');
+        }
+    }
+
+    // Filtrar y renderizar lista de conjuros en el selector
+    filterSpells() {
+        this.renderSpellSelectorList();
+    }
+
+    renderSpellSelectorList() {
+        const container = document.getElementById('spellSelectorList');
+        if (!container || !this.spellsData) return;
+
+        const levelFilter = document.getElementById('spellLevelFilter')?.value || 'all';
+        const schoolFilter = document.getElementById('spellSchoolFilter')?.value || 'all';
+        const searchText = document.getElementById('spellSearchInput')?.value?.toLowerCase() || '';
+
+        let html = '';
+        let count = 0;
+
+        // Determinar qué niveles mostrar
+        const levelsToShow = [];
+        if (levelFilter === 'all') {
+            if (this.selectorFilterLevel === 0) {
+                levelsToShow.push('cantrips');
+            } else if (this.selectorFilterLevel === null) {
+                for (let i = 1; i <= 9; i++) {
+                    levelsToShow.push(`level${i}`);
+                }
+            } else {
+                levelsToShow.push(`level${this.selectorFilterLevel}`);
+            }
+        } else if (levelFilter === '0') {
+            levelsToShow.push('cantrips');
+        } else {
+            levelsToShow.push(`level${levelFilter}`);
+        }
+
+        // Iterar por niveles
+        levelsToShow.forEach(levelKey => {
+            const spells = this.spellsData[levelKey];
+            if (!spells) return;
+
+            const isCantrip = levelKey === 'cantrips';
+
+            Object.entries(spells).forEach(([key, spell]) => {
+                // Filtrar por escuela
+                if (schoolFilter !== 'all' && spell.school !== schoolFilter) return;
+
+                // Filtrar por búsqueda
+                if (searchText && !spell.name.toLowerCase().includes(searchText)) return;
+
+                // Verificar si ya está seleccionado
+                const alreadySelected = isCantrip ?
+                    this.selectedCantrips.includes(key) :
+                    this.selectedSpells.some(s => s.key === key);
+
+                if (alreadySelected) return;
+
+                const isChecked = this.selectedSpellsInModal?.some(s => s.key === key);
+
+                html += `
+                    <div class="spell-selector-item" data-key="${key}" data-level="${isCantrip ? 0 : spell.level}">
+                        <input type="checkbox" class="spell-select-checkbox"
+                               data-key="${key}" data-level="${isCantrip ? 0 : spell.level}"
+                               ${isChecked ? 'checked' : ''}>
+                        <div class="spell-selector-info">
+                            <span class="spell-selector-name">${spell.name}</span>
+                            <span class="spell-selector-meta">
+                                ${isCantrip ? 'Truco' : `Nivel ${spell.level}`} | ${spell.school} | ${spell.castingTime}
+                            </span>
+                        </div>
+                    </div>
+                `;
+                count++;
+            });
+        });
+
+        if (count === 0) {
+            html = '<p class="no-spells-found">No se encontraron conjuros con estos filtros.</p>';
+        }
+
+        container.innerHTML = html;
+
+        // Agregar listeners a los checkboxes
+        container.querySelectorAll('.spell-select-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const key = e.target.dataset.key;
+                const level = parseInt(e.target.dataset.level);
+
+                if (e.target.checked) {
+                    if (!this.selectedSpellsInModal) this.selectedSpellsInModal = [];
+                    this.selectedSpellsInModal.push({ key, level });
+                } else {
+                    this.selectedSpellsInModal = this.selectedSpellsInModal.filter(s => s.key !== key);
+                }
+            });
+        });
+    }
+
+    // Agregar conjuros seleccionados desde el modal
+    addSelectedSpells() {
+        if (!this.selectedSpellsInModal || this.selectedSpellsInModal.length === 0) {
+            this.closeSpellSelector();
+            return;
+        }
+
+        const cantripsLimit = this.getCantripsLimit();
+        const { count: spellsLimit } = this.getSpellsLimit();
+
+        this.selectedSpellsInModal.forEach(({ key, level }) => {
+            if (level === 0) {
+                // Es un truco
+                if (this.selectedCantrips.length < cantripsLimit) {
+                    this.selectedCantrips.push(key);
+                }
+            } else {
+                // Es un conjuro
+                this.selectedSpells.push({
+                    key,
+                    level,
+                    prepared: true
+                });
+            }
+        });
+
+        this.updateSpellsSection();
+        this.closeSpellSelector();
+    }
+
+    removeCantrip(index) {
+        this.selectedCantrips.splice(index, 1);
+        this.updateCantripsCounter();
+        this.renderSelectedCantrips();
+    }
+
+    removeSpell(index) {
+        this.selectedSpells.splice(index, 1);
+        this.updateSpellsCounter();
+        this.renderSelectedSpells();
+    }
+
+    toggleSpellPrepared(index, prepared) {
+        if (this.selectedSpells[index]) {
+            this.selectedSpells[index].prepared = prepared;
+            this.updateSpellsCounter();
+            this.renderSelectedSpells();
         }
     }
 }
