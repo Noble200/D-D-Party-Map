@@ -981,3 +981,167 @@
         justify-content: center;
     }
 }
+
+/* ==========================================
+   Estilos de Razas y Bonificadores
+   ========================================== */
+
+/* Selector de subraza */
+.subrace-select {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.subrace-select.hidden {
+    display: none;
+}
+
+/* Panel de información racial */
+.race-info-panel {
+    margin-top: 20px;
+    padding: 15px;
+    background: linear-gradient(180deg, var(--color-bg-dark) 0%, rgba(45, 90, 39, 0.2) 100%);
+    border: 2px solid var(--color-forest);
+    border-radius: var(--radius-sm);
+}
+
+.race-info-panel.hidden {
+    display: none;
+}
+
+.race-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.race-info-title {
+    color: var(--color-gold);
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.race-info-stats {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+}
+
+.race-bonuses {
+    color: var(--color-forest-light);
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background: var(--color-bg-dark);
+    border-radius: var(--radius-sm);
+    display: inline-block;
+}
+
+.race-bonuses:empty {
+    display: none;
+}
+
+.race-traits-list {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--color-text);
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.race-traits-list li {
+    margin-bottom: 5px;
+}
+
+.race-traits-list li::marker {
+    color: var(--color-gold);
+}
+
+/* Bonificador racial en atributos */
+.race-bonus {
+    display: inline-block;
+    padding: 3px 8px;
+    background: linear-gradient(180deg, var(--color-forest) 0%, var(--color-forest-dark) 100%);
+    color: var(--color-parchment);
+    font-size: 0.85rem;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-top: 5px;
+    border: 1px solid var(--color-forest-light);
+}
+
+.race-bonus.hidden {
+    display: none;
+}
+
+.race-bonus.bonus-positive {
+    background: linear-gradient(180deg, var(--color-forest-light) 0%, var(--color-forest) 100%);
+}
+
+/* Fila de total y modificador */
+.ability-total-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.ability-total {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--color-text-muted);
+    background: var(--color-bg-medium);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-stone);
+}
+
+.ability-total-row .ability-modifier {
+    margin-top: 0;
+    font-size: 1.1rem;
+}
+
+/* Competencia racial en habilidades */
+.skill-item.race-proficiency {
+    background: linear-gradient(90deg, var(--color-bg-dark) 0%, rgba(45, 90, 39, 0.3) 100%);
+    border-color: var(--color-forest);
+}
+
+.skill-item.race-proficiency .skill-prof {
+    background: linear-gradient(180deg, var(--color-forest-light) 0%, var(--color-forest) 100%);
+    border-color: var(--color-forest-light);
+    cursor: not-allowed;
+}
+
+.skill-item.race-proficiency .skill-prof:checked::after {
+    border-color: var(--color-parchment);
+}
+
+.skill-source {
+    font-size: 0.7rem;
+    color: var(--color-forest-light);
+    font-style: italic;
+    margin-left: 4px;
+}
+
+/* Responsive para panel racial */
+@media (max-width: 600px) {
+    .race-info-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .race-info-stats {
+        font-size: 0.75rem;
+    }
+
+    .ability-total-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+}

@@ -892,21 +892,49 @@
                                 <label for="charRace">Raza</label>
                                 <select id="charRace">
                                     <option value="">Seleccionar...</option>
-                                    <option value="Human">Humano</option>
-                                    <option value="Elf">Elfo</option>
-                                    <option value="Dwarf">Enano</option>
-                                    <option value="Halfling">Mediano</option>
-                                    <option value="Dragonborn">Dracónido</option>
-                                    <option value="Gnome">Gnomo</option>
-                                    <option value="Half-Elf">Semielfo</option>
-                                    <option value="Half-Orc">Semiorco</option>
-                                    <option value="Tiefling">Tiefling</option>
-                                    <option value="Aarakocra">Aarakocra</option>
-                                    <option value="Goliath">Goliat</option>
-                                    <option value="Tabaxi">Tabaxi</option>
+                                    <optgroup label="Razas Comunes">
+                                        <option value="Human">Humano</option>
+                                        <option value="Elf">Elfo</option>
+                                        <option value="Dwarf">Enano</option>
+                                        <option value="Halfling">Mediano</option>
+                                        <option value="Dragonborn">Dracónido</option>
+                                        <option value="Gnome">Gnomo</option>
+                                        <option value="Half-Elf">Semielfo</option>
+                                        <option value="Half-Orc">Semiorco</option>
+                                        <option value="Tiefling">Tiefling</option>
+                                    </optgroup>
+                                    <optgroup label="Razas Exóticas">
+                                        <option value="Aarakocra">Aarakocra</option>
+                                        <option value="Aasimar">Aasimar</option>
+                                        <option value="Firbolg">Firbolg</option>
+                                        <option value="Goliath">Goliat</option>
+                                        <option value="Kenku">Kenku</option>
+                                        <option value="Lizardfolk">Hombre Lagarto</option>
+                                        <option value="Tabaxi">Tabaxi</option>
+                                        <option value="Tortle">Tortle</option>
+                                        <option value="Triton">Tritón</option>
+                                    </optgroup>
+                                    <optgroup label="Razas Monstruosas">
+                                        <option value="Bugbear">Osgo</option>
+                                        <option value="Goblin">Goblin</option>
+                                        <option value="Hobgoblin">Hobgoblin</option>
+                                        <option value="Kobold">Kobold</option>
+                                        <option value="Orc">Orco</option>
+                                        <option value="Yuan-ti">Yuan-ti</option>
+                                    </optgroup>
+                                    <optgroup label="Razas de Eberron">
+                                        <option value="Changeling">Cambiaformas</option>
+                                        <option value="Kalashtar">Kalashtar</option>
+                                        <option value="Shifter">Cambiapieles</option>
+                                        <option value="Warforged">Forjado</option>
+                                    </optgroup>
                                     <option value="Other">Otra</option>
                                 </select>
                                 <input type="text" id="charRaceCustom" class="custom-input hidden" placeholder="Escribe tu raza...">
+                                <!-- Selector de Subraza (visible solo cuando la raza tiene subrrazas) -->
+                                <select id="charSubrace" class="subrace-select hidden">
+                                    <option value="">Seleccionar subraza...</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="charBackground">Trasfondo</label>
@@ -944,64 +972,98 @@
                         </div>
                         <!-- XP oculto, solo lo maneja el DM -->
                         <input type="hidden" id="charXP" value="0">
+
+                        <!-- Panel de Rasgos Raciales -->
+                        <div class="race-info-panel hidden" id="raceInfoPanel">
+                            <div class="race-info-header">
+                                <span class="race-info-title" id="raceInfoTitle">Rasgos Raciales</span>
+                                <span class="race-info-stats" id="raceInfoStats"></span>
+                            </div>
+                            <div class="race-bonuses" id="raceBonusesDisplay"></div>
+                            <ul class="race-traits-list" id="raceTraitsList"></ul>
+                        </div>
                     </div>
 
                     <!-- TAB: Atributos -->
                     <div class="tab-pane" data-tab="abilities">
                         <div class="abilities-grid">
-                            <div class="ability-box">
+                            <div class="ability-box" data-ability="strength">
                                 <label>Fuerza</label>
                                 <div class="ability-input-wrapper">
                                     <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityStrength">-</button>
                                     <input type="number" id="abilityStrength" min="1" max="30" value="10">
                                     <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityStrength">+</button>
                                 </div>
-                                <span class="ability-modifier" id="modStrength">+0</span>
+                                <span class="race-bonus hidden" id="raceBonusStrength"></span>
+                                <div class="ability-total-row">
+                                    <span class="ability-total" id="totalStrength">10</span>
+                                    <span class="ability-modifier" id="modStrength">+0</span>
+                                </div>
                             </div>
-                            <div class="ability-box">
+                            <div class="ability-box" data-ability="dexterity">
                                 <label>Destreza</label>
                                 <div class="ability-input-wrapper">
                                     <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityDexterity">-</button>
                                     <input type="number" id="abilityDexterity" min="1" max="30" value="10">
                                     <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityDexterity">+</button>
                                 </div>
-                                <span class="ability-modifier" id="modDexterity">+0</span>
+                                <span class="race-bonus hidden" id="raceBonusDexterity"></span>
+                                <div class="ability-total-row">
+                                    <span class="ability-total" id="totalDexterity">10</span>
+                                    <span class="ability-modifier" id="modDexterity">+0</span>
+                                </div>
                             </div>
-                            <div class="ability-box">
+                            <div class="ability-box" data-ability="constitution">
                                 <label>Constitución</label>
                                 <div class="ability-input-wrapper">
                                     <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityConstitution">-</button>
                                     <input type="number" id="abilityConstitution" min="1" max="30" value="10">
                                     <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityConstitution">+</button>
                                 </div>
-                                <span class="ability-modifier" id="modConstitution">+0</span>
+                                <span class="race-bonus hidden" id="raceBonusConstitution"></span>
+                                <div class="ability-total-row">
+                                    <span class="ability-total" id="totalConstitution">10</span>
+                                    <span class="ability-modifier" id="modConstitution">+0</span>
+                                </div>
                             </div>
-                            <div class="ability-box">
+                            <div class="ability-box" data-ability="intelligence">
                                 <label>Inteligencia</label>
                                 <div class="ability-input-wrapper">
                                     <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityIntelligence">-</button>
                                     <input type="number" id="abilityIntelligence" min="1" max="30" value="10">
                                     <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityIntelligence">+</button>
                                 </div>
-                                <span class="ability-modifier" id="modIntelligence">+0</span>
+                                <span class="race-bonus hidden" id="raceBonusIntelligence"></span>
+                                <div class="ability-total-row">
+                                    <span class="ability-total" id="totalIntelligence">10</span>
+                                    <span class="ability-modifier" id="modIntelligence">+0</span>
+                                </div>
                             </div>
-                            <div class="ability-box">
+                            <div class="ability-box" data-ability="wisdom">
                                 <label>Sabiduría</label>
                                 <div class="ability-input-wrapper">
                                     <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityWisdom">-</button>
                                     <input type="number" id="abilityWisdom" min="1" max="30" value="10">
                                     <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityWisdom">+</button>
                                 </div>
-                                <span class="ability-modifier" id="modWisdom">+0</span>
+                                <span class="race-bonus hidden" id="raceBonusWisdom"></span>
+                                <div class="ability-total-row">
+                                    <span class="ability-total" id="totalWisdom">10</span>
+                                    <span class="ability-modifier" id="modWisdom">+0</span>
+                                </div>
                             </div>
-                            <div class="ability-box">
+                            <div class="ability-box" data-ability="charisma">
                                 <label>Carisma</label>
                                 <div class="ability-input-wrapper">
                                     <button type="button" class="ability-btn ability-btn-down" data-action="decrement" data-target="abilityCharisma">-</button>
                                     <input type="number" id="abilityCharisma" min="1" max="30" value="10">
                                     <button type="button" class="ability-btn ability-btn-up" data-action="increment" data-target="abilityCharisma">+</button>
                                 </div>
-                                <span class="ability-modifier" id="modCharisma">+0</span>
+                                <span class="race-bonus hidden" id="raceBonusCharisma"></span>
+                                <div class="ability-total-row">
+                                    <span class="ability-total" id="totalCharisma">10</span>
+                                    <span class="ability-modifier" id="modCharisma">+0</span>
+                                </div>
                             </div>
                         </div>
                         <div class="proficiency-info">

@@ -4,7 +4,7 @@
 
 import { apiClient } from '../core/ApiClient.js';
 import { showNotification } from '../utils/helpers.js';
-import { DEFAULT_CHARACTER, SKILL_ABILITIES } from '../config.js';
+import { DEFAULT_CHARACTER, SKILL_ABILITIES, SKILL_NAMES_ES } from '../config.js';
 
 class CharacterSheet {
     constructor(app) {
@@ -14,10 +14,45 @@ class CharacterSheet {
         this.characterId = null;
         this.isLoaded = false;
         this.initialized = false;
+        // Bonificadores raciales activos
+        this.currentRaceBonuses = {};
+        this.currentRaceSkills = [];
+        // Datos de razas cargados desde JSON
+        this.raceData = null;
+        this.raceDataLoaded = false;
     }
 
-    init() {
+    // Cargar datos de razas desde el archivo JSON
+    async loadRaceData() {
+        if (this.raceDataLoaded) return this.raceData;
+
+        try {
+            const response = await fetch('/data/races.json');
+            if (!response.ok) {
+                throw new Error(`Error cargando razas: ${response.status}`);
+            }
+            this.raceData = await response.json();
+            this.raceDataLoaded = true;
+            console.log('Datos de razas cargados correctamente');
+            return this.raceData;
+        } catch (error) {
+            console.error('Error al cargar datos de razas:', error);
+            showNotification('Error al cargar datos de razas', 'error');
+            return null;
+        }
+    }
+
+    // Obtener datos de una raza específica
+    getRaceInfo(raceKey) {
+        if (!this.raceData || !raceKey) return null;
+        return this.raceData[raceKey] || null;
+    }
+
+    async init() {
         if (this.initialized) return;
+
+        // Cargar datos de razas desde JSON antes de inicializar listeners
+        await this.loadRaceData();
 
         // Tabs
         const tabBtns = this.modal.querySelectorAll('.tab-btn');
@@ -39,6 +74,9 @@ class CharacterSheet {
         // Listeners de atributos para cálculo automático
         this.initAbilityListeners();
 
+        // Botones +/- para atributos
+        this.initAbilityButtons();
+
         // Listeners de habilidades
         this.initSkillListeners();
 
@@ -57,7 +95,383 @@ class CharacterSheet {
         // Listener de habilidad de lanzamiento
         document.getElementById('spellcastingAbility')?.addEventListener('change', () => this.updateSpellStats());
 
+        // Listeners de raza y subraza
+        this.initRaceListeners();
+
         this.initialized = true;
+    }
+
+    // ==========================================
+    // Manejo de Razas
+    // ==========================================
+
+    initRaceListeners() {
+        const raceSelect = document.getElementById('charRace');
+        const subraceSelect = document.getElementById('charSubrace');
+
+        if (raceSelect) {
+            raceSelect.addEventListener('change', () => this.onRaceChange());
+        }
+
+        if (subraceSelect) {
+            subraceSelect.addEventListener('change', () => this.onSubraceChange());
+        }
+    }
+
+    onRaceChange() {
+        const raceSelect = document.getElementById('charRace');
+        const raceKey = raceSelect.value;
+
+        // Limpiar bonificadores anteriores
+        this.clearRaceBonuses();
+
+        if (!raceKey || raceKey === 'Other') {
+            this.hideRaceInfo();
+            this.hideSubraceSelect();
+            return;
+        }
+
+        const raceInfo = this.getRaceInfo(raceKey);
+        if (!raceInfo) {
+            this.hideRaceInfo();
+            this.hideSubraceSelect();
+            return;
+        }
+
+        // Mostrar u ocultar selector de subraza
+        if (raceInfo.subraces) {
+            this.populateSubraces(raceInfo.subraces);
+            this.showSubraceSelect();
+        } else {
+            this.hideSubraceSelect();
+            // Aplicar bonificadores de raza base
+            this.applyRaceBonuses(raceInfo);
+            this.updateRaceInfo(raceInfo);
+        }
+    }
+
+    onSubraceChange() {
+        const raceSelect = document.getElementById('charRace');
+        const subraceSelect = document.getElementById('charSubrace');
+        const raceKey = raceSelect.value;
+        const subraceKey = subraceSelect.value;
+
+        // Limpiar bonificadores anteriores
+        this.clearRaceBonuses();
+
+        const raceInfo = this.getRaceInfo(raceKey);
+        if (!raceKey || !raceInfo) return;
+
+        if (subraceKey && raceInfo.subraces && raceInfo.subraces[subraceKey]) {
+            const subraceData = raceInfo.subraces[subraceKey];
+            // Combinar datos de raza base + subraza
+            this.applyRaceBonuses(raceInfo, subraceData);
+            this.updateRaceInfo(raceInfo, subraceData);
+        } else {
+            // Solo raza base sin subraza seleccionada
+            this.applyRaceBonuses(raceInfo);
+            this.updateRaceInfo(raceInfo);
+        }
+    }
+
+    populateSubraces(subraces) {
+        const subraceSelect = document.getElementById('charSubrace');
+        if (!subraceSelect) return;
+
+        // Limpiar opciones anteriores
+        subraceSelect.innerHTML = '<option value="">Seleccionar subraza...</option>';
+
+        // Agregar subrrazas
+        for (const [key, subrace] of Object.entries(subraces)) {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = subrace.name;
+            subraceSelect.appendChild(option);
+        }
+    }
+
+    showSubraceSelect() {
+        const subraceSelect = document.getElementById('charSubrace');
+        if (subraceSelect) {
+            subraceSelect.classList.remove('hidden');
+        }
+    }
+
+    hideSubraceSelect() {
+        const subraceSelect = document.getElementById('charSubrace');
+        if (subraceSelect) {
+            subraceSelect.classList.add('hidden');
+            subraceSelect.value = '';
+        }
+    }
+
+    applyRaceBonuses(raceData, subraceData = null) {
+        // Combinar bonificadores de raza base + subraza
+        const bonuses = { ...raceData.abilityBonuses };
+
+        if (subraceData && subraceData.abilityBonuses) {
+            for (const [ability, bonus] of Object.entries(subraceData.abilityBonuses)) {
+                bonuses[ability] = (bonuses[ability] || 0) + bonus;
+            }
+        }
+
+        // Guardar bonificadores actuales
+        this.currentRaceBonuses = bonuses;
+
+        // Mostrar bonificadores en la UI
+        const abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+        abilities.forEach(ability => {
+            const capitalAbility = ability.charAt(0).toUpperCase() + ability.slice(1);
+            const bonusSpan = document.getElementById(`raceBonus${capitalAbility}`);
+            const bonus = bonuses[ability] || 0;
+
+            if (bonusSpan) {
+                if (bonus > 0) {
+                    bonusSpan.textContent = `+${bonus}`;
+                    bonusSpan.classList.remove('hidden');
+                    bonusSpan.classList.add('bonus-positive');
+                } else {
+                    bonusSpan.textContent = '';
+                    bonusSpan.classList.add('hidden');
+                    bonusSpan.classList.remove('bonus-positive');
+                }
+            }
+        });
+
+        // Aplicar competencias de habilidades raciales
+        this.applyRaceSkillProficiencies(raceData, subraceData);
+
+        // Aplicar velocidad
+        const speed = subraceData?.speed || raceData.speed || 30;
+        const speedInput = document.getElementById('combatSpeed');
+        if (speedInput) {
+            speedInput.value = speed;
+        }
+
+        // Recalcular todos los valores
+        this.updateAllCalculations();
+    }
+
+    applyRaceSkillProficiencies(raceData, subraceData = null) {
+        // Combinar competencias de raza + subraza
+        const skills = [...(raceData.skillProficiencies || [])];
+        if (subraceData?.skillProficiencies) {
+            skills.push(...subraceData.skillProficiencies);
+        }
+
+        // Limpiar competencias raciales anteriores
+        this.clearRaceSkillProficiencies();
+
+        // Guardar nuevas competencias raciales
+        this.currentRaceSkills = skills;
+
+        // Aplicar nuevas competencias
+        skills.forEach(skillKey => {
+            const capitalSkill = skillKey.charAt(0).toUpperCase() + skillKey.slice(1);
+            const skillItem = this.modal.querySelector(`.skill-item[data-skill="${skillKey}"]`) ||
+                              this.modal.querySelector(`#skill${capitalSkill}`)?.closest('.skill-item');
+
+            if (skillItem) {
+                const profCheck = skillItem.querySelector('.skill-prof');
+                if (profCheck) {
+                    profCheck.checked = true;
+                    profCheck.disabled = true;
+                    skillItem.classList.add('race-proficiency');
+                }
+
+                // Agregar indicador de origen racial
+                let sourceSpan = skillItem.querySelector('.skill-source');
+                if (!sourceSpan) {
+                    sourceSpan = document.createElement('span');
+                    sourceSpan.className = 'skill-source';
+                    const skillName = skillItem.querySelector('.skill-name');
+                    if (skillName) {
+                        skillName.insertAdjacentElement('afterend', sourceSpan);
+                    }
+                }
+                sourceSpan.textContent = '(Raza)';
+            }
+        });
+    }
+
+    clearRaceSkillProficiencies() {
+        // Restaurar competencias que fueron aplicadas por raza
+        this.currentRaceSkills.forEach(skillKey => {
+            const capitalSkill = skillKey.charAt(0).toUpperCase() + skillKey.slice(1);
+            const skillItem = this.modal.querySelector(`.skill-item[data-skill="${skillKey}"]`) ||
+                              this.modal.querySelector(`#skill${capitalSkill}`)?.closest('.skill-item');
+
+            if (skillItem) {
+                const profCheck = skillItem.querySelector('.skill-prof');
+                if (profCheck) {
+                    profCheck.checked = false;
+                    profCheck.disabled = false;
+                }
+                skillItem.classList.remove('race-proficiency');
+
+                const sourceSpan = skillItem.querySelector('.skill-source');
+                if (sourceSpan) {
+                    sourceSpan.remove();
+                }
+            }
+        });
+        this.currentRaceSkills = [];
+    }
+
+    clearRaceBonuses() {
+        // Limpiar bonificadores visuales
+        const abilities = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'];
+        abilities.forEach(ability => {
+            const bonusSpan = document.getElementById(`raceBonus${ability}`);
+            if (bonusSpan) {
+                bonusSpan.textContent = '';
+                bonusSpan.classList.add('hidden');
+                bonusSpan.classList.remove('bonus-positive');
+            }
+        });
+        this.currentRaceBonuses = {};
+
+        // Limpiar competencias raciales
+        this.clearRaceSkillProficiencies();
+    }
+
+    updateRaceInfo(raceData, subraceData = null) {
+        const panel = document.getElementById('raceInfoPanel');
+        const titleSpan = document.getElementById('raceInfoTitle');
+        const statsSpan = document.getElementById('raceInfoStats');
+        const bonusesDiv = document.getElementById('raceBonusesDisplay');
+        const traitsList = document.getElementById('raceTraitsList');
+
+        if (!panel) return;
+
+        // Título
+        let title = raceData.name;
+        if (subraceData) {
+            title = subraceData.name;
+        }
+        titleSpan.textContent = title;
+
+        // Stats (velocidad, visión, tamaño)
+        const speed = subraceData?.speed || raceData.speed || 30;
+        const darkvision = subraceData?.darkvision ?? raceData.darkvision ?? 0;
+        const flySpeed = subraceData?.flySpeed || raceData.flySpeed || 0;
+        const climbSpeed = subraceData?.climbSpeed || raceData.climbSpeed || 0;
+        const swimSpeed = subraceData?.swimSpeed || raceData.swimSpeed || 0;
+
+        let statsText = `Velocidad: ${speed} pies`;
+        if (flySpeed) statsText += ` | Vuelo: ${flySpeed} pies`;
+        if (climbSpeed) statsText += ` | Trepar: ${climbSpeed} pies`;
+        if (swimSpeed) statsText += ` | Nadar: ${swimSpeed} pies`;
+        if (darkvision > 0) statsText += ` | Visión oscura: ${darkvision} pies`;
+        statsText += ` | Tamaño: ${raceData.size}`;
+        statsSpan.textContent = statsText;
+
+        // Bonificadores de características
+        const bonuses = { ...raceData.abilityBonuses };
+        if (subraceData?.abilityBonuses) {
+            for (const [ability, bonus] of Object.entries(subraceData.abilityBonuses)) {
+                bonuses[ability] = (bonuses[ability] || 0) + bonus;
+            }
+        }
+
+        const abilityNames = {
+            strength: 'FUE', dexterity: 'DES', constitution: 'CON',
+            intelligence: 'INT', wisdom: 'SAB', charisma: 'CAR'
+        };
+
+        const bonusStrings = Object.entries(bonuses)
+            .filter(([_, v]) => v > 0)
+            .map(([ability, bonus]) => `${abilityNames[ability]} +${bonus}`);
+
+        bonusesDiv.textContent = bonusStrings.length > 0 ? bonusStrings.join(', ') : '';
+
+        // Limpiar lista de rasgos
+        traitsList.innerHTML = '';
+
+        // Idiomas
+        const languages = [...(raceData.languages || [])];
+        if (subraceData?.languages) {
+            languages.push(...subraceData.languages);
+        }
+        if (languages.length > 0) {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>Idiomas:</strong> ${languages.join(', ')}`;
+            traitsList.appendChild(li);
+        }
+
+        // Competencias de habilidades
+        const skillProfs = [...(raceData.skillProficiencies || [])];
+        if (subraceData?.skillProficiencies) {
+            skillProfs.push(...subraceData.skillProficiencies);
+        }
+        if (skillProfs.length > 0) {
+            const skillNamesSpanish = skillProfs.map(s => SKILL_NAMES_ES[s] || s);
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>Competencias:</strong> ${skillNamesSpanish.join(', ')}`;
+            traitsList.appendChild(li);
+        }
+
+        // Competencias con armas
+        const weaponProfs = [...(raceData.weaponProficiencies || [])];
+        if (subraceData?.weaponProficiencies) {
+            weaponProfs.push(...subraceData.weaponProficiencies);
+        }
+        if (weaponProfs.length > 0) {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>Armas:</strong> ${weaponProfs.join(', ')}`;
+            traitsList.appendChild(li);
+        }
+
+        // Competencias con armaduras
+        const armorProfs = [...(raceData.armorProficiencies || [])];
+        if (subraceData?.armorProficiencies) {
+            armorProfs.push(...subraceData.armorProficiencies);
+        }
+        if (armorProfs.length > 0) {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>Armaduras:</strong> ${armorProfs.join(', ')}`;
+            traitsList.appendChild(li);
+        }
+
+        // Rasgos (traits) - soporta formato objeto {name, description} o string
+        const traits = [...(raceData.traits || [])];
+        if (subraceData?.traits) {
+            traits.push(...subraceData.traits);
+        }
+
+        traits.forEach(trait => {
+            const li = document.createElement('li');
+            if (typeof trait === 'object' && trait.name) {
+                // Formato objeto del JSON
+                li.innerHTML = `<strong>${trait.name}:</strong> ${trait.description}`;
+            } else {
+                // Formato string simple (compatibilidad)
+                li.textContent = trait;
+            }
+            traitsList.appendChild(li);
+        });
+
+        // Conjuros raciales (si existen)
+        const spells = [...(raceData.spells || [])];
+        if (subraceData?.spells) {
+            spells.push(...subraceData.spells);
+        }
+        if (spells.length > 0) {
+            const li = document.createElement('li');
+            const spellNames = spells.map(s => typeof s === 'object' ? s.name : s);
+            li.innerHTML = `<strong>Conjuros innatos:</strong> ${spellNames.join(', ')}`;
+            traitsList.appendChild(li);
+        }
+
+        // Mostrar panel
+        panel.classList.remove('hidden');
+    }
+
+    hideRaceInfo() {
+        const panel = document.getElementById('raceInfoPanel');
+        if (panel) {
+            panel.classList.add('hidden');
+        }
     }
 
     initAbilityListeners() {
@@ -66,6 +480,35 @@ class CharacterSheet {
             const input = document.getElementById(`ability${ability}`);
             input.addEventListener('change', () => {
                 this.updateModifier(ability);
+                this.updateAllCalculations();
+            });
+        });
+    }
+
+    // Botones +/- para atributos
+    initAbilityButtons() {
+        const buttons = this.modal.querySelectorAll('.ability-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                const targetId = btn.dataset.target;
+                const input = document.getElementById(targetId);
+
+                if (!input) return;
+
+                let value = parseInt(input.value) || 10;
+
+                if (action === 'increment' && value < 30) {
+                    value++;
+                } else if (action === 'decrement' && value > 1) {
+                    value--;
+                }
+
+                input.value = value;
+
+                // Extraer el nombre del atributo del ID (abilityStrength -> Strength)
+                const abilityName = targetId.replace('ability', '');
+                this.updateModifier(abilityName);
                 this.updateAllCalculations();
             });
         });
@@ -195,13 +638,34 @@ class CharacterSheet {
         return Math.floor((level - 1) / 4) + 2;
     }
 
-    // Actualizar el modificador mostrado de un atributo
+    // Actualizar el modificador mostrado de un atributo (incluyendo bonus racial)
     updateModifier(ability) {
         const input = document.getElementById(`ability${ability}`);
         const modSpan = document.getElementById(`mod${ability}`);
-        const score = parseInt(input.value) || 10;
-        const mod = this.calculateModifier(score);
+        const totalSpan = document.getElementById(`total${ability}`);
+
+        const baseScore = parseInt(input.value) || 10;
+        const abilityLower = ability.toLowerCase();
+        const raceBonus = this.currentRaceBonuses[abilityLower] || 0;
+        const totalScore = baseScore + raceBonus;
+
+        // Actualizar total
+        if (totalSpan) {
+            totalSpan.textContent = totalScore;
+        }
+
+        // Calcular modificador basado en el total
+        const mod = this.calculateModifier(totalScore);
         modSpan.textContent = mod >= 0 ? `+${mod}` : mod.toString();
+    }
+
+    // Obtener el valor total de un atributo (base + racial)
+    getTotalAbilityScore(ability) {
+        const capitalAbility = ability.charAt(0).toUpperCase() + ability.slice(1);
+        const input = document.getElementById(`ability${capitalAbility}`);
+        const baseScore = parseInt(input?.value) || 10;
+        const raceBonus = this.currentRaceBonuses[ability] || 0;
+        return baseScore + raceBonus;
     }
 
     // Actualizar todos los cálculos
@@ -239,18 +703,8 @@ class CharacterSheet {
         const expCheck = skillItem.querySelector('.skill-exp');
         const bonusSpan = skillItem.querySelector('.skill-bonus');
 
-        // Mapeo de ability a elemento
-        const abilityMap = {
-            'strength': 'Strength',
-            'dexterity': 'Dexterity',
-            'constitution': 'Constitution',
-            'intelligence': 'Intelligence',
-            'wisdom': 'Wisdom',
-            'charisma': 'Charisma'
-        };
-
-        const abilityElement = document.getElementById(`ability${abilityMap[ability]}`);
-        const abilityScore = parseInt(abilityElement?.value) || 10;
+        // Obtener puntuación total del atributo (base + racial)
+        const abilityScore = this.getTotalAbilityScore(ability);
         const abilityMod = this.calculateModifier(abilityScore);
 
         const level = parseInt(document.getElementById('charLevel').value) || 1;
@@ -273,20 +727,20 @@ class CharacterSheet {
         const profBonus = this.calculateProficiencyBonus(level);
 
         const saves = [
-            { id: 'Str', ability: 'Strength' },
-            { id: 'Dex', ability: 'Dexterity' },
-            { id: 'Con', ability: 'Constitution' },
-            { id: 'Int', ability: 'Intelligence' },
-            { id: 'Wis', ability: 'Wisdom' },
-            { id: 'Cha', ability: 'Charisma' }
+            { id: 'Str', ability: 'strength' },
+            { id: 'Dex', ability: 'dexterity' },
+            { id: 'Con', ability: 'constitution' },
+            { id: 'Int', ability: 'intelligence' },
+            { id: 'Wis', ability: 'wisdom' },
+            { id: 'Cha', ability: 'charisma' }
         ];
 
         saves.forEach(save => {
             const checkbox = document.getElementById(`saveProf${save.id}`);
             const bonusSpan = document.getElementById(`save${save.id}Bonus`);
-            const abilityInput = document.getElementById(`ability${save.ability}`);
 
-            const abilityScore = parseInt(abilityInput?.value) || 10;
+            // Usar puntuación total (base + racial)
+            const abilityScore = this.getTotalAbilityScore(save.ability);
             const abilityMod = this.calculateModifier(abilityScore);
 
             let bonus = abilityMod;
@@ -300,8 +754,8 @@ class CharacterSheet {
 
     // Actualizar percepción pasiva
     updatePassivePerception() {
-        const wisdomInput = document.getElementById('abilityWisdom');
-        const wisdomScore = parseInt(wisdomInput?.value) || 10;
+        // Usar puntuación total (base + racial)
+        const wisdomScore = this.getTotalAbilityScore('wisdom');
         const wisdomMod = this.calculateModifier(wisdomScore);
 
         const level = parseInt(document.getElementById('charLevel').value) || 1;
@@ -332,14 +786,8 @@ class CharacterSheet {
             return;
         }
 
-        const abilityMap = {
-            'intelligence': 'Intelligence',
-            'wisdom': 'Wisdom',
-            'charisma': 'Charisma'
-        };
-
-        const abilityInput = document.getElementById(`ability${abilityMap[ability]}`);
-        const abilityScore = parseInt(abilityInput?.value) || 10;
+        // Usar puntuación total (base + racial)
+        const abilityScore = this.getTotalAbilityScore(ability);
         const abilityMod = this.calculateModifier(abilityScore);
 
         const level = parseInt(document.getElementById('charLevel').value) || 1;
@@ -395,6 +843,9 @@ class CharacterSheet {
         const raceCustom = document.getElementById('charRaceCustom')?.value || '';
         const race = raceSelect === 'Other' ? raceCustom : raceSelect;
 
+        // Obtener subraza
+        const subraceSelect = document.getElementById('charSubrace')?.value || '';
+
         // Obtener trasfondo (custom si es "Other")
         const bgSelect = document.getElementById('charBackground')?.value || '';
         const bgCustom = document.getElementById('charBackgroundCustom')?.value || '';
@@ -405,6 +856,7 @@ class CharacterSheet {
             class: document.getElementById('charClass')?.value || '',
             level: parseInt(document.getElementById('charLevel')?.value) || 1,
             race: race,
+            subrace: subraceSelect,
             raceCustom: raceSelect === 'Other' ? raceCustom : '',
             background: background,
             backgroundCustom: bgSelect === 'Other' ? bgCustom : '',
@@ -497,14 +949,40 @@ class CharacterSheet {
         // Raza - verificar si es custom
         const raceSelect = document.getElementById('charRace');
         const raceCustom = document.getElementById('charRaceCustom');
+        const subraceSelect = document.getElementById('charSubrace');
+
         if (data.raceCustom) {
             raceSelect.value = 'Other';
             raceCustom.value = data.raceCustom;
             raceCustom.classList.remove('hidden');
+            this.hideSubraceSelect();
+            this.hideRaceInfo();
         } else {
             raceSelect.value = data.race || '';
             raceCustom.value = '';
             raceCustom.classList.add('hidden');
+
+            // Cargar subraza si existe
+            const raceInfo = this.getRaceInfo(data.race);
+            if (data.race && raceInfo) {
+                if (raceInfo.subraces && data.subrace) {
+                    this.populateSubraces(raceInfo.subraces);
+                    this.showSubraceSelect();
+                    subraceSelect.value = data.subrace;
+                    this.applyRaceBonuses(raceInfo, raceInfo.subraces[data.subrace]);
+                    this.updateRaceInfo(raceInfo, raceInfo.subraces[data.subrace]);
+                } else if (raceInfo.subraces) {
+                    this.populateSubraces(raceInfo.subraces);
+                    this.showSubraceSelect();
+                } else {
+                    this.hideSubraceSelect();
+                    this.applyRaceBonuses(raceInfo);
+                    this.updateRaceInfo(raceInfo);
+                }
+            } else {
+                this.hideSubraceSelect();
+                this.hideRaceInfo();
+            }
         }
 
         // Trasfondo - verificar si es custom

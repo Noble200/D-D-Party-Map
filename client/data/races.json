@@ -1,0 +1,1247 @@
+{
+  "Human": {
+    "name": "Humano",
+    "abilityBonuses": {
+      "strength": 1,
+      "dexterity": 1,
+      "constitution": 1,
+      "intelligence": 1,
+      "wisdom": 1,
+      "charisma": 1
+    },
+    "speed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Un idioma adicional a elección"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Versatilidad",
+        "description": "+1 a todas las puntuaciones de característica"
+      }
+    ],
+    "variant": {
+      "name": "Humano Variante",
+      "description": "En lugar de +1 a todo: elige dos características +1, una habilidad competente y una dote",
+      "abilityBonuses": "Dos características a elección +1",
+      "extraSkillChoices": 1,
+      "featChoice": true
+    }
+  },
+
+  "Elf": {
+    "name": "Elfo",
+    "abilityBonuses": {
+      "dexterity": 2
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Élfico"],
+    "skillProficiencies": ["perception"],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Sentidos Agudos",
+        "description": "Tienes competencia en la habilidad de Percepción"
+      },
+      {
+        "name": "Linaje Feérico",
+        "description": "Tienes ventaja en las tiradas de salvación contra ser encantado y la magia no puede dormirte"
+      },
+      {
+        "name": "Trance",
+        "description": "Los elfos no necesitan dormir. En su lugar, meditan profundamente durante 4 horas al día, equivalente a 8 horas de sueño para un humano"
+      }
+    ],
+    "subraces": {
+      "HighElf": {
+        "name": "Alto Elfo",
+        "abilityBonuses": {
+          "intelligence": 1
+        },
+        "weaponProficiencies": ["espada larga", "espada corta", "arco largo", "arco corto"],
+        "languages": ["Un idioma adicional a elección"],
+        "traits": [
+          {
+            "name": "Entrenamiento Élfico con Armas",
+            "description": "Tienes competencia con espadas largas, espadas cortas, arcos largos y arcos cortos"
+          },
+          {
+            "name": "Truco",
+            "description": "Conoces un truco de tu elección de la lista de conjuros de mago. Inteligencia es tu característica de lanzamiento de conjuros para él"
+          },
+          {
+            "name": "Idioma Extra",
+            "description": "Puedes hablar, leer y escribir un idioma adicional de tu elección"
+          }
+        ]
+      },
+      "WoodElf": {
+        "name": "Elfo del Bosque",
+        "abilityBonuses": {
+          "wisdom": 1
+        },
+        "speed": 35,
+        "weaponProficiencies": ["espada larga", "espada corta", "arco largo", "arco corto"],
+        "traits": [
+          {
+            "name": "Entrenamiento Élfico con Armas",
+            "description": "Tienes competencia con espadas largas, espadas cortas, arcos largos y arcos cortos"
+          },
+          {
+            "name": "Pies Ligeros",
+            "description": "Tu velocidad base al caminar aumenta a 35 pies"
+          },
+          {
+            "name": "Máscara de la Naturaleza",
+            "description": "Puedes intentar esconderte incluso cuando solo estás ligeramente oculto por follaje, lluvia intensa, nieve, niebla y otros fenómenos naturales"
+          }
+        ]
+      },
+      "DarkElf": {
+        "name": "Elfo Oscuro (Drow)",
+        "abilityBonuses": {
+          "charisma": 1
+        },
+        "darkvision": 120,
+        "weaponProficiencies": ["estoque", "espada corta", "ballesta de mano"],
+        "traits": [
+          {
+            "name": "Visión en la Oscuridad Superior",
+            "description": "Tu visión en la oscuridad tiene un alcance de 120 pies"
+          },
+          {
+            "name": "Sensibilidad a la Luz Solar",
+            "description": "Tienes desventaja en las tiradas de ataque y en las pruebas de Sabiduría (Percepción) que dependan de la vista cuando tú, el objetivo de tu ataque o lo que estés intentando percibir esté bajo la luz directa del sol"
+          },
+          {
+            "name": "Magia Drow",
+            "description": "Conoces el truco luces danzantes. A nivel 3, puedes lanzar el conjuro hada una vez al día. A nivel 5, puedes lanzar oscuridad una vez al día. Carisma es tu característica de lanzamiento"
+          }
+        ]
+      }
+    }
+  },
+
+  "Dwarf": {
+    "name": "Enano",
+    "abilityBonuses": {
+      "constitution": 2
+    },
+    "speed": 25,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Enano"],
+    "skillProficiencies": [],
+    "weaponProficiencies": ["hacha de batalla", "hacha de mano", "martillo ligero", "martillo de guerra"],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "toolProficiencyChoices": {
+      "choose": 1,
+      "from": ["herramientas de herrero", "suministros de cervecero", "herramientas de albañil"]
+    },
+    "traits": [
+      {
+        "name": "Resistencia Enana",
+        "description": "Tienes ventaja en las tiradas de salvación contra veneno y tienes resistencia al daño de veneno"
+      },
+      {
+        "name": "Entrenamiento de Combate Enano",
+        "description": "Tienes competencia con el hacha de batalla, hacha de mano, martillo ligero y martillo de guerra"
+      },
+      {
+        "name": "Competencia con Herramientas",
+        "description": "Ganas competencia con las herramientas de artesano de tu elección: herramientas de herrero, suministros de cervecero o herramientas de albañil"
+      },
+      {
+        "name": "Afinidad con la Piedra",
+        "description": "Cuando hagas una prueba de Inteligencia (Historia) relacionada con el origen de un trabajo en piedra, se te considera competente en la habilidad de Historia y añades el doble de tu bonificador de competencia"
+      }
+    ],
+    "subraces": {
+      "HillDwarf": {
+        "name": "Enano de las Colinas",
+        "abilityBonuses": {
+          "wisdom": 1
+        },
+        "traits": [
+          {
+            "name": "Dureza Enana",
+            "description": "Tu máximo de puntos de golpe aumenta en 1, y aumenta en 1 cada vez que ganas un nivel"
+          }
+        ],
+        "hitPointBonus": 1
+      },
+      "MountainDwarf": {
+        "name": "Enano de las Montañas",
+        "abilityBonuses": {
+          "strength": 2
+        },
+        "armorProficiencies": ["armadura ligera", "armadura media"],
+        "traits": [
+          {
+            "name": "Entrenamiento con Armadura Enana",
+            "description": "Tienes competencia con las armaduras ligeras y medias"
+          }
+        ]
+      }
+    }
+  },
+
+  "Halfling": {
+    "name": "Mediano",
+    "abilityBonuses": {
+      "dexterity": 2
+    },
+    "speed": 25,
+    "darkvision": 0,
+    "size": "Pequeño",
+    "languages": ["Común", "Mediano"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Afortunado",
+        "description": "Cuando obtienes un 1 en la tirada de ataque, prueba de característica o tirada de salvación, puedes volver a tirar el dado y debes usar el nuevo resultado"
+      },
+      {
+        "name": "Valiente",
+        "description": "Tienes ventaja en las tiradas de salvación contra ser asustado"
+      },
+      {
+        "name": "Agilidad de Mediano",
+        "description": "Puedes moverte a través del espacio de cualquier criatura que sea de un tamaño mayor que el tuyo"
+      }
+    ],
+    "subraces": {
+      "Lightfoot": {
+        "name": "Pies Ligeros",
+        "abilityBonuses": {
+          "charisma": 1
+        },
+        "traits": [
+          {
+            "name": "Sigiloso Natural",
+            "description": "Puedes intentar esconderte incluso cuando solo estás oculto por una criatura que sea al menos un tamaño mayor que tú"
+          }
+        ]
+      },
+      "Stout": {
+        "name": "Fornido",
+        "abilityBonuses": {
+          "constitution": 1
+        },
+        "traits": [
+          {
+            "name": "Resistencia de Fornido",
+            "description": "Tienes ventaja en las tiradas de salvación contra veneno y tienes resistencia al daño de veneno"
+          }
+        ]
+      }
+    }
+  },
+
+  "Dragonborn": {
+    "name": "Dracónido",
+    "abilityBonuses": {
+      "strength": 2,
+      "charisma": 1
+    },
+    "speed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Dracónico"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Linaje Dracónico",
+        "description": "Tienes ancestros dracónicos. Elige un tipo de dragón de la tabla. Tu arma de aliento y resistencia al daño están determinadas por el tipo de dragón"
+      },
+      {
+        "name": "Arma de Aliento",
+        "description": "Puedes usar tu acción para exhalar energía destructiva. Tu linaje determina el tamaño, forma y tipo de daño. Tirada de salvación DC = 8 + CON + bonificador de competencia. Daño: 2d6 (niveles 1-5), 3d6 (6-10), 4d6 (11-15), 5d6 (16+). Recarga tras descanso corto o largo"
+      },
+      {
+        "name": "Resistencia al Daño",
+        "description": "Tienes resistencia al tipo de daño asociado con tu linaje dracónico"
+      }
+    ],
+    "draconicAncestry": {
+      "black": { "damageType": "Ácido", "breathWeapon": "Línea 5x30 pies", "savingThrow": "DES" },
+      "blue": { "damageType": "Rayo", "breathWeapon": "Línea 5x30 pies", "savingThrow": "DES" },
+      "brass": { "damageType": "Fuego", "breathWeapon": "Línea 5x30 pies", "savingThrow": "DES" },
+      "bronze": { "damageType": "Rayo", "breathWeapon": "Línea 5x30 pies", "savingThrow": "DES" },
+      "copper": { "damageType": "Ácido", "breathWeapon": "Línea 5x30 pies", "savingThrow": "DES" },
+      "gold": { "damageType": "Fuego", "breathWeapon": "Cono 15 pies", "savingThrow": "DES" },
+      "green": { "damageType": "Veneno", "breathWeapon": "Cono 15 pies", "savingThrow": "CON" },
+      "red": { "damageType": "Fuego", "breathWeapon": "Cono 15 pies", "savingThrow": "DES" },
+      "silver": { "damageType": "Frío", "breathWeapon": "Cono 15 pies", "savingThrow": "CON" },
+      "white": { "damageType": "Frío", "breathWeapon": "Cono 15 pies", "savingThrow": "CON" }
+    },
+    "breathWeaponDamage": {
+      "1-5": "2d6",
+      "6-10": "3d6",
+      "11-15": "4d6",
+      "16-20": "5d6"
+    }
+  },
+
+  "Gnome": {
+    "name": "Gnomo",
+    "abilityBonuses": {
+      "intelligence": 2
+    },
+    "speed": 25,
+    "darkvision": 60,
+    "size": "Pequeño",
+    "languages": ["Común", "Gnomo"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Astucia Gnómica",
+        "description": "Tienes ventaja en todas las tiradas de salvación de Inteligencia, Sabiduría y Carisma contra magia"
+      }
+    ],
+    "subraces": {
+      "ForestGnome": {
+        "name": "Gnomo del Bosque",
+        "abilityBonuses": {
+          "dexterity": 1
+        },
+        "traits": [
+          {
+            "name": "Ilusionista Natural",
+            "description": "Conoces el truco ilusión menor. Inteligencia es tu característica de lanzamiento"
+          },
+          {
+            "name": "Hablar con Bestias Pequeñas",
+            "description": "A través de sonidos y gestos, puedes comunicar ideas simples con bestias Pequeñas o más pequeñas"
+          }
+        ]
+      },
+      "RockGnome": {
+        "name": "Gnomo de las Rocas",
+        "abilityBonuses": {
+          "constitution": 1
+        },
+        "toolProficiencies": ["herramientas de reparador"],
+        "traits": [
+          {
+            "name": "Conocimiento de Artífice",
+            "description": "Cuando hagas una prueba de Inteligencia (Historia) relacionada con objetos mágicos, objetos alquímicos o dispositivos tecnológicos, puedes añadir el doble de tu bonificador de competencia"
+          },
+          {
+            "name": "Chapucero",
+            "description": "Tienes competencia con herramientas de reparador. Usando estas herramientas, puedes pasar 1 hora y 10 po de materiales para construir un dispositivo mecánico diminuto (CA 5, 1 pg)"
+          }
+        ]
+      }
+    }
+  },
+
+  "Half-Elf": {
+    "name": "Semielfo",
+    "abilityBonuses": {
+      "charisma": 2
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Élfico", "Un idioma adicional a elección"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "extraAbilityChoices": {
+      "choose": 2,
+      "bonus": 1,
+      "from": ["strength", "dexterity", "constitution", "intelligence", "wisdom"]
+    },
+    "extraSkillChoices": {
+      "choose": 2,
+      "from": "any"
+    },
+    "traits": [
+      {
+        "name": "Incremento de Puntuación de Característica",
+        "description": "Tu puntuación de Carisma aumenta en 2, y otras dos puntuaciones de característica de tu elección aumentan en 1"
+      },
+      {
+        "name": "Linaje Feérico",
+        "description": "Tienes ventaja en las tiradas de salvación contra ser encantado y la magia no puede dormirte"
+      },
+      {
+        "name": "Versatilidad de Habilidades",
+        "description": "Ganas competencia en dos habilidades de tu elección"
+      }
+    ]
+  },
+
+  "Half-Orc": {
+    "name": "Semiorco",
+    "abilityBonuses": {
+      "strength": 2,
+      "constitution": 1
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Orco"],
+    "skillProficiencies": ["intimidation"],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Amenazador",
+        "description": "Ganas competencia en la habilidad de Intimidación"
+      },
+      {
+        "name": "Aguante Implacable",
+        "description": "Cuando eres reducido a 0 puntos de golpe pero no mueres directamente, puedes caer a 1 punto de golpe en su lugar. No puedes usar este rasgo de nuevo hasta que termines un descanso largo"
+      },
+      {
+        "name": "Ataques Salvajes",
+        "description": "Cuando sacas un crítico con un ataque de arma cuerpo a cuerpo, puedes tirar uno de los dados de daño del arma una vez adicional y añadirlo al daño extra del golpe crítico"
+      }
+    ]
+  },
+
+  "Tiefling": {
+    "name": "Tieflin",
+    "abilityBonuses": {
+      "charisma": 2,
+      "intelligence": 1
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Infernal"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "damageResistances": ["fuego"],
+    "traits": [
+      {
+        "name": "Resistencia Infernal",
+        "description": "Tienes resistencia al daño de fuego"
+      },
+      {
+        "name": "Legado Infernal",
+        "description": "Conoces el truco taumaturgia. A nivel 3, puedes lanzar el conjuro represión infernal como conjuro de nivel 2 una vez al día. A nivel 5, puedes lanzar el conjuro oscuridad una vez al día. Carisma es tu característica de lanzamiento"
+      }
+    ]
+  },
+
+  "Aarakocra": {
+    "name": "Aarakocra",
+    "abilityBonuses": {
+      "dexterity": 2,
+      "wisdom": 1
+    },
+    "speed": 25,
+    "flySpeed": 50,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Aarakocra", "Auran"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Vuelo",
+        "description": "Tienes una velocidad de vuelo de 50 pies. Para usar esta velocidad, no puedes llevar armadura media o pesada"
+      },
+      {
+        "name": "Talones",
+        "description": "Estás familiarizado con tus garras como armas naturales, que puedes usar para hacer ataques desarmados. Si golpeas con ellas, infliges daño cortante igual a 1d4 + tu modificador de Fuerza"
+      }
+    ],
+    "naturalWeapons": {
+      "talons": {
+        "damage": "1d4",
+        "damageType": "cortante"
+      }
+    }
+  },
+
+  "Goliath": {
+    "name": "Goliat",
+    "abilityBonuses": {
+      "strength": 2,
+      "constitution": 1
+    },
+    "speed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Gigante"],
+    "skillProficiencies": ["athletics"],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Atleta Natural",
+        "description": "Tienes competencia en la habilidad de Atletismo"
+      },
+      {
+        "name": "Complexión de Piedra",
+        "description": "Puedes usar tu reacción para tirar 1d12 + tu modificador de Constitución cuando recibes daño, reduciendo el daño en esa cantidad. Tras usar este rasgo, no puedes usarlo de nuevo hasta que termines un descanso corto o largo"
+      },
+      {
+        "name": "Poderosa Complexión",
+        "description": "Cuentas como un tamaño mayor cuando determinas tu capacidad de carga y el peso que puedes empujar, arrastrar o levantar"
+      },
+      {
+        "name": "Nacido en las Montañas",
+        "description": "Estás aclimatado a la gran altitud, incluyendo elevaciones por encima de 20,000 pies. También estás naturalmente adaptado a los climas fríos"
+      }
+    ]
+  },
+
+  "Tabaxi": {
+    "name": "Tabaxi",
+    "abilityBonuses": {
+      "dexterity": 2,
+      "charisma": 1
+    },
+    "speed": 30,
+    "climbSpeed": 20,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Un idioma a elección"],
+    "skillProficiencies": ["perception", "stealth"],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Visión en la Oscuridad",
+        "description": "Tienes visión en la oscuridad con un alcance de 60 pies"
+      },
+      {
+        "name": "Agilidad Felina",
+        "description": "Tu reflejos y agilidad te permiten moverte con una ráfaga de velocidad. Cuando te mueves en tu turno en combate, puedes duplicar tu velocidad hasta el final del turno. Una vez usas este rasgo, no puedes usarlo de nuevo hasta que te muevas 0 pies en uno de tus turnos"
+      },
+      {
+        "name": "Garras de Gato",
+        "description": "Debido a tus garras, tienes una velocidad de trepar de 20 pies. Además, tus garras son armas naturales con las que puedes hacer ataques desarmados. Si golpeas con ellas, infliges daño cortante igual a 1d4 + tu modificador de Fuerza"
+      }
+    ],
+    "naturalWeapons": {
+      "claws": {
+        "damage": "1d4",
+        "damageType": "cortante"
+      }
+    }
+  },
+
+  "Aasimar": {
+    "name": "Aasimar",
+    "abilityBonuses": {
+      "charisma": 2
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Celestial"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "damageResistances": ["necrótico", "radiante"],
+    "traits": [
+      {
+        "name": "Visión en la Oscuridad",
+        "description": "Tienes visión en la oscuridad con un alcance de 60 pies"
+      },
+      {
+        "name": "Resistencia Celestial",
+        "description": "Tienes resistencia al daño necrótico y al daño radiante"
+      },
+      {
+        "name": "Manos Sanadoras",
+        "description": "Como acción, puedes tocar a una criatura y hacer que recupere puntos de golpe iguales a tu nivel. Una vez usas este rasgo, no puedes usarlo de nuevo hasta que termines un descanso largo"
+      },
+      {
+        "name": "Legado de Luz",
+        "description": "Conoces el truco luz. Carisma es tu característica de lanzamiento"
+      }
+    ],
+    "subraces": {
+      "ProtectorAasimar": {
+        "name": "Aasimar Protector",
+        "abilityBonuses": {
+          "wisdom": 1
+        },
+        "traits": [
+          {
+            "name": "Alma Radiante",
+            "description": "A partir de nivel 3, puedes usar tu acción para liberar la energía divina dentro de ti, haciendo que tus ojos brillen y dos alas luminosas e incorpóreas broten de tu espalda. Tu transformación dura 1 minuto. Durante ella, tienes velocidad de vuelo de 30 pies y una vez en cada turno, puedes infligir daño radiante adicional igual a tu nivel a un objetivo cuando le inflijas daño con un ataque o conjuro. Recarga tras descanso largo"
+          }
+        ]
+      },
+      "ScourgeAasimar": {
+        "name": "Aasimar Azote",
+        "abilityBonuses": {
+          "constitution": 1
+        },
+        "traits": [
+          {
+            "name": "Consumo Radiante",
+            "description": "A partir de nivel 3, puedes usar tu acción para liberar la energía divina dentro de ti, causando que una luz ardiente irradie de ti. Tu transformación dura 1 minuto. Durante ella, emites luz brillante en 10 pies y luz tenue en 10 pies adicionales, y al final de cada turno, tú y cada criatura a 10 pies de ti reciben daño radiante igual a la mitad de tu nivel (redondeado hacia arriba). Además, una vez en cada turno, puedes infligir daño radiante adicional igual a tu nivel a un objetivo cuando le inflijas daño con un ataque o conjuro. Recarga tras descanso largo"
+          }
+        ]
+      },
+      "FallenAasimar": {
+        "name": "Aasimar Caído",
+        "abilityBonuses": {
+          "strength": 1
+        },
+        "traits": [
+          {
+            "name": "Mortaja Necrótica",
+            "description": "A partir de nivel 3, puedes usar tu acción para liberar la energía divina dentro de ti, causando que tus ojos se vuelvan charcos de oscuridad y dos alas esqueléticas y espectrales broten de tu espalda. Tu transformación dura 1 minuto. Durante ella, una vez en cada turno, puedes infligir daño necrótico adicional igual a tu nivel a un objetivo cuando le inflijas daño con un ataque o conjuro. Además, en el momento en que te transformas, cada criatura a 10 pies de ti debe hacer una tirada de salvación de Carisma o quedar asustada de ti hasta el final de tu siguiente turno. Recarga tras descanso largo"
+          }
+        ]
+      }
+    }
+  },
+
+  "Firbolg": {
+    "name": "Firbolg",
+    "abilityBonuses": {
+      "wisdom": 2,
+      "strength": 1
+    },
+    "speed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Élfico", "Gigante"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Magia de Firbolg",
+        "description": "Puedes lanzar detectar magia y disfrazarte a ti mismo con este rasgo, usando Sabiduría como característica de lanzamiento. Una vez lanzas cualquiera de estos conjuros, no puedes lanzarlo de nuevo hasta que termines un descanso corto o largo. Cuando usas esta versión de disfrazarte a ti mismo, puedes parecer hasta 3 pies más corto de lo normal"
+      },
+      {
+        "name": "Paso Oculto",
+        "description": "Como acción bonus, puedes volverte invisible mágicamente hasta el inicio de tu siguiente turno o hasta que ataques, hagas una tirada de daño o fuerces a alguien a hacer una tirada de salvación. Una vez usas este rasgo, no puedes usarlo de nuevo hasta que termines un descanso corto o largo"
+      },
+      {
+        "name": "Poderosa Complexión",
+        "description": "Cuentas como un tamaño mayor cuando determinas tu capacidad de carga y el peso que puedes empujar, arrastrar o levantar"
+      },
+      {
+        "name": "Habla de Bestias y Hojas",
+        "description": "Tienes la habilidad de comunicarte de forma limitada con bestias y plantas. Pueden entender el significado de tus palabras, aunque no tienes ninguna habilidad especial para entenderlas a ellas"
+      }
+    ]
+  },
+
+  "Kenku": {
+    "name": "Kenku",
+    "abilityBonuses": {
+      "dexterity": 2,
+      "wisdom": 1
+    },
+    "speed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Auran"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "skillProficiencyChoices": {
+      "choose": 2,
+      "from": ["acrobatics", "deception", "stealth", "sleightOfHand"]
+    },
+    "traits": [
+      {
+        "name": "Falsificador Experto",
+        "description": "Puedes duplicar la escritura y artesanía de otros. Tienes ventaja en todas las pruebas para producir falsificaciones o duplicados de objetos existentes"
+      },
+      {
+        "name": "Entrenamiento Kenku",
+        "description": "Eres competente en dos de las siguientes habilidades de tu elección: Acrobacias, Engaño, Sigilo y Juego de Manos"
+      },
+      {
+        "name": "Mimetismo",
+        "description": "Puedes imitar sonidos que hayas escuchado, incluyendo voces. Una criatura que escuche los sonidos puede decir que son imitaciones con una prueba de Sabiduría (Perspicacia) exitosa contra tu prueba de Carisma (Engaño)"
+      }
+    ]
+  },
+
+  "Lizardfolk": {
+    "name": "Hombre Lagarto",
+    "abilityBonuses": {
+      "constitution": 2,
+      "wisdom": 1
+    },
+    "speed": 30,
+    "swimSpeed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Dracónico"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "skillProficiencyChoices": {
+      "choose": 2,
+      "from": ["animalHandling", "nature", "perception", "stealth", "survival"]
+    },
+    "traits": [
+      {
+        "name": "Mordisco",
+        "description": "Tu mordisco con colmillos es un arma natural, que puedes usar para hacer ataques desarmados. Si golpeas con ella, infliges daño perforante igual a 1d6 + tu modificador de Fuerza"
+      },
+      {
+        "name": "Artesano Astuto",
+        "description": "Como parte de un descanso corto, puedes cosechar hueso y piel de un cadáver para crear un escudo, garrote, jabalina o 1d4 dardos o agujas de cerbatana. Esto requiere un cuerpo apropiado"
+      },
+      {
+        "name": "Aguantar la Respiración",
+        "description": "Puedes aguantar la respiración hasta 15 minutos"
+      },
+      {
+        "name": "Conocimiento del Cazador",
+        "description": "Ganas competencia en dos de las siguientes habilidades: Trato con Animales, Naturaleza, Percepción, Sigilo y Supervivencia"
+      },
+      {
+        "name": "Armadura Natural",
+        "description": "Tienes piel dura y escamosa. Cuando no llevas armadura, tu CA es 13 + tu modificador de Destreza. Puedes usar tu armadura natural para determinar tu CA si la armadura que llevas te dejaría con una CA menor"
+      },
+      {
+        "name": "Mandíbulas Hambrientas",
+        "description": "En batalla, puedes entrar en un frenesí alimenticio. Como acción bonus, puedes hacer un ataque especial con tu Mordisco. Si el ataque golpea, inflige su daño normal y ganas puntos de golpe temporales iguales a tu modificador de Constitución (mínimo 1). Una vez usas este rasgo, no puedes usarlo de nuevo hasta que termines un descanso corto o largo"
+      }
+    ],
+    "naturalWeapons": {
+      "bite": {
+        "damage": "1d6",
+        "damageType": "perforante"
+      }
+    },
+    "naturalArmor": {
+      "base": 13,
+      "addDexterity": true
+    }
+  },
+
+  "Triton": {
+    "name": "Tritón",
+    "abilityBonuses": {
+      "strength": 1,
+      "constitution": 1,
+      "charisma": 1
+    },
+    "speed": 30,
+    "swimSpeed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Primordial"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "damageResistances": ["frío"],
+    "traits": [
+      {
+        "name": "Anfibio",
+        "description": "Puedes respirar aire y agua"
+      },
+      {
+        "name": "Control del Aire y Agua",
+        "description": "Puedes lanzar niebla ocultante con este rasgo. A partir de nivel 3, puedes lanzar ráfaga de viento. A partir de nivel 5, puedes lanzar muro de agua. Una vez lanzas un conjuro con este rasgo, no puedes lanzarlo de nuevo hasta que termines un descanso largo. Carisma es tu característica de lanzamiento"
+      },
+      {
+        "name": "Emisario del Mar",
+        "description": "Las bestias acuáticas tienen una afinidad extraordinaria contigo. Puedes comunicar ideas simples con bestias que pueden respirar agua"
+      },
+      {
+        "name": "Guardianes de las Profundidades",
+        "description": "Adaptado a las profundidades oceánicas más oscuras, tienes resistencia al daño de frío y puedes ignorar cualquier desventaja causada por un entorno de aguas profundas"
+      }
+    ]
+  },
+
+  "Bugbear": {
+    "name": "Osgo",
+    "abilityBonuses": {
+      "strength": 2,
+      "dexterity": 1
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Trasgo"],
+    "skillProficiencies": ["stealth"],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Visión en la Oscuridad",
+        "description": "Tienes visión en la oscuridad con un alcance de 60 pies"
+      },
+      {
+        "name": "Brazos Largos",
+        "description": "Cuando hagas un ataque cuerpo a cuerpo en tu turno, tu alcance para él es 5 pies mayor de lo normal"
+      },
+      {
+        "name": "Poderosa Complexión",
+        "description": "Cuentas como un tamaño mayor cuando determinas tu capacidad de carga y el peso que puedes empujar, arrastrar o levantar"
+      },
+      {
+        "name": "Sigiloso",
+        "description": "Eres competente en la habilidad de Sigilo"
+      },
+      {
+        "name": "Ataque Sorpresa",
+        "description": "Si sorprendes a una criatura y la golpeas con un ataque en el primer turno de combate, el ataque inflige 2d6 de daño adicional"
+      }
+    ]
+  },
+
+  "Goblin": {
+    "name": "Trasgo",
+    "abilityBonuses": {
+      "dexterity": 2,
+      "constitution": 1
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Pequeño",
+    "languages": ["Común", "Trasgo"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Visión en la Oscuridad",
+        "description": "Tienes visión en la oscuridad con un alcance de 60 pies"
+      },
+      {
+        "name": "Furia del Pequeño",
+        "description": "Cuando dañas a una criatura con un ataque o conjuro y el tamaño de la criatura es mayor que el tuyo, puedes hacer que el ataque o conjuro inflija daño adicional igual a tu nivel. Una vez usas este rasgo, no puedes usarlo de nuevo hasta que termines un descanso corto o largo"
+      },
+      {
+        "name": "Escape Ágil",
+        "description": "Puedes tomar las acciones de Desengancharse o Esconderse como acción bonus en cada uno de tus turnos"
+      }
+    ]
+  },
+
+  "Hobgoblin": {
+    "name": "Hobgoblin",
+    "abilityBonuses": {
+      "constitution": 2,
+      "intelligence": 1
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Trasgo"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": ["armadura ligera"],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Visión en la Oscuridad",
+        "description": "Tienes visión en la oscuridad con un alcance de 60 pies"
+      },
+      {
+        "name": "Entrenamiento Marcial",
+        "description": "Eres competente con armaduras ligeras y dos armas marciales de tu elección"
+      },
+      {
+        "name": "Salvar la Cara",
+        "description": "Los hobgoblins son cuidadosos de no mostrar debilidad frente a sus aliados, por miedo a perder estatus. Si fallas una tirada de ataque, prueba de característica o tirada de salvación, puedes ganar un bonificador a la tirada igual al número de aliados que puedas ver a 30 pies de ti (máximo +5). Una vez usas este rasgo, no puedes usarlo de nuevo hasta que termines un descanso corto o largo"
+      }
+    ],
+    "weaponProficiencyChoices": {
+      "choose": 2,
+      "from": "martial"
+    }
+  },
+
+  "Kobold": {
+    "name": "Kóbold",
+    "abilityBonuses": {
+      "dexterity": 2
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Pequeño",
+    "languages": ["Común", "Dracónico"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Visión en la Oscuridad",
+        "description": "Tienes visión en la oscuridad con un alcance de 60 pies"
+      },
+      {
+        "name": "Legado Dracónico",
+        "description": "Conoces un truco a elección de la lista siguiente: booming blade, green-flame blade, mano de mago, prestidigitación. También puedes lanzar crear o destruir agua una vez al día a partir de nivel 3. Inteligencia, Sabiduría o Carisma es tu característica de lanzamiento (elige al ganar este rasgo)"
+      },
+      {
+        "name": "Grito de Ruego Dracónico",
+        "description": "Como acción bonus, dejas escapar un grito hacia tus aliados a 10 pies de ti. Hasta el final de tu siguiente turno, tú y esos aliados tienen ventaja en las tiradas de ataque contra cualquier enemigo a 10 pies de ti que te pueda ver u oír. Una vez usas este rasgo, no puedes usarlo de nuevo hasta que termines un descanso largo"
+      }
+    ]
+  },
+
+  "Orc": {
+    "name": "Orco",
+    "abilityBonuses": {
+      "strength": 2,
+      "constitution": 1
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Orco"],
+    "skillProficiencies": ["intimidation"],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Visión en la Oscuridad",
+        "description": "Tienes visión en la oscuridad con un alcance de 60 pies"
+      },
+      {
+        "name": "Agresivo",
+        "description": "Como acción bonus, puedes moverte hasta tu velocidad hacia un enemigo que puedas ver u oír. Debes terminar este movimiento más cerca del enemigo de lo que empezaste"
+      },
+      {
+        "name": "Poderosa Complexión",
+        "description": "Cuentas como un tamaño mayor cuando determinas tu capacidad de carga y el peso que puedes empujar, arrastrar o levantar"
+      },
+      {
+        "name": "Aguante Implacable",
+        "description": "Cuando eres reducido a 0 puntos de golpe pero no mueres directamente, puedes caer a 1 punto de golpe en su lugar. No puedes usar este rasgo de nuevo hasta que termines un descanso largo"
+      }
+    ]
+  },
+
+  "Yuan-ti": {
+    "name": "Yuan-ti",
+    "abilityBonuses": {
+      "charisma": 2,
+      "intelligence": 1
+    },
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común", "Abismal", "Dracónico"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "damageResistances": ["veneno"],
+    "conditionImmunities": ["envenenado"],
+    "traits": [
+      {
+        "name": "Visión en la Oscuridad",
+        "description": "Tienes visión en la oscuridad con un alcance de 60 pies"
+      },
+      {
+        "name": "Resistencia Mágica",
+        "description": "Tienes ventaja en las tiradas de salvación contra conjuros y otros efectos mágicos"
+      },
+      {
+        "name": "Inmunidad al Veneno",
+        "description": "Eres inmune al daño de veneno y a la condición de envenenado"
+      },
+      {
+        "name": "Magia Innata",
+        "description": "Conoces el truco maldecir heridas. Puedes lanzar sugestión con este rasgo. Una vez lo haces, no puedes lanzarlo de nuevo hasta que termines un descanso largo. Carisma es tu característica de lanzamiento"
+      }
+    ]
+  },
+
+  "Tortle": {
+    "name": "Tortle",
+    "abilityBonuses": {
+      "strength": 2,
+      "wisdom": 1
+    },
+    "speed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Acuático"],
+    "skillProficiencies": ["survival"],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Garras",
+        "description": "Tus garras son armas naturales, que puedes usar para hacer ataques desarmados. Si golpeas con ellas, infliges daño cortante igual a 1d4 + tu modificador de Fuerza"
+      },
+      {
+        "name": "Aguantar la Respiración",
+        "description": "Puedes aguantar la respiración hasta 1 hora"
+      },
+      {
+        "name": "Armadura Natural",
+        "description": "Debido a tu caparazón y forma corporal, no te beneficias de llevar armadura. Sin embargo, si un efecto te permite añadir tu bonificador de armadura a tu CA, puedes hacerlo. Tu CA base es 17"
+      },
+      {
+        "name": "Defensa de Caparazón",
+        "description": "Puedes retirarte a tu caparazón como acción. Hasta que emerjas, ganas +4 a CA y tienes ventaja en tiradas de salvación de Fuerza y Constitución. Mientras estás en tu caparazón, estás tumbado, tu velocidad es 0 y no puede aumentar, tienes desventaja en tiradas de salvación de Destreza, no puedes tomar reacciones y la única acción que puedes tomar es una acción bonus para emerger"
+      },
+      {
+        "name": "Intuición de Supervivencia",
+        "description": "Ganas competencia en la habilidad de Supervivencia"
+      }
+    ],
+    "naturalWeapons": {
+      "claws": {
+        "damage": "1d4",
+        "damageType": "cortante"
+      }
+    },
+    "naturalArmor": {
+      "base": 17,
+      "addDexterity": false
+    }
+  },
+
+  "Warforged": {
+    "name": "Forjado",
+    "abilityBonuses": {
+      "constitution": 2
+    },
+    "speed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Un idioma a elección"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "extraAbilityChoices": {
+      "choose": 1,
+      "bonus": 1,
+      "from": ["strength", "dexterity", "intelligence", "wisdom", "charisma"]
+    },
+    "conditionImmunities": ["enfermedad"],
+    "traits": [
+      {
+        "name": "Ser Construido",
+        "description": "Fuiste creado para tener una resistencia notable, representada por los siguientes beneficios: Tienes ventaja en tiradas de salvación contra ser envenenado y tienes resistencia al daño de veneno. No necesitas comer, beber o respirar. Eres inmune a enfermedades. No necesitas dormir y la magia no puede dormirte"
+      },
+      {
+        "name": "Descanso del Centinela",
+        "description": "Cuando tomas un descanso largo, debes pasar al menos 6 horas en un estado inactivo pero consciente, en lugar de dormir. En este estado, pareces inerte pero no quedas inconsciente y puedes ver y oír normalmente"
+      },
+      {
+        "name": "Protección Integrada",
+        "description": "Tu cuerpo tiene capas defensivas incorporadas que determinan tu CA. No ganas beneficio de llevar armadura, pero si usas un escudo, puedes aplicar su bonificador normalmente. Tu CA base es 11 + tu bonificador de Destreza + tu bonificador de competencia"
+      },
+      {
+        "name": "Diseño Especializado",
+        "description": "Ganas una competencia de habilidad de tu elección, una competencia de herramienta de tu elección y fluidez en un idioma de tu elección"
+      }
+    ],
+    "naturalArmor": {
+      "base": 11,
+      "addDexterity": true,
+      "addProficiency": true
+    }
+  },
+
+  "Changeling": {
+    "name": "Cambiante",
+    "abilityBonuses": {
+      "charisma": 2
+    },
+    "speed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Dos idiomas a elección"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "extraAbilityChoices": {
+      "choose": 1,
+      "bonus": 1,
+      "from": ["strength", "dexterity", "constitution", "intelligence", "wisdom"]
+    },
+    "skillProficiencyChoices": {
+      "choose": 2,
+      "from": ["deception", "insight", "intimidation", "performance", "persuasion"]
+    },
+    "traits": [
+      {
+        "name": "Cambiaformas",
+        "description": "Como acción, puedes cambiar tu apariencia y tu voz. Determinas los detalles de los cambios, incluyendo tu coloración, longitud del cabello y sexo. También puedes ajustar tu altura y peso, pero no tanto como para cambiar tu talla. Puedes hacer que parezcas un miembro de otra raza, aunque ninguno de tus rasgos de juego cambia. No puedes duplicar la apariencia de una criatura que nunca hayas visto, y debes adoptar una forma que tenga la misma disposición básica de extremidades que tienes. Tu ropa y equipo no cambian. Te quedas en la nueva forma hasta que uses una acción para volver a tu verdadera forma o hasta que mueras"
+      },
+      {
+        "name": "Instinto Cambiante",
+        "description": "Ganas competencia en dos de las siguientes habilidades de tu elección: Engaño, Perspicacia, Intimidación, Interpretación, Persuasión"
+      }
+    ]
+  },
+
+  "Kalashtar": {
+    "name": "Kalashtar",
+    "abilityBonuses": {
+      "wisdom": 2,
+      "charisma": 1
+    },
+    "speed": 30,
+    "darkvision": 0,
+    "size": "Mediano",
+    "languages": ["Común", "Quori", "Un idioma a elección"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "damageResistances": ["psíquico"],
+    "traits": [
+      {
+        "name": "Mente Dual",
+        "description": "Tienes ventaja en todas las tiradas de salvación de Sabiduría"
+      },
+      {
+        "name": "Vínculo Mental",
+        "description": "Puedes hablar telepáticamente con cualquier criatura que puedas ver, siempre que la criatura esté a un número de pies de ti igual a 10 veces tu nivel. No necesitas compartir un idioma con la criatura para que entienda tus transmisiones telepáticas, pero la criatura debe ser capaz de entender al menos un idioma. Cuando estás usando este rasgo para hablar telepáticamente con una criatura, puedes usar tu acción para darle a esa criatura la habilidad de hablarte telepáticamente durante 1 hora o hasta que termines este efecto como acción. Para usar esta habilidad, la criatura debe ser capaz de verte y debe estar a un número de pies de ti igual a 10 veces tu nivel"
+      },
+      {
+        "name": "Desconectado",
+        "description": "Tienes resistencia al daño psíquico y tienes ventaja en las tiradas de salvación contra efectos que te dañen solo en la mente"
+      },
+      {
+        "name": "Sueño Espiritual",
+        "description": "Los sueños te sirven como vehículo para la paz y la guerra. Cuando tomas un descanso largo, puedes elegir entrar en trance profundo durante 6 horas en lugar de dormir 8. Al final de cada descanso largo tomado de esta manera, ganas puntos de golpe temporales iguales a tu nivel"
+      }
+    ]
+  },
+
+  "Shifter": {
+    "name": "Cambiaformas",
+    "abilityBonuses": {},
+    "speed": 30,
+    "darkvision": 60,
+    "size": "Mediano",
+    "languages": ["Común"],
+    "skillProficiencies": [],
+    "weaponProficiencies": [],
+    "armorProficiencies": [],
+    "toolProficiencies": [],
+    "traits": [
+      {
+        "name": "Visión en la Oscuridad",
+        "description": "Tienes visión en la oscuridad con un alcance de 60 pies"
+      },
+      {
+        "name": "Cambiar",
+        "description": "Como acción bonus, puedes asumir una apariencia más bestial. Esta transformación dura 1 minuto, hasta que mueras, o hasta que la reviertas como acción bonus. Cuando cambias, ganas puntos de golpe temporales iguales a tu nivel + tu modificador de Constitución (mínimo 1). También ganas beneficios adicionales que dependen de tu subraza. Una vez cambias, no puedes hacerlo de nuevo hasta que termines un descanso corto o largo"
+      }
+    ],
+    "subraces": {
+      "Beasthide": {
+        "name": "Piel de Bestia",
+        "abilityBonuses": {
+          "constitution": 2,
+          "strength": 1
+        },
+        "skillProficiencies": ["athletics"],
+        "traits": [
+          {
+            "name": "Atleta Natural",
+            "description": "Tienes competencia en la habilidad de Atletismo"
+          },
+          {
+            "name": "Cambiar - Piel de Bestia",
+            "description": "Cuando cambias, ganas 1d6 puntos de golpe temporales adicionales, y mientras estés cambiado, tienes +1 a tu CA"
+          }
+        ]
+      },
+      "Longtooth": {
+        "name": "Colmillos Largos",
+        "abilityBonuses": {
+          "strength": 2,
+          "dexterity": 1
+        },
+        "skillProficiencies": ["intimidation"],
+        "traits": [
+          {
+            "name": "Feroz",
+            "description": "Tienes competencia en la habilidad de Intimidación"
+          },
+          {
+            "name": "Cambiar - Colmillos Largos",
+            "description": "Cuando cambias, puedes usar tus colmillos alargados para hacer un ataque desarmado como acción bonus. Si golpeas con tus colmillos, puedes infligir daño perforante igual a 1d6 + tu modificador de Fuerza, en lugar del daño contundente normal de un golpe desarmado"
+          }
+        ]
+      },
+      "Swiftstride": {
+        "name": "Paso Veloz",
+        "abilityBonuses": {
+          "dexterity": 2,
+          "charisma": 1
+        },
+        "skillProficiencies": ["acrobatics"],
+        "traits": [
+          {
+            "name": "Ágil",
+            "description": "Tienes competencia en la habilidad de Acrobacias"
+          },
+          {
+            "name": "Cambiar - Paso Veloz",
+            "description": "Cuando cambias, tu velocidad al caminar aumenta en 10 pies adicionales. Además, puedes moverte hasta 10 pies como reacción cuando un enemigo termina su turno a 5 pies de ti. Este movimiento reactivo no provoca ataques de oportunidad"
+          }
+        ]
+      },
+      "Wildhunt": {
+        "name": "Caza Salvaje",
+        "abilityBonuses": {
+          "wisdom": 2,
+          "dexterity": 1
+        },
+        "skillProficiencies": ["survival"],
+        "traits": [
+          {
+            "name": "Rastreador Natural",
+            "description": "Tienes competencia en la habilidad de Supervivencia"
+          },
+          {
+            "name": "Cambiar - Caza Salvaje",
+            "description": "Cuando cambias, tienes ventaja en las pruebas de Sabiduría, y ninguna criatura a 30 pies de ti puede hacer una tirada de ataque con ventaja contra ti, a menos que estés incapacitado"
+          }
+        ]
+      }
+    }
+  }
+}

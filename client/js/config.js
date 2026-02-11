@@ -138,6 +138,33 @@ export const SKILL_ABILITIES = {
     survival: 'wisdom'
 };
 
+// ==========================================
+// NOTA: Los datos de razas están en /data/races.json
+// Se cargan dinámicamente en CharacterSheet.js
+// ==========================================
+
+// Mapeo de nombres de habilidades en inglés a español
+export const SKILL_NAMES_ES = {
+    acrobatics: 'Acrobacias',
+    animalHandling: 'Trato con Animales',
+    arcana: 'Arcano',
+    athletics: 'Atletismo',
+    deception: 'Engaño',
+    history: 'Historia',
+    insight: 'Perspicacia',
+    intimidation: 'Intimidación',
+    investigation: 'Investigación',
+    medicine: 'Medicina',
+    nature: 'Naturaleza',
+    perception: 'Percepción',
+    performance: 'Interpretación',
+    persuasion: 'Persuasión',
+    religion: 'Religión',
+    sleightOfHand: 'Juego de Manos',
+    stealth: 'Sigilo',
+    survival: 'Supervivencia'
+};
+
 // Configuración por defecto de distancia de mapa
 export const DEFAULT_DISTANCE_CONFIG = {
     squareSize: 5,
