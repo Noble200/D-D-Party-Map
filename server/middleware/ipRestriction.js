@@ -3,7 +3,33 @@
 // ==========================================
 
 // IPs permitidas por defecto (localhost)
-const DEFAULT_ALLOWED_IPS = ['127.0.0.1', '::1', '::ffff:127.0.0.1'];
+const DEFAULT_ALLOWED_IPS = [
+    '127.0.0.1',
+    '::1',
+    '::ffff:127.0.0.1',
+    'localhost'
+];
+
+// Verificar si es IP de red local (para desarrollo)
+function isLocalNetworkIP(ip) {
+    // Remover prefijo IPv6 si existe
+    const cleanIP = ip.replace('::ffff:', '');
+
+    // Rangos de IP privada/local
+    // 10.x.x.x, 172.16-31.x.x, 192.168.x.x, localhost
+    return cleanIP.startsWith('10.') ||
+           cleanIP.startsWith('192.168.') ||
+           cleanIP.startsWith('172.16.') ||
+           cleanIP.startsWith('172.17.') ||
+           cleanIP.startsWith('172.18.') ||
+           cleanIP.startsWith('172.19.') ||
+           cleanIP.startsWith('172.2') ||
+           cleanIP.startsWith('172.30.') ||
+           cleanIP.startsWith('172.31.') ||
+           cleanIP === '127.0.0.1' ||
+           cleanIP === 'localhost' ||
+           cleanIP === '::1';
+}
 
 // Obtener IP real del cliente (considerando proxies)
 function getClientIP(req) {
@@ -39,7 +65,7 @@ function ipRestriction(req, res, next) {
         return clientIP === allowedIP ||
                clientIP === `::ffff:${allowedIP}` ||
                `::ffff:${clientIP}` === allowedIP;
-    });
+    }) || isLocalNetworkIP(clientIP);
 
     if (isAllowed) {
         next();
