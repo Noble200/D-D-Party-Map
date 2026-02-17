@@ -50,6 +50,11 @@ function getClientIP(req) {
 
 // Middleware de restricción
 function ipRestriction(req, res, next) {
+    // Si DISABLE_IP_RESTRICTION está activo, permitir todo (para desarrollo/producción sin restricción)
+    if (process.env.DISABLE_IP_RESTRICTION === 'true') {
+        return next();
+    }
+
     // Obtener IPs permitidas desde variable de entorno o usar default
     const allowedIPsEnv = process.env.ADMIN_ALLOWED_IPS || '';
     const allowedIPs = [
