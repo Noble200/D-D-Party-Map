@@ -190,8 +190,11 @@ class CharacterSheet {
         // Listeners de tiradas de salvación
         this.initSavingThrowListeners();
 
-        // Listener de habilidad de lanzamiento
-        document.getElementById('spellcastingAbility')?.addEventListener('change', () => this.updateSpellStats());
+        // Listener de habilidad de lanzamiento (si existe el elemento)
+        const spellAbilitySelect = document.getElementById('spellcastingAbility');
+        if (spellAbilitySelect) {
+            spellAbilitySelect.addEventListener('change', () => this.updateSpellStats());
+        }
 
         // Listeners de raza y subraza
         this.initRaceListeners();
@@ -899,14 +902,20 @@ class CharacterSheet {
         document.getElementById('passivePerception').textContent = 10 + bonus;
     }
 
-    // Actualizar stats de lanzamiento de conjuros
+    // Actualizar stats de lanzamiento de conjuros (si existen los elementos)
     updateSpellStats() {
         const abilitySelect = document.getElementById('spellcastingAbility');
+        const saveDCEl = document.getElementById('spellSaveDC');
+        const attackBonusEl = document.getElementById('spellAttackBonus');
+
+        // Si no existen los elementos, no hacer nada
+        if (!abilitySelect || !saveDCEl || !attackBonusEl) return;
+
         const ability = abilitySelect.value;
 
         if (!ability) {
-            document.getElementById('spellSaveDC').textContent = '8';
-            document.getElementById('spellAttackBonus').textContent = '+0';
+            saveDCEl.textContent = '8';
+            attackBonusEl.textContent = '+0';
             return;
         }
 
@@ -920,8 +929,8 @@ class CharacterSheet {
         const saveDC = 8 + profBonus + abilityMod;
         const attackBonus = profBonus + abilityMod;
 
-        document.getElementById('spellSaveDC').textContent = saveDC;
-        document.getElementById('spellAttackBonus').textContent = attackBonus >= 0 ? `+${attackBonus}` : attackBonus.toString();
+        saveDCEl.textContent = saveDC;
+        attackBonusEl.textContent = attackBonus >= 0 ? `+${attackBonus}` : attackBonus.toString();
     }
 
     // Calcular y mostrar porcentaje de completitud
@@ -1182,9 +1191,13 @@ class CharacterSheet {
 
         // Conjuros
         if (data.spellcasting) {
-            document.getElementById('spellcastingClass').value = data.spellcasting.class || '';
-            document.getElementById('spellcastingAbility').value = data.spellcasting.ability || '';
-            document.getElementById('spellsNotes').value = data.spellcasting.notes || '';
+            const spellClassEl = document.getElementById('spellcastingClass');
+            const spellAbilityEl = document.getElementById('spellcastingAbility');
+            const spellNotesEl = document.getElementById('spellsNotes');
+
+            if (spellClassEl) spellClassEl.value = data.spellcasting.class || '';
+            if (spellAbilityEl) spellAbilityEl.value = data.spellcasting.ability || '';
+            if (spellNotesEl) spellNotesEl.value = data.spellcasting.notes || '';
 
             // Cargar trucos y conjuros seleccionados
             this.selectedCantrips = data.spellcasting.cantripsKnown || [];

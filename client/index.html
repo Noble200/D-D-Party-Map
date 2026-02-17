@@ -1311,48 +1311,14 @@
 
                     <!-- TAB: Conjuros -->
                     <div class="tab-pane" data-tab="spells">
-                        <!-- Stats de Lanzamiento -->
-                        <div class="spellcasting-header">
-                            <div class="form-group">
-                                <label for="spellcastingClass">Clase Lanzador</label>
-                                <input type="text" id="spellcastingClass" placeholder="-" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="spellcastingAbility">Característica</label>
-                                <select id="spellcastingAbility">
-                                    <option value="">Seleccionar...</option>
-                                    <option value="intelligence">Inteligencia</option>
-                                    <option value="wisdom">Sabiduría</option>
-                                    <option value="charisma">Carisma</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>CD Salvación</label>
-                                <span class="spell-stat" id="spellSaveDC">8</span>
-                            </div>
-                            <div class="form-group">
-                                <label>Bonif. Ataque</label>
-                                <span class="spell-stat" id="spellAttackBonus">+0</span>
-                            </div>
-                        </div>
-
-                        <!-- Espacios de Conjuros -->
-                        <div class="spell-slots-section">
-                            <h5 class="section-title">Espacios de Conjuros</h5>
-                            <div id="spellSlotsContainer">
-                                <p class="no-slots">Selecciona una clase con hechicería para ver tus espacios.</p>
-                            </div>
-                        </div>
-
                         <!-- Trucos -->
                         <div class="cantrips-section">
                             <div class="section-header">
                                 <h5 class="section-title">Trucos</h5>
-                                <span class="counter" id="cantripsCounter">0/0</span>
                                 <button type="button" class="btn-add-spell" id="btnAddCantrip">+ Agregar</button>
                             </div>
                             <div id="cantripsList" class="spells-list">
-                                <p class="empty-list">No hay trucos seleccionados.</p>
+                                <p class="empty-list">No hay trucos agregados.</p>
                             </div>
                         </div>
 
@@ -1360,22 +1326,21 @@
                         <div class="spells-section">
                             <div class="section-header">
                                 <h5 class="section-title">Conjuros</h5>
-                                <span class="counter" id="spellsCounter">0/0</span>
                                 <button type="button" class="btn-add-spell" id="btnAddSpell">+ Agregar</button>
                             </div>
                             <div id="spellsList" class="spells-list">
-                                <p class="empty-list">No hay conjuros seleccionados.</p>
+                                <p class="empty-list">No hay conjuros agregados.</p>
                             </div>
                         </div>
 
-                        <!-- Habilidades y Rasgos Automáticos -->
+                        <!-- Habilidades y Rasgos -->
                         <div class="abilities-section">
                             <div class="section-header">
                                 <h5 class="section-title">Habilidades y Rasgos</h5>
-                                <button type="button" class="btn-add-ability" id="btnAddAbility">+ Agregar</button>
+                                <button type="button" class="btn-add-spell" id="btnAddAbility">+ Agregar</button>
                             </div>
                             <div id="abilitiesContainer">
-                                <p class="no-traits">Selecciona una raza, clase y trasfondo para ver tus habilidades.</p>
+                                <p class="no-traits">No hay habilidades agregadas.</p>
                             </div>
                         </div>
 
