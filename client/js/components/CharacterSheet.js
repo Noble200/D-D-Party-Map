@@ -1655,22 +1655,36 @@ class CharacterSheet {
     // ==========================================
 
     initSpellsTabListeners() {
+        console.log('initSpellsTabListeners llamado');
+
         // Botón agregar truco - ahora abre el editor de habilidades
         const addCantripBtn = document.getElementById('btnAddCantrip');
+        console.log('btnAddCantrip encontrado:', addCantripBtn);
         if (addCantripBtn) {
-            addCantripBtn.addEventListener('click', () => this.openAbilityEditor('cantrip'));
+            addCantripBtn.addEventListener('click', () => {
+                console.log('Click en btnAddCantrip');
+                this.openAbilityEditor('cantrip');
+            });
         }
 
         // Botón agregar conjuro - ahora abre el editor de habilidades
         const addSpellBtn = document.getElementById('btnAddSpell');
+        console.log('btnAddSpell encontrado:', addSpellBtn);
         if (addSpellBtn) {
-            addSpellBtn.addEventListener('click', () => this.openAbilityEditor('spell'));
+            addSpellBtn.addEventListener('click', () => {
+                console.log('Click en btnAddSpell');
+                this.openAbilityEditor('spell');
+            });
         }
 
         // Botón agregar habilidad/rasgo
         const addAbilityBtn = document.getElementById('btnAddAbility');
+        console.log('btnAddAbility encontrado:', addAbilityBtn);
         if (addAbilityBtn) {
-            addAbilityBtn.addEventListener('click', () => this.openAbilityEditor('ability'));
+            addAbilityBtn.addEventListener('click', () => {
+                console.log('Click en btnAddAbility');
+                this.openAbilityEditor('ability');
+            });
         }
 
         // Listeners del modal de selección (para cuando se implemente el buscador)
@@ -2453,8 +2467,13 @@ class CharacterSheet {
     }
 
     openAbilityEditor(presetCategory = null) {
+        console.log('openAbilityEditor llamado con categoría:', presetCategory);
         const modal = document.getElementById('abilityEditorModal');
-        if (!modal) return;
+        console.log('Modal encontrado:', modal);
+        if (!modal) {
+            console.error('Modal abilityEditorModal no encontrado!');
+            return;
+        }
 
         // Resetear formulario
         this.resetAbilityForm();
