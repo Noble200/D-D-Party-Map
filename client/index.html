@@ -1315,7 +1315,7 @@
                         <div class="spellcasting-header">
                             <div class="form-group">
                                 <label for="spellcastingClass">Clase Lanzador</label>
-                                <input type="text" id="spellcastingClass" placeholder="Auto" readonly>
+                                <input type="text" id="spellcastingClass" placeholder="-" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="spellcastingAbility">Característica</label>
@@ -1370,7 +1370,10 @@
 
                         <!-- Habilidades y Rasgos Automáticos -->
                         <div class="abilities-section">
-                            <h5 class="section-title">Habilidades y Rasgos</h5>
+                            <div class="section-header">
+                                <h5 class="section-title">Habilidades y Rasgos</h5>
+                                <button type="button" class="btn-add-ability" id="btnAddAbility">+ Agregar</button>
+                            </div>
                             <div id="abilitiesContainer">
                                 <p class="no-traits">Selecciona una raza, clase y trasfondo para ver tus habilidades.</p>
                             </div>
@@ -1474,6 +1477,517 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary spell-selector-close">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btnAddSelectedSpells">Agregar Seleccionados</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Editor de Habilidad/Conjuro Personalizado -->
+    <div id="abilityEditorModal" class="modal-overlay">
+        <div class="modal-content ability-editor-modal">
+            <div class="modal-header">
+                <h3 id="abilityEditorTitle">Nueva Habilidad</h3>
+                <button type="button" class="btn-close ability-editor-close">&times;</button>
+            </div>
+
+            <form id="abilityEditorForm" class="ability-editor-form">
+                <!-- Sección: Información Básica -->
+                <div class="editor-section">
+                    <h4 class="editor-section-title">Información Básica</h4>
+                    <div class="editor-row">
+                        <div class="form-group flex-2">
+                            <label for="abilityName">Nombre *</label>
+                            <input type="text" id="abilityName" required placeholder="Nombre de la habilidad">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="abilityType">Tipo *</label>
+                            <select id="abilityType" required>
+                                <option value="active">Activa</option>
+                                <option value="passive">Pasiva</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="editor-row">
+                        <div class="form-group flex-1">
+                            <label for="abilityCategory">Categoría</label>
+                            <select id="abilityCategory">
+                                <option value="ability">Habilidad</option>
+                                <option value="feature">Rasgo</option>
+                                <option value="cantrip">Truco</option>
+                                <option value="spell">Conjuro</option>
+                                <option value="attack">Ataque</option>
+                            </select>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="abilitySource">Origen</label>
+                            <select id="abilitySource">
+                                <option value="custom">Personalizado</option>
+                                <option value="race">Raza</option>
+                                <option value="class">Clase</option>
+                                <option value="background">Trasfondo</option>
+                                <option value="feat">Dote</option>
+                                <option value="item">Objeto</option>
+                            </select>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="abilitySourceDetail">Detalle Origen</label>
+                            <input type="text" id="abilitySourceDetail" placeholder="Ej: Elfo, Mago Nv3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="abilityDescription">Descripción</label>
+                        <textarea id="abilityDescription" rows="3" placeholder="Descripción completa de la habilidad..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Sección: Acción y Tiempo -->
+                <div class="editor-section" id="sectionAction">
+                    <h4 class="editor-section-title">Acción y Activación</h4>
+                    <div class="editor-row">
+                        <div class="form-group flex-1">
+                            <label for="abilityActionType">Tipo de Acción</label>
+                            <select id="abilityActionType">
+                                <option value="action">Acción</option>
+                                <option value="bonusAction">Acción Adicional</option>
+                                <option value="reaction">Reacción</option>
+                                <option value="free">Acción Libre</option>
+                                <option value="special">Especial</option>
+                                <option value="none">Ninguna (Pasiva)</option>
+                            </select>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="abilityActionCost">Coste de Acción</label>
+                            <input type="text" id="abilityActionCost" placeholder="Ej: 1 acción, 10 minutos">
+                        </div>
+                    </div>
+                    <div class="form-group" id="reactionTriggerGroup" style="display: none;">
+                        <label for="abilityReactionTrigger">Disparador de Reacción</label>
+                        <input type="text" id="abilityReactionTrigger" placeholder="Ej: Cuando una criatura te ataca">
+                    </div>
+                </div>
+
+                <!-- Sección: Alcance y Área -->
+                <div class="editor-section">
+                    <h4 class="editor-section-title">Alcance y Área</h4>
+                    <div class="editor-row">
+                        <div class="form-group flex-1">
+                            <label for="abilityRange">Alcance</label>
+                            <input type="text" id="abilityRange" placeholder="Personal, Toque, 30 pies...">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="abilityDuration">Duración</label>
+                            <input type="text" id="abilityDuration" placeholder="Instantánea, 1 minuto...">
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="abilityConcentration">
+                                <span>Concentración</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="editor-row">
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="abilityHasArea">
+                                <span>Tiene Área de Efecto</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="editor-row area-fields" style="display: none;">
+                        <div class="form-group flex-1">
+                            <label for="abilityAreaType">Tipo de Área</label>
+                            <select id="abilityAreaType">
+                                <option value="sphere">Esfera</option>
+                                <option value="cone">Cono</option>
+                                <option value="cube">Cubo</option>
+                                <option value="line">Línea</option>
+                                <option value="cylinder">Cilindro</option>
+                            </select>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="abilityAreaSize">Tamaño (pies)</label>
+                            <input type="number" id="abilityAreaSize" min="0" placeholder="15">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Conjuro (solo para trucos/conjuros) -->
+                <div class="editor-section spell-fields" id="sectionSpell" style="display: none;">
+                    <h4 class="editor-section-title">Propiedades de Conjuro</h4>
+                    <div class="editor-row">
+                        <div class="form-group flex-1">
+                            <label for="abilitySpellLevel">Nivel del Conjuro</label>
+                            <select id="abilitySpellLevel">
+                                <option value="0">Truco (Nivel 0)</option>
+                                <option value="1">Nivel 1</option>
+                                <option value="2">Nivel 2</option>
+                                <option value="3">Nivel 3</option>
+                                <option value="4">Nivel 4</option>
+                                <option value="5">Nivel 5</option>
+                                <option value="6">Nivel 6</option>
+                                <option value="7">Nivel 7</option>
+                                <option value="8">Nivel 8</option>
+                                <option value="9">Nivel 9</option>
+                            </select>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="abilitySchool">Escuela de Magia</label>
+                            <select id="abilitySchool">
+                                <option value="">Sin especificar</option>
+                                <option value="abjuración">Abjuración</option>
+                                <option value="conjuración">Conjuración</option>
+                                <option value="adivinación">Adivinación</option>
+                                <option value="encantamiento">Encantamiento</option>
+                                <option value="evocación">Evocación</option>
+                                <option value="ilusión">Ilusión</option>
+                                <option value="nigromancia">Nigromancia</option>
+                                <option value="transmutación">Transmutación</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="editor-row">
+                        <label class="checkbox-inline-group">Componentes:</label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="abilityCompV">
+                            <span>V (Verbal)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="abilityCompS">
+                            <span>S (Somático)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="abilityCompM">
+                            <span>M (Material)</span>
+                        </label>
+                    </div>
+                    <div class="form-group material-desc" style="display: none;">
+                        <label for="abilityMaterialDesc">Componente Material</label>
+                        <input type="text" id="abilityMaterialDesc" placeholder="Descripción del componente material">
+                    </div>
+                </div>
+
+                <!-- Sección: Usos y Recuperación -->
+                <div class="editor-section">
+                    <h4 class="editor-section-title">Usos y Recuperación</h4>
+                    <div class="editor-row">
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="abilityUnlimited" checked>
+                                <span>Uso ilimitado</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="editor-row uses-fields" style="display: none;">
+                        <div class="form-group flex-1">
+                            <label for="abilityUsesMax">Usos Máximos</label>
+                            <input type="number" id="abilityUsesMax" min="1" value="1">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="abilityRecharge">Recuperación</label>
+                            <select id="abilityRecharge">
+                                <option value="shortRest">Descanso Corto</option>
+                                <option value="longRest">Descanso Largo</option>
+                                <option value="dawn">Al Amanecer</option>
+                                <option value="round">Cada Asalto</option>
+                                <option value="special">Especial</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group recharge-special" style="display: none;">
+                        <label for="abilityRechargeDesc">Descripción de Recuperación</label>
+                        <input type="text" id="abilityRechargeDesc" placeholder="Ej: Recuperas 1d4 cargas al amanecer">
+                    </div>
+                </div>
+
+                <!-- Sección: Mecánicas de Combate -->
+                <div class="editor-section">
+                    <h4 class="editor-section-title">Mecánicas de Combate</h4>
+
+                    <!-- Ataque -->
+                    <div class="combat-subsection">
+                        <div class="editor-row">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="abilityHasAttack">
+                                <span>Realiza Tirada de Ataque</span>
+                            </label>
+                        </div>
+                        <div class="attack-fields" style="display: none;">
+                            <div class="editor-row">
+                                <div class="form-group flex-1">
+                                    <label for="abilityAttackType">Tipo de Ataque</label>
+                                    <select id="abilityAttackType">
+                                        <option value="melee">Cuerpo a Cuerpo</option>
+                                        <option value="ranged">A Distancia</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="abilityAttackAbility">Característica</label>
+                                    <select id="abilityAttackAbility">
+                                        <option value="strength">Fuerza</option>
+                                        <option value="dexterity">Destreza</option>
+                                        <option value="spellcasting">Lanzamiento de Conjuros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="abilityAttackBonus">Bonif. Extra</label>
+                                    <input type="number" id="abilityAttackBonus" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daño -->
+                    <div class="combat-subsection">
+                        <div class="editor-row">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="abilityHasDamage">
+                                <span>Causa Daño</span>
+                            </label>
+                        </div>
+                        <div class="damage-fields" style="display: none;">
+                            <div class="editor-row">
+                                <div class="form-group flex-1">
+                                    <label for="abilityDamageDice">Dados de Daño</label>
+                                    <input type="text" id="abilityDamageDice" placeholder="Ej: 2d6, 1d8+1d6">
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="abilityDamageType">Tipo de Daño</label>
+                                    <select id="abilityDamageType">
+                                        <option value="">Sin especificar</option>
+                                        <option value="ácido">Ácido</option>
+                                        <option value="contundente">Contundente</option>
+                                        <option value="cortante">Cortante</option>
+                                        <option value="eléctrico">Eléctrico</option>
+                                        <option value="frío">Frío</option>
+                                        <option value="fuego">Fuego</option>
+                                        <option value="fuerza">Fuerza</option>
+                                        <option value="necrótico">Necrótico</option>
+                                        <option value="perforante">Perforante</option>
+                                        <option value="psíquico">Psíquico</option>
+                                        <option value="radiante">Radiante</option>
+                                        <option value="trueno">Trueno</option>
+                                        <option value="veneno">Veneno</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="editor-row">
+                                <div class="form-group flex-1">
+                                    <label for="abilityDamageAbility">Añadir Modificador de</label>
+                                    <select id="abilityDamageAbility">
+                                        <option value="">No añadir</option>
+                                        <option value="strength">Fuerza</option>
+                                        <option value="dexterity">Destreza</option>
+                                        <option value="constitution">Constitución</option>
+                                        <option value="intelligence">Inteligencia</option>
+                                        <option value="wisdom">Sabiduría</option>
+                                        <option value="charisma">Carisma</option>
+                                        <option value="spellcasting">Lanzamiento de Conjuros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="abilityDamageBonus">Bonif. Extra</label>
+                                    <input type="number" id="abilityDamageBonus" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Curación -->
+                    <div class="combat-subsection">
+                        <div class="editor-row">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="abilityHasHealing">
+                                <span>Proporciona Curación</span>
+                            </label>
+                        </div>
+                        <div class="healing-fields" style="display: none;">
+                            <div class="editor-row">
+                                <div class="form-group flex-1">
+                                    <label for="abilityHealingDice">Dados de Curación</label>
+                                    <input type="text" id="abilityHealingDice" placeholder="Ej: 2d8, 1d10">
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="abilityHealingAbility">Añadir Modificador de</label>
+                                    <select id="abilityHealingAbility">
+                                        <option value="">No añadir</option>
+                                        <option value="wisdom">Sabiduría</option>
+                                        <option value="charisma">Carisma</option>
+                                        <option value="spellcasting">Lanzamiento de Conjuros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="abilityHealingBonus">Bonif. Extra</label>
+                                    <input type="number" id="abilityHealingBonus" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tirada de Salvación -->
+                    <div class="combat-subsection">
+                        <div class="editor-row">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="abilityHasSave">
+                                <span>Requiere Tirada de Salvación</span>
+                            </label>
+                        </div>
+                        <div class="save-fields" style="display: none;">
+                            <div class="editor-row">
+                                <div class="form-group flex-1">
+                                    <label for="abilitySaveAbility">Característica de Salvación</label>
+                                    <select id="abilitySaveAbility">
+                                        <option value="strength">Fuerza</option>
+                                        <option value="dexterity">Destreza</option>
+                                        <option value="constitution">Constitución</option>
+                                        <option value="intelligence">Inteligencia</option>
+                                        <option value="wisdom">Sabiduría</option>
+                                        <option value="charisma">Carisma</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="abilitySaveDC">CD (dejar vacío para auto)</label>
+                                    <input type="number" id="abilitySaveDC" min="1" placeholder="Auto">
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="abilitySaveEffect">Si tiene éxito</label>
+                                    <select id="abilitySaveEffect">
+                                        <option value="half">Mitad de daño</option>
+                                        <option value="none">Sin efecto</option>
+                                        <option value="special">Especial</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Efectos Adicionales -->
+                <div class="editor-section collapsible">
+                    <h4 class="editor-section-title collapsible-header">
+                        Efectos Adicionales
+                        <span class="collapse-icon">+</span>
+                    </h4>
+                    <div class="collapsible-content" style="display: none;">
+                        <!-- Condiciones -->
+                        <div class="form-group">
+                            <label>Condiciones que Aplica</label>
+                            <div class="checkbox-grid" id="conditionsGrid">
+                                <label class="checkbox-label"><input type="checkbox" value="blinded"><span>Cegado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="charmed"><span>Encantado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="deafened"><span>Ensordecido</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="frightened"><span>Asustado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="grappled"><span>Agarrado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="incapacitated"><span>Incapacitado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="invisible"><span>Invisible</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="paralyzed"><span>Paralizado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="petrified"><span>Petrificado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="poisoned"><span>Envenenado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="prone"><span>Derribado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="restrained"><span>Apresado</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="stunned"><span>Aturdido</span></label>
+                                <label class="checkbox-label"><input type="checkbox" value="unconscious"><span>Inconsciente</span></label>
+                            </div>
+                        </div>
+
+                        <!-- Ventajas/Desventajas -->
+                        <div class="editor-row">
+                            <div class="form-group flex-1">
+                                <label for="abilityAdvantages">Otorga Ventaja en</label>
+                                <input type="text" id="abilityAdvantages" placeholder="Ej: Ataques, Sigilo, Salvaciones de FUE">
+                            </div>
+                            <div class="form-group flex-1">
+                                <label for="abilityDisadvantages">Causa Desventaja en</label>
+                                <input type="text" id="abilityDisadvantages" placeholder="Ej: Ataques contra ti, Percepción">
+                            </div>
+                        </div>
+
+                        <!-- Resistencias/Inmunidades -->
+                        <div class="editor-row">
+                            <div class="form-group flex-1">
+                                <label for="abilityResistances">Otorga Resistencia a</label>
+                                <input type="text" id="abilityResistances" placeholder="Ej: Fuego, Frío, No mágico">
+                            </div>
+                            <div class="form-group flex-1">
+                                <label for="abilityImmunities">Otorga Inmunidad a</label>
+                                <input type="text" id="abilityImmunities" placeholder="Ej: Veneno, Encantado">
+                            </div>
+                        </div>
+
+                        <!-- Bonificadores Numéricos -->
+                        <div class="form-group">
+                            <label>Bonificadores</label>
+                            <div class="bonus-inputs">
+                                <div class="bonus-row">
+                                    <select class="bonus-type">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="ac">CA</option>
+                                        <option value="speed">Velocidad</option>
+                                        <option value="initiative">Iniciativa</option>
+                                        <option value="hp">PG</option>
+                                        <option value="attack">Ataque</option>
+                                        <option value="damage">Daño</option>
+                                        <option value="savingThrow">T. Salvación</option>
+                                    </select>
+                                    <input type="number" class="bonus-value" placeholder="+/-">
+                                    <button type="button" class="btn-add-bonus">+</button>
+                                </div>
+                            </div>
+                            <div id="bonusesList" class="bonuses-list"></div>
+                        </div>
+
+                        <!-- Efecto de texto libre -->
+                        <div class="form-group">
+                            <label for="abilityEffectText">Otros Efectos</label>
+                            <textarea id="abilityEffectText" rows="2" placeholder="Describe otros efectos no listados..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Escalado (colapsable) -->
+                <div class="editor-section collapsible">
+                    <h4 class="editor-section-title collapsible-header">
+                        Escalado por Nivel
+                        <span class="collapse-icon">+</span>
+                    </h4>
+                    <div class="collapsible-content" style="display: none;">
+                        <div class="editor-row">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="abilityHasScaling">
+                                    <span>Esta habilidad escala</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="scaling-fields" style="display: none;">
+                            <div class="editor-row">
+                                <div class="form-group flex-1">
+                                    <label for="abilityScalingType">Tipo de Escalado</label>
+                                    <select id="abilityScalingType">
+                                        <option value="cantrip">Por nivel de personaje (Truco)</option>
+                                        <option value="spellSlot">Por nivel de espacio usado</option>
+                                        <option value="level">Por nivel de clase</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="abilityScalingDesc">Descripción del Escalado</label>
+                                <textarea id="abilityScalingDesc" rows="2" placeholder="Ej: +1d6 de daño por nivel de espacio sobre el 1ro"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Notas -->
+                <div class="editor-section">
+                    <div class="form-group">
+                        <label for="abilityNotes">Notas del Jugador</label>
+                        <textarea id="abilityNotes" rows="2" placeholder="Notas personales sobre esta habilidad..."></textarea>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary ability-editor-close">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSaveAbility">Guardar Habilidad</button>
             </div>
         </div>
     </div>

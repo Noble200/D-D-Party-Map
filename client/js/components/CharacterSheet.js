@@ -4,7 +4,7 @@
 
 import { apiClient } from '../core/ApiClient.js';
 import { showNotification } from '../utils/helpers.js';
-import { DEFAULT_CHARACTER, SKILL_ABILITIES, SKILL_NAMES_ES } from '../config.js';
+import { DEFAULT_CHARACTER, SKILL_ABILITIES, SKILL_NAMES_ES, DEFAULT_CUSTOM_ABILITY, ABILITY_OPTIONS } from '../config.js';
 
 class CharacterSheet {
     constructor(app) {
@@ -34,6 +34,12 @@ class CharacterSheet {
         this.selectedSpells = [];
         // Espacios de conjuros usados
         this.usedSpellSlots = {};
+        // Habilidades personalizadas
+        this.customAbilities = [];
+        // Habilidad actualmente siendo editada (null para nueva)
+        this.editingAbilityId = null;
+        // Lista de bonificadores temporales para el formulario
+        this.tempBonuses = [];
     }
 
     // Cargar datos de razas desde el archivo JSON
@@ -1021,6 +1027,7 @@ class CharacterSheet {
                 cantripsKnown: [...this.selectedCantrips],
                 spellsKnown: [...this.selectedSpells],
                 spellSlots: { ...this.usedSpellSlots },
+                customAbilities: JSON.parse(JSON.stringify(this.customAbilities)),
                 notes: document.getElementById('spellsNotes')?.value || ''
             },
 
@@ -1184,8 +1191,12 @@ class CharacterSheet {
             this.selectedSpells = data.spellcasting.spellsKnown || [];
             this.usedSpellSlots = data.spellcasting.spellSlots || {};
 
-            // Actualizar UI de conjuros
+            // Cargar habilidades personalizadas
+            this.customAbilities = data.spellcasting.customAbilities || [];
+
+            // Actualizar UI de conjuros y habilidades
             this.updateSpellsSection();
+            this.renderCustomAbilities();
         }
 
         // Personalidad
@@ -1528,6 +1539,23 @@ class CharacterSheet {
 
         const traits = this.getAllCharacterTraits();
 
+        // Agregar habilidades personalizadas (que no son trucos ni conjuros)
+        const customFeatures = this.customAbilities.filter(a =>
+            !['cantrip', 'spell'].includes(a.category)
+        );
+
+        customFeatures.forEach(feature => {
+            const target = feature.type === 'passive' ? traits.passive : traits.active;
+            target.push({
+                name: feature.name,
+                description: feature.description,
+                source: feature.sourceDetail || 'Custom',
+                sourceType: 'custom',
+                isCustom: true,
+                id: feature.id
+            });
+        });
+
         // Construir HTML
         let html = '';
 
@@ -1557,16 +1585,36 @@ class CharacterSheet {
         }
 
         container.innerHTML = html;
+
+        // Agregar listeners para editar/eliminar traits custom
+        container.querySelectorAll('.btn-edit-trait').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.editAbility(e.target.dataset.id);
+            });
+        });
+
+        container.querySelectorAll('.btn-delete-trait').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.deleteAbility(e.target.dataset.id);
+            });
+        });
     }
 
     renderTraitItem(trait, type) {
         const sourceIcon = this.getSourceIcon(trait.sourceType);
+        const customClass = trait.isCustom ? 'custom-trait' : '';
+        const editButtons = trait.isCustom ? `
+            <button type="button" class="btn-edit-trait" data-id="${trait.id}" title="Editar">&#9998;</button>
+            <button type="button" class="btn-delete-trait" data-id="${trait.id}" title="Eliminar">&times;</button>
+        ` : '';
+
         return `
-            <div class="trait-item trait-${type}" data-source-type="${trait.sourceType}">
+            <div class="trait-item trait-${type} ${customClass}" data-source-type="${trait.sourceType}" ${trait.id ? `data-id="${trait.id}"` : ''}>
                 <div class="trait-header">
                     <span class="trait-icon">${sourceIcon}</span>
                     <span class="trait-name">${trait.name}</span>
                     <span class="trait-source">(${trait.source})</span>
+                    ${editButtons}
                 </div>
                 <p class="trait-description">${trait.description}</p>
             </div>
@@ -1582,6 +1630,8 @@ class CharacterSheet {
                 return '&#9733;'; // Estrella
             case 'background':
                 return '&#9829;'; // Corazón
+            case 'custom':
+                return '&#9998;'; // Lápiz (editable)
             default:
                 return '&#9679;'; // Círculo
         }
@@ -1592,20 +1642,29 @@ class CharacterSheet {
     // ==========================================
 
     initSpellsTabListeners() {
-        // Botón agregar truco
+        // Botón agregar truco - ahora abre el editor de habilidades
         const addCantripBtn = document.getElementById('btnAddCantrip');
         if (addCantripBtn) {
-            addCantripBtn.addEventListener('click', () => this.openSpellSelector(0));
+            addCantripBtn.addEventListener('click', () => this.openAbilityEditor('cantrip'));
         }
 
-        // Botón agregar conjuro
+        // Botón agregar conjuro - ahora abre el editor de habilidades
         const addSpellBtn = document.getElementById('btnAddSpell');
         if (addSpellBtn) {
-            addSpellBtn.addEventListener('click', () => this.openSpellSelector(null));
+            addSpellBtn.addEventListener('click', () => this.openAbilityEditor('spell'));
         }
 
-        // Listeners del modal de selección
+        // Botón agregar habilidad/rasgo
+        const addAbilityBtn = document.getElementById('btnAddAbility');
+        if (addAbilityBtn) {
+            addAbilityBtn.addEventListener('click', () => this.openAbilityEditor('ability'));
+        }
+
+        // Listeners del modal de selección (para cuando se implemente el buscador)
         this.initSpellSelectorListeners();
+
+        // Listeners del editor de habilidades
+        this.initAbilityEditorListeners();
     }
 
     initSpellSelectorListeners() {
@@ -2117,6 +2176,951 @@ class CharacterSheet {
             this.updateSpellsCounter();
             this.renderSelectedSpells();
         }
+    }
+
+    // ==========================================
+    // Editor de Habilidades Personalizadas
+    // ==========================================
+
+    initAbilityEditorListeners() {
+        const modal = document.getElementById('abilityEditorModal');
+        if (!modal) return;
+
+        // Cerrar modal
+        const closeBtns = modal.querySelectorAll('.ability-editor-close');
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => this.closeAbilityEditor());
+        });
+
+        // Cerrar al hacer click fuera
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) this.closeAbilityEditor();
+        });
+
+        // Guardar habilidad
+        const saveBtn = document.getElementById('btnSaveAbility');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => this.saveAbility());
+        }
+
+        // Cambio de tipo (activa/pasiva)
+        const typeSelect = document.getElementById('abilityType');
+        if (typeSelect) {
+            typeSelect.addEventListener('change', () => this.onAbilityTypeChange());
+        }
+
+        // Cambio de categoría
+        const categorySelect = document.getElementById('abilityCategory');
+        if (categorySelect) {
+            categorySelect.addEventListener('change', () => this.onAbilityCategoryChange());
+        }
+
+        // Cambio de tipo de acción (mostrar trigger de reacción)
+        const actionTypeSelect = document.getElementById('abilityActionType');
+        if (actionTypeSelect) {
+            actionTypeSelect.addEventListener('change', () => {
+                const reactionGroup = document.getElementById('reactionTriggerGroup');
+                if (reactionGroup) {
+                    reactionGroup.style.display = actionTypeSelect.value === 'reaction' ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Toggle área de efecto
+        const hasAreaCheckbox = document.getElementById('abilityHasArea');
+        if (hasAreaCheckbox) {
+            hasAreaCheckbox.addEventListener('change', () => {
+                const areaFields = modal.querySelector('.area-fields');
+                if (areaFields) {
+                    areaFields.style.display = hasAreaCheckbox.checked ? 'flex' : 'none';
+                }
+            });
+        }
+
+        // Toggle componente material
+        const compMCheckbox = document.getElementById('abilityCompM');
+        if (compMCheckbox) {
+            compMCheckbox.addEventListener('change', () => {
+                const materialDesc = modal.querySelector('.material-desc');
+                if (materialDesc) {
+                    materialDesc.style.display = compMCheckbox.checked ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Toggle uso ilimitado
+        const unlimitedCheckbox = document.getElementById('abilityUnlimited');
+        if (unlimitedCheckbox) {
+            unlimitedCheckbox.addEventListener('change', () => {
+                const usesFields = modal.querySelector('.uses-fields');
+                if (usesFields) {
+                    usesFields.style.display = unlimitedCheckbox.checked ? 'none' : 'flex';
+                }
+            });
+        }
+
+        // Cambio de tipo de recarga
+        const rechargeSelect = document.getElementById('abilityRecharge');
+        if (rechargeSelect) {
+            rechargeSelect.addEventListener('change', () => {
+                const rechargeSpecial = modal.querySelector('.recharge-special');
+                if (rechargeSpecial) {
+                    rechargeSpecial.style.display = rechargeSelect.value === 'special' ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Toggles de combate
+        this.initCombatToggles(modal);
+
+        // Secciones colapsables
+        this.initCollapsibleSections(modal);
+
+        // Bonificadores dinámicos
+        this.initBonusInputs(modal);
+
+        // Toggle escalado
+        const hasScalingCheckbox = document.getElementById('abilityHasScaling');
+        if (hasScalingCheckbox) {
+            hasScalingCheckbox.addEventListener('change', () => {
+                const scalingFields = modal.querySelector('.scaling-fields');
+                if (scalingFields) {
+                    scalingFields.style.display = hasScalingCheckbox.checked ? 'block' : 'none';
+                }
+            });
+        }
+    }
+
+    initCombatToggles(modal) {
+        // Toggle ataque
+        const hasAttackCheckbox = document.getElementById('abilityHasAttack');
+        if (hasAttackCheckbox) {
+            hasAttackCheckbox.addEventListener('change', () => {
+                const attackFields = modal.querySelector('.attack-fields');
+                if (attackFields) {
+                    attackFields.style.display = hasAttackCheckbox.checked ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Toggle daño
+        const hasDamageCheckbox = document.getElementById('abilityHasDamage');
+        if (hasDamageCheckbox) {
+            hasDamageCheckbox.addEventListener('change', () => {
+                const damageFields = modal.querySelector('.damage-fields');
+                if (damageFields) {
+                    damageFields.style.display = hasDamageCheckbox.checked ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Toggle curación
+        const hasHealingCheckbox = document.getElementById('abilityHasHealing');
+        if (hasHealingCheckbox) {
+            hasHealingCheckbox.addEventListener('change', () => {
+                const healingFields = modal.querySelector('.healing-fields');
+                if (healingFields) {
+                    healingFields.style.display = hasHealingCheckbox.checked ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Toggle salvación
+        const hasSaveCheckbox = document.getElementById('abilityHasSave');
+        if (hasSaveCheckbox) {
+            hasSaveCheckbox.addEventListener('change', () => {
+                const saveFields = modal.querySelector('.save-fields');
+                if (saveFields) {
+                    saveFields.style.display = hasSaveCheckbox.checked ? 'block' : 'none';
+                }
+            });
+        }
+    }
+
+    initCollapsibleSections(modal) {
+        const collapsibles = modal.querySelectorAll('.collapsible');
+        collapsibles.forEach(section => {
+            const header = section.querySelector('.collapsible-header');
+            const content = section.querySelector('.collapsible-content');
+            if (header && content) {
+                header.addEventListener('click', () => {
+                    section.classList.toggle('open');
+                    content.style.display = section.classList.contains('open') ? 'block' : 'none';
+                });
+            }
+        });
+    }
+
+    initBonusInputs(modal) {
+        const addBonusBtn = modal.querySelector('.btn-add-bonus');
+        if (addBonusBtn) {
+            addBonusBtn.addEventListener('click', () => this.addBonusToList());
+        }
+    }
+
+    addBonusToList() {
+        const typeSelect = document.querySelector('.bonus-row .bonus-type');
+        const valueInput = document.querySelector('.bonus-row .bonus-value');
+
+        if (!typeSelect || !valueInput) return;
+
+        const type = typeSelect.value;
+        const value = parseInt(valueInput.value) || 0;
+
+        if (!type || value === 0) return;
+
+        this.tempBonuses.push({ type, value });
+        this.renderBonusesList();
+
+        // Limpiar inputs
+        typeSelect.value = '';
+        valueInput.value = '';
+    }
+
+    renderBonusesList() {
+        const container = document.getElementById('bonusesList');
+        if (!container) return;
+
+        const bonusNames = {
+            ac: 'CA',
+            speed: 'Velocidad',
+            initiative: 'Iniciativa',
+            hp: 'PG',
+            attack: 'Ataque',
+            damage: 'Daño',
+            savingThrow: 'T. Salvación'
+        };
+
+        container.innerHTML = this.tempBonuses.map((bonus, index) => `
+            <span class="bonus-tag">
+                ${bonusNames[bonus.type] || bonus.type}: ${bonus.value > 0 ? '+' : ''}${bonus.value}
+                <span class="remove-bonus" data-index="${index}">&times;</span>
+            </span>
+        `).join('');
+
+        // Listeners para eliminar
+        container.querySelectorAll('.remove-bonus').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                this.tempBonuses.splice(index, 1);
+                this.renderBonusesList();
+            });
+        });
+    }
+
+    onAbilityTypeChange() {
+        const typeSelect = document.getElementById('abilityType');
+        const actionSection = document.getElementById('sectionAction');
+
+        if (typeSelect && actionSection) {
+            // Si es pasiva, ocultar sección de acción o poner en "none"
+            if (typeSelect.value === 'passive') {
+                const actionTypeSelect = document.getElementById('abilityActionType');
+                if (actionTypeSelect) {
+                    actionTypeSelect.value = 'none';
+                }
+            }
+        }
+    }
+
+    onAbilityCategoryChange() {
+        const categorySelect = document.getElementById('abilityCategory');
+        const spellSection = document.getElementById('sectionSpell');
+
+        if (categorySelect && spellSection) {
+            const isSpellType = ['cantrip', 'spell'].includes(categorySelect.value);
+            spellSection.style.display = isSpellType ? 'block' : 'none';
+
+            // Si es truco, poner nivel 0
+            if (categorySelect.value === 'cantrip') {
+                const levelSelect = document.getElementById('abilitySpellLevel');
+                if (levelSelect) levelSelect.value = '0';
+            }
+        }
+    }
+
+    openAbilityEditor(presetCategory = null) {
+        const modal = document.getElementById('abilityEditorModal');
+        if (!modal) return;
+
+        // Resetear formulario
+        this.resetAbilityForm();
+        this.editingAbilityId = null;
+        this.tempBonuses = [];
+        this.renderBonusesList();
+
+        // Establecer título
+        const title = document.getElementById('abilityEditorTitle');
+        if (title) {
+            title.textContent = 'Nueva Habilidad';
+        }
+
+        // Pre-configurar categoría si se especifica
+        if (presetCategory) {
+            const categorySelect = document.getElementById('abilityCategory');
+            if (categorySelect) {
+                categorySelect.value = presetCategory;
+                this.onAbilityCategoryChange();
+            }
+
+            // Si es truco, configurar nivel 0
+            if (presetCategory === 'cantrip') {
+                const levelSelect = document.getElementById('abilitySpellLevel');
+                if (levelSelect) levelSelect.value = '0';
+            }
+        }
+
+        modal.classList.add('active');
+    }
+
+    closeAbilityEditor() {
+        const modal = document.getElementById('abilityEditorModal');
+        if (modal) {
+            modal.classList.remove('active');
+        }
+        this.editingAbilityId = null;
+        this.tempBonuses = [];
+    }
+
+    resetAbilityForm() {
+        const form = document.getElementById('abilityEditorForm');
+        if (form) {
+            form.reset();
+        }
+
+        // Ocultar campos condicionales
+        const conditionalFields = [
+            '.area-fields', '.spell-fields', '.material-desc', '.uses-fields',
+            '.recharge-special', '.attack-fields', '.damage-fields',
+            '.healing-fields', '.save-fields', '.scaling-fields'
+        ];
+
+        conditionalFields.forEach(selector => {
+            const el = document.querySelector(selector);
+            if (el) el.style.display = 'none';
+        });
+
+        // Cerrar secciones colapsables
+        document.querySelectorAll('.collapsible').forEach(section => {
+            section.classList.remove('open');
+            const content = section.querySelector('.collapsible-content');
+            if (content) content.style.display = 'none';
+        });
+
+        // Reset checkboxes de condiciones
+        document.querySelectorAll('#conditionsGrid input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+        });
+
+        // Marcar uso ilimitado por defecto
+        const unlimitedCheckbox = document.getElementById('abilityUnlimited');
+        if (unlimitedCheckbox) {
+            unlimitedCheckbox.checked = true;
+        }
+    }
+
+    collectAbilityFormData() {
+        const generateId = () => `ability_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+
+        // Recoger condiciones seleccionadas
+        const conditions = [];
+        document.querySelectorAll('#conditionsGrid input[type="checkbox"]:checked').forEach(cb => {
+            conditions.push(cb.value);
+        });
+
+        // Crear objeto de habilidad
+        const ability = {
+            id: this.editingAbilityId || generateId(),
+            name: document.getElementById('abilityName')?.value || '',
+            source: document.getElementById('abilitySource')?.value || 'custom',
+            sourceDetail: document.getElementById('abilitySourceDetail')?.value || '',
+            type: document.getElementById('abilityType')?.value || 'active',
+            category: document.getElementById('abilityCategory')?.value || 'ability',
+            level: parseInt(document.getElementById('abilitySpellLevel')?.value) || 0,
+            school: document.getElementById('abilitySchool')?.value || '',
+            description: document.getElementById('abilityDescription')?.value || '',
+            actionType: document.getElementById('abilityActionType')?.value || 'action',
+            actionCost: document.getElementById('abilityActionCost')?.value || '',
+            reactionTrigger: document.getElementById('abilityReactionTrigger')?.value || '',
+            range: document.getElementById('abilityRange')?.value || '',
+            duration: document.getElementById('abilityDuration')?.value || '',
+            concentration: document.getElementById('abilityConcentration')?.checked || false,
+
+            // Área
+            area: document.getElementById('abilityHasArea')?.checked ? {
+                type: document.getElementById('abilityAreaType')?.value || 'sphere',
+                size: parseInt(document.getElementById('abilityAreaSize')?.value) || 0
+            } : null,
+
+            // Componentes
+            components: {
+                verbal: document.getElementById('abilityCompV')?.checked || false,
+                somatic: document.getElementById('abilityCompS')?.checked || false,
+                material: document.getElementById('abilityCompM')?.checked || false,
+                materialDescription: document.getElementById('abilityMaterialDesc')?.value || ''
+            },
+
+            // Usos
+            uses: {
+                unlimited: document.getElementById('abilityUnlimited')?.checked || false,
+                max: parseInt(document.getElementById('abilityUsesMax')?.value) || 0,
+                current: parseInt(document.getElementById('abilityUsesMax')?.value) || 0,
+                recharge: document.getElementById('abilityRecharge')?.value || 'none',
+                rechargeDescription: document.getElementById('abilityRechargeDesc')?.value || ''
+            },
+
+            // Ataque
+            attack: document.getElementById('abilityHasAttack')?.checked ? {
+                type: document.getElementById('abilityAttackType')?.value || 'melee',
+                ability: document.getElementById('abilityAttackAbility')?.value || 'strength',
+                bonus: parseInt(document.getElementById('abilityAttackBonus')?.value) || 0
+            } : null,
+
+            // Daño
+            damage: document.getElementById('abilityHasDamage')?.checked ? {
+                dice: document.getElementById('abilityDamageDice')?.value || '',
+                type: document.getElementById('abilityDamageType')?.value || '',
+                ability: document.getElementById('abilityDamageAbility')?.value || null,
+                addModifier: !!document.getElementById('abilityDamageAbility')?.value,
+                bonus: parseInt(document.getElementById('abilityDamageBonus')?.value) || 0
+            } : null,
+
+            // Curación
+            healing: document.getElementById('abilityHasHealing')?.checked ? {
+                dice: document.getElementById('abilityHealingDice')?.value || '',
+                ability: document.getElementById('abilityHealingAbility')?.value || null,
+                addModifier: !!document.getElementById('abilityHealingAbility')?.value,
+                bonus: parseInt(document.getElementById('abilityHealingBonus')?.value) || 0
+            } : null,
+
+            // Tirada de salvación
+            save: document.getElementById('abilityHasSave')?.checked ? {
+                ability: document.getElementById('abilitySaveAbility')?.value || 'dexterity',
+                dc: parseInt(document.getElementById('abilitySaveDC')?.value) || null,
+                effect: document.getElementById('abilitySaveEffect')?.value || 'half'
+            } : null,
+
+            // Efectos
+            effects: {
+                conditions: conditions,
+                advantages: document.getElementById('abilityAdvantages')?.value || '',
+                disadvantages: document.getElementById('abilityDisadvantages')?.value || '',
+                resistances: document.getElementById('abilityResistances')?.value || '',
+                immunities: document.getElementById('abilityImmunities')?.value || '',
+                bonuses: [...this.tempBonuses],
+                other: document.getElementById('abilityEffectText')?.value || ''
+            },
+
+            // Escalado
+            scaling: document.getElementById('abilityHasScaling')?.checked ? {
+                type: document.getElementById('abilityScalingType')?.value || 'cantrip',
+                description: document.getElementById('abilityScalingDesc')?.value || ''
+            } : null,
+
+            // Metadatos
+            notes: document.getElementById('abilityNotes')?.value || '',
+            prepared: true,
+            favorite: false
+        };
+
+        return ability;
+    }
+
+    saveAbility() {
+        const ability = this.collectAbilityFormData();
+
+        // Validación básica
+        if (!ability.name.trim()) {
+            showNotification('El nombre de la habilidad es requerido', 'error');
+            return;
+        }
+
+        // Buscar si existe para actualizar
+        const existingIndex = this.customAbilities.findIndex(a => a.id === ability.id);
+
+        if (existingIndex >= 0) {
+            // Actualizar existente
+            this.customAbilities[existingIndex] = ability;
+        } else {
+            // Agregar nueva
+            this.customAbilities.push(ability);
+        }
+
+        // Actualizar la UI según la categoría
+        this.renderCustomAbilities();
+        this.updateCantripsCounter();
+        this.updateSpellsCounter();
+
+        // Cerrar modal
+        this.closeAbilityEditor();
+
+        showNotification(`Habilidad "${ability.name}" guardada`, 'success');
+    }
+
+    editAbility(abilityId) {
+        const ability = this.customAbilities.find(a => a.id === abilityId);
+        if (!ability) return;
+
+        this.editingAbilityId = abilityId;
+        this.tempBonuses = ability.effects?.bonuses ? [...ability.effects.bonuses] : [];
+
+        // Abrir modal
+        const modal = document.getElementById('abilityEditorModal');
+        if (!modal) return;
+
+        // Resetear y luego poblar
+        this.resetAbilityForm();
+
+        // Título
+        const title = document.getElementById('abilityEditorTitle');
+        if (title) title.textContent = 'Editar Habilidad';
+
+        // Poblar campos básicos
+        this.setFieldValue('abilityName', ability.name);
+        this.setFieldValue('abilityType', ability.type);
+        this.setFieldValue('abilityCategory', ability.category);
+        this.setFieldValue('abilitySource', ability.source);
+        this.setFieldValue('abilitySourceDetail', ability.sourceDetail);
+        this.setFieldValue('abilityDescription', ability.description);
+
+        // Acción
+        this.setFieldValue('abilityActionType', ability.actionType);
+        this.setFieldValue('abilityActionCost', ability.actionCost);
+        this.setFieldValue('abilityReactionTrigger', ability.reactionTrigger);
+        if (ability.actionType === 'reaction') {
+            const reactionGroup = document.getElementById('reactionTriggerGroup');
+            if (reactionGroup) reactionGroup.style.display = 'block';
+        }
+
+        // Alcance y duración
+        this.setFieldValue('abilityRange', ability.range);
+        this.setFieldValue('abilityDuration', ability.duration);
+        this.setCheckbox('abilityConcentration', ability.concentration);
+
+        // Área
+        if (ability.area) {
+            this.setCheckbox('abilityHasArea', true);
+            document.querySelector('.area-fields').style.display = 'flex';
+            this.setFieldValue('abilityAreaType', ability.area.type);
+            this.setFieldValue('abilityAreaSize', ability.area.size);
+        }
+
+        // Conjuro
+        this.onAbilityCategoryChange();
+        this.setFieldValue('abilitySpellLevel', ability.level);
+        this.setFieldValue('abilitySchool', ability.school);
+
+        // Componentes
+        if (ability.components) {
+            this.setCheckbox('abilityCompV', ability.components.verbal);
+            this.setCheckbox('abilityCompS', ability.components.somatic);
+            this.setCheckbox('abilityCompM', ability.components.material);
+            if (ability.components.material) {
+                document.querySelector('.material-desc').style.display = 'block';
+                this.setFieldValue('abilityMaterialDesc', ability.components.materialDescription);
+            }
+        }
+
+        // Usos
+        this.setCheckbox('abilityUnlimited', ability.uses?.unlimited);
+        if (!ability.uses?.unlimited) {
+            document.querySelector('.uses-fields').style.display = 'flex';
+            this.setFieldValue('abilityUsesMax', ability.uses?.max);
+            this.setFieldValue('abilityRecharge', ability.uses?.recharge);
+            if (ability.uses?.recharge === 'special') {
+                document.querySelector('.recharge-special').style.display = 'block';
+                this.setFieldValue('abilityRechargeDesc', ability.uses?.rechargeDescription);
+            }
+        }
+
+        // Ataque
+        if (ability.attack) {
+            this.setCheckbox('abilityHasAttack', true);
+            document.querySelector('.attack-fields').style.display = 'block';
+            this.setFieldValue('abilityAttackType', ability.attack.type);
+            this.setFieldValue('abilityAttackAbility', ability.attack.ability);
+            this.setFieldValue('abilityAttackBonus', ability.attack.bonus);
+        }
+
+        // Daño
+        if (ability.damage) {
+            this.setCheckbox('abilityHasDamage', true);
+            document.querySelector('.damage-fields').style.display = 'block';
+            this.setFieldValue('abilityDamageDice', ability.damage.dice);
+            this.setFieldValue('abilityDamageType', ability.damage.type);
+            this.setFieldValue('abilityDamageAbility', ability.damage.ability || '');
+            this.setFieldValue('abilityDamageBonus', ability.damage.bonus);
+        }
+
+        // Curación
+        if (ability.healing) {
+            this.setCheckbox('abilityHasHealing', true);
+            document.querySelector('.healing-fields').style.display = 'block';
+            this.setFieldValue('abilityHealingDice', ability.healing.dice);
+            this.setFieldValue('abilityHealingAbility', ability.healing.ability || '');
+            this.setFieldValue('abilityHealingBonus', ability.healing.bonus);
+        }
+
+        // Salvación
+        if (ability.save) {
+            this.setCheckbox('abilityHasSave', true);
+            document.querySelector('.save-fields').style.display = 'block';
+            this.setFieldValue('abilitySaveAbility', ability.save.ability);
+            this.setFieldValue('abilitySaveDC', ability.save.dc || '');
+            this.setFieldValue('abilitySaveEffect', ability.save.effect);
+        }
+
+        // Efectos
+        if (ability.effects) {
+            // Condiciones
+            if (ability.effects.conditions) {
+                ability.effects.conditions.forEach(cond => {
+                    const cb = document.querySelector(`#conditionsGrid input[value="${cond}"]`);
+                    if (cb) cb.checked = true;
+                });
+            }
+            this.setFieldValue('abilityAdvantages', ability.effects.advantages);
+            this.setFieldValue('abilityDisadvantages', ability.effects.disadvantages);
+            this.setFieldValue('abilityResistances', ability.effects.resistances);
+            this.setFieldValue('abilityImmunities', ability.effects.immunities);
+            this.setFieldValue('abilityEffectText', ability.effects.other);
+        }
+
+        // Escalado
+        if (ability.scaling) {
+            this.setCheckbox('abilityHasScaling', true);
+            document.querySelector('.scaling-fields').style.display = 'block';
+            this.setFieldValue('abilityScalingType', ability.scaling.type);
+            this.setFieldValue('abilityScalingDesc', ability.scaling.description);
+        }
+
+        // Notas
+        this.setFieldValue('abilityNotes', ability.notes);
+
+        // Bonuses
+        this.renderBonusesList();
+
+        modal.classList.add('active');
+    }
+
+    setFieldValue(fieldId, value) {
+        const field = document.getElementById(fieldId);
+        if (field && value !== undefined && value !== null) {
+            field.value = value;
+        }
+    }
+
+    setCheckbox(fieldId, checked) {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.checked = !!checked;
+        }
+    }
+
+    deleteAbility(abilityId) {
+        const index = this.customAbilities.findIndex(a => a.id === abilityId);
+        if (index >= 0) {
+            const ability = this.customAbilities[index];
+            this.customAbilities.splice(index, 1);
+            this.renderCustomAbilities();
+            this.updateCantripsCounter();
+            this.updateSpellsCounter();
+            showNotification(`Habilidad "${ability.name}" eliminada`, 'info');
+        }
+    }
+
+    renderCustomAbilities() {
+        // Renderizar trucos custom
+        const customCantrips = this.customAbilities.filter(a => a.category === 'cantrip');
+        this.renderCustomCantrips(customCantrips);
+
+        // Renderizar conjuros custom
+        const customSpells = this.customAbilities.filter(a => a.category === 'spell');
+        this.renderCustomSpells(customSpells);
+
+        // Renderizar habilidades/rasgos custom en la sección de habilidades
+        const customFeatures = this.customAbilities.filter(a =>
+            !['cantrip', 'spell'].includes(a.category)
+        );
+        this.renderCustomFeatures(customFeatures);
+    }
+
+    renderCustomCantrips(cantrips) {
+        const container = document.getElementById('cantripsList');
+        if (!container) return;
+
+        // Combinar trucos del selector con trucos custom
+        let html = '';
+
+        // Trucos del selector de conjuros (si los hay)
+        this.selectedCantrips.forEach((cantrip, index) => {
+            const spellData = this.getSpellByKey(cantrip.key, 0);
+            if (spellData) {
+                html += `
+                    <div class="spell-item cantrip-item">
+                        <span class="spell-name">${spellData.name}</span>
+                        <span class="spell-school">${spellData.school || ''}</span>
+                        <button type="button" class="btn-remove-spell" data-type="selected" data-index="${index}">&times;</button>
+                    </div>
+                `;
+            }
+        });
+
+        // Trucos custom
+        cantrips.forEach(cantrip => {
+            html += `
+                <div class="spell-item cantrip-item custom-ability" data-id="${cantrip.id}">
+                    <span class="spell-name">${cantrip.name}</span>
+                    <span class="spell-school">${cantrip.school || 'Custom'}</span>
+                    <div class="ability-actions">
+                        <button type="button" class="btn-edit-ability" data-id="${cantrip.id}" title="Editar">✎</button>
+                        <button type="button" class="btn-remove-spell" data-type="custom" data-id="${cantrip.id}">&times;</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        if (!html) {
+            html = '<p class="empty-list">No hay trucos seleccionados.</p>';
+        }
+
+        container.innerHTML = html;
+
+        // Listeners para eliminar trucos seleccionados
+        container.querySelectorAll('.btn-remove-spell[data-type="selected"]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                this.removeCantrip(index);
+            });
+        });
+
+        // Listeners para trucos custom
+        container.querySelectorAll('.btn-edit-ability').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.editAbility(e.target.dataset.id);
+            });
+        });
+
+        container.querySelectorAll('.btn-remove-spell[data-type="custom"]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.deleteAbility(e.target.dataset.id);
+            });
+        });
+    }
+
+    renderCustomSpells(spells) {
+        const container = document.getElementById('spellsList');
+        if (!container) return;
+
+        // Agrupar por nivel
+        const spellsByLevel = {};
+
+        // Conjuros del selector
+        this.selectedSpells.forEach((spell, index) => {
+            const level = spell.level || 1;
+            if (!spellsByLevel[level]) spellsByLevel[level] = [];
+            spellsByLevel[level].push({
+                type: 'selected',
+                index,
+                data: spell,
+                spellData: this.getSpellByKey(spell.key, level)
+            });
+        });
+
+        // Conjuros custom
+        spells.forEach(spell => {
+            const level = spell.level || 1;
+            if (!spellsByLevel[level]) spellsByLevel[level] = [];
+            spellsByLevel[level].push({
+                type: 'custom',
+                data: spell
+            });
+        });
+
+        let html = '';
+
+        // Renderizar por nivel
+        const sortedLevels = Object.keys(spellsByLevel).sort((a, b) => parseInt(a) - parseInt(b));
+
+        for (const level of sortedLevels) {
+            html += `<div class="spell-level-group"><h6>Nivel ${level}</h6>`;
+
+            spellsByLevel[level].forEach(item => {
+                if (item.type === 'selected' && item.spellData) {
+                    html += `
+                        <div class="spell-item">
+                            <label class="spell-prepared">
+                                <input type="checkbox" ${item.data.prepared ? 'checked' : ''}
+                                    data-type="selected" data-index="${item.index}">
+                            </label>
+                            <span class="spell-name">${item.spellData.name}</span>
+                            <span class="spell-school">${item.spellData.school || ''}</span>
+                            <button type="button" class="btn-remove-spell" data-type="selected" data-index="${item.index}">&times;</button>
+                        </div>
+                    `;
+                } else if (item.type === 'custom') {
+                    html += `
+                        <div class="spell-item custom-ability" data-id="${item.data.id}">
+                            <label class="spell-prepared">
+                                <input type="checkbox" ${item.data.prepared ? 'checked' : ''}
+                                    data-type="custom" data-id="${item.data.id}">
+                            </label>
+                            <span class="spell-name">${item.data.name}</span>
+                            <span class="spell-school">${item.data.school || 'Custom'}</span>
+                            <div class="ability-actions">
+                                <button type="button" class="btn-edit-ability" data-id="${item.data.id}" title="Editar">✎</button>
+                                <button type="button" class="btn-remove-spell" data-type="custom" data-id="${item.data.id}">&times;</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            html += '</div>';
+        }
+
+        if (!html) {
+            html = '<p class="empty-list">No hay conjuros seleccionados.</p>';
+        }
+
+        container.innerHTML = html;
+
+        // Listeners
+        container.querySelectorAll('.spell-prepared input[data-type="selected"]').forEach(cb => {
+            cb.addEventListener('change', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                this.toggleSpellPrepared(index, e.target.checked);
+            });
+        });
+
+        container.querySelectorAll('.spell-prepared input[data-type="custom"]').forEach(cb => {
+            cb.addEventListener('change', (e) => {
+                const id = e.target.dataset.id;
+                const ability = this.customAbilities.find(a => a.id === id);
+                if (ability) ability.prepared = e.target.checked;
+            });
+        });
+
+        container.querySelectorAll('.btn-remove-spell[data-type="selected"]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                this.removeSpell(index);
+            });
+        });
+
+        container.querySelectorAll('.btn-edit-ability').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.editAbility(e.target.dataset.id);
+            });
+        });
+
+        container.querySelectorAll('.btn-remove-spell[data-type="custom"]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.deleteAbility(e.target.dataset.id);
+            });
+        });
+    }
+
+    renderCustomFeatures(features) {
+        // Agregar features custom a la sección de habilidades junto con los automáticos
+        const container = document.getElementById('abilitiesContainer');
+        if (!container) return;
+
+        // Obtener los rasgos automáticos existentes
+        const traits = this.getAllCharacterTraits();
+
+        // Agregar custom features a las categorías
+        features.forEach(feature => {
+            const target = feature.type === 'passive' ? traits.passive : traits.active;
+            target.push({
+                name: feature.name,
+                description: feature.description,
+                source: feature.sourceDetail || 'Custom',
+                isCustom: true,
+                id: feature.id
+            });
+        });
+
+        // Re-renderizar la sección
+        this.renderTraitsToContainer(container, traits);
+    }
+
+    renderTraitsToContainer(container, traits) {
+        let html = '';
+
+        // Pasivas
+        if (traits.passive.length > 0) {
+            html += '<div class="traits-group passive-traits"><h6 class="traits-group-title">Pasivas</h6>';
+            traits.passive.forEach(trait => {
+                const customClass = trait.isCustom ? 'custom-trait' : '';
+                const editBtn = trait.isCustom ?
+                    `<button type="button" class="btn-edit-trait" data-id="${trait.id}" title="Editar">✎</button>
+                     <button type="button" class="btn-delete-trait" data-id="${trait.id}" title="Eliminar">&times;</button>` : '';
+                html += `
+                    <div class="trait-item trait-passive ${customClass}" ${trait.id ? `data-id="${trait.id}"` : ''}>
+                        <div class="trait-header">
+                            <span class="trait-name">${trait.name}</span>
+                            <span class="trait-source">(${trait.source})</span>
+                            ${editBtn}
+                        </div>
+                        <p class="trait-description">${trait.description}</p>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Activas
+        if (traits.active.length > 0) {
+            html += '<div class="traits-group active-traits"><h6 class="traits-group-title">Activas</h6>';
+            traits.active.forEach(trait => {
+                const customClass = trait.isCustom ? 'custom-trait' : '';
+                const editBtn = trait.isCustom ?
+                    `<button type="button" class="btn-edit-trait" data-id="${trait.id}" title="Editar">✎</button>
+                     <button type="button" class="btn-delete-trait" data-id="${trait.id}" title="Eliminar">&times;</button>` : '';
+                html += `
+                    <div class="trait-item trait-active ${customClass}" ${trait.id ? `data-id="${trait.id}"` : ''}>
+                        <div class="trait-header">
+                            <span class="trait-name">${trait.name}</span>
+                            <span class="trait-source">(${trait.source})</span>
+                            ${editBtn}
+                        </div>
+                        <p class="trait-description">${trait.description}</p>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        if (!html) {
+            html = '<p class="no-traits">Selecciona una raza, clase y trasfondo para ver tus habilidades.</p>';
+        }
+
+        container.innerHTML = html;
+
+        // Listeners para editar/eliminar traits custom
+        container.querySelectorAll('.btn-edit-trait').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.editAbility(e.target.dataset.id);
+            });
+        });
+
+        container.querySelectorAll('.btn-delete-trait').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.deleteAbility(e.target.dataset.id);
+            });
+        });
+    }
+
+    getSpellByKey(key, level) {
+        if (!this.spellsData) return null;
+
+        if (level === 0) {
+            return this.spellsData.cantrips?.[key] || null;
+        }
+
+        const levelKey = `level${level}`;
+        return this.spellsData[levelKey]?.[key] || null;
     }
 }
 

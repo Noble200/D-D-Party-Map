@@ -107,6 +107,7 @@ export const DEFAULT_CHARACTER = {
         spellSlots: {           // Espacios usados por nivel
             1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0
         },
+        customAbilities: [],    // Array de habilidades personalizadas (ver DEFAULT_CUSTOM_ABILITY)
         notes: ''
     },
 
@@ -119,6 +120,173 @@ export const DEFAULT_CHARACTER = {
 
     features: '',
     equipment: ''
+};
+
+// ==========================================
+// Estructura de Habilidad Personalizada
+// ==========================================
+// Esta estructura define todos los campos posibles para una habilidad,
+// conjuro, rasgo o capacidad que el jugador puede crear o modificar.
+export const DEFAULT_CUSTOM_ABILITY = {
+    // Identificación
+    id: '',                     // ID único generado (timestamp + random)
+    name: '',                   // Nombre de la habilidad
+    nameEn: '',                 // Nombre en inglés (opcional)
+    source: 'custom',           // 'race', 'class', 'background', 'feat', 'item', 'custom'
+    sourceDetail: '',           // Detalle: "Elfo", "Mago Nv3", "Acólito", etc.
+
+    // Clasificación
+    type: 'active',             // 'passive' o 'active'
+    category: 'ability',        // 'cantrip', 'spell', 'ability', 'feature', 'attack'
+    level: 0,                   // Nivel del conjuro (0 = truco, 1-9 para conjuros)
+    school: '',                 // Escuela de magia: 'abjuración', 'conjuración', 'adivinación',
+                                // 'encantamiento', 'evocación', 'ilusión', 'nigromancia', 'transmutación'
+
+    // Descripción
+    description: '',            // Descripción completa de la habilidad
+    shortDescription: '',       // Descripción corta para mostrar en listas
+
+    // Acción
+    actionType: 'action',       // 'action', 'bonusAction', 'reaction', 'free', 'special', 'none'
+    actionCost: '1 acción',     // Texto descriptivo: "1 acción", "1 acción adicional", etc.
+    reactionTrigger: '',        // Si es reacción, cuál es el disparador
+
+    // Alcance y Área
+    range: '',                  // 'Personal', 'Toque', '30 pies', '60 pies', etc.
+    rangeValue: 0,              // Valor numérico en pies (para cálculos)
+    area: null,                 // Área de efecto: { type: 'cone'|'sphere'|'cube'|'line'|'cylinder', size: 15 }
+
+    // Duración
+    duration: '',               // 'Instantánea', '1 minuto', '1 hora', 'Hasta disipar', etc.
+    concentration: false,       // Requiere concentración
+
+    // Componentes (para conjuros)
+    components: {
+        verbal: false,          // V
+        somatic: false,         // S
+        material: false,        // M
+        materialDescription: '' // Descripción del componente material
+    },
+
+    // Usos y Recuperación
+    uses: {
+        unlimited: true,        // Sin límite de usos
+        max: 0,                 // Número máximo de usos
+        current: 0,             // Usos restantes
+        recharge: 'none',       // 'none', 'shortRest', 'longRest', 'dawn', 'round', 'special'
+        rechargeDescription: '' // Descripción especial de recarga
+    },
+
+    // Mecánicas de Combate
+    attack: null,               // Ataque: { type: 'melee'|'ranged', ability: 'strength'|'dexterity'|'spellcasting', bonus: 0 }
+    damage: null,               // Daño: { dice: '2d6', type: 'fuego', ability: null, addModifier: false, bonus: 0 }
+    healing: null,              // Curación: { dice: '2d8', ability: null, addModifier: false, bonus: 0 }
+
+    // Tirada de Salvación
+    save: null,                 // { ability: 'dexterity', dc: null, dcAbility: 'spellcasting', effect: 'half'|'none'|'special' }
+
+    // Efectos Adicionales
+    effects: {
+        conditions: [],         // Condiciones aplicadas: ['paralyzed', 'stunned', 'frightened', etc.]
+        conditionDuration: '',  // Duración de la condición
+        advantages: [],         // Ventajas otorgadas: ['attack', 'strength_saves', 'stealth', etc.]
+        disadvantages: [],      // Desventajas causadas
+        resistances: [],        // Resistencias otorgadas: ['fire', 'cold', 'bludgeoning', etc.]
+        immunities: [],         // Inmunidades otorgadas
+        bonuses: [],            // Bonificadores: [{ type: 'ac', value: 2 }, { type: 'speed', value: 10 }]
+    },
+
+    // Escalado
+    scaling: null,              // { type: 'cantrip'|'spellSlot'|'level', data: {...} }
+
+    // Requisitos
+    requirements: {
+        level: 0,               // Nivel mínimo requerido
+        class: '',              // Clase requerida
+        equipped: '',           // Item que debe estar equipado
+        condition: ''           // Condición especial
+    },
+
+    // Metadatos
+    prepared: true,             // Para conjuros: está preparado
+    favorite: false,            // Marcado como favorito
+    notes: ''                   // Notas adicionales del jugador
+};
+
+// Opciones para los selectores del formulario de habilidades
+export const ABILITY_OPTIONS = {
+    actionTypes: {
+        action: 'Acción',
+        bonusAction: 'Acción Adicional',
+        reaction: 'Reacción',
+        free: 'Acción Libre',
+        special: 'Especial',
+        none: 'Ninguna (Pasiva)'
+    },
+    damageTypes: [
+        'ácido', 'contundente', 'frío', 'fuego', 'fuerza', 'eléctrico',
+        'necrótico', 'perforante', 'veneno', 'psíquico', 'radiante',
+        'cortante', 'trueno'
+    ],
+    conditions: [
+        { key: 'blinded', name: 'Cegado' },
+        { key: 'charmed', name: 'Encantado' },
+        { key: 'deafened', name: 'Ensordecido' },
+        { key: 'exhaustion', name: 'Agotamiento' },
+        { key: 'frightened', name: 'Asustado' },
+        { key: 'grappled', name: 'Agarrado' },
+        { key: 'incapacitated', name: 'Incapacitado' },
+        { key: 'invisible', name: 'Invisible' },
+        { key: 'paralyzed', name: 'Paralizado' },
+        { key: 'petrified', name: 'Petrificado' },
+        { key: 'poisoned', name: 'Envenenado' },
+        { key: 'prone', name: 'Derribado' },
+        { key: 'restrained', name: 'Apresado' },
+        { key: 'stunned', name: 'Aturdido' },
+        { key: 'unconscious', name: 'Inconsciente' }
+    ],
+    schools: [
+        { key: 'abjuración', name: 'Abjuración' },
+        { key: 'conjuración', name: 'Conjuración' },
+        { key: 'adivinación', name: 'Adivinación' },
+        { key: 'encantamiento', name: 'Encantamiento' },
+        { key: 'evocación', name: 'Evocación' },
+        { key: 'ilusión', name: 'Ilusión' },
+        { key: 'nigromancia', name: 'Nigromancia' },
+        { key: 'transmutación', name: 'Transmutación' }
+    ],
+    abilities: [
+        { key: 'strength', name: 'Fuerza' },
+        { key: 'dexterity', name: 'Destreza' },
+        { key: 'constitution', name: 'Constitución' },
+        { key: 'intelligence', name: 'Inteligencia' },
+        { key: 'wisdom', name: 'Sabiduría' },
+        { key: 'charisma', name: 'Carisma' },
+        { key: 'spellcasting', name: 'Lanzamiento de Conjuros' }
+    ],
+    rechargeTypes: {
+        none: 'Sin límite',
+        shortRest: 'Descanso Corto',
+        longRest: 'Descanso Largo',
+        dawn: 'Al Amanecer',
+        round: 'Cada Asalto',
+        special: 'Especial'
+    },
+    areaTypes: {
+        cone: 'Cono',
+        sphere: 'Esfera',
+        cube: 'Cubo',
+        line: 'Línea',
+        cylinder: 'Cilindro'
+    },
+    sourceTypes: {
+        race: 'Raza',
+        class: 'Clase',
+        background: 'Trasfondo',
+        feat: 'Dote',
+        item: 'Objeto',
+        custom: 'Personalizado'
+    }
 };
 
 // Mapeo de habilidad -> atributo
