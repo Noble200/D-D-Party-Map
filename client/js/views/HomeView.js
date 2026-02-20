@@ -7,6 +7,14 @@ import { screenManager } from '../core/ScreenManager.js';
 import { showNotification } from '../utils/helpers.js';
 import { setPlayerName, getPlayerName } from '../utils/userIdentity.js';
 import { DiceRoller3D } from '../components/DiceRoller3D.js';
+import {
+    addDMRoom,
+    addPlayerRoom,
+    getDMRooms,
+    getPlayerRooms,
+    removeRoom,
+    formatRelativeTime
+} from '../utils/recentRooms.js';
 
 class HomeView {
     constructor(app) {
@@ -17,11 +25,18 @@ class HomeView {
             testDice: document.getElementById('testDiceModal')
         };
 
+        // Paneles de partidas recientes
+        this.panels = {
+            dm: document.getElementById('recentDMPanel'),
+            player: document.getElementById('recentPlayerPanel')
+        };
+
         // Dados de prueba
         this.testDiceRoller = null;
 
         this.bindEvents();
         this.restorePlayerName();
+        this.renderRecentRooms();
     }
 
     // Restaurar nombre guardado del jugador
@@ -33,6 +48,178 @@ class HomeView {
                 playerInput.value = savedName;
             }
         }
+    }
+
+    // Renderizar paneles de partidas recientes
+    renderRecentRooms() {
+        this.renderDMRooms();
+        this.renderPlayerRooms();
+    }
+
+    // Renderizar partidas como DM
+    renderDMRooms() {
+        const rooms = getDMRooms();
+        const panel = this.panels.dm;
+        const list = document.getElementById('recentDMList');
+
+        if (!panel || !list) return;
+
+        if (rooms.length === 0) {
+            panel.classList.add('hidden');
+            return;
+        }
+
+        panel.classList.remove('hidden');
+        list.innerHTML = rooms.map(room => `
+            <li class="recent-room-item" data-code="${room.code}" data-role="dm">
+                <button class="recent-room-remove" data-code="${room.code}" data-role="dm" title="Eliminar">x</button>
+                <div class="recent-room-name">${this.escapeHtml(room.name)}</div>
+                <div class="recent-room-meta">
+                    <span class="recent-room-code">${room.code}</span>
+                    <span class="recent-room-time">${formatRelativeTime(room.lastAccess)}</span>
+                </div>
+            </li>
+        `).join('');
+
+        this.bindRecentRoomEvents(list, 'dm');
+    }
+
+    // Renderizar partidas como jugador
+    renderPlayerRooms() {
+        const rooms = getPlayerRooms();
+        const panel = this.panels.player;
+        const list = document.getElementById('recentPlayerList');
+
+        if (!panel || !list) return;
+
+        if (rooms.length === 0) {
+            panel.classList.add('hidden');
+            return;
+        }
+
+        panel.classList.remove('hidden');
+        list.innerHTML = rooms.map(room => `
+            <li class="recent-room-item" data-code="${room.code}" data-role="player"
+                data-player="${this.escapeHtml(room.playerName || '')}"
+                data-character="${this.escapeHtml(room.characterName || '')}">
+                <button class="recent-room-remove" data-code="${room.code}" data-role="player" title="Eliminar">x</button>
+                <div class="recent-room-name">${this.escapeHtml(room.name)}</div>
+                <div class="recent-room-meta">
+                    <span class="recent-room-code">${room.code}</span>
+                    <span class="recent-room-time">${formatRelativeTime(room.lastAccess)}</span>
+                </div>
+                ${room.characterName ? `<div class="recent-room-character">${this.escapeHtml(room.characterName)}</div>` : ''}
+            </li>
+        `).join('');
+
+        this.bindRecentRoomEvents(list, 'player');
+    }
+
+    // Vincular eventos a items de partidas recientes
+    bindRecentRoomEvents(list, role) {
+        // Click en item para reconectar
+        list.querySelectorAll('.recent-room-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (e.target.classList.contains('recent-room-remove')) return;
+                const code = item.dataset.code;
+                if (role === 'dm') {
+                    this.quickJoinAsDM(code);
+                } else {
+                    const playerName = item.dataset.player;
+                    const characterName = item.dataset.character;
+                    this.quickJoinAsPlayer(code, playerName, characterName);
+                }
+            });
+        });
+
+        // Click en botón eliminar
+        list.querySelectorAll('.recent-room-remove').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const code = btn.dataset.code;
+                const itemRole = btn.dataset.role;
+                removeRoom(code, itemRole);
+                this.renderRecentRooms();
+            });
+        });
+    }
+
+    // Reconexión rápida como DM
+    async quickJoinAsDM(code) {
+        const rooms = getDMRooms();
+        const room = rooms.find(r => r.code === code);
+
+        if (!room || !room.adminToken) {
+            showNotification('Necesitas ingresar la contraseña nuevamente', 'warning');
+            // Abrir modal con código pre-llenado
+            document.getElementById('accessRoomCode').value = code;
+            this.showModal('accessAdmin');
+            return;
+        }
+
+        try {
+            const data = await apiClient.verifyAdmin(code, room.adminToken);
+
+            if (data.success) {
+                // Actualizar timestamp
+                addDMRoom(data.room, room.adminToken);
+                this.app.setRoom(data.room, room.adminToken, true);
+                screenManager.show('roomMenu');
+                showNotification('Reconectado como DM', 'success');
+            } else {
+                // Token inválido, pedir contraseña
+                showNotification('La contraseña ha cambiado', 'warning');
+                document.getElementById('accessRoomCode').value = code;
+                this.showModal('accessAdmin');
+            }
+        } catch (error) {
+            showNotification('Error de conexión', 'error');
+            console.error(error);
+        }
+    }
+
+    // Reconexión rápida como jugador
+    async quickJoinAsPlayer(code, playerName, characterName) {
+        try {
+            const data = await apiClient.getRoom(code);
+
+            if (!data.success) {
+                showNotification('La sala ya no existe', 'error');
+                removeRoom(code, 'player');
+                this.renderRecentRooms();
+                return;
+            }
+
+            // Pre-llenar formulario y conectar
+            if (playerName) {
+                document.getElementById('playerNameInput').value = playerName;
+                setPlayerName(playerName);
+            }
+            if (characterName) {
+                document.getElementById('characterNameInput').value = characterName;
+            }
+
+            // Actualizar timestamp
+            addPlayerRoom(data.room, playerName, characterName);
+
+            this.app.currentUser = { playerName };
+            this.app.setRoom(data.room, null, false);
+            this.app.playerName = playerName;
+            this.app.characterName = characterName;
+
+            screenManager.show('roomMenu');
+            showNotification('Reconectado a la sala', 'success');
+        } catch (error) {
+            showNotification('Error de conexión', 'error');
+            console.error(error);
+        }
+    }
+
+    // Escapar HTML para prevenir XSS
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     bindEvents() {
@@ -133,6 +320,10 @@ class HomeView {
             const data = await apiClient.createRoom(name, password);
 
             if (data.success) {
+                // Guardar en historial de partidas recientes
+                addDMRoom(data.room, password);
+                this.renderRecentRooms();
+
                 this.app.setRoom(data.room, password, true);
                 this.hideModal('createRoom');
                 screenManager.show('roomMenu');
@@ -164,6 +355,10 @@ class HomeView {
             const data = await apiClient.verifyAdmin(code, password);
 
             if (data.success) {
+                // Guardar en historial de partidas recientes
+                addDMRoom(data.room, password);
+                this.renderRecentRooms();
+
                 this.app.setRoom(data.room, password, true);
                 this.hideModal('accessAdmin');
                 screenManager.show('roomMenu');
@@ -328,6 +523,10 @@ class HomeView {
                 showNotification(data.error, 'error');
                 return;
             }
+
+            // Guardar en historial de partidas recientes
+            addPlayerRoom(data.room, playerName, characterName);
+            this.renderRecentRooms();
 
             // Guardar nombre del jugador localmente para conveniencia
             setPlayerName(playerName);

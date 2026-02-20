@@ -12,6 +12,28 @@
          PANTALLA DE INICIO
          ========================================== -->
     <div id="homeScreen" class="screen active">
+        <!-- Panel lateral izquierdo: Mis Salas (DM) -->
+        <aside id="recentDMPanel" class="recent-rooms-panel recent-rooms-left hidden">
+            <div class="recent-rooms-header">
+                <h3>Mis Salas</h3>
+                <span class="recent-rooms-subtitle">Como DM</span>
+            </div>
+            <ul id="recentDMList" class="recent-rooms-list">
+                <!-- Se llena dinámicamente -->
+            </ul>
+        </aside>
+
+        <!-- Panel lateral derecho: Partidas como Jugador -->
+        <aside id="recentPlayerPanel" class="recent-rooms-panel recent-rooms-right hidden">
+            <div class="recent-rooms-header">
+                <h3>Partidas</h3>
+                <span class="recent-rooms-subtitle">Como Jugador</span>
+            </div>
+            <ul id="recentPlayerList" class="recent-rooms-list">
+                <!-- Se llena dinámicamente -->
+            </ul>
+        </aside>
+
         <div class="home-container">
             <h1>D&D Map Editor</h1>
             <p class="subtitle">Crea y comparte tableros para tus partidas</p>

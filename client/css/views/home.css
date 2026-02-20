@@ -359,3 +359,222 @@
     }
 }
 
+/* ==========================================
+   PANELES LATERALES - PARTIDAS RECIENTES
+   ========================================== */
+
+.recent-rooms-panel {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 220px;
+    max-height: 70vh;
+    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-dark) 100%);
+    border: 2px solid var(--border-stone);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    z-index: 10;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: panelSlideIn 0.5s ease-out;
+}
+
+.recent-rooms-panel.hidden {
+    display: none;
+}
+
+/* Panel izquierdo (DM) */
+.recent-rooms-left {
+    left: 20px;
+    border-left: 3px solid var(--color-gold);
+}
+
+/* Panel derecho (Jugador) */
+.recent-rooms-right {
+    right: 20px;
+    border-right: 3px solid var(--color-forest);
+}
+
+@keyframes panelSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+.recent-rooms-right {
+    animation-name: panelSlideInRight;
+}
+
+@keyframes panelSlideInRight {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+/* Header del panel */
+.recent-rooms-header {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-ornate);
+}
+
+.recent-rooms-header h3 {
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    color: var(--color-gold);
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+.recent-rooms-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* Lista de partidas */
+.recent-rooms-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.recent-rooms-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.recent-rooms-list::-webkit-scrollbar-track {
+    background: var(--color-bg-dark);
+}
+
+.recent-rooms-list::-webkit-scrollbar-thumb {
+    background: var(--border-stone);
+    border-radius: 2px;
+}
+
+/* Item de partida reciente */
+.recent-room-item {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.recent-room-item:hover {
+    background: rgba(212, 167, 38, 0.1);
+    border-color: var(--color-gold-dark);
+}
+
+.recent-room-item:active {
+    transform: scale(0.98);
+}
+
+/* Nombre de la sala */
+.recent-room-name {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-text);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Código y tiempo */
+.recent-room-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+}
+
+.recent-room-code {
+    font-family: monospace;
+    letter-spacing: 1px;
+    color: var(--color-gold-dark);
+}
+
+.recent-room-time {
+    font-style: italic;
+}
+
+/* Info adicional (personaje para jugadores) */
+.recent-room-character {
+    font-size: 0.75rem;
+    color: var(--color-forest);
+    margin-top: 2px;
+    font-style: italic;
+}
+
+/* Botón eliminar */
+.recent-room-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 16px;
+    height: 16px;
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    font-size: 0.7rem;
+    line-height: 1;
+    padding: 0;
+}
+
+.recent-room-item:hover .recent-room-remove {
+    opacity: 0.6;
+}
+
+.recent-room-remove:hover {
+    opacity: 1 !important;
+    color: var(--color-blood);
+}
+
+/* Estado vacío */
+.recent-rooms-empty {
+    text-align: center;
+    padding: var(--spacing-md);
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* ==========================================
+   RESPONSIVE - PANELES LATERALES
+   ========================================== */
+
+@media (max-width: 1200px) {
+    .recent-rooms-panel {
+        width: 180px;
+    }
+}
+
+@media (max-width: 900px) {
+    .recent-rooms-panel {
+        display: none !important;
+    }
+}
+
