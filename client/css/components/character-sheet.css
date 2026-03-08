@@ -996,6 +996,131 @@
     display: none;
 }
 
+/* Sección de configuración de Token */
+.token-config-section {
+    margin-top: 16px;
+    padding: 15px;
+    background: linear-gradient(180deg, var(--color-bg-dark) 0%, rgba(212, 167, 38, 0.1) 100%);
+    border: 2px solid var(--color-gold);
+    border-radius: var(--radius-sm);
+}
+
+.token-config-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.token-photo-upload {
+    flex: 0 0 auto;
+}
+
+.token-photo-upload label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--color-gold);
+}
+
+.token-photo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.token-photo-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--color-gold);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-medium);
+}
+
+.token-photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.token-photo-placeholder {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+.token-photo-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-upload {
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-danger {
+    background: var(--color-blood) !important;
+    border-color: var(--color-blood) !important;
+    font-size: 12px;
+}
+
+.token-color-config {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.token-color-config label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--color-gold);
+}
+
+.token-color-config input[type="color"] {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--color-gold);
+    border-radius: 50%;
+    cursor: pointer;
+    background: none;
+    padding: 2px;
+}
+
+.token-preview-wrapper {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.token-preview-wrapper label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--color-gold);
+}
+
+#tokenPreviewCanvas {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+}
+
+@media (max-width: 500px) {
+    .token-config-row {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 /* Panel de información racial */
 .race-info-panel {
     margin-top: 20px;

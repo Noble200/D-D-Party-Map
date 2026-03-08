@@ -328,13 +328,17 @@ class RoomMenuView {
         const userName = this.app.isAdmin ? 'DM' : this.app.playerName;
         const userId = this.app.currentUser?.id || null;
         const characterName = this.app.characterName || null;
+        const tokenPhoto = this.app.characterSheet?.tokenPhoto || null;
+        const tokenBorderColor = document.getElementById('tokenBorderColor')?.value || null;
 
         socketClient.joinRoom(
             this.app.currentRoom.code,
             userType,
             userName,
             userId,
-            characterName
+            characterName,
+            tokenPhoto,
+            tokenBorderColor
         );
 
         // Escuchar actualizaciones de usuarios

@@ -40,6 +40,8 @@ class CharacterSheet {
         this.editingAbilityId = null;
         // Lista de bonificadores temporales para el formulario
         this.tempBonuses = [];
+        // Foto y color del token
+        this.tokenPhoto = null;
     }
 
     // Cargar datos de razas desde el archivo JSON
@@ -207,6 +209,9 @@ class CharacterSheet {
 
         // Listeners del tab de conjuros
         this.initSpellsTabListeners();
+
+        // Listeners de token (foto y color)
+        this.initTokenConfigListeners();
 
         this.initialized = true;
     }
@@ -933,6 +938,190 @@ class CharacterSheet {
         attackBonusEl.textContent = attackBonus >= 0 ? `+${attackBonus}` : attackBonus.toString();
     }
 
+    // ==========================================
+    // Configuración de Token (foto y color)
+    // ==========================================
+
+    initTokenConfigListeners() {
+        // Subir foto
+        const photoInput = document.getElementById('tokenPhotoInput');
+        if (photoInput) {
+            photoInput.addEventListener('change', (e) => this.onPhotoSelected(e));
+        }
+
+        // Quitar foto
+        const removeBtn = document.getElementById('btnRemoveTokenPhoto');
+        if (removeBtn) {
+            removeBtn.addEventListener('click', () => this.removeTokenPhoto());
+        }
+
+        // Color del borde
+        const colorInput = document.getElementById('tokenBorderColor');
+        if (colorInput) {
+            colorInput.addEventListener('input', () => this.updateTokenPreview());
+        }
+
+        // Listener del nombre para actualizar preview
+        const nameInput = document.getElementById('charName');
+        if (nameInput) {
+            nameInput.addEventListener('input', () => this.updateTokenPreview());
+        }
+
+        // Renderizar preview inicial
+        this.updateTokenPreview();
+    }
+
+    onPhotoSelected(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Limitar tamaño (500KB)
+        if (file.size > 500 * 1024) {
+            showNotification('La imagen es muy grande. Máximo 500KB.', 'error');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            // Redimensionar para no sobrecargar
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const maxSize = 128;
+                let w = img.width, h = img.height;
+                if (w > h) { h = (h / w) * maxSize; w = maxSize; }
+                else { w = (w / h) * maxSize; h = maxSize; }
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, w, h);
+                this.tokenPhoto = canvas.toDataURL('image/jpeg', 0.8);
+                this.showPhotoPreview();
+                this.updateTokenPreview();
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    showPhotoPreview() {
+        const preview = document.getElementById('tokenPhotoPreview');
+        const removeBtn = document.getElementById('btnRemoveTokenPhoto');
+        if (preview && this.tokenPhoto) {
+            preview.innerHTML = `<img src="${this.tokenPhoto}" alt="Token">`;
+            if (removeBtn) removeBtn.classList.remove('hidden');
+        }
+    }
+
+    removeTokenPhoto() {
+        this.tokenPhoto = null;
+        const preview = document.getElementById('tokenPhotoPreview');
+        const removeBtn = document.getElementById('btnRemoveTokenPhoto');
+        const input = document.getElementById('tokenPhotoInput');
+        if (preview) preview.innerHTML = '<span class="token-photo-placeholder">Sin foto</span>';
+        if (removeBtn) removeBtn.classList.add('hidden');
+        if (input) input.value = '';
+        this.updateTokenPreview();
+    }
+
+    updateTokenPreview() {
+        const canvas = document.getElementById('tokenPreviewCanvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        const cx = w / 2;
+        const cy = 55;
+        const radius = 35;
+        const name = document.getElementById('charName')?.value || 'Nombre';
+        const borderColor = document.getElementById('tokenBorderColor')?.value || '#e74c3c';
+
+        // Sombra
+        ctx.save();
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+
+        if (this.tokenPhoto) {
+            // Dibujar foto recortada en circulo
+            const img = new Image();
+            img.onload = () => {
+                ctx.clearRect(0, 0, w, h);
+                ctx.save();
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
+
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(img, cx - radius, cy - radius, radius * 2, radius * 2);
+                ctx.restore();
+
+                // Borde
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = borderColor;
+                ctx.stroke();
+
+                // Nombre
+                this.drawTokenPreviewName(ctx, cx, cy + radius + 14, name);
+            };
+            img.src = this.tokenPhoto;
+        } else {
+            // Circulo con color e iniciales
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.fillStyle = borderColor;
+            ctx.fill();
+
+            ctx.shadowColor = 'transparent';
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = borderColor;
+            ctx.stroke();
+
+            // Iniciales
+            const label = this.getTokenLabel(name);
+            ctx.font = 'bold 22px Cinzel, serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(label, cx, cy);
+
+            ctx.restore();
+
+            // Nombre
+            this.drawTokenPreviewName(ctx, cx, cy + radius + 14, name);
+        }
+    }
+
+    drawTokenPreviewName(ctx, x, y, name) {
+        ctx.font = '12px Cinzel, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.strokeText(name, x, y);
+        ctx.fillText(name, x, y);
+    }
+
+    getTokenLabel(name) {
+        if (!name) return '?';
+        const words = name.trim().split(/\s+/);
+        if (words.length >= 2) {
+            return (words[0][0] + words[1][0]).toUpperCase();
+        }
+        return name.substring(0, 2).toUpperCase();
+    }
+
     // Calcular y mostrar porcentaje de completitud
     updateCompletion() {
         const data = this.getCharacterData();
@@ -1048,7 +1237,10 @@ class CharacterSheet {
             },
 
             features: document.getElementById('features')?.value || '',
-            equipment: document.getElementById('equipment')?.value || ''
+            equipment: document.getElementById('equipment')?.value || '',
+
+            tokenPhoto: this.tokenPhoto || null,
+            tokenBorderColor: document.getElementById('tokenBorderColor')?.value || '#e74c3c'
         };
     }
 
@@ -1223,6 +1415,17 @@ class CharacterSheet {
         document.getElementById('features').value = data.features || '';
         document.getElementById('equipment').value = data.equipment || '';
 
+        // Token config
+        this.tokenPhoto = data.tokenPhoto || null;
+        if (data.tokenBorderColor) {
+            const colorInput = document.getElementById('tokenBorderColor');
+            if (colorInput) colorInput.value = data.tokenBorderColor;
+        }
+        if (this.tokenPhoto) {
+            this.showPhotoPreview();
+        }
+        this.updateTokenPreview();
+
         this.characterData = data;
         this.isLoaded = true;
         this.updateAllCalculations();
@@ -1251,6 +1454,11 @@ class CharacterSheet {
             if (result.success) {
                 this.characterId = result.character.id;
                 showNotification('Personaje guardado correctamente', 'success');
+
+                // Sincronizar nombre de personaje con la app
+                if (characterName && characterName !== 'Sin nombre') {
+                    this.app.characterName = characterName;
+                }
 
                 // Actualizar indicador de completitud en el botón
                 const completion = this.updateCompletion();

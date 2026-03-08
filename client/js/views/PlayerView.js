@@ -81,13 +81,19 @@ class PlayerView {
         socketClient.onMapChanged = () => this.reloadMap();
         socketClient.onActiveMapChanged = () => this.reloadMap();
 
+        // Obtener foto y color del token desde la hoja de personaje
+        const tokenPhoto = this.app.characterSheet?.tokenPhoto || null;
+        const tokenBorderColor = document.getElementById('tokenBorderColor')?.value || null;
+
         // Unirse con datos extendidos
         socketClient.joinRoom(
             room.code,
             'player',
             this.app.playerName,
             this.app.currentUser?.id,
-            this.app.characterName
+            this.app.characterName,
+            tokenPhoto,
+            tokenBorderColor
         );
 
         // Cargar personaje del servidor
@@ -100,8 +106,11 @@ class PlayerView {
 
         const character = await this.app.characterSheet.loadFromServer();
 
-        // Si no hay personaje, crear uno básico con el nombre
-        if (!character && this.app.characterName) {
+        if (character && character.characterData?.name) {
+            // Sincronizar nombre del personaje desde la hoja guardada
+            this.app.characterName = character.characterData.name;
+        } else if (!character && this.app.characterName) {
+            // Si no hay personaje guardado, usar el nombre ingresado en pre-join
             document.getElementById('charName').value = this.app.characterName;
         }
     }

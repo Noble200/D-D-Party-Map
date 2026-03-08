@@ -992,6 +992,33 @@
                                 </select>
                             </div>
                         </div>
+                        <!-- Sección de Token (foto y color del borde) -->
+                        <div class="token-config-section">
+                            <div class="token-config-row">
+                                <div class="token-photo-upload">
+                                    <label>Foto del Personaje</label>
+                                    <div class="token-photo-wrapper">
+                                        <div class="token-photo-preview" id="tokenPhotoPreview">
+                                            <span class="token-photo-placeholder">Sin foto</span>
+                                        </div>
+                                        <div class="token-photo-actions">
+                                            <label class="btn btn-small btn-upload" for="tokenPhotoInput">Subir Foto</label>
+                                            <input type="file" id="tokenPhotoInput" accept="image/*" class="hidden">
+                                            <button type="button" id="btnRemoveTokenPhoto" class="btn btn-small btn-danger hidden">Quitar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="token-color-config">
+                                    <label for="tokenBorderColor">Color del Borde</label>
+                                    <input type="color" id="tokenBorderColor" value="#e74c3c">
+                                </div>
+                                <div class="token-preview-wrapper">
+                                    <label>Vista Previa del Token</label>
+                                    <canvas id="tokenPreviewCanvas" width="120" height="140"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- XP oculto, solo lo maneja el DM -->
                         <input type="hidden" id="charXP" value="0">
 

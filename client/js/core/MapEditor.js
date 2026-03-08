@@ -696,6 +696,7 @@ export class MapEditor {
 
     drawSingleToken(cx, cy, radius, token, isSelected) {
         const ctx = this.ctx;
+        const borderColor = token.borderColor || token.color || '#e74c3c';
 
         ctx.save();
 
@@ -705,16 +706,43 @@ export class MapEditor {
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
 
-        // Círculo principal
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-        ctx.fillStyle = token.color || '#e74c3c';
-        ctx.fill();
+        // Si tiene foto, cargarla y dibujar en circulo
+        if (token.photo && !token._photoImg) {
+            // Cargar imagen la primera vez
+            const img = new Image();
+            img.onload = () => {
+                token._photoImg = img;
+                this.render();
+            };
+            img.src = token.photo;
+            // Mientras carga, dibujar circulo de color
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.fillStyle = borderColor;
+            ctx.fill();
+        } else if (token._photoImg) {
+            // Dibujar foto recortada en circulo
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.clip();
+            ctx.drawImage(token._photoImg, cx - radius, cy - radius, radius * 2, radius * 2);
+            ctx.restore();
+            ctx.save();
+        } else {
+            // Sin foto: circulo de color con iniciales
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.fillStyle = borderColor;
+            ctx.fill();
+        }
 
         // Borde
         ctx.shadowColor = 'transparent';
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
         ctx.lineWidth = isSelected ? 3 : 2;
-        ctx.strokeStyle = isSelected ? '#FFD700' : '#ffffff';
+        ctx.strokeStyle = isSelected ? '#FFD700' : borderColor;
         ctx.stroke();
 
         // Anillo de selección
@@ -728,14 +756,16 @@ export class MapEditor {
             ctx.setLineDash([]);
         }
 
-        // Texto (iniciales o nombre corto)
-        const label = this.getTokenLabel(token.name);
-        const fontSize = Math.max(10, radius * 0.8);
-        ctx.font = `bold ${fontSize}px Cinzel, serif`;
-        ctx.fillStyle = '#ffffff';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(label, cx, cy);
+        // Texto (iniciales) - solo si no tiene foto
+        if (!token._photoImg) {
+            const label = this.getTokenLabel(token.name);
+            const fontSize = Math.max(10, radius * 0.8);
+            ctx.font = `bold ${fontSize}px Cinzel, serif`;
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(label, cx, cy);
+        }
 
         // Nombre completo debajo del token
         if (radius > 12) {

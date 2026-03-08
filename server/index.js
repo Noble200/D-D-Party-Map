@@ -66,13 +66,15 @@ io.on('connection', (socket) => {
     console.log('Usuario conectado:', socket.id);
 
     // Unirse a una sala
-    socket.on('join-room', async ({ roomCode, userType, userName, userId, characterName }) => {
+    socket.on('join-room', async ({ roomCode, userType, userName, userId, characterName, tokenPhoto, tokenBorderColor }) => {
         socket.join(roomCode);
         socket.roomCode = roomCode;
         socket.userType = userType;
         socket.userName = userName || (userType === 'admin' ? 'Admin' : 'Jugador');
         socket.userId = userId || null;
         socket.characterName = characterName || null;
+        socket.tokenPhoto = tokenPhoto || null;
+        socket.tokenBorderColor = tokenBorderColor || null;
 
         // Actualizar última actividad de la sala en la base de datos
         try {
@@ -91,7 +93,9 @@ io.on('connection', (socket) => {
             type: userType,
             name: socket.userName,
             userId: socket.userId,
-            characterName: socket.characterName
+            characterName: socket.characterName,
+            tokenPhoto: socket.tokenPhoto,
+            tokenBorderColor: socket.tokenBorderColor
         };
 
         // Emitir lista actualizada a todos en la sala
@@ -271,7 +275,9 @@ function getUsersList(roomCode) {
         })),
         players: users.filter(u => u.type === 'player').map(u => ({
             name: u.name,
-            characterName: u.characterName
+            characterName: u.characterName,
+            tokenPhoto: u.tokenPhoto,
+            tokenBorderColor: u.tokenBorderColor
         })),
         total: users.length
     };

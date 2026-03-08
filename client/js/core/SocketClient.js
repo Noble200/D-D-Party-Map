@@ -113,7 +113,7 @@ class SocketClient {
     }
 
     // Unirse a una sala (con datos extendidos)
-    joinRoom(roomCode, userType, userName = null, userId = null, characterName = null) {
+    joinRoom(roomCode, userType, userName = null, userId = null, characterName = null, tokenPhoto = null, tokenBorderColor = null) {
         if (!this.socket) this.connect();
 
         this.roomCode = roomCode;
@@ -122,7 +122,9 @@ class SocketClient {
             userType,
             userName,
             userId,
-            characterName
+            characterName,
+            tokenPhoto,
+            tokenBorderColor
         });
     }
 

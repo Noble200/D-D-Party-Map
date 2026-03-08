@@ -144,7 +144,7 @@ class AdminViewerView {
     }
 
     // Agregar token para un jugador conectado
-    addPlayerToken(playerName, characterName) {
+    addPlayerToken(playerName, characterName, tokenPhoto, tokenBorderColor) {
         if (!this.mapEditor || !this.currentMapId) return;
 
         const tokenId = `player_${playerName}`;
@@ -155,10 +155,14 @@ class AdminViewerView {
         // Buscar una celda libre cerca del centro (0,0)
         const pos = this.findFreeCell(0, 0);
 
+        const color = tokenBorderColor || MapEditor.getTokenColor(this.mapEditor.tokens.length);
+
         const token = {
             id: tokenId,
             name: characterName || playerName,
-            color: MapEditor.getTokenColor(this.mapEditor.tokens.length),
+            color: color,
+            borderColor: color,
+            photo: tokenPhoto || null,
             gridX: pos.gridX,
             gridY: pos.gridY,
             playerName: playerName
@@ -235,7 +239,9 @@ class AdminViewerView {
             this.connectedPlayers.forEach(player => {
                 const name = typeof player === 'object' ? player.name : player;
                 const charName = typeof player === 'object' ? player.characterName : null;
-                this.addPlayerToken(name, charName);
+                const photo = typeof player === 'object' ? player.tokenPhoto : null;
+                const borderColor = typeof player === 'object' ? player.tokenBorderColor : null;
+                this.addPlayerToken(name, charName, photo, borderColor);
             });
         }
     }
