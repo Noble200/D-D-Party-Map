@@ -26,6 +26,7 @@ async function getMaps(req, res) {
                 imageTransform: m.image_transform,
                 gridConfig: m.grid_config,
                 distanceConfig: m.distance_config,
+                spawnPoints: m.spawn_points,
                 isActive: m.is_active,
                 displayOrder: m.display_order,
                 createdAt: m.created_at,
@@ -67,6 +68,7 @@ async function getActiveMap(req, res) {
                 imageTransform: map.image_transform,
                 gridConfig: map.grid_config,
                 distanceConfig: map.distance_config,
+                spawnPoints: map.spawn_points,
                 isActive: map.is_active,
                 displayOrder: map.display_order,
                 createdAt: map.created_at,
@@ -83,7 +85,7 @@ async function getActiveMap(req, res) {
 async function createMap(req, res) {
     try {
         const { code } = req.params;
-        const { adminPassword, name, imageData, imageTransform, gridConfig, distanceConfig } = req.body;
+        const { adminPassword, name, imageData, imageTransform, gridConfig, distanceConfig, spawnPoints } = req.body;
 
         console.log('Creando mapa - code:', code, 'name:', name, 'hasPassword:', !!adminPassword);
 
@@ -99,7 +101,7 @@ async function createMap(req, res) {
             return res.status(403).json({ error: 'Acceso denegado' });
         }
 
-        const map = await db.createMap(code, name, imageData, imageTransform, gridConfig, distanceConfig);
+        const map = await db.createMap(code, name, imageData, imageTransform, gridConfig, distanceConfig, spawnPoints);
         console.log('Mapa creado:', map?.id);
 
         res.json({
@@ -111,6 +113,7 @@ async function createMap(req, res) {
                 imageTransform: map.image_transform,
                 gridConfig: map.grid_config,
                 distanceConfig: map.distance_config,
+                spawnPoints: map.spawn_points,
                 isActive: map.is_active,
                 displayOrder: map.display_order,
                 createdAt: map.created_at,
@@ -128,7 +131,7 @@ async function createMap(req, res) {
 async function updateMap(req, res) {
     try {
         const { code, mapId } = req.params;
-        const { adminPassword, name, imageData, imageTransform, gridConfig, distanceConfig } = req.body;
+        const { adminPassword, name, imageData, imageTransform, gridConfig, distanceConfig, spawnPoints } = req.body;
 
         if (!adminPassword) {
             return res.status(400).json({ error: 'Se requiere adminPassword' });
@@ -146,7 +149,7 @@ async function updateMap(req, res) {
             return res.status(404).json({ error: 'Mapa no encontrado' });
         }
 
-        const map = await db.updateMap(mapId, { name, imageData, imageTransform, gridConfig, distanceConfig });
+        const map = await db.updateMap(mapId, { name, imageData, imageTransform, gridConfig, distanceConfig, spawnPoints });
 
         res.json({
             success: true,
@@ -157,6 +160,7 @@ async function updateMap(req, res) {
                 imageTransform: map.image_transform,
                 gridConfig: map.grid_config,
                 distanceConfig: map.distance_config,
+                spawnPoints: map.spawn_points,
                 isActive: map.is_active,
                 displayOrder: map.display_order,
                 createdAt: map.created_at,

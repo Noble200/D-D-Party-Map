@@ -188,6 +188,59 @@
     box-shadow: 0 4px 12px rgba(34, 139, 34, 0.4);
 }
 
+/* Spawn Points */
+.spawn-tool-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.btn-spawn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(180deg, #2ecc71 0%, #27ae60 100%);
+    border: 2px solid #27ae60;
+    color: white;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-spawn:hover {
+    background: linear-gradient(180deg, #27ae60 0%, #219a52 100%);
+}
+
+.btn-spawn-active {
+    background: linear-gradient(180deg, #e74c3c 0%, #c0392b 100%) !important;
+    border-color: #c0392b !important;
+}
+
+.btn-spawn-active:hover {
+    background: linear-gradient(180deg, #c0392b 0%, #a93226 100%) !important;
+}
+
+.spawn-counters {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.spawn-counter {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.spawn-counter.spawn-player strong {
+    color: #2ecc71;
+}
+
+.spawn-counter.spawn-npc strong {
+    color: #e74c3c;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .toolbar {

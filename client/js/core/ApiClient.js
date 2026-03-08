@@ -133,7 +133,7 @@ class ApiClient {
     }
 
     // Crear nuevo mapa
-    async createMap(roomCode, adminPassword, name, imageData = null, imageTransform = null, gridConfig = null, distanceConfig = null) {
+    async createMap(roomCode, adminPassword, name, imageData = null, imageTransform = null, gridConfig = null, distanceConfig = null, spawnPoints = null) {
         const response = await fetch(`${API_URL}/rooms/${roomCode}/maps`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -143,7 +143,8 @@ class ApiClient {
                 imageData,
                 imageTransform,
                 gridConfig,
-                distanceConfig
+                distanceConfig,
+                spawnPoints
             })
         });
         return response.json();

@@ -152,8 +152,8 @@ class AdminViewerView {
         // No duplicar si ya existe
         if (this.mapEditor.tokens.find(t => t.id === tokenId)) return;
 
-        // Buscar una celda libre cerca del centro (0,0)
-        const pos = this.findFreeCell(0, 0);
+        // Buscar posición: usar spawn point de jugador disponible, o celda libre
+        const pos = this.findPlayerSpawnPosition();
 
         const color = tokenBorderColor || MapEditor.getTokenColor(this.mapEditor.tokens.length);
 
@@ -170,6 +170,26 @@ class AdminViewerView {
 
         this.mapEditor.addToken(token);
         socketClient.emitTokenAdded(this.currentMapId, token);
+    }
+
+    // Buscar posición de spawn para un jugador
+    findPlayerSpawnPosition() {
+        const playerSpawns = this.mapEditor.getSpawnPointsByType('player');
+
+        if (playerSpawns.length > 0) {
+            // Buscar un spawn point libre (no ocupado por un token)
+            for (const sp of playerSpawns) {
+                if (!this.mapEditor.isCellOccupied(sp.gridX, sp.gridY)) {
+                    return { gridX: sp.gridX, gridY: sp.gridY };
+                }
+            }
+            // Todos ocupados: buscar celda libre cerca del último spawn point
+            const lastSpawn = playerSpawns[playerSpawns.length - 1];
+            return this.findFreeCell(lastSpawn.gridX, lastSpawn.gridY);
+        }
+
+        // Sin spawn points: buscar celda libre cerca del centro
+        return this.findFreeCell(0, 0);
     }
 
     // Buscar celda libre cerca de una posición
@@ -211,6 +231,15 @@ class AdminViewerView {
                 : mapData.gridConfig;
 
             this.mapEditor.gridConfig = { ...gridConfig };
+        }
+
+        // Cargar spawn points (visibles para admin)
+        if (mapData.spawnPoints) {
+            const spawnPoints = typeof mapData.spawnPoints === 'string'
+                ? JSON.parse(mapData.spawnPoints)
+                : mapData.spawnPoints;
+            this.mapEditor.spawnPoints = [...spawnPoints];
+            this.mapEditor.showSpawnPoints = true;
         }
 
         this.mapEditor.render();

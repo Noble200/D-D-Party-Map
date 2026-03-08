@@ -763,6 +763,27 @@
                     </div>
                 </section>
 
+                <!-- Puntos de Respawn -->
+                <section class="tool-section spawn-section">
+                    <h3>Puntos de Respawn</h3>
+                    <div class="spawn-tool-controls">
+                        <div class="control-group">
+                            <label for="spawnType">Tipo:</label>
+                            <select id="spawnType">
+                                <option value="player">Jugadores</option>
+                                <option value="npc">Monstruos/NPC</option>
+                            </select>
+                        </div>
+                        <button id="btnToggleSpawnTool" class="btn btn-spawn">Colocar Spawns</button>
+                        <button id="btnClearSpawns" class="btn btn-small">Limpiar Todos</button>
+                    </div>
+                    <div class="spawn-counters">
+                        <span class="spawn-counter spawn-player">Jugadores: <strong id="spawnPlayerCount">0</strong></span>
+                        <span class="spawn-counter spawn-npc">NPC: <strong id="spawnNpcCount">0</strong></span>
+                    </div>
+                    <small class="control-hint">Click en el mapa para colocar/quitar. Los jugadores no ven estos puntos.</small>
+                </section>
+
                 <!-- Instrucciones -->
                 <section class="tool-section instructions">
                     <h3>Controles</h3>

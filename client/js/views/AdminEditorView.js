@@ -119,6 +119,26 @@ class AdminEditorView {
         document.getElementById('distanceUnit')?.addEventListener('change', (e) => {
             this.editor?.setDistanceUnit(e.target.value);
         });
+
+        // === Controles de Spawn Points ===
+        document.getElementById('btnToggleSpawnTool')?.addEventListener('click', () => {
+            this.toggleSpawnTool();
+        });
+
+        document.getElementById('spawnType')?.addEventListener('change', (e) => {
+            if (this.editor?.spawnToolActive) {
+                this.editor.spawnToolType = e.target.value;
+            }
+        });
+
+        document.getElementById('btnClearSpawns')?.addEventListener('click', () => {
+            this.clearSpawns();
+        });
+
+        // Callback cuando cambian los spawn points
+        if (this.editor) {
+            this.editor.onSpawnPointsChanged = () => this.updateSpawnCounters();
+        }
     }
 
     // Mostrar vista con datos de la sala y mapa
@@ -241,7 +261,17 @@ class AdminEditorView {
             this.editor.distanceConfig = { ...DEFAULT_DISTANCE_CONFIG, ...distanceConfig };
         }
 
+        // Cargar spawn points
+        if (mapData.spawnPoints) {
+            const spawnPoints = typeof mapData.spawnPoints === 'string'
+                ? JSON.parse(mapData.spawnPoints)
+                : mapData.spawnPoints;
+            this.editor.spawnPoints = [...spawnPoints];
+            this.editor.showSpawnPoints = true;
+        }
+
         this.editor.render();
+        this.updateSpawnCounters();
     }
 
     // Actualizar UI con datos de la sala (compatibilidad)
@@ -368,7 +398,8 @@ class AdminEditorView {
                         imageData: state.imageData,
                         imageTransform: state.imageTransform,
                         gridConfig: state.gridConfig,
-                        distanceConfig: state.distanceConfig
+                        distanceConfig: state.distanceConfig,
+                        spawnPoints: state.spawnPoints
                     }
                 );
             } else {
@@ -380,7 +411,8 @@ class AdminEditorView {
                     state.imageData,
                     state.imageTransform,
                     state.gridConfig,
-                    state.distanceConfig
+                    state.distanceConfig,
+                    state.spawnPoints
                 );
 
                 if (result.success && result.map) {
@@ -406,6 +438,40 @@ class AdminEditorView {
             showNotification('Error al guardar', 'error');
             console.error('saveMap exception:', error);
         }
+    }
+
+    // === Spawn Points ===
+
+    toggleSpawnTool() {
+        if (!this.editor) return;
+
+        const isActive = !this.editor.spawnToolActive;
+        const type = document.getElementById('spawnType')?.value || 'player';
+        this.editor.setSpawnTool(isActive, type);
+
+        const btn = document.getElementById('btnToggleSpawnTool');
+        if (btn) {
+            btn.textContent = isActive ? 'Dejar de Colocar' : 'Colocar Spawns';
+            btn.classList.toggle('btn-spawn-active', isActive);
+        }
+    }
+
+    clearSpawns() {
+        if (!this.editor) return;
+        const type = document.getElementById('spawnType')?.value || 'player';
+        this.editor.spawnPoints = this.editor.spawnPoints.filter(sp => sp.type !== type);
+        this.editor.render();
+        this.updateSpawnCounters();
+    }
+
+    updateSpawnCounters() {
+        if (!this.editor) return;
+        const playerCount = this.editor.spawnPoints.filter(sp => sp.type === 'player').length;
+        const npcCount = this.editor.spawnPoints.filter(sp => sp.type === 'npc').length;
+        const playerEl = document.getElementById('spawnPlayerCount');
+        const npcEl = document.getElementById('spawnNpcCount');
+        if (playerEl) playerEl.textContent = playerCount;
+        if (npcEl) npcEl.textContent = npcCount;
     }
 
     // Mantener compatibilidad con saveRoom

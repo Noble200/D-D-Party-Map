@@ -54,6 +54,13 @@ export class MapEditor {
         this.onTokenMoved = null;
         this.onTokenSelected = null; // Notifica selección/deselección a otros
 
+        // === SISTEMA DE SPAWN POINTS ===
+        this.spawnPoints = []; // { id, gridX, gridY, type: 'player'|'npc' }
+        this.spawnToolActive = false; // Herramienta de spawn activa
+        this.spawnToolType = 'player'; // Tipo a colocar
+        this.showSpawnPoints = false; // Mostrar spawn points (solo admin)
+        this.onSpawnPointsChanged = null; // Callback cuando cambian
+
         this.init();
     }
 
@@ -367,6 +374,18 @@ export class MapEditor {
         const px = e.clientX - rect.left;
         const py = e.clientY - rect.top;
 
+        // Si herramienta de spawn activa, colocar/quitar spawn point
+        if (this.spawnToolActive) {
+            const { gridX, gridY } = this.pixelToGrid(px, py);
+            const existing = this.getSpawnAtPixel(px, py);
+            if (existing) {
+                this.removeSpawnPoint(gridX, gridY);
+            } else {
+                this.addSpawnPoint(gridX, gridY, this.spawnToolType);
+            }
+            return;
+        }
+
         // Si tokens habilitados, intentar agarrar un token
         if (this.tokensEnabled) {
             const token = this.getTokenAtPixel(px, py);
@@ -501,6 +520,19 @@ export class MapEditor {
             const px = e.touches[0].clientX - rect.left;
             const py = e.touches[0].clientY - rect.top;
 
+            // Herramienta de spawn en touch
+            if (this.spawnToolActive) {
+                e.preventDefault();
+                const { gridX, gridY } = this.pixelToGrid(px, py);
+                const existing = this.getSpawnAtPixel(px, py);
+                if (existing) {
+                    this.removeSpawnPoint(gridX, gridY);
+                } else {
+                    this.addSpawnPoint(gridX, gridY, this.spawnToolType);
+                }
+                return;
+            }
+
             // Intentar agarrar token
             if (this.tokensEnabled) {
                 const token = this.getTokenAtPixel(px, py);
@@ -595,6 +627,10 @@ export class MapEditor {
         this.drawImage();
         if (this.gridConfig.visible) {
             this.drawGrid();
+        }
+        // Dibujar spawn points (solo si showSpawnPoints está activo - admin editor/viewer)
+        if (this.showSpawnPoints && this.spawnPoints.length > 0) {
+            this.drawSpawnPoints();
         }
         // Dibujar tokens encima de todo
         if (this.tokensEnabled) {
@@ -798,10 +834,115 @@ export class MapEditor {
     }
 
     // ==========================================
+    // Sistema de Spawn Points
+    // ==========================================
+
+    // Activar/desactivar herramienta de spawn
+    setSpawnTool(active, type = 'player') {
+        this.spawnToolActive = active;
+        this.spawnToolType = type;
+        this.showSpawnPoints = true;
+        this.canvas.style.cursor = active ? 'crosshair' : 'default';
+        this.render();
+    }
+
+    // Agregar spawn point en coordenadas de grid
+    addSpawnPoint(gridX, gridY, type) {
+        // No duplicar en la misma celda
+        const existing = this.spawnPoints.find(sp => sp.gridX === gridX && sp.gridY === gridY);
+        if (existing) return;
+
+        const id = `spawn_${type}_${Date.now()}`;
+        this.spawnPoints.push({ id, gridX, gridY, type });
+        this.render();
+        if (this.onSpawnPointsChanged) this.onSpawnPointsChanged(this.spawnPoints);
+    }
+
+    // Eliminar spawn point en coordenadas de grid
+    removeSpawnPoint(gridX, gridY) {
+        const idx = this.spawnPoints.findIndex(sp => sp.gridX === gridX && sp.gridY === gridY);
+        if (idx >= 0) {
+            this.spawnPoints.splice(idx, 1);
+            this.render();
+            if (this.onSpawnPointsChanged) this.onSpawnPointsChanged(this.spawnPoints);
+            return true;
+        }
+        return false;
+    }
+
+    // Obtener spawn point en coordenadas de pixel
+    getSpawnAtPixel(px, py) {
+        const { gridX, gridY } = this.pixelToGrid(px, py);
+        return this.spawnPoints.find(sp => sp.gridX === gridX && sp.gridY === gridY) || null;
+    }
+
+    // Obtener spawn points por tipo
+    getSpawnPointsByType(type) {
+        return this.spawnPoints.filter(sp => sp.type === type);
+    }
+
+    // Dibujar spawn points (solo visible para admin)
+    drawSpawnPoints() {
+        const cellSize = this.getCellSize();
+        const radius = cellSize * 0.3;
+
+        for (const sp of this.spawnPoints) {
+            const center = this.gridToCenter(sp.gridX, sp.gridY);
+            this.drawSingleSpawnPoint(center.x, center.y, radius, sp);
+        }
+    }
+
+    drawSingleSpawnPoint(cx, cy, radius, spawnPoint) {
+        const ctx = this.ctx;
+        const isPlayer = spawnPoint.type === 'player';
+
+        ctx.save();
+        ctx.globalAlpha = 0.45;
+
+        // Fondo del marcador
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fillStyle = isPlayer ? '#2ecc71' : '#e74c3c';
+        ctx.fill();
+
+        // Borde
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = isPlayer ? '#27ae60' : '#c0392b';
+        ctx.setLineDash([4, 3]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Icono interior: "S" para spawn
+        ctx.globalAlpha = 0.7;
+        const fontSize = Math.max(10, radius * 0.9);
+        ctx.font = `bold ${fontSize}px Cinzel, serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(isPlayer ? 'J' : 'M', cx, cy);
+
+        // Etiqueta debajo
+        if (radius > 10) {
+            ctx.globalAlpha = 0.5;
+            const labelSize = Math.max(7, radius * 0.4);
+            ctx.font = `${labelSize}px Cinzel, sans-serif`;
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 1.5;
+            const label = isPlayer ? 'Jugador' : 'NPC';
+            const labelY = cy + radius + labelSize + 1;
+            ctx.strokeText(label, cx, labelY);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(label, cx, labelY);
+        }
+
+        ctx.restore();
+    }
+
+    // ==========================================
     // Métodos para cargar/guardar estado
     // ==========================================
 
-    loadState(imageData, imageTransform, gridConfig, distanceConfig) {
+    loadState(imageData, imageTransform, gridConfig, distanceConfig, spawnPoints) {
         if (gridConfig) {
             this.gridConfig = { ...this.gridConfig, ...gridConfig };
         }
@@ -810,6 +951,9 @@ export class MapEditor {
         }
         if (imageTransform) {
             this.imageTransform = { ...this.imageTransform, ...imageTransform };
+        }
+        if (spawnPoints) {
+            this.spawnPoints = [...spawnPoints];
         }
         if (imageData) {
             this.loadImageFromData(imageData);
@@ -823,7 +967,8 @@ export class MapEditor {
             imageData: this.imageDataUrl,
             imageTransform: this.imageTransform,
             gridConfig: this.gridConfig,
-            distanceConfig: this.distanceConfig
+            distanceConfig: this.distanceConfig,
+            spawnPoints: this.spawnPoints
         };
     }
 }

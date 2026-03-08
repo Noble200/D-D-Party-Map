@@ -106,6 +106,19 @@ async function initDB() {
             END $$;
         `);
 
+        // Agregar columna spawn_points a maps si no existe (migración)
+        await client.query(`
+            DO $$
+            BEGIN
+                IF NOT EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                    WHERE table_name = 'maps' AND column_name = 'spawn_points'
+                ) THEN
+                    ALTER TABLE maps ADD COLUMN spawn_points JSONB DEFAULT '[]';
+                END IF;
+            END $$;
+        `);
+
         // Tabla de NPCs
         await client.query(`
             CREATE TABLE IF NOT EXISTS npcs (
@@ -462,7 +475,7 @@ async function saveCharacterByPlayerName(playerName, roomCode, characterName, ch
 // ==========================================
 
 // Crear nuevo mapa
-async function createMap(roomCode, name, imageData = null, imageTransform = null, gridConfig = null, distanceConfig = null) {
+async function createMap(roomCode, name, imageData = null, imageTransform = null, gridConfig = null, distanceConfig = null, spawnPoints = null) {
     const code = roomCode.toUpperCase();
 
     // Primero obtener el siguiente display_order
@@ -474,16 +487,18 @@ async function createMap(roomCode, name, imageData = null, imageTransform = null
 
     // Insertar el mapa
     const result = await pool.query(
-        `INSERT INTO maps (room_code, name, image_data, image_transform, grid_config, distance_config, is_active, display_order)
+        `INSERT INTO maps (room_code, name, image_data, image_transform, grid_config, distance_config, spawn_points, is_active, display_order)
          VALUES ($1::varchar(10), $2, $3, COALESCE($4::jsonb, '{"x": 0, "y": 0, "scale": 1, "rotation": 0}'::jsonb),
                  COALESCE($5::jsonb, '{"size": 50, "opacity": 0.5, "color": "#ffffff", "lineWidth": 1, "visible": true, "offsetX": 0, "offsetY": 0}'::jsonb),
                  COALESCE($6::jsonb, '{"squareSize": 5, "unit": "feet"}'::jsonb),
-                 false, $7)
+                 COALESCE($7::jsonb, '[]'::jsonb),
+                 false, $8)
          RETURNING *`,
         [code, name, imageData,
          imageTransform ? JSON.stringify(imageTransform) : null,
          gridConfig ? JSON.stringify(gridConfig) : null,
          distanceConfig ? JSON.stringify(distanceConfig) : null,
+         spawnPoints ? JSON.stringify(spawnPoints) : null,
          nextOrder]
     );
     return result.rows[0];
@@ -546,7 +561,7 @@ async function setActiveMap(roomCode, mapId) {
 
 // Actualizar mapa
 async function updateMap(mapId, data) {
-    const { name, imageData, imageTransform, gridConfig, distanceConfig } = data;
+    const { name, imageData, imageTransform, gridConfig, distanceConfig, spawnPoints } = data;
 
     const result = await pool.query(
         `UPDATE maps SET
@@ -555,12 +570,14 @@ async function updateMap(mapId, data) {
             image_transform = COALESCE($4, image_transform),
             grid_config = COALESCE($5, grid_config),
             distance_config = COALESCE($6, distance_config),
+            spawn_points = COALESCE($7, spawn_points),
             updated_at = CURRENT_TIMESTAMP
          WHERE id = $1 RETURNING *`,
         [mapId, name, imageData,
          imageTransform ? JSON.stringify(imageTransform) : null,
          gridConfig ? JSON.stringify(gridConfig) : null,
-         distanceConfig ? JSON.stringify(distanceConfig) : null]
+         distanceConfig ? JSON.stringify(distanceConfig) : null,
+         spawnPoints ? JSON.stringify(spawnPoints) : null]
     );
     return result.rows[0] || null;
 }
