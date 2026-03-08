@@ -221,6 +221,12 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Selección de token (visual para todos)
+    socket.on('token-selected', ({ roomCode, tokenId }) => {
+        // Rebroadcast a todos excepto quien envió
+        socket.to(roomCode).emit('token-selected-sync', { tokenId });
+    });
+
     // Admin elimina token del mapa
     socket.on('token-removed', async ({ roomCode, mapId, tokenId }) => {
         io.to(roomCode).emit('token-removed-sync', { tokenId });

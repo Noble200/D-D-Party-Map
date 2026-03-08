@@ -18,6 +18,7 @@ class SocketClient {
         this.onTokenUpdated = null;
         this.onTokenAddedSync = null;
         this.onTokenRemovedSync = null;
+        this.onTokenSelectedSync = null;
     }
 
     // Conectar al servidor
@@ -105,6 +106,10 @@ class SocketClient {
         this.socket.on('token-removed-sync', (data) => {
             if (this.onTokenRemovedSync) this.onTokenRemovedSync(data);
         });
+
+        this.socket.on('token-selected-sync', (data) => {
+            if (this.onTokenSelectedSync) this.onTokenSelectedSync(data);
+        });
     }
 
     // Unirse a una sala (con datos extendidos)
@@ -150,6 +155,15 @@ class SocketClient {
         if (this.socket && this.roomCode) {
             this.socket.emit('token-added', {
                 roomCode: this.roomCode, mapId, token
+            });
+        }
+    }
+
+    // Emitir selección de token (para que todos vean el highlight)
+    emitTokenSelected(tokenId) {
+        if (this.socket && this.roomCode) {
+            this.socket.emit('token-selected', {
+                roomCode: this.roomCode, tokenId
             });
         }
     }

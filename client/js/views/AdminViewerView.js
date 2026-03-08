@@ -73,10 +73,21 @@ class AdminViewerView {
         socketClient.onTokenRemovedSync = (data) => {
             this.mapEditor?.removeToken(data.tokenId);
         };
+        socketClient.onTokenSelectedSync = (data) => {
+            if (this.mapEditor) {
+                this.mapEditor.selectedTokenId = data.tokenId;
+                this.mapEditor.render();
+            }
+        };
 
         // Callback cuando el admin mueve un token
         this.mapEditor.onTokenMoved = (token) => {
             socketClient.emitTokenMoved(this.currentMapId, token, 'admin');
+        };
+
+        // Callback cuando se selecciona/deselecciona un token
+        this.mapEditor.onTokenSelected = (tokenId) => {
+            socketClient.emitTokenSelected(tokenId);
         };
 
         this.initialized = true;

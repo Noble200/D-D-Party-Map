@@ -50,8 +50,9 @@ export class MapEditor {
         this.ownTokenId = null; // ID del token que pertenece a este jugador
         this.isAdmin = false;
 
-        // Callback cuando un token se mueve
+        // Callbacks de tokens
         this.onTokenMoved = null;
+        this.onTokenSelected = null; // Notifica selección/deselección a otros
 
         this.init();
     }
@@ -341,6 +342,15 @@ export class MapEditor {
         return null;
     }
 
+    // Seleccionar/deseleccionar token y notificar a todos
+    selectToken(tokenId) {
+        if (this.selectedTokenId === tokenId) return;
+        this.selectedTokenId = tokenId;
+        if (this.onTokenSelected) {
+            this.onTokenSelected(tokenId);
+        }
+    }
+
     // Verificar si el usuario puede mover un token
     canMoveToken(token) {
         if (!this.tokensEnabled) return false;
@@ -363,10 +373,16 @@ export class MapEditor {
             if (token && this.canMoveToken(token)) {
                 this.draggingToken = token;
                 this.dragTokenPos = { x: px, y: py };
-                this.selectedTokenId = token.id;
+                this.selectToken(token.id);
                 this.canvas.style.cursor = 'grabbing';
                 this.render();
                 return;
+            }
+
+            // Click en vacío: deseleccionar
+            if (this.selectedTokenId) {
+                this.selectToken(null);
+                this.render();
             }
         }
 
@@ -431,6 +447,7 @@ export class MapEditor {
 
             this.draggingToken = null;
             this.dragTokenPos = null;
+            this.selectToken(null); // Deseleccionar al soltar
             this.canvas.style.cursor = 'default';
             this.render();
             return;
@@ -491,9 +508,15 @@ export class MapEditor {
                     e.preventDefault();
                     this.draggingToken = token;
                     this.dragTokenPos = { x: px, y: py };
-                    this.selectedTokenId = token.id;
+                    this.selectToken(token.id);
                     this.render();
                     return;
+                }
+
+                // Toque en vacío: deseleccionar
+                if (this.selectedTokenId) {
+                    this.selectToken(null);
+                    this.render();
                 }
             }
 
@@ -554,6 +577,7 @@ export class MapEditor {
 
             this.draggingToken = null;
             this.dragTokenPos = null;
+            this.selectToken(null); // Deseleccionar al soltar
             this.render();
             return;
         }

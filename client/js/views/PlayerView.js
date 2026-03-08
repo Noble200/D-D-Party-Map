@@ -51,10 +51,21 @@ class PlayerView {
         socketClient.onTokenRemovedSync = (data) => {
             this.viewer?.removeToken(data.tokenId);
         };
+        socketClient.onTokenSelectedSync = (data) => {
+            if (this.viewer) {
+                this.viewer.selectedTokenId = data.tokenId;
+                this.viewer.render();
+            }
+        };
 
         // Callback cuando el jugador mueve su token
         this.viewer.onTokenMoved = (token) => {
             socketClient.emitTokenMoved(this.currentMapId, token, this.app.playerName);
+        };
+
+        // Callback cuando se selecciona/deselecciona un token
+        this.viewer.onTokenSelected = (tokenId) => {
+            socketClient.emitTokenSelected(tokenId);
         };
     }
 
