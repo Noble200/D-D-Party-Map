@@ -59,11 +59,15 @@ class DnDMapApp {
 
         // Intentar restaurar sesión previa (tras refresh)
         const restored = await this.restoreSession();
-        if (!restored && sessionStorage.getItem(SESSION_KEY)) {
-            // Restauración falló, volver a mostrar home
+        if (!restored) {
+            // Restauración falló o no había sesión, mostrar home
             this.clearSession();
+            document.documentElement.classList.remove('restoring-session');
             const homeScreen = document.getElementById('homeScreen');
             if (homeScreen) homeScreen.classList.add('active');
+        } else {
+            // Restauración exitosa, quitar clase de ocultación
+            document.documentElement.classList.remove('restoring-session');
         }
     }
 
@@ -196,13 +200,6 @@ class DnDMapApp {
             return false;
         }
     }
-}
-
-// Ocultar home ANTES de inicializar si hay sesión pendiente (evita parpadeo)
-// Esto se ejecuta sincrónicamente al cargar el módulo, antes del primer paint
-if (sessionStorage.getItem(SESSION_KEY)) {
-    const home = document.getElementById('homeScreen');
-    if (home) home.classList.remove('active');
 }
 
 // Inicializar la aplicación cuando el DOM esté listo

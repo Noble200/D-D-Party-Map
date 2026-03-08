@@ -6,6 +6,15 @@
     <title>D&D Map Editor</title>
     <link rel="stylesheet" href="css/main.css">
     <script src="/socket.io/socket.io.js"></script>
+    <!-- Ocultar home si hay sesión pendiente (antes del primer paint) -->
+    <script>
+        if (sessionStorage.getItem('dnd_session_state')) {
+            document.documentElement.classList.add('restoring-session');
+        }
+    </script>
+    <style>
+        .restoring-session #homeScreen { display: none !important; }
+    </style>
 </head>
 <body>
     <!-- ==========================================
