@@ -988,13 +988,14 @@ class CharacterSheet {
             img.onload = () => {
                 const canvas = document.createElement('canvas');
                 const maxSize = 128;
-                let w = img.width, h = img.height;
-                if (w > h) { h = (h / w) * maxSize; w = maxSize; }
-                else { w = (w / h) * maxSize; h = maxSize; }
-                canvas.width = w;
-                canvas.height = h;
+                canvas.width = maxSize;
+                canvas.height = maxSize;
                 const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, w, h);
+                // Recortar al centro manteniendo aspect ratio (crop cuadrado)
+                const side = Math.min(img.width, img.height);
+                const sx = (img.width - side) / 2;
+                const sy = (img.height - side) / 2;
+                ctx.drawImage(img, sx, sy, side, side, 0, 0, maxSize, maxSize);
                 this.tokenPhoto = canvas.toDataURL('image/jpeg', 0.8);
                 this.showPhotoPreview();
                 this.updateTokenPreview();
