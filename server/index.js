@@ -10,7 +10,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 
 // Importar módulos
-const { initDB, migrateRoomMapsData, updateRoomActivity, cleanupInactiveRooms, saveDiceRoll } = require('./db/database');
+const { initDB, migrateRoomMapsData, updateRoomActivity, cleanupInactiveRooms, saveDiceRoll, updateMapTokens, getMapTokens } = require('./db/database');
 const roomRoutes = require('./routes/rooms');
 const userRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin');
@@ -184,6 +184,54 @@ io.on('connection', (socket) => {
     // Notificar turno actual en combate
     socket.on('combat-turn', ({ roomCode, currentTurn, combatantName }) => {
         io.to(roomCode).emit('combat-turn-changed', { currentTurn, combatantName });
+    });
+
+    // === TOKENS ===
+
+    // Mover token (admin o jugador mueve su propio token)
+    socket.on('token-moved', async ({ roomCode, mapId, token, movedBy }) => {
+        // Rebroadcast a todos en la sala (incluido quien envió para confirmar)
+        io.to(roomCode).emit('token-updated', { token, movedBy });
+
+        // Persistir en BD
+        try {
+            const tokens = await getMapTokens(mapId);
+            const idx = tokens.findIndex(t => t.id === token.id);
+            if (idx >= 0) {
+                tokens[idx] = token;
+            } else {
+                tokens.push(token);
+            }
+            await updateMapTokens(mapId, tokens);
+        } catch (err) {
+            console.error('Error persistiendo token:', err);
+        }
+    });
+
+    // Admin agrega token al mapa
+    socket.on('token-added', async ({ roomCode, mapId, token }) => {
+        io.to(roomCode).emit('token-added-sync', { token });
+
+        try {
+            const tokens = await getMapTokens(mapId);
+            tokens.push(token);
+            await updateMapTokens(mapId, tokens);
+        } catch (err) {
+            console.error('Error agregando token:', err);
+        }
+    });
+
+    // Admin elimina token del mapa
+    socket.on('token-removed', async ({ roomCode, mapId, tokenId }) => {
+        io.to(roomCode).emit('token-removed-sync', { tokenId });
+
+        try {
+            const tokens = await getMapTokens(mapId);
+            const filtered = tokens.filter(t => t.id !== tokenId);
+            await updateMapTokens(mapId, filtered);
+        } catch (err) {
+            console.error('Error eliminando token:', err);
+        }
     });
 });
 

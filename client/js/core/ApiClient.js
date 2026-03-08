@@ -183,6 +183,26 @@ class ApiClient {
     }
 
     // ==========================================
+    // TOKENS
+    // ==========================================
+
+    // Obtener tokens de un mapa
+    async getMapTokens(roomCode, mapId) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/maps/${mapId}/tokens`);
+        return response.json();
+    }
+
+    // Actualizar tokens de un mapa (admin)
+    async updateMapTokens(roomCode, mapId, adminPassword, tokens) {
+        const response = await fetch(`${API_URL}/rooms/${roomCode}/maps/${mapId}/tokens`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminPassword, tokens })
+        });
+        return response.json();
+    }
+
+    // ==========================================
     // NPCs
     // ==========================================
 

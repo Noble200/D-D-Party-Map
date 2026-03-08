@@ -13,6 +13,7 @@ class PlayerView {
         this.app = app;
         this.viewer = null;
         this.initialized = false;
+        this.currentMapId = null;
     }
 
     // Inicializar la vista cuando se muestra
@@ -39,6 +40,22 @@ class PlayerView {
         document.getElementById('btnCharacterSheet')?.addEventListener('click', () => {
             this.openCharacterSheet();
         });
+
+        // Socket events de tokens
+        socketClient.onTokenUpdated = (data) => {
+            this.viewer?.updateToken(data.token);
+        };
+        socketClient.onTokenAddedSync = (data) => {
+            this.viewer?.addToken(data.token);
+        };
+        socketClient.onTokenRemovedSync = (data) => {
+            this.viewer?.removeToken(data.tokenId);
+        };
+
+        // Callback cuando el jugador mueve su token
+        this.viewer.onTokenMoved = (token) => {
+            socketClient.emitTokenMoved(this.currentMapId, token, this.app.playerName);
+        };
     }
 
     // Actualizar UI con datos de la sala
@@ -144,6 +161,7 @@ class PlayerView {
 
             if (result.success && result.map) {
                 const map = result.map;
+                this.currentMapId = map.id;
 
                 if (map.imageData) {
                     this.viewer.loadImageFromData(map.imageData);
@@ -164,6 +182,10 @@ class PlayerView {
                 }
 
                 this.viewer.render();
+
+                // Cargar tokens
+                await this.loadTokens();
+
                 showNotification('Mapa actualizado', 'info');
             } else {
                 // Fallback: cargar desde room (compatibilidad)
@@ -181,6 +203,25 @@ class PlayerView {
         }
     }
 
+    // Cargar tokens del mapa activo
+    async loadTokens() {
+        if (!this.currentMapId) return;
+        try {
+            const result = await apiClient.getMapTokens(
+                this.app.currentRoom.code,
+                this.currentMapId
+            );
+            if (result.success) {
+                this.viewer.setTokens(result.tokens || []);
+                // El jugador solo puede mover su propio token
+                const ownTokenId = `player_${this.app.playerName}`;
+                this.viewer.enableTokens(false, ownTokenId);
+            }
+        } catch (error) {
+            console.error('Error al cargar tokens:', error);
+        }
+    }
+
     // Cargar datos de la sala en el visor
     async loadRoomData() {
         const room = this.app.currentRoom;
@@ -192,6 +233,7 @@ class PlayerView {
 
             if (result.success && result.map) {
                 const map = result.map;
+                this.currentMapId = map.id;
 
                 if (map.imageData) {
                     this.viewer.loadImageFromData(map.imageData);
@@ -212,6 +254,9 @@ class PlayerView {
                 }
 
                 this.viewer.render();
+
+                // Cargar tokens
+                await this.loadTokens();
                 return;
             }
         } catch (error) {

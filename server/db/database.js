@@ -93,6 +93,19 @@ async function initDB() {
             )
         `);
 
+        // Agregar columna tokens a maps si no existe (migración)
+        await client.query(`
+            DO $$
+            BEGIN
+                IF NOT EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                    WHERE table_name = 'maps' AND column_name = 'tokens'
+                ) THEN
+                    ALTER TABLE maps ADD COLUMN tokens JSONB DEFAULT '[]';
+                END IF;
+            END $$;
+        `);
+
         // Tabla de NPCs
         await client.query(`
             CREATE TABLE IF NOT EXISTS npcs (
@@ -562,6 +575,30 @@ async function deleteMap(mapId) {
 }
 
 // ==========================================
+// FUNCIONES DE TOKENS
+// ==========================================
+
+// Obtener tokens de un mapa
+async function getMapTokens(mapId) {
+    const result = await pool.query(
+        'SELECT tokens FROM maps WHERE id = $1',
+        [mapId]
+    );
+    if (!result.rows[0]) return [];
+    return result.rows[0].tokens || [];
+}
+
+// Actualizar tokens de un mapa
+async function updateMapTokens(mapId, tokens) {
+    const result = await pool.query(
+        `UPDATE maps SET tokens = $2::jsonb, updated_at = CURRENT_TIMESTAMP
+         WHERE id = $1 RETURNING tokens`,
+        [mapId, JSON.stringify(tokens)]
+    );
+    return result.rows[0]?.tokens || [];
+}
+
+// ==========================================
 // FUNCIONES DE NPCs
 // ==========================================
 
@@ -875,6 +912,9 @@ module.exports = {
     getMaps,
     getActiveMap,
     getMapById,
+    // Tokens
+    getMapTokens,
+    updateMapTokens,
     setActiveMap,
     updateMap,
     deleteMap,

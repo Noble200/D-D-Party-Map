@@ -15,6 +15,7 @@ class AdminViewerView {
         this.mapEditor = null;
         this.currentMapId = null;
         this.initialized = false;
+        this.connectedPlayers = [];
     }
 
     init() {
@@ -58,9 +59,25 @@ class AdminViewerView {
         });
 
         // Socket events
-        socketClient.onUsersUpdated = (users) => this.updateUsersUI(users);
+        socketClient.onUsersUpdated = (users) => this.onUsersUpdated(users);
         socketClient.onMapChanged = () => this.reloadMap();
         socketClient.onActiveMapChanged = (data) => this.onMapSwitched(data);
+
+        // Socket events de tokens
+        socketClient.onTokenUpdated = (data) => {
+            this.mapEditor?.updateToken(data.token);
+        };
+        socketClient.onTokenAddedSync = (data) => {
+            this.mapEditor?.addToken(data.token);
+        };
+        socketClient.onTokenRemovedSync = (data) => {
+            this.mapEditor?.removeToken(data.tokenId);
+        };
+
+        // Callback cuando el admin mueve un token
+        this.mapEditor.onTokenMoved = (token) => {
+            socketClient.emitTokenMoved(this.currentMapId, token, 'admin');
+        };
 
         this.initialized = true;
     }
@@ -83,17 +100,79 @@ class AdminViewerView {
             if (result.success && result.map) {
                 this.currentMapId = result.map.id;
                 this.loadMapData(result.map);
+
+                // Cargar tokens y habilitar sistema
+                await this.loadTokens();
             } else {
                 // No hay mapa activo, verificar si hay mapas
                 const mapsResult = await apiClient.getMaps(this.app.currentRoom.code);
                 if (mapsResult.success && mapsResult.maps.length === 0) {
-                    // No hay mapas, sugerir crear uno
                     showNotification('No hay mapas en esta sala. Crea uno desde "Editar Mapa".', 'info');
                 }
             }
         } catch (error) {
             console.error('Error al cargar mapa activo:', error);
         }
+    }
+
+    // Cargar tokens del mapa activo
+    async loadTokens() {
+        if (!this.currentMapId) return;
+        try {
+            const result = await apiClient.getMapTokens(
+                this.app.currentRoom.code,
+                this.currentMapId
+            );
+            if (result.success) {
+                this.mapEditor.setTokens(result.tokens || []);
+                this.mapEditor.enableTokens(true); // Admin puede mover todos
+            }
+        } catch (error) {
+            console.error('Error al cargar tokens:', error);
+        }
+    }
+
+    // Agregar token para un jugador conectado
+    addPlayerToken(playerName, characterName) {
+        if (!this.mapEditor || !this.currentMapId) return;
+
+        const tokenId = `player_${playerName}`;
+
+        // No duplicar si ya existe
+        if (this.mapEditor.tokens.find(t => t.id === tokenId)) return;
+
+        // Buscar una celda libre cerca del centro (0,0)
+        const pos = this.findFreeCell(0, 0);
+
+        const token = {
+            id: tokenId,
+            name: characterName || playerName,
+            color: MapEditor.getTokenColor(this.mapEditor.tokens.length),
+            gridX: pos.gridX,
+            gridY: pos.gridY,
+            playerName: playerName
+        };
+
+        this.mapEditor.addToken(token);
+        socketClient.emitTokenAdded(this.currentMapId, token);
+    }
+
+    // Buscar celda libre cerca de una posición
+    findFreeCell(startX, startY) {
+        // Buscar en espiral desde el punto de inicio
+        for (let radius = 0; radius < 20; radius++) {
+            for (let dx = -radius; dx <= radius; dx++) {
+                for (let dy = -radius; dy <= radius; dy++) {
+                    if (Math.abs(dx) !== radius && Math.abs(dy) !== radius) continue;
+                    const gx = startX + dx;
+                    const gy = startY + dy;
+                    if (!this.mapEditor.isCellOccupied(gx, gy)) {
+                        return { gridX: gx, gridY: gy };
+                    }
+                }
+            }
+        }
+        return { gridX: startX, gridY: startY };
     }
 
     loadMapData(mapData) {
@@ -132,6 +211,21 @@ class AdminViewerView {
         if (data.mapId !== this.currentMapId) {
             this.currentMapId = data.mapId;
             this.reloadMap();
+        }
+    }
+
+    // Cuando se actualiza la lista de usuarios, crear tokens para jugadores nuevos
+    onUsersUpdated(users) {
+        this.updateUsersUI(users);
+        this.connectedPlayers = users.players || [];
+
+        // Auto-crear tokens para jugadores conectados que no tengan token
+        if (this.mapEditor?.tokensEnabled && this.currentMapId) {
+            this.connectedPlayers.forEach(player => {
+                const name = typeof player === 'object' ? player.name : player;
+                const charName = typeof player === 'object' ? player.characterName : null;
+                this.addPlayerToken(name, charName);
+            });
         }
     }
 
@@ -186,6 +280,8 @@ class AdminViewerView {
     }
 
     leaveRoom() {
+        // Deshabilitar tokens al salir
+        this.mapEditor?.disableTokens();
         // Volver al menu de sala, no al home
         screenManager.show('roomMenu');
     }

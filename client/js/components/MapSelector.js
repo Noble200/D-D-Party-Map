@@ -12,9 +12,7 @@ class MapSelector {
     constructor(app) {
         this.app = app;
         this.modal = document.getElementById('mapSelectorModal');
-        this.formModal = document.getElementById('mapFormModal');
         this.maps = [];
-        this.editingMapId = null;
         this.initialized = false;
     }
 
@@ -27,17 +25,12 @@ class MapSelector {
         // Nuevo mapa
         document.getElementById('btnNewMap')?.addEventListener('click', () => this.openMapForm());
 
-        // Formulario de mapa
-        document.getElementById('btnCancelMapForm')?.addEventListener('click', () => this.hideMapForm());
-        document.getElementById('btnSaveMapForm')?.addEventListener('click', () => this.saveMapForm());
+        // Formulario de mapa - no registrar listeners aquí
+        // porque RoomMenuView ya los maneja en el modal compartido
 
         // Cerrar al hacer click fuera
         this.modal?.addEventListener('click', (e) => {
             if (e.target === this.modal) this.hide();
-        });
-
-        this.formModal?.addEventListener('click', (e) => {
-            if (e.target === this.formModal) this.hideMapForm();
         });
 
         this.initialized = true;
@@ -196,91 +189,11 @@ class MapSelector {
         }
     }
 
-    openMapForm(mapId = null) {
-        this.editingMapId = mapId;
-
-        // Resetear formulario
-        document.getElementById('mapNameInput').value = '';
-        document.getElementById('squareSizeInput').value = 5;
-        document.getElementById('distanceUnitInput').value = 'feet';
-
-        if (mapId) {
-            // Edición: cargar datos existentes
-            const map = this.maps.find(m => m.id === mapId);
-            if (map) {
-                document.getElementById('mapFormTitle').textContent = 'Editar Mapa';
-                document.getElementById('mapNameInput').value = map.name;
-
-                const distanceConfig = typeof map.distanceConfig === 'string'
-                    ? JSON.parse(map.distanceConfig)
-                    : map.distanceConfig;
-
-                document.getElementById('squareSizeInput').value = distanceConfig?.squareSize || 5;
-                document.getElementById('distanceUnitInput').value = distanceConfig?.unit || 'feet';
-            }
-        } else {
-            document.getElementById('mapFormTitle').textContent = 'Nuevo Mapa';
-        }
-
-        this.formModal.classList.add('active');
-    }
-
-    hideMapForm() {
-        this.formModal.classList.remove('active');
-        this.editingMapId = null;
-    }
-
-    async saveMapForm() {
-        const name = document.getElementById('mapNameInput').value.trim();
-        const squareSize = parseInt(document.getElementById('squareSizeInput').value) || 5;
-        const unit = document.getElementById('distanceUnitInput').value || 'feet';
-
-        if (!name) {
-            showNotification('Ingresa un nombre para el mapa', 'error');
-            return;
-        }
-
-        const distanceConfig = { squareSize, unit };
-
-        try {
-            let result;
-
-            if (this.editingMapId) {
-                // Actualizar mapa existente
-                result = await apiClient.updateMap(
-                    this.app.currentRoom.code,
-                    this.editingMapId,
-                    this.app.adminPassword,
-                    { name, distanceConfig }
-                );
-            } else {
-                // Crear nuevo mapa
-                result = await apiClient.createMap(
-                    this.app.currentRoom.code,
-                    this.app.adminPassword,
-                    name,
-                    null, // imageData
-                    null, // imageTransform
-                    null, // gridConfig
-                    distanceConfig
-                );
-            }
-
-            if (result.success) {
-                showNotification(this.editingMapId ? 'Mapa actualizado' : 'Mapa creado', 'success');
-                this.hideMapForm();
-                await this.loadMaps();
-
-                // Si es nuevo mapa, ir al editor
-                if (!this.editingMapId && result.map) {
-                    this.editMap(result.map.id);
-                }
-            } else {
-                showNotification('Error: ' + (result.error || ''), 'error');
-            }
-        } catch (error) {
-            console.error('Error al guardar mapa:', error);
-            showNotification('Error al guardar mapa', 'error');
+    openMapForm() {
+        // Delegar al RoomMenuView que maneja el formulario de mapa
+        this.hide();
+        if (this.app.roomMenuView) {
+            this.app.roomMenuView.openMapForm();
         }
     }
 }

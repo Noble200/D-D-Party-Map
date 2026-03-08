@@ -251,11 +251,56 @@ async function deleteMap(req, res) {
     }
 }
 
+// Obtener tokens de un mapa
+async function getTokens(req, res) {
+    try {
+        const { code, mapId } = req.params;
+
+        // Verificar que la sala existe
+        const room = await db.getRoomByCode(code);
+        if (!room) {
+            return res.status(404).json({ error: 'Sala no encontrada' });
+        }
+
+        const tokens = await db.getMapTokens(mapId);
+        res.json({ success: true, tokens });
+    } catch (error) {
+        console.error('Error al obtener tokens:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+// Actualizar tokens de un mapa
+async function updateTokens(req, res) {
+    try {
+        const { code, mapId } = req.params;
+        const { adminPassword, tokens } = req.body;
+
+        if (!adminPassword) {
+            return res.status(400).json({ error: 'Se requiere adminPassword' });
+        }
+
+        // Verificar acceso de admin
+        const room = await db.verifyAdminAccess(code, adminPassword);
+        if (!room) {
+            return res.status(403).json({ error: 'Acceso denegado' });
+        }
+
+        const updated = await db.updateMapTokens(mapId, tokens);
+        res.json({ success: true, tokens: updated });
+    } catch (error) {
+        console.error('Error al actualizar tokens:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
 module.exports = {
     getMaps,
     getActiveMap,
     createMap,
     updateMap,
     activateMap,
-    deleteMap
+    deleteMap,
+    getTokens,
+    updateTokens
 };

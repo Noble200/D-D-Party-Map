@@ -14,6 +14,10 @@ class SocketClient {
         this.onCombatUpdated = null;
         this.onCombatTurnChanged = null;
         this.onGameStarted = null;
+        // Tokens
+        this.onTokenUpdated = null;
+        this.onTokenAddedSync = null;
+        this.onTokenRemovedSync = null;
     }
 
     // Conectar al servidor
@@ -88,6 +92,19 @@ class SocketClient {
                 this.onGameStarted(data);
             }
         });
+
+        // === Tokens ===
+        this.socket.on('token-updated', (data) => {
+            if (this.onTokenUpdated) this.onTokenUpdated(data);
+        });
+
+        this.socket.on('token-added-sync', (data) => {
+            if (this.onTokenAddedSync) this.onTokenAddedSync(data);
+        });
+
+        this.socket.on('token-removed-sync', (data) => {
+            if (this.onTokenRemovedSync) this.onTokenRemovedSync(data);
+        });
     }
 
     // Unirse a una sala (con datos extendidos)
@@ -116,6 +133,33 @@ class SocketClient {
     notifyMapUpdate() {
         if (this.socket && this.roomCode) {
             this.socket.emit('map-updated', { roomCode: this.roomCode });
+        }
+    }
+
+    // Emitir movimiento de token
+    emitTokenMoved(mapId, token, movedBy) {
+        if (this.socket && this.roomCode) {
+            this.socket.emit('token-moved', {
+                roomCode: this.roomCode, mapId, token, movedBy
+            });
+        }
+    }
+
+    // Emitir token agregado
+    emitTokenAdded(mapId, token) {
+        if (this.socket && this.roomCode) {
+            this.socket.emit('token-added', {
+                roomCode: this.roomCode, mapId, token
+            });
+        }
+    }
+
+    // Emitir token eliminado
+    emitTokenRemoved(mapId, tokenId) {
+        if (this.socket && this.roomCode) {
+            this.socket.emit('token-removed', {
+                roomCode: this.roomCode, mapId, tokenId
+            });
         }
     }
 

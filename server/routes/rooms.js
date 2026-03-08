@@ -69,6 +69,12 @@ router.put('/:code/maps/:mapId/activate', mapController.activateMap);
 // Eliminar mapa (admin)
 router.delete('/:code/maps/:mapId', mapController.deleteMap);
 
+// Obtener tokens de un mapa (lectura para jugadores)
+router.get('/:code/maps/:mapId/tokens', mapController.getTokens);
+
+// Actualizar tokens de un mapa (admin)
+router.put('/:code/maps/:mapId/tokens', mapController.updateTokens);
+
 // ==========================================
 // Rutas de NPCs
 // ==========================================

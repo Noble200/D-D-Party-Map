@@ -4,6 +4,12 @@
 
 import { DEFAULT_IMAGE_TRANSFORM, DEFAULT_GRID_CONFIG, DEFAULT_DISTANCE_CONFIG, ZOOM_MIN, ZOOM_MAX } from '../config.js';
 
+// Colores predefinidos para tokens de jugadores
+const TOKEN_COLORS = [
+    '#e74c3c', '#3498db', '#2ecc71', '#f39c12',
+    '#9b59b6', '#1abc9c', '#e67e22', '#e91e63'
+];
+
 export class MapEditor {
     constructor(canvasId, isEditable = true) {
         this.canvas = document.getElementById(canvasId);
@@ -34,6 +40,18 @@ export class MapEditor {
 
         // Callbacks para controles UI
         this.onScaleChange = null;
+
+        // === SISTEMA DE TOKENS ===
+        this.tokens = [];
+        this.tokensEnabled = false;
+        this.draggingToken = null;
+        this.dragTokenPos = null; // Posición visual durante el arrastre
+        this.selectedTokenId = null;
+        this.ownTokenId = null; // ID del token que pertenece a este jugador
+        this.isAdmin = false;
+
+        // Callback cuando un token se mueve
+        this.onTokenMoved = null;
 
         this.init();
     }
@@ -67,14 +85,14 @@ export class MapEditor {
         // Eventos del mouse en el canvas
         this.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
         this.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
-        this.canvas.addEventListener('mouseup', () => this.onMouseUp());
-        this.canvas.addEventListener('mouseleave', () => this.onMouseUp());
+        this.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
+        this.canvas.addEventListener('mouseleave', () => this.onMouseLeave());
         this.canvas.addEventListener('wheel', (e) => this.onWheel(e));
 
         // Eventos táctiles
         this.canvas.addEventListener('touchstart', (e) => this.onTouchStart(e));
         this.canvas.addEventListener('touchmove', (e) => this.onTouchMove(e));
-        this.canvas.addEventListener('touchend', () => this.onMouseUp());
+        this.canvas.addEventListener('touchend', (e) => this.onTouchEnd(e));
     }
 
     // ==========================================
@@ -199,15 +217,187 @@ export class MapEditor {
     }
 
     // ==========================================
-    // Eventos del Mouse
+    // Helpers de Grid (conversión coordenadas)
+    // ==========================================
+
+    // Obtener tamaño de celda en pixels (escalado)
+    getCellSize() {
+        return this.gridConfig.size * this.imageTransform.scale;
+    }
+
+    // Obtener base del grid (posición 0,0 del grid en pixels de canvas)
+    getGridBase() {
+        const { offsetX, offsetY } = this.gridConfig;
+        return {
+            x: this.imageTransform.x + (offsetX * this.imageTransform.scale),
+            y: this.imageTransform.y + (offsetY * this.imageTransform.scale)
+        };
+    }
+
+    // Convertir posición de canvas (pixel) a coordenada de grid
+    pixelToGrid(px, py) {
+        const cellSize = this.getCellSize();
+        const base = this.getGridBase();
+        return {
+            gridX: Math.floor((px - base.x) / cellSize),
+            gridY: Math.floor((py - base.y) / cellSize)
+        };
+    }
+
+    // Convertir coordenada de grid a pixel de canvas (esquina superior izquierda de la celda)
+    gridToPixel(gridX, gridY) {
+        const cellSize = this.getCellSize();
+        const base = this.getGridBase();
+        return {
+            x: base.x + (gridX * cellSize),
+            y: base.y + (gridY * cellSize)
+        };
+    }
+
+    // Obtener el centro de una celda en pixels
+    gridToCenter(gridX, gridY) {
+        const cellSize = this.getCellSize();
+        const pos = this.gridToPixel(gridX, gridY);
+        return {
+            x: pos.x + cellSize / 2,
+            y: pos.y + cellSize / 2
+        };
+    }
+
+    // ==========================================
+    // Sistema de Tokens
+    // ==========================================
+
+    // Habilitar/deshabilitar tokens
+    enableTokens(isAdmin, ownTokenId = null) {
+        this.tokensEnabled = true;
+        this.isAdmin = isAdmin;
+        this.ownTokenId = ownTokenId;
+        this.render();
+    }
+
+    disableTokens() {
+        this.tokensEnabled = false;
+        this.tokens = [];
+        this.draggingToken = null;
+        this.selectedTokenId = null;
+        this.render();
+    }
+
+    // Cargar tokens
+    setTokens(tokens) {
+        this.tokens = tokens || [];
+        this.render();
+    }
+
+    // Agregar un token
+    addToken(token) {
+        // Verificar que no haya otro token en la misma celda
+        const existing = this.tokens.find(t => t.gridX === token.gridX && t.gridY === token.gridY);
+        if (existing) return false;
+        this.tokens.push(token);
+        this.render();
+        return true;
+    }
+
+    // Eliminar un token
+    removeToken(tokenId) {
+        this.tokens = this.tokens.filter(t => t.id !== tokenId);
+        if (this.selectedTokenId === tokenId) this.selectedTokenId = null;
+        this.render();
+    }
+
+    // Actualizar un token específico (por movimiento remoto)
+    updateToken(token) {
+        const idx = this.tokens.findIndex(t => t.id === token.id);
+        if (idx >= 0) {
+            this.tokens[idx] = { ...this.tokens[idx], ...token };
+        } else {
+            this.tokens.push(token);
+        }
+        this.render();
+    }
+
+    // Verificar si una celda está ocupada (excluyendo un token específico)
+    isCellOccupied(gridX, gridY, excludeTokenId = null) {
+        return this.tokens.some(t =>
+            t.gridX === gridX && t.gridY === gridY && t.id !== excludeTokenId
+        );
+    }
+
+    // Buscar token en una posición de canvas
+    getTokenAtPixel(px, py) {
+        const cellSize = this.getCellSize();
+        const radius = cellSize * 0.4;
+
+        for (let i = this.tokens.length - 1; i >= 0; i--) {
+            const token = this.tokens[i];
+            const center = this.gridToCenter(token.gridX, token.gridY);
+            const dist = Math.sqrt((px - center.x) ** 2 + (py - center.y) ** 2);
+            if (dist <= radius) {
+                return token;
+            }
+        }
+        return null;
+    }
+
+    // Verificar si el usuario puede mover un token
+    canMoveToken(token) {
+        if (!this.tokensEnabled) return false;
+        if (this.isAdmin) return true;
+        return token.id === this.ownTokenId;
+    }
+
+    // ==========================================
+    // Eventos del Mouse (con soporte de tokens)
     // ==========================================
 
     onMouseDown(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+
+        // Si tokens habilitados, intentar agarrar un token
+        if (this.tokensEnabled) {
+            const token = this.getTokenAtPixel(px, py);
+            if (token && this.canMoveToken(token)) {
+                this.draggingToken = token;
+                this.dragTokenPos = { x: px, y: py };
+                this.selectedTokenId = token.id;
+                this.canvas.style.cursor = 'grabbing';
+                this.render();
+                return;
+            }
+        }
+
+        // Arrastre del mapa (comportamiento normal)
         this.isDragging = true;
         this.lastMousePos = { x: e.clientX, y: e.clientY };
     }
 
     onMouseMove(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+
+        // Arrastrando token
+        if (this.draggingToken) {
+            this.dragTokenPos = { x: px, y: py };
+            this.render();
+            return;
+        }
+
+        // Cambiar cursor si estamos sobre un token movible
+        if (this.tokensEnabled && !this.isDragging) {
+            const token = this.getTokenAtPixel(px, py);
+            if (token && this.canMoveToken(token)) {
+                this.canvas.style.cursor = 'grab';
+            } else {
+                this.canvas.style.cursor = 'default';
+            }
+        }
+
+        // Arrastre del mapa
         if (!this.isDragging) return;
 
         const deltaX = e.clientX - this.lastMousePos.x;
@@ -220,7 +410,44 @@ export class MapEditor {
         this.render();
     }
 
-    onMouseUp() {
+    onMouseUp(e) {
+        // Soltar token: snap a la celda más cercana
+        if (this.draggingToken && this.dragTokenPos) {
+            const { gridX, gridY } = this.pixelToGrid(this.dragTokenPos.x, this.dragTokenPos.y);
+
+            // Verificar si la celda destino está libre
+            if (!this.isCellOccupied(gridX, gridY, this.draggingToken.id)) {
+                const oldX = this.draggingToken.gridX;
+                const oldY = this.draggingToken.gridY;
+                this.draggingToken.gridX = gridX;
+                this.draggingToken.gridY = gridY;
+
+                // Notificar movimiento si cambió de posición
+                if ((oldX !== gridX || oldY !== gridY) && this.onTokenMoved) {
+                    this.onTokenMoved({ ...this.draggingToken });
+                }
+            }
+            // Si está ocupada, vuelve a su posición original (no hace nada)
+
+            this.draggingToken = null;
+            this.dragTokenPos = null;
+            this.canvas.style.cursor = 'default';
+            this.render();
+            return;
+        }
+
+        this.isDragging = false;
+    }
+
+    onMouseLeave() {
+        // Si estaba arrastrando token, cancelar y devolver a posición original
+        if (this.draggingToken) {
+            this.draggingToken = null;
+            this.dragTokenPos = null;
+            this.canvas.style.cursor = 'default';
+            this.render();
+            return;
+        }
         this.isDragging = false;
     }
 
@@ -248,11 +475,28 @@ export class MapEditor {
     }
 
     // ==========================================
-    // Eventos Táctiles
+    // Eventos Táctiles (con soporte de tokens)
     // ==========================================
 
     onTouchStart(e) {
         if (e.touches.length === 1) {
+            const rect = this.canvas.getBoundingClientRect();
+            const px = e.touches[0].clientX - rect.left;
+            const py = e.touches[0].clientY - rect.top;
+
+            // Intentar agarrar token
+            if (this.tokensEnabled) {
+                const token = this.getTokenAtPixel(px, py);
+                if (token && this.canMoveToken(token)) {
+                    e.preventDefault();
+                    this.draggingToken = token;
+                    this.dragTokenPos = { x: px, y: py };
+                    this.selectedTokenId = token.id;
+                    this.render();
+                    return;
+                }
+            }
+
             this.isDragging = true;
             this.lastMousePos = {
                 x: e.touches[0].clientX,
@@ -263,7 +507,21 @@ export class MapEditor {
 
     onTouchMove(e) {
         e.preventDefault();
-        if (!this.isDragging || e.touches.length !== 1) return;
+
+        if (e.touches.length !== 1) return;
+
+        const rect = this.canvas.getBoundingClientRect();
+        const px = e.touches[0].clientX - rect.left;
+        const py = e.touches[0].clientY - rect.top;
+
+        // Arrastrando token
+        if (this.draggingToken) {
+            this.dragTokenPos = { x: px, y: py };
+            this.render();
+            return;
+        }
+
+        if (!this.isDragging) return;
 
         const deltaX = e.touches[0].clientX - this.lastMousePos.x;
         const deltaY = e.touches[0].clientY - this.lastMousePos.y;
@@ -278,6 +536,31 @@ export class MapEditor {
         this.render();
     }
 
+    onTouchEnd(e) {
+        // Soltar token en touch
+        if (this.draggingToken && this.dragTokenPos) {
+            const { gridX, gridY } = this.pixelToGrid(this.dragTokenPos.x, this.dragTokenPos.y);
+
+            if (!this.isCellOccupied(gridX, gridY, this.draggingToken.id)) {
+                const oldX = this.draggingToken.gridX;
+                const oldY = this.draggingToken.gridY;
+                this.draggingToken.gridX = gridX;
+                this.draggingToken.gridY = gridY;
+
+                if ((oldX !== gridX || oldY !== gridY) && this.onTokenMoved) {
+                    this.onTokenMoved({ ...this.draggingToken });
+                }
+            }
+
+            this.draggingToken = null;
+            this.dragTokenPos = null;
+            this.render();
+            return;
+        }
+
+        this.isDragging = false;
+    }
+
     // ==========================================
     // Renderizado
     // ==========================================
@@ -288,6 +571,10 @@ export class MapEditor {
         this.drawImage();
         if (this.gridConfig.visible) {
             this.drawGrid();
+        }
+        // Dibujar tokens encima de todo
+        if (this.tokensEnabled) {
+            this.drawTokens();
         }
     }
 
@@ -360,6 +647,100 @@ export class MapEditor {
 
         this.ctx.stroke();
         this.ctx.restore();
+    }
+
+    drawTokens() {
+        const cellSize = this.getCellSize();
+        const radius = cellSize * 0.38;
+
+        for (const token of this.tokens) {
+            // Si este token se está arrastrando, dibujar en la posición del mouse
+            if (this.draggingToken && this.draggingToken.id === token.id && this.dragTokenPos) {
+                this.drawSingleToken(
+                    this.dragTokenPos.x,
+                    this.dragTokenPos.y,
+                    radius, token, true
+                );
+                continue;
+            }
+
+            const center = this.gridToCenter(token.gridX, token.gridY);
+            const isSelected = this.selectedTokenId === token.id;
+            this.drawSingleToken(center.x, center.y, radius, token, isSelected);
+        }
+    }
+
+    drawSingleToken(cx, cy, radius, token, isSelected) {
+        const ctx = this.ctx;
+
+        ctx.save();
+
+        // Sombra
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+
+        // Círculo principal
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fillStyle = token.color || '#e74c3c';
+        ctx.fill();
+
+        // Borde
+        ctx.shadowColor = 'transparent';
+        ctx.lineWidth = isSelected ? 3 : 2;
+        ctx.strokeStyle = isSelected ? '#FFD700' : '#ffffff';
+        ctx.stroke();
+
+        // Anillo de selección
+        if (isSelected) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius + 4, 0, Math.PI * 2);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#FFD700';
+            ctx.setLineDash([4, 4]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // Texto (iniciales o nombre corto)
+        const label = this.getTokenLabel(token.name);
+        const fontSize = Math.max(10, radius * 0.8);
+        ctx.font = `bold ${fontSize}px Cinzel, serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, cx, cy);
+
+        // Nombre completo debajo del token
+        if (radius > 12) {
+            const nameFontSize = Math.max(8, radius * 0.45);
+            ctx.font = `${nameFontSize}px Cinzel, sans-serif`;
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            const nameY = cy + radius + nameFontSize + 2;
+            ctx.strokeText(token.name, cx, nameY);
+            ctx.fillText(token.name, cx, nameY);
+        }
+
+        ctx.restore();
+    }
+
+    // Obtener iniciales para mostrar en el token
+    getTokenLabel(name) {
+        if (!name) return '?';
+        const words = name.trim().split(/\s+/);
+        if (words.length >= 2) {
+            return (words[0][0] + words[1][0]).toUpperCase();
+        }
+        return name.substring(0, 2).toUpperCase();
+    }
+
+    // Obtener un color automático para un token nuevo
+    static getTokenColor(index) {
+        return TOKEN_COLORS[index % TOKEN_COLORS.length];
     }
 
     // ==========================================
