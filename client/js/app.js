@@ -3,6 +3,7 @@
 // ==========================================
 
 import { screenManager } from './core/ScreenManager.js';
+import { apiClient } from './core/ApiClient.js';
 import { HomeView } from './views/HomeView.js';
 import { RoomMenuView } from './views/RoomMenuView.js';
 import { AdminViewerView } from './views/AdminViewerView.js';
@@ -11,6 +12,8 @@ import { PlayerView } from './views/PlayerView.js';
 import { CharacterSheet } from './components/CharacterSheet.js';
 import { MapSelector } from './components/MapSelector.js';
 import { initNumberInputControls } from './utils/helpers.js';
+
+const SESSION_KEY = 'dnd_session_state';
 
 class DnDMapApp {
     constructor() {
@@ -51,7 +54,11 @@ class DnDMapApp {
         // Configurar callback para cambios de pantalla
         screenManager.onChange((screenName) => {
             this.onScreenChange(screenName);
+            this.saveSession(screenName);
         });
+
+        // Intentar restaurar sesión previa (tras refresh)
+        await this.restoreSession();
     }
 
     // Callback cuando cambia la pantalla
@@ -90,6 +97,98 @@ class DnDMapApp {
         this.adminPassword = null;
         this.isAdmin = false;
         this.currentUser = null;
+        this.clearSession();
+    }
+
+    // ==========================================
+    // Persistencia de sesión (sobrevive refresh)
+    // ==========================================
+
+    // Guardar estado de sesión actual
+    saveSession(screenName) {
+        // Solo guardar si estamos en una sala
+        if (!this.currentRoom) return;
+
+        // No guardar pantalla home
+        if (screenName === 'home') return;
+
+        const session = {
+            screen: screenName,
+            roomCode: this.currentRoom.code,
+            roomName: this.currentRoom.name,
+            isAdmin: this.isAdmin,
+            adminPassword: this.adminPassword || null,
+            playerName: this.playerName || null,
+            characterName: this.characterName || null,
+            userId: this.currentUser?.id || this.currentUser?.playerName || null,
+            timestamp: Date.now()
+        };
+
+        try {
+            sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        } catch (e) {
+            console.error('Error guardando sesión:', e);
+        }
+    }
+
+    // Limpiar sesión guardada
+    clearSession() {
+        sessionStorage.removeItem(SESSION_KEY);
+    }
+
+    // Restaurar sesión tras refresh
+    async restoreSession() {
+        try {
+            const raw = sessionStorage.getItem(SESSION_KEY);
+            if (!raw) return false;
+
+            const session = JSON.parse(raw);
+
+            // Sesión expirada (más de 12 horas)
+            if (Date.now() - session.timestamp > 12 * 60 * 60 * 1000) {
+                this.clearSession();
+                return false;
+            }
+
+            // Verificar que la sala sigue existiendo
+            const data = await apiClient.getRoom(session.roomCode);
+            if (!data.success) {
+                this.clearSession();
+                return false;
+            }
+
+            // Si es admin, verificar credenciales
+            if (session.isAdmin && session.adminPassword) {
+                const adminCheck = await apiClient.verifyAdmin(session.roomCode, session.adminPassword);
+                if (!adminCheck.success) {
+                    this.clearSession();
+                    return false;
+                }
+            }
+
+            // Restaurar estado de la app
+            this.currentRoom = data.room;
+            this.isAdmin = session.isAdmin;
+            this.adminPassword = session.adminPassword;
+            this.playerName = session.playerName;
+            this.characterName = session.characterName;
+
+            if (session.isAdmin) {
+                this.currentUser = { id: session.userId };
+            } else {
+                this.currentUser = { playerName: session.playerName };
+            }
+
+            // Navegar a la pantalla guardada
+            screenManager.show(session.screen);
+            console.log(`Sesión restaurada: ${session.screen} en sala ${session.roomCode}`);
+            return true;
+
+        } catch (e) {
+            console.error('Error restaurando sesión:', e);
+            this.clearSession();
+            return false;
+        }
     }
 }
 
