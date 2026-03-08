@@ -58,7 +58,19 @@ class DnDMapApp {
         });
 
         // Intentar restaurar sesión previa (tras refresh)
-        await this.restoreSession();
+        // Ocultar home inmediatamente si hay sesión pendiente para evitar parpadeo
+        const hasPendingSession = sessionStorage.getItem(SESSION_KEY);
+        if (hasPendingSession) {
+            const homeScreen = document.getElementById('homeScreen');
+            if (homeScreen) homeScreen.classList.remove('active');
+        }
+
+        const restored = await this.restoreSession();
+        if (!restored && hasPendingSession) {
+            // Restauración falló, volver a mostrar home
+            const homeScreen = document.getElementById('homeScreen');
+            if (homeScreen) homeScreen.classList.add('active');
+        }
     }
 
     // Callback cuando cambia la pantalla
