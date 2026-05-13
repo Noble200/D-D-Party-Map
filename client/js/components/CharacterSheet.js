@@ -3440,6 +3440,8 @@ class CharacterSheet {
         document.dispatchEvent(new CustomEvent('favorites-changed', {
             detail: { favorites: this.favorites }
         }));
+        // Auto-guardar silenciosamente para persistir el cambio
+        this.saveSilent?.();
     }
 
     // Crea un botón ★ reutilizable que alterna favorito
@@ -3579,6 +3581,124 @@ class CharacterSheet {
             }
             default:
                 return null;
+        }
+    }
+
+    // Devuelve TODOS los items del personaje agrupados para el dock
+    // (no solo favoritos: trucos, conjuros, rasgos, skills y saves)
+    getAllDockItems() {
+        const groups = {
+            cantrips: [],
+            spells: {}, // por nivel
+            traits: [],
+            quickRolls: []
+        };
+
+        // === Trucos ===
+        (this.selectedCantrips || []).forEach(c => {
+            const id = c.key;
+            if (!id) return;
+            const spell = this.spellsData?.cantrips?.[id];
+            if (spell) {
+                groups.cantrips.push({
+                    type: 'cantrip', id, name: spell.name, data: spell, level: 0,
+                    favorite: this.isFavorite('cantrip', id)
+                });
+            }
+        });
+        // Trucos personalizados
+        (this.customAbilities || []).filter(a => a.category === 'cantrip').forEach(c => {
+            groups.cantrips.push({
+                type: 'custom-ability', id: c.id, name: c.name, data: c, level: 0, isCustom: true,
+                favorite: this.isFavorite('custom-ability', c.id)
+            });
+        });
+
+        // === Conjuros por nivel ===
+        (this.selectedSpells || []).forEach(s => {
+            const lvl = s.level || 1;
+            const spell = this.spellsData?.[`level${lvl}`]?.[s.key];
+            if (!spell) return;
+            if (!groups.spells[lvl]) groups.spells[lvl] = [];
+            groups.spells[lvl].push({
+                type: 'spell', id: s.key, name: spell.name, data: spell, level: lvl,
+                prepared: s.prepared,
+                favorite: this.isFavorite('spell', s.key)
+            });
+        });
+        // Conjuros personalizados
+        (this.customAbilities || []).filter(a => a.category === 'spell').forEach(c => {
+            const lvl = c.level || 1;
+            if (!groups.spells[lvl]) groups.spells[lvl] = [];
+            groups.spells[lvl].push({
+                type: 'custom-ability', id: c.id, name: c.name, data: c, level: lvl, isCustom: true,
+                favorite: this.isFavorite('custom-ability', c.id)
+            });
+        });
+
+        // === Rasgos (raza, subraza, clase, trasfondo, custom) ===
+        const traits = this.getAllCharacterTraits();
+        traits.passive.forEach(t => {
+            const id = this.slugifyTraitId(t.name);
+            groups.traits.push({
+                type: 'trait', id, name: t.name, data: t, isActive: false,
+                favorite: this.isFavorite('trait', id)
+            });
+        });
+        traits.active.forEach(t => {
+            const id = this.slugifyTraitId(t.name);
+            groups.traits.push({
+                type: 'trait', id, name: t.name, data: t, isActive: true,
+                favorite: this.isFavorite('trait', id)
+            });
+        });
+        // Rasgos personalizados (features que no son cantrip ni spell)
+        (this.customAbilities || []).filter(a => !['cantrip', 'spell'].includes(a.category)).forEach(c => {
+            groups.traits.push({
+                type: 'custom-ability', id: c.id, name: c.name, data: c,
+                isActive: c.type === 'active', isCustom: true,
+                favorite: this.isFavorite('custom-ability', c.id)
+            });
+        });
+
+        // === Tiradas rápidas: todas las skills y saves ===
+        Object.keys(SKILL_NAMES_ES).forEach(skillId => {
+            groups.quickRolls.push({
+                type: 'skill', id: skillId, name: SKILL_NAMES_ES[skillId],
+                ability: SKILL_ABILITIES[skillId],
+                favorite: this.isFavorite('skill', skillId)
+            });
+        });
+        const saveLabels = {
+            strength: 'Salv. Fuerza', dexterity: 'Salv. Destreza',
+            constitution: 'Salv. Constitución', intelligence: 'Salv. Inteligencia',
+            wisdom: 'Salv. Sabiduría', charisma: 'Salv. Carisma'
+        };
+        Object.keys(saveLabels).forEach(ability => {
+            groups.quickRolls.push({
+                type: 'save', id: ability, name: saveLabels[ability], ability,
+                favorite: this.isFavorite('save', ability)
+            });
+        });
+
+        return groups;
+    }
+
+    // Guardado silencioso (sin notificación) — usado al togglear favoritos
+    async saveSilent() {
+        try {
+            const characterData = this.getCharacterData();
+            const characterName = characterData.name || 'Sin nombre';
+            const playerName = this.app.playerName;
+            if (!playerName) return;
+            await apiClient.saveCharacterByPlayerName(
+                this.app.currentRoom.code,
+                playerName,
+                characterName,
+                characterData
+            );
+        } catch (e) {
+            console.error('Error en saveSilent:', e);
         }
     }
 

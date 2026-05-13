@@ -1,9 +1,10 @@
 // ==========================================
 // Dock de Acciones del Jugador
-// Panel inferior tipo MMO con favoritos del personaje
+// Panel inferior tipo MMO con TODOS los items del personaje,
+// donde el jugador marca con ★ los que quiere destacar como favoritos.
 // ==========================================
 
-import { SKILL_ABILITIES, SKILL_NAMES_ES } from '../config.js';
+import { SKILL_ABILITIES } from '../config.js';
 
 class ActionDock {
     constructor(app) {
@@ -17,8 +18,7 @@ class ActionDock {
         // Estado de las secciones (plegadas o no)
         this.collapsedSections = new Set();
 
-        // Callbacks que la PlayerView puede asignar para ejecutar acciones reales
-        // (se implementan en fases siguientes)
+        // Callbacks (asignados desde PlayerView)
         this.onActivateCantrip = null;
         this.onActivateSpell = null;
         this.onActivateTrait = null;
@@ -31,7 +31,7 @@ class ActionDock {
         if (this.initialized || !this.root) return;
         this.bindEvents();
 
-        // Escuchar cambios de favoritos desde la ficha de personaje
+        // Refrescar cuando cambian favoritos o se carga personaje
         document.addEventListener('favorites-changed', () => this.render());
         document.addEventListener('character-loaded', () => this.render());
 
@@ -39,7 +39,6 @@ class ActionDock {
     }
 
     bindEvents() {
-        // Toggle expandir/colapsar
         if (this.toggleBtn) {
             this.toggleBtn.addEventListener('click', () => this.toggleExpanded());
         }
@@ -72,7 +71,7 @@ class ActionDock {
         if (arrow) arrow.textContent = this.expanded ? '▾' : '▴';
     }
 
-    // Render principal: lee favoritos de la ficha y renderiza secciones
+    // Render principal: muestra TODOS los items del personaje
     render() {
         if (!this.sectionsEl) return;
 
@@ -82,42 +81,44 @@ class ActionDock {
             return;
         }
 
-        const groups = sheet.getFavoritesData ? sheet.getFavoritesData() : null;
+        const groups = sheet.getAllDockItems ? sheet.getAllDockItems() : null;
         if (!groups) {
-            this.sectionsEl.innerHTML = '<div class="action-dock-empty">Sin favoritos. Abre la ficha y marca con ★ los conjuros, rasgos o habilidades que quieras tener a mano.</div>';
+            this.sectionsEl.innerHTML = '<div class="action-dock-empty">No se pudieron cargar los datos del personaje.</div>';
             return;
         }
 
-        // Construir secciones en orden
+        // Ordenar favoritos primero dentro de cada lista
+        const favFirst = (a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0);
+
         let html = '';
 
         // Trucos
         if (groups.cantrips.length > 0) {
-            html += this.renderSection('cantrips', 'Trucos', groups.cantrips.map(c => this.renderCantripCard(c)).join(''));
+            const sorted = [...groups.cantrips].sort(favFirst);
+            html += this.renderSection('cantrips', 'Trucos', sorted.map(c => this.renderCantripCard(c)).join(''));
         }
 
         // Conjuros por nivel
         const spellLevels = Object.keys(groups.spells).sort((a, b) => parseInt(a) - parseInt(b));
         spellLevels.forEach(lvl => {
-            const sectionKey = `spells-${lvl}`;
-            const cards = groups.spells[lvl].map(s => this.renderSpellCard(s)).join('');
-            html += this.renderSection(sectionKey, `Conjuros Nv${lvl}`, cards);
+            const sorted = [...groups.spells[lvl]].sort(favFirst);
+            html += this.renderSection(`spells-${lvl}`, `Conjuros Nv${lvl}`, sorted.map(s => this.renderSpellCard(s)).join(''));
         });
 
-        // Rasgos (activos y pasivos juntos pero diferenciados visualmente)
+        // Rasgos
         if (groups.traits.length > 0) {
-            const cards = groups.traits.map(t => this.renderTraitCard(t)).join('');
-            html += this.renderSection('traits', 'Rasgos', cards);
+            const sorted = [...groups.traits].sort(favFirst);
+            html += this.renderSection('traits', 'Rasgos', sorted.map(t => this.renderTraitCard(t)).join(''));
         }
 
-        // Tiradas rápidas (skill + save)
+        // Tiradas rápidas
         if (groups.quickRolls.length > 0) {
-            const cards = groups.quickRolls.map(q => this.renderQuickRollCard(q)).join('');
-            html += this.renderSection('quickRolls', 'Tiradas rápidas', cards);
+            const sorted = [...groups.quickRolls].sort(favFirst);
+            html += this.renderSection('quickRolls', 'Tiradas rápidas', sorted.map(q => this.renderQuickRollCard(q)).join(''));
         }
 
         if (!html) {
-            html = '<div class="action-dock-empty">Sin favoritos. Abre la ficha y marca con ★ los conjuros, rasgos o habilidades que quieras tener a mano.</div>';
+            html = '<div class="action-dock-empty">No tenés trucos, conjuros, rasgos ni habilidades configuradas. Abrí la ficha y agregalos primero.</div>';
         }
 
         this.sectionsEl.innerHTML = html;
@@ -140,30 +141,37 @@ class ActionDock {
         `;
     }
 
-    // Card de un truco
+    // ===== Cards =====
+
     renderCantripCard(item) {
         const school = item.data?.school || '';
-        return `
-            <div class="dock-card dock-card-cantrip" data-action="cantrip" data-id="${item.id}" title="${this.escape(school)}">
-                <span class="dock-card-tag">Tr</span>
-                <span class="dock-card-name">${this.escape(item.name)}</span>
-            </div>
-        `;
+        return this.wrapCard(
+            'cantrip',
+            { id: item.id },
+            ['dock-card-cantrip', item.favorite ? 'is-favorite' : ''],
+            'Tr',
+            item.name,
+            school,
+            null,
+            item.favorite
+        );
     }
 
-    // Card de un conjuro (con nivel para estilizar por intensidad)
     renderSpellCard(item) {
         const level = item.level || 1;
         const school = item.data?.school || '';
-        return `
-            <div class="dock-card dock-card-spell dock-card-spell-lvl${level}" data-action="spell" data-id="${item.id}" data-level="${level}" title="${this.escape(school)}">
-                <span class="dock-card-tag">C${level}</span>
-                <span class="dock-card-name">${this.escape(item.name)}</span>
-            </div>
-        `;
+        return this.wrapCard(
+            'spell',
+            { id: item.id, level },
+            ['dock-card-spell', `dock-card-spell-lvl${level}`, item.favorite ? 'is-favorite' : ''],
+            `C${level}`,
+            item.name,
+            school,
+            null,
+            item.favorite
+        );
     }
 
-    // Card de un rasgo (activo o pasivo)
     renderTraitCard(item) {
         const isActive = item.isActive;
         const cls = isActive ? 'dock-card-trait-active' : 'dock-card-trait-passive';
@@ -172,34 +180,57 @@ class ActionDock {
         // Contador si tiene usos definidos
         const sheet = this.app.characterSheet;
         const uses = sheet?.abilityUses?.[item.id];
-        const counterHtml = uses
-            ? `<span class="dock-card-counter">${uses.current}/${uses.max}</span>`
-            : '';
+        const extraHtml = uses ? `<span class="dock-card-counter">${uses.current}/${uses.max}</span>` : '';
 
-        return `
-            <div class="dock-card dock-card-trait ${cls}" data-action="trait" data-id="${item.id}" data-active="${isActive ? '1' : '0'}" title="${this.escape(item.data?.description || '')}">
-                <span class="dock-card-tag">${tag}</span>
-                <span class="dock-card-name">${this.escape(item.name)}</span>
-                ${counterHtml}
-            </div>
-        `;
+        const favType = item.type === 'custom-ability' ? 'custom-ability' : 'trait';
+
+        return this.wrapCard(
+            'trait',
+            { id: item.id, active: isActive ? '1' : '0', favType },
+            ['dock-card-trait', cls, item.favorite ? 'is-favorite' : ''],
+            tag,
+            item.name,
+            item.data?.description || '',
+            extraHtml,
+            item.favorite
+        );
     }
 
-    // Card de una tirada rápida (skill o save)
     renderQuickRollCard(item) {
         const isSkill = item.type === 'skill';
         const tag = isSkill ? 'Hb' : 'Sv';
-        const action = isSkill ? 'skill' : 'save';
 
-        // Calcular bonus desde la ficha
         const bonus = this.calculateRollBonus(item);
         const bonusStr = bonus >= 0 ? `+${bonus}` : `${bonus}`;
+        const bonusHtml = `<span class="dock-card-bonus">${bonusStr}</span>`;
+
+        return this.wrapCard(
+            isSkill ? 'skill' : 'save',
+            { id: item.id, bonus },
+            ['dock-card-quickroll', item.favorite ? 'is-favorite' : ''],
+            tag,
+            item.name,
+            '',
+            bonusHtml,
+            item.favorite
+        );
+    }
+
+    // Helper para construir una card uniforme con su botón ★
+    wrapCard(action, data, classes, tag, name, tooltip, extraHtml, isFav) {
+        const dataAttrs = Object.entries(data)
+            .map(([k, v]) => `data-${k}="${this.escape(String(v))}"`)
+            .join(' ');
+        const safeTooltip = tooltip ? `title="${this.escape(tooltip)}"` : '';
+        const starClass = isFav ? 'dock-card-star is-fav' : 'dock-card-star';
+        const starChar = isFav ? '★' : '☆';
 
         return `
-            <div class="dock-card dock-card-quickroll" data-action="${action}" data-id="${item.id}" data-bonus="${bonus}">
+            <div class="dock-card ${classes.filter(Boolean).join(' ')}" data-action="${action}" ${dataAttrs} ${safeTooltip}>
                 <span class="dock-card-tag">${tag}</span>
-                <span class="dock-card-name">${this.escape(item.name)}</span>
-                <span class="dock-card-bonus">${bonusStr}</span>
+                <span class="dock-card-name">${this.escape(name)}</span>
+                ${extraHtml || ''}
+                <button type="button" class="${starClass}" data-fav-action="${action}" data-fav-id="${this.escape(data.id)}" ${data.level !== undefined ? `data-fav-level="${data.level}"` : ''} title="${isFav ? 'Quitar de favoritos' : 'Marcar como favorito'}">${starChar}</button>
             </div>
         `;
     }
@@ -235,14 +266,43 @@ class ActionDock {
 
         let bonus = mod;
         if (isProficient) bonus += profBonus;
-        if (hasExpertise) bonus += profBonus; // experticia duplica
+        if (hasExpertise) bonus += profBonus;
 
         return bonus;
     }
 
     bindCardEvents() {
+        // Click en ★: toggle favorito (sin activar acción)
+        this.sectionsEl.querySelectorAll('.dock-card-star').forEach(star => {
+            star.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const sheet = this.app.characterSheet;
+                if (!sheet) return;
+
+                const action = star.dataset.favAction;
+                const id = star.dataset.favId;
+                let favType = action;
+                if (action === 'cantrip' || action === 'spell' || action === 'trait') {
+                    favType = action;
+                }
+                // Para custom-ability (trucos/spells/traits personalizados) detectar por el parent
+                const card = star.closest('.dock-card');
+                if (card?.dataset.favType === 'custom-ability') {
+                    favType = 'custom-ability';
+                }
+                const extra = {};
+                if (star.dataset.favLevel !== undefined) extra.level = parseInt(star.dataset.favLevel);
+                sheet.toggleFavorite(favType, id, extra);
+                // El render se dispara por el evento 'favorites-changed'
+            });
+        });
+
+        // Click en el resto del card: ejecutar acción
         this.sectionsEl.querySelectorAll('.dock-card').forEach(card => {
             card.addEventListener('click', (e) => {
+                // Si el click vino del botón ★, ya fue manejado arriba
+                if (e.target.classList.contains('dock-card-star')) return;
+
                 const action = card.dataset.action;
                 const id = card.dataset.id;
                 switch (action) {
