@@ -38,6 +38,10 @@ class CharacterSheet {
         this.customAbilities = [];
         // Habilidad actualmente siendo editada (null para nueva)
         this.editingAbilityId = null;
+        // Favoritos del jugador (para el dock de acciones)
+        this.favorites = [];
+        // Trackeo de usos por descanso { [id]: { max, current, recharge } }
+        this.abilityUses = {};
         // Lista de bonificadores temporales para el formulario
         this.tempBonuses = [];
         // Foto y color del token
@@ -754,6 +758,8 @@ class CharacterSheet {
         this.modal.classList.add('active');
         // Actualizar todos los cálculos al mostrar
         this.updateAllCalculations();
+        // Inyectar estrellas ★ en skills y saves (HTML estático)
+        this.injectFavStarsOnSkillsAndSaves();
     }
 
     hide() {
@@ -1241,7 +1247,11 @@ class CharacterSheet {
             equipment: document.getElementById('equipment')?.value || '',
 
             tokenPhoto: this.tokenPhoto || null,
-            tokenBorderColor: document.getElementById('tokenBorderColor')?.value || '#e74c3c'
+            tokenBorderColor: document.getElementById('tokenBorderColor')?.value || '#e74c3c',
+
+            // Sistema de favoritos y usos limitados (dock de acciones)
+            favorites: JSON.parse(JSON.stringify(this.favorites || [])),
+            abilityUses: JSON.parse(JSON.stringify(this.abilityUses || {}))
         };
     }
 
@@ -1427,9 +1437,18 @@ class CharacterSheet {
         }
         this.updateTokenPreview();
 
+        // Cargar favoritos y trackeo de usos (sistema de dock de acciones)
+        this.favorites = Array.isArray(data.favorites) ? data.favorites : [];
+        this.abilityUses = (data.abilityUses && typeof data.abilityUses === 'object') ? data.abilityUses : {};
+
         this.characterData = data;
         this.isLoaded = true;
         this.updateAllCalculations();
+
+        // Refrescar dock de acciones si está activo
+        document.dispatchEvent(new CustomEvent('character-loaded', {
+            detail: { characterSheet: this }
+        }));
     }
 
     // Guardar personaje en el servidor
@@ -1820,6 +1839,9 @@ class CharacterSheet {
                 this.deleteAbility(e.target.dataset.id);
             });
         });
+
+        // Inyectar estrellas de favorito en cada rasgo
+        this.injectFavStarsOnAnchors(container);
     }
 
     renderTraitItem(trait, type) {
@@ -1830,8 +1852,12 @@ class CharacterSheet {
             <button type="button" class="btn-delete-trait" data-id="${trait.id}" title="Eliminar">&times;</button>
         ` : '';
 
+        // Determinar identificador estable para favoritos
+        const favType = trait.isCustom ? 'custom-ability' : 'trait';
+        const favId = trait.isCustom ? trait.id : this.slugifyTraitId(trait.name);
+
         return `
-            <div class="trait-item trait-${type} ${customClass}" data-source-type="${trait.sourceType}" ${trait.id ? `data-id="${trait.id}"` : ''}>
+            <div class="trait-item trait-${type} ${customClass}" data-source-type="${trait.sourceType}" ${trait.id ? `data-id="${trait.id}"` : ''} data-fav-anchor data-fav-type="${favType}" data-fav-id="${favId}" data-fav-active="${type === 'active' ? '1' : '0'}">
                 <div class="trait-header">
                     <span class="trait-icon">${sourceIcon}</span>
                     <span class="trait-name">${trait.name}</span>
@@ -3098,7 +3124,7 @@ class CharacterSheet {
             const spellData = this.getSpellByKey(cantrip.key, 0);
             if (spellData) {
                 html += `
-                    <div class="spell-item cantrip-item">
+                    <div class="spell-item cantrip-item" data-fav-anchor data-fav-type="cantrip" data-fav-id="${cantrip.key}">
                         <span class="spell-name">${spellData.name}</span>
                         <span class="spell-school">${spellData.school || ''}</span>
                         <button type="button" class="btn-remove-spell" data-type="selected" data-index="${index}">&times;</button>
@@ -3110,7 +3136,7 @@ class CharacterSheet {
         // Trucos custom
         cantrips.forEach(cantrip => {
             html += `
-                <div class="spell-item cantrip-item custom-ability" data-id="${cantrip.id}">
+                <div class="spell-item cantrip-item custom-ability" data-id="${cantrip.id}" data-fav-anchor data-fav-type="custom-ability" data-fav-id="${cantrip.id}">
                     <span class="spell-name">${cantrip.name}</span>
                     <span class="spell-school">${cantrip.school || 'Custom'}</span>
                     <div class="ability-actions">
@@ -3147,6 +3173,9 @@ class CharacterSheet {
                 this.deleteAbility(e.target.dataset.id);
             });
         });
+
+        // Inyectar estrellas de favorito en cada item
+        this.injectFavStarsOnAnchors(container);
     }
 
     renderCustomSpells(spells) {
@@ -3189,7 +3218,7 @@ class CharacterSheet {
             spellsByLevel[level].forEach(item => {
                 if (item.type === 'selected' && item.spellData) {
                     html += `
-                        <div class="spell-item">
+                        <div class="spell-item" data-fav-anchor data-fav-type="spell" data-fav-id="${item.data.key}" data-fav-level="${level}">
                             <label class="spell-prepared">
                                 <input type="checkbox" ${item.data.prepared ? 'checked' : ''}
                                     data-type="selected" data-index="${item.index}">
@@ -3201,7 +3230,7 @@ class CharacterSheet {
                     `;
                 } else if (item.type === 'custom') {
                     html += `
-                        <div class="spell-item custom-ability" data-id="${item.data.id}">
+                        <div class="spell-item custom-ability" data-id="${item.data.id}" data-fav-anchor data-fav-type="custom-ability" data-fav-id="${item.data.id}">
                             <label class="spell-prepared">
                                 <input type="checkbox" ${item.data.prepared ? 'checked' : ''}
                                     data-type="custom" data-id="${item.data.id}">
@@ -3260,6 +3289,9 @@ class CharacterSheet {
                 this.deleteAbility(e.target.dataset.id);
             });
         });
+
+        // Inyectar estrellas de favorito en cada conjuro
+        this.injectFavStarsOnAnchors(container);
     }
 
     renderCustomFeatures(features) {
@@ -3297,8 +3329,10 @@ class CharacterSheet {
                 const editBtn = trait.isCustom ?
                     `<button type="button" class="btn-edit-trait" data-id="${trait.id}" title="Editar">✎</button>
                      <button type="button" class="btn-delete-trait" data-id="${trait.id}" title="Eliminar">&times;</button>` : '';
+                const favType = trait.isCustom ? 'custom-ability' : 'trait';
+                const favId = trait.isCustom ? trait.id : this.slugifyTraitId(trait.name);
                 html += `
-                    <div class="trait-item trait-passive ${customClass}" ${trait.id ? `data-id="${trait.id}"` : ''}>
+                    <div class="trait-item trait-passive ${customClass}" ${trait.id ? `data-id="${trait.id}"` : ''} data-fav-anchor data-fav-type="${favType}" data-fav-id="${favId}" data-fav-active="0">
                         <div class="trait-header">
                             <span class="trait-name">${trait.name}</span>
                             <span class="trait-source">(${trait.source})</span>
@@ -3319,8 +3353,10 @@ class CharacterSheet {
                 const editBtn = trait.isCustom ?
                     `<button type="button" class="btn-edit-trait" data-id="${trait.id}" title="Editar">✎</button>
                      <button type="button" class="btn-delete-trait" data-id="${trait.id}" title="Eliminar">&times;</button>` : '';
+                const favType = trait.isCustom ? 'custom-ability' : 'trait';
+                const favId = trait.isCustom ? trait.id : this.slugifyTraitId(trait.name);
                 html += `
-                    <div class="trait-item trait-active ${customClass}" ${trait.id ? `data-id="${trait.id}"` : ''}>
+                    <div class="trait-item trait-active ${customClass}" ${trait.id ? `data-id="${trait.id}"` : ''} data-fav-anchor data-fav-type="${favType}" data-fav-id="${favId}" data-fav-active="1">
                         <div class="trait-header">
                             <span class="trait-name">${trait.name}</span>
                             <span class="trait-source">(${trait.source})</span>
@@ -3351,6 +3387,9 @@ class CharacterSheet {
                 this.deleteAbility(e.target.dataset.id);
             });
         });
+
+        // Inyectar estrellas de favorito en cada rasgo
+        this.injectFavStarsOnAnchors(container);
     }
 
     getSpellByKey(key, level) {
@@ -3362,6 +3401,211 @@ class CharacterSheet {
 
         const levelKey = `level${level}`;
         return this.spellsData[levelKey]?.[key] || null;
+    }
+
+    // ==========================================
+    // Sistema de Favoritos (dock de acciones)
+    // ==========================================
+
+    // Genera un ID estable a partir del nombre de un rasgo
+    slugifyTraitId(name) {
+        if (!name) return '';
+        return String(name)
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[̀-ͯ]/g, '')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
+    // Verifica si un item está marcado como favorito
+    isFavorite(type, id) {
+        return (this.favorites || []).some(f => f.type === type && f.id === id);
+    }
+
+    // Alterna un favorito (agrega si no existe, quita si sí)
+    toggleFavorite(type, id, extra = {}) {
+        if (!this.favorites) this.favorites = [];
+        const idx = this.favorites.findIndex(f => f.type === type && f.id === id);
+        if (idx >= 0) {
+            this.favorites.splice(idx, 1);
+        } else {
+            const fav = { type, id };
+            if (extra.level !== undefined) fav.level = extra.level;
+            if (extra.source) fav.source = extra.source;
+            if (extra.active !== undefined) fav.active = extra.active;
+            this.favorites.push(fav);
+        }
+        // Notificar al dock para refrescar
+        document.dispatchEvent(new CustomEvent('favorites-changed', {
+            detail: { favorites: this.favorites }
+        }));
+    }
+
+    // Crea un botón ★ reutilizable que alterna favorito
+    makeFavStarButton(type, id, extra = {}) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-fav-star';
+        btn.dataset.favType = type;
+        btn.dataset.favId = id;
+        const refresh = () => {
+            const isFav = this.isFavorite(type, id);
+            btn.textContent = isFav ? '★' : '☆';
+            btn.classList.toggle('is-fav', isFav);
+            btn.title = isFav ? 'Quitar de favoritos' : 'Agregar a favoritos';
+        };
+        refresh();
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleFavorite(type, id, extra);
+            refresh();
+        });
+        return btn;
+    }
+
+    // Inyecta una estrella ★ en cada elemento marcado con data-fav-anchor
+    injectFavStarsOnAnchors(root) {
+        const scope = root || document;
+        scope.querySelectorAll('[data-fav-anchor]').forEach(el => {
+            if (el.querySelector(':scope > .btn-fav-star')) return;
+            const type = el.dataset.favType;
+            const id = el.dataset.favId;
+            if (!type || !id) return;
+            const extra = {};
+            if (el.dataset.favLevel !== undefined) extra.level = parseInt(el.dataset.favLevel);
+            if (el.dataset.favActive !== undefined) extra.active = el.dataset.favActive === '1';
+            el.appendChild(this.makeFavStarButton(type, id, extra));
+        });
+    }
+
+    // Inyecta botones ★ en skills y saves (que viven en HTML estático)
+    injectFavStarsOnSkillsAndSaves() {
+        // Skills
+        const skillCheckboxMap = {
+            'skillAcrobatics': 'acrobatics', 'skillAnimalHandling': 'animalHandling',
+            'skillArcana': 'arcana', 'skillAthletics': 'athletics',
+            'skillDeception': 'deception', 'skillHistory': 'history',
+            'skillInsight': 'insight', 'skillIntimidation': 'intimidation',
+            'skillInvestigation': 'investigation', 'skillMedicine': 'medicine',
+            'skillNature': 'nature', 'skillPerception': 'perception',
+            'skillPerformance': 'performance', 'skillPersuasion': 'persuasion',
+            'skillReligion': 'religion', 'skillSleightOfHand': 'sleightOfHand',
+            'skillStealth': 'stealth', 'skillSurvival': 'survival'
+        };
+        Object.entries(skillCheckboxMap).forEach(([cbId, skillKey]) => {
+            const cb = document.getElementById(cbId);
+            if (!cb) return;
+            const item = cb.closest('.skill-item');
+            if (!item || item.querySelector('.btn-fav-star')) return;
+            item.appendChild(this.makeFavStarButton('skill', skillKey));
+        });
+
+        // Saving throws
+        const saveCheckboxMap = {
+            'saveProfStr': 'strength', 'saveProfDex': 'dexterity',
+            'saveProfCon': 'constitution', 'saveProfInt': 'intelligence',
+            'saveProfWis': 'wisdom', 'saveProfCha': 'charisma'
+        };
+        Object.entries(saveCheckboxMap).forEach(([cbId, ability]) => {
+            const cb = document.getElementById(cbId);
+            if (!cb) return;
+            const item = cb.closest('.save-item');
+            if (!item || item.querySelector('.btn-fav-star')) return;
+            item.appendChild(this.makeFavStarButton('save', ability));
+        });
+    }
+
+    // Resuelve un favorito a su información completa (hidratado para el dock)
+    resolveFavorite(fav) {
+        if (!fav || !fav.type) return null;
+
+        switch (fav.type) {
+            case 'cantrip': {
+                const spell = this.spellsData?.cantrips?.[fav.id];
+                if (!spell) return null;
+                return { ...fav, name: spell.name, data: spell, level: 0 };
+            }
+            case 'spell': {
+                const lvl = fav.level || 1;
+                const spell = this.spellsData?.[`level${lvl}`]?.[fav.id];
+                if (!spell) return null;
+                return { ...fav, name: spell.name, data: spell, level: lvl };
+            }
+            case 'trait': {
+                // Buscar entre los rasgos del personaje
+                const allTraits = this.getAllCharacterTraits();
+                const all = [...allTraits.passive, ...allTraits.active];
+                const found = all.find(t => this.slugifyTraitId(t.name) === fav.id);
+                if (!found) {
+                    // Buscar en customAbilities
+                    const custom = (this.customAbilities || []).find(a => a.id === fav.id);
+                    if (custom) {
+                        return {
+                            ...fav,
+                            name: custom.name,
+                            data: custom,
+                            isActive: custom.type === 'active',
+                            isCustom: true
+                        };
+                    }
+                    return null;
+                }
+                const isActive = (allTraits.active.includes(found));
+                return {
+                    ...fav,
+                    name: found.name,
+                    data: found,
+                    isActive,
+                    isCustom: !!found.isCustom
+                };
+            }
+            case 'skill': {
+                const name = SKILL_NAMES_ES[fav.id] || fav.id;
+                return { ...fav, name, ability: SKILL_ABILITIES[fav.id] };
+            }
+            case 'save': {
+                const labels = {
+                    strength: 'Salv. Fuerza', dexterity: 'Salv. Destreza',
+                    constitution: 'Salv. Constitución', intelligence: 'Salv. Inteligencia',
+                    wisdom: 'Salv. Sabiduría', charisma: 'Salv. Carisma'
+                };
+                return { ...fav, name: labels[fav.id] || fav.id, ability: fav.id };
+            }
+            case 'custom-ability': {
+                const custom = (this.customAbilities || []).find(a => a.id === fav.id);
+                if (!custom) return null;
+                return { ...fav, name: custom.name, data: custom, isCustom: true };
+            }
+            default:
+                return null;
+        }
+    }
+
+    // Devuelve los favoritos hidratados, agrupados para el dock
+    getFavoritesData() {
+        const groups = {
+            cantrips: [],
+            spells: {}, // por nivel
+            traits: [],
+            quickRolls: []
+        };
+        (this.favorites || []).forEach(fav => {
+            const resolved = this.resolveFavorite(fav);
+            if (!resolved) return;
+            if (fav.type === 'cantrip') {
+                groups.cantrips.push(resolved);
+            } else if (fav.type === 'spell') {
+                const lvl = resolved.level || 1;
+                if (!groups.spells[lvl]) groups.spells[lvl] = [];
+                groups.spells[lvl].push(resolved);
+            } else if (fav.type === 'trait' || fav.type === 'custom-ability') {
+                groups.traits.push(resolved);
+            } else if (fav.type === 'skill' || fav.type === 'save') {
+                groups.quickRolls.push(resolved);
+            }
+        });
+        return groups;
     }
 }
 

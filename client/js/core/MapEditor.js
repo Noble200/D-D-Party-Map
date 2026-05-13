@@ -61,6 +61,11 @@ export class MapEditor {
         this.showSpawnPoints = false; // Mostrar spawn points (solo admin)
         this.onSpawnPointsChanged = null; // Callback cuando cambian
 
+        // === MODO TARGETING (selección de objetivo para conjuros) ===
+        this.targetMode = false;
+        this.onTokenTargeted = null; // (token) => void; null cancela
+        this._escHandler = null;
+
         this.init();
     }
 
@@ -284,6 +289,33 @@ export class MapEditor {
         this.render();
     }
 
+    // Activar modo targeting: el siguiente click sobre un token llamará onTokenTargeted
+    enterTargetMode(callback) {
+        this.targetMode = true;
+        this.onTokenTargeted = callback || null;
+        this.canvas.style.cursor = 'crosshair';
+
+        // Escuchar Esc para cancelar
+        this._escHandler = (e) => {
+            if (e.key === 'Escape') this.exitTargetMode(null);
+        };
+        window.addEventListener('keydown', this._escHandler);
+    }
+
+    // Salir del modo targeting (opcionalmente devolviendo el token elegido)
+    exitTargetMode(token) {
+        if (!this.targetMode) return;
+        const cb = this.onTokenTargeted;
+        this.targetMode = false;
+        this.onTokenTargeted = null;
+        this.canvas.style.cursor = 'default';
+        if (this._escHandler) {
+            window.removeEventListener('keydown', this._escHandler);
+            this._escHandler = null;
+        }
+        if (cb) cb(token);
+    }
+
     disableTokens() {
         this.tokensEnabled = false;
         this.tokens = [];
@@ -374,6 +406,13 @@ export class MapEditor {
         const px = e.clientX - rect.left;
         const py = e.clientY - rect.top;
 
+        // Modo targeting: click selecciona token destino (si existe)
+        if (this.targetMode) {
+            const token = this.getTokenAtPixel(px, py);
+            this.exitTargetMode(token || null);
+            return;
+        }
+
         // Si herramienta de spawn activa, colocar/quitar spawn point
         if (this.spawnToolActive) {
             const { gridX, gridY } = this.pixelToGrid(px, py);
@@ -414,6 +453,12 @@ export class MapEditor {
         const rect = this.canvas.getBoundingClientRect();
         const px = e.clientX - rect.left;
         const py = e.clientY - rect.top;
+
+        // Modo targeting: mantener cursor crosshair, no hacer nada más
+        if (this.targetMode) {
+            this.canvas.style.cursor = 'crosshair';
+            return;
+        }
 
         // Arrastrando token
         if (this.draggingToken) {

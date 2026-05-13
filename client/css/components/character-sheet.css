@@ -2105,3 +2105,57 @@
         min-width: 100px;
     }
 }
+
+/* ==========================================
+   Botón estrella ★ para favoritos
+   ========================================== */
+.btn-fav-star {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+    margin-left: 6px;
+    border-radius: 4px;
+    transition: color 0.15s, transform 0.15s, background 0.15s;
+}
+
+.btn-fav-star:hover {
+    color: #d4a726;
+    background: rgba(212, 167, 38, 0.1);
+    transform: scale(1.15);
+}
+
+.btn-fav-star.is-fav {
+    color: #d4a726;
+    text-shadow: 0 0 4px rgba(212, 167, 38, 0.4);
+}
+
+.btn-fav-star.is-fav:hover {
+    color: #ffc940;
+}
+
+/* Layout: empuja la estrella al final del item */
+.skill-item,
+.save-item,
+.spell-item,
+.trait-item {
+    position: relative;
+}
+
+.skill-item .btn-fav-star,
+.save-item .btn-fav-star {
+    margin-left: auto;
+}
+
+.trait-item .btn-fav-star {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.spell-item .btn-fav-star {
+    margin-left: 4px;
+}

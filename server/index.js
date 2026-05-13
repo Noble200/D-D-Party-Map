@@ -145,6 +145,8 @@ io.on('connection', (socket) => {
                 userName: rollData.userName,
                 characterName: rollData.characterName,
                 rollType: rollData.rollType,
+                actionLabel: rollData.actionLabel || null,
+                targetName: rollData.targetName || null,
                 diceFormula: rollData.diceFormula,
                 results: rollData.results,
                 modifier: rollData.modifier,

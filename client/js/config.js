@@ -119,7 +119,16 @@ export const DEFAULT_CHARACTER = {
     },
 
     features: '',
-    equipment: ''
+    equipment: '',
+
+    // Favoritos del jugador (trucos/conjuros/rasgos/skills/saves marcados con ★)
+    // Cada favorito: { type, id, [level], [source], [active] }
+    // type: 'cantrip' | 'spell' | 'trait' | 'skill' | 'save' | 'custom-ability'
+    favorites: [],
+
+    // Trackeo de usos por descanso para rasgos activos
+    // Estructura: { [traitId]: { max, current, recharge: 'short'|'long'|'special' } }
+    abilityUses: {}
 };
 
 // ==========================================

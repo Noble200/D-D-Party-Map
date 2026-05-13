@@ -829,6 +829,23 @@
                         <!-- Lista de usuarios -->
                     </div>
                 </div>
+
+                <!-- Dock de acciones favoritas del jugador -->
+                <div id="actionDock" class="action-dock" hidden>
+                    <button type="button" class="action-dock-toggle" id="actionDockToggle" aria-label="Mostrar/ocultar dock">
+                        <span class="action-dock-toggle-label">Acciones</span>
+                        <span class="action-dock-toggle-arrow">▾</span>
+                    </button>
+                    <div class="action-dock-body">
+                        <div class="action-dock-sections" id="actionDockSections">
+                            <!-- Se renderiza dinámicamente -->
+                        </div>
+                        <div class="action-dock-footer">
+                            <button type="button" class="action-dock-rest" data-rest="short">Descanso corto</button>
+                            <button type="button" class="action-dock-rest" data-rest="long">Descanso largo</button>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>

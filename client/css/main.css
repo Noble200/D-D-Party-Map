@@ -12,6 +12,7 @@
 @import url('./components/canvas.css');
 @import url('./components/character-sheet.css');
 @import url('./components/map-selector.css');
+@import url('./components/action-dock.css');
 @import url('./views/home.css');
 @import url('./views/room-menu.css');
 @import url('./views/admin.css');

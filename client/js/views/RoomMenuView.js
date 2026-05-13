@@ -1174,6 +1174,8 @@ class RoomMenuView {
             userName,
             characterName,
             rollType: info.rollType || '',
+            actionLabel: info.actionLabel || null,
+            targetName: info.targetName || null,
             diceFormula: rollData.notation,
             results: rollData.rolls.map(r => r.value),
             modifier,
@@ -1252,9 +1254,84 @@ class RoomMenuView {
             this.renderDiceHistory();
         }
 
-        // Mostrar notificacion
+        // Mostrar notificacion (con etiqueta de acción si la hay)
         const name = data.characterName || data.userName;
-        showNotification(`${name} tiro ${data.diceFormula}: ${data.total}`, 'info');
+        let msg = `${name}`;
+        if (data.actionLabel) {
+            msg += ` usó ${data.actionLabel}`;
+            if (data.targetName) msg += ` sobre ${data.targetName}`;
+            msg += `: ${data.diceFormula} = ${data.total}`;
+        } else {
+            msg += ` tiró ${data.diceFormula}: ${data.total}`;
+        }
+        showNotification(msg, 'info');
+    }
+
+    // ==========================================
+    // QuickRoll: tirada programática desde el ActionDock
+    // ==========================================
+    // opts = { dice: ['d20'], modifier: 5, rollType: 'skill',
+    //          actionLabel: 'Sigilo', targetName: 'Goblin 1', isPrivate: false }
+    async quickRoll(opts = {}) {
+        const dice = Array.isArray(opts.dice) ? opts.dice : [opts.dice].filter(Boolean);
+        const modifier = parseInt(opts.modifier) || 0;
+        const rollType = opts.rollType || '';
+        const actionLabel = opts.actionLabel || null;
+        const targetName = opts.targetName || null;
+        const isPrivate = !!opts.isPrivate;
+
+        if (dice.length === 0) {
+            console.warn('quickRoll: no se especificaron dados');
+            return;
+        }
+
+        // Abrir modal de dados (si no está abierto)
+        const modalEl = document.getElementById('diceRollerModal');
+        const isOpen = modalEl?.classList.contains('active');
+
+        if (!isOpen) {
+            await this.openDiceRoller();
+        } else {
+            // Limpiar selección previa
+            if (this.diceRoller3D) this.diceRoller3D.clearDice();
+        }
+
+        // Esperar a que el 3D esté listo
+        let waited = 0;
+        while ((!this.diceRoller3D || !this.diceRoller3D.initialized) && waited < 3000) {
+            await new Promise(r => setTimeout(r, 100));
+            waited += 100;
+        }
+
+        if (!this.diceRoller3D || !this.diceRoller3D.initialized) {
+            console.error('quickRoll: DiceRoller3D no se inicializó');
+            return;
+        }
+
+        // Poblar los dados solicitados
+        dice.forEach(d => this.diceRoller3D.addDice(d));
+
+        // Setear modificador y tipo en la UI (para consistencia visual)
+        const modInput = document.getElementById('diceModifier');
+        if (modInput) modInput.value = modifier;
+        const typeSel = document.getElementById('rollType');
+        if (typeSel) typeSel.value = rollType;
+        const privCb = document.getElementById('privateRoll');
+        if (privCb) privCb.checked = isPrivate;
+
+        // Guardar info extra (actionLabel, targetName) para que handleRollComplete los incluya
+        this.pendingRollInfo = {
+            modifier,
+            rollType,
+            actionLabel,
+            targetName,
+            isPrivate,
+            notation: this.diceRoller3D.getDiceNotation()
+        };
+
+        // Lanzar
+        this.updateRollButton(false);
+        await this.diceRoller3D.roll(modifier);
     }
 
     // ==========================================
