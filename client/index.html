@@ -830,19 +830,52 @@
                     </div>
                 </div>
 
-                <!-- Dock de acciones favoritas del jugador -->
+                <!-- Dock de acciones: triggers flotantes + drawers + quick-favs -->
                 <div id="actionDock" class="action-dock" hidden>
-                    <button type="button" class="action-dock-toggle" id="actionDockToggle" aria-label="Mostrar/ocultar dock">
-                        <span class="action-dock-toggle-label">Acciones</span>
-                        <span class="action-dock-toggle-arrow">▾</span>
+                    <!-- Botones flotantes (esquinas inferiores) -->
+                    <button type="button" class="dock-trigger trigger-pasivas" id="triggerPasivas" data-drawer="pasivas" title="Rasgos pasivos">
+                        <span class="trigger-label">Pas</span>
                     </button>
-                    <div class="action-dock-body">
-                        <div class="action-dock-sections" id="actionDockSections">
-                            <!-- Se renderiza dinámicamente -->
+                    <button type="button" class="dock-trigger trigger-activas" id="triggerActivas" data-drawer="activas" title="Rasgos activos">
+                        <span class="trigger-label">Act</span>
+                    </button>
+                    <button type="button" class="dock-trigger trigger-conjuros" id="triggerConjuros" data-drawer="conjuros" title="Conjuros y trucos">
+                        <span class="trigger-label">Mag</span>
+                    </button>
+                    <button type="button" class="dock-trigger trigger-tiradas" id="triggerTiradas" data-drawer="tiradas" title="Tiradas rápidas (skills y saves)">
+                        <span class="trigger-label">d20</span>
+                    </button>
+
+                    <!-- Drawers desplegables -->
+                    <div class="dock-drawer drawer-pasivas" id="drawerPasivas">
+                        <h4 class="drawer-title">Pasivas</h4>
+                        <div class="drawer-content" id="drawerPasivasContent"></div>
+                    </div>
+
+                    <div class="dock-drawer drawer-activas" id="drawerActivas">
+                        <h4 class="drawer-title">Rasgos activos</h4>
+                        <div class="drawer-content" id="drawerActivasContent"></div>
+                        <div class="drawer-footer">
+                            <button type="button" class="drawer-rest-btn" data-rest="short">Descanso corto</button>
+                            <button type="button" class="drawer-rest-btn" data-rest="long">Descanso largo</button>
                         </div>
-                        <div class="action-dock-footer">
-                            <button type="button" class="action-dock-rest" data-rest="short">Descanso corto</button>
-                            <button type="button" class="action-dock-rest" data-rest="long">Descanso largo</button>
+                    </div>
+
+                    <div class="dock-drawer drawer-conjuros" id="drawerConjuros">
+                        <h4 class="drawer-title">Conjuros</h4>
+                        <div class="drawer-content" id="drawerConjurosContent"></div>
+                    </div>
+
+                    <div class="dock-drawer drawer-tiradas" id="drawerTiradas">
+                        <h4 class="drawer-title">Tiradas rápidas</h4>
+                        <div class="drawer-content" id="drawerTiradasContent"></div>
+                    </div>
+
+                    <!-- Barra de favoritos rápidos (siempre visible, centro-abajo) -->
+                    <div class="dock-quick-favs" id="quickFavs">
+                        <span class="quick-favs-label">★</span>
+                        <div class="quick-favs-content" id="quickFavsContent">
+                            <span class="quick-favs-empty">Sin favoritos</span>
                         </div>
                     </div>
                 </div>
