@@ -4,13 +4,19 @@
    (Medieval Fantasy / D&D, solo CSS)
    ========================================== */
 
-/* Contenedor principal */
+/* La pantalla permite scroll si el contenido no entra */
+#homeScreen {
+    overflow-y: auto;
+}
+
+/* Contenedor principal: crece con el contenido para no cortar nada */
 .home-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     padding: var(--spacing-xl);
     position: relative;
     overflow: hidden;
@@ -484,6 +490,52 @@
 /* ==========================================
    RESPONSIVE
    ========================================== */
+
+/* Pantallas bajas: versión compacta para que todo entre sin scroll */
+@media (max-height: 850px) {
+    .home-container {
+        padding: var(--spacing-lg);
+    }
+
+    .home-header {
+        margin-bottom: 25px;
+    }
+
+    .home-crest {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 12px;
+    }
+
+    .crest-number {
+        font-size: 1.15rem;
+    }
+
+    .home-container h1 {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+
+    .home-divider {
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
+    }
+
+    .option-card {
+        padding: 26px 30px 26px;
+    }
+
+    .option-card > p {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .home-tools {
+        margin-top: var(--spacing-lg);
+    }
+}
 
 @media (max-width: 768px) {
     .home-container h1 {

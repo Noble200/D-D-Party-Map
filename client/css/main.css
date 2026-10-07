@@ -147,7 +147,7 @@ h1 {
     display: block;
     width: 100%;
     padding: 12px 18px;
-    border: 2px solid var(--border-ornate);
+    border: 1px solid var(--border-ornate);
     border-radius: var(--radius-sm);
     font-size: 0.95rem;
     font-family: var(--font-body);
@@ -194,7 +194,7 @@ h1 {
     background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
     color: var(--color-text-dark);
     font-weight: 600;
-    border: 3px solid var(--color-gold-light);
+    border: 1px solid var(--color-gold-light);
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
     box-shadow: var(--shadow-stone), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
@@ -215,30 +215,32 @@ h1 {
 .btn-ornate {
     position: relative;
     background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-dark) 100%);
-    border: 3px solid var(--color-gold);
+    border: 1px solid var(--color-gold);
     font-family: var(--font-title);
     padding: 14px 30px;
     font-size: 1rem;
 }
 
+/* Rombos decorativos laterales (CSS puro, sin unicode) */
 .btn-ornate::before,
 .btn-ornate::after {
-    content: '◆';
+    content: '';
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    color: var(--color-gold);
-    font-size: 0.7rem;
+    width: 6px;
+    height: 6px;
+    background: var(--color-gold);
+    transform: translateY(-50%) rotate(45deg);
     transition: all var(--transition-fast);
 }
 
-.btn-ornate::before { left: 10px; }
-.btn-ornate::after { right: 10px; }
+.btn-ornate::before { left: 12px; }
+.btn-ornate::after { right: 12px; }
 
 .btn-ornate:hover::before,
 .btn-ornate:hover::after {
-    color: var(--color-fire);
-    text-shadow: var(--shadow-glow-fire);
+    background: var(--color-fire);
+    box-shadow: var(--shadow-glow-fire);
 }
 
 .btn-ornate:hover {

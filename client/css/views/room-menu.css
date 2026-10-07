@@ -2,12 +2,17 @@
    Vista de Menu de Sala - Estilos D&D
    ========================================== */
 
-/* Container principal */
+/* Container principal: misma atmósfera que el home (vineta + trama de rombos) */
 .room-menu-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background: linear-gradient(180deg, var(--color-bg-dark) 0%, var(--color-bg-medium) 100%);
+    background:
+        radial-gradient(ellipse at 50% 115%, rgba(226, 88, 34, 0.08) 0%, transparent 45%),
+        radial-gradient(ellipse at 15% 0%, rgba(94, 61, 118, 0.06) 0%, transparent 45%),
+        repeating-linear-gradient(45deg, rgba(212, 167, 38, 0.012) 0 2px, transparent 2px 26px),
+        repeating-linear-gradient(-45deg, rgba(212, 167, 38, 0.012) 0 2px, transparent 2px 26px),
+        radial-gradient(ellipse at center, var(--color-bg-medium) 0%, var(--color-bg-dark) 80%);
     overflow: hidden;
 }
 
@@ -38,9 +43,12 @@
     text-align: center;
     font-family: var(--font-display);
     font-size: 2rem;
-    color: var(--color-gold);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     margin: 0;
+    background: linear-gradient(180deg, var(--color-gold-light) 0%, var(--color-gold) 50%, var(--color-gold-dark) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.7));
 }
 
 /* Seccion del codigo de sala */
@@ -53,11 +61,12 @@
 .room-code-text {
     font-family: var(--font-title);
     font-size: 1.1rem;
-    color: var(--color-gold);
+    color: var(--color-gold-light);
+    text-shadow: 0 0 10px rgba(240, 200, 69, 0.35);
     letter-spacing: 3px;
     padding: 8px 16px;
-    background: var(--color-bg-light);
-    border: 2px solid var(--color-gold-dark);
+    background: rgba(10, 9, 8, 0.7);
+    border: 1px solid var(--color-gold-dark);
     border-radius: var(--radius-sm);
 }
 
@@ -99,9 +108,11 @@
 
 /* Game status message */
 .game-status-message {
-    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
-    border: 2px solid var(--color-gold-dark);
-    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, rgba(45, 38, 30, 0.9) 0%, rgba(15, 13, 10, 0.95) 100%);
+    border: 1px solid var(--border-stone);
+    border-top: 2px solid var(--color-gold-dark);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-deep);
     padding: var(--spacing-lg) var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
     text-align: center;
@@ -128,26 +139,54 @@
     display: none;
 }
 
-/* Menu buttons */
+/* Menu buttons - losas de piedra con esquinas de filigrana */
 .menu-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: var(--spacing-xl);
-    background: linear-gradient(180deg, var(--color-bg-light) 0%, var(--color-bg-medium) 100%);
-    border: 3px solid var(--border-ornate);
-    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(45, 38, 30, 0.9) 0%, rgba(15, 13, 10, 0.95) 100%);
+    border: 1px solid var(--border-stone);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-deep), inset 0 1px 0 rgba(255, 255, 255, 0.04);
     cursor: pointer;
     transition: all var(--transition-normal);
     min-height: 120px;
     text-align: center;
+    position: relative;
+}
+
+/* Esquinas doradas (visibles al pasar el cursor) */
+.menu-btn::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    pointer-events: none;
+    background:
+        linear-gradient(var(--color-gold-dark), var(--color-gold-dark)) top left / 16px 2px,
+        linear-gradient(var(--color-gold-dark), var(--color-gold-dark)) top left / 2px 16px,
+        linear-gradient(var(--color-gold-dark), var(--color-gold-dark)) top right / 16px 2px,
+        linear-gradient(var(--color-gold-dark), var(--color-gold-dark)) top right / 2px 16px,
+        linear-gradient(var(--color-gold-dark), var(--color-gold-dark)) bottom left / 16px 2px,
+        linear-gradient(var(--color-gold-dark), var(--color-gold-dark)) bottom left / 2px 16px,
+        linear-gradient(var(--color-gold-dark), var(--color-gold-dark)) bottom right / 16px 2px,
+        linear-gradient(var(--color-gold-dark), var(--color-gold-dark)) bottom right / 2px 16px;
+    background-repeat: no-repeat;
+    opacity: 0.35;
+    transition: opacity var(--transition-normal);
 }
 
 .menu-btn:hover {
-    border-color: var(--color-gold);
-    box-shadow: var(--shadow-glow-gold);
+    border-color: var(--color-gold-dark);
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.55),
+        0 0 25px rgba(212, 167, 38, 0.12);
     transform: translateY(-4px);
+}
+
+.menu-btn:hover::before {
+    opacity: 1;
 }
 
 .menu-btn-title {
@@ -185,9 +224,11 @@
 .room-menu-users {
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
-    border: 2px solid var(--border-ornate);
-    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(45, 38, 30, 0.9) 0%, rgba(15, 13, 10, 0.95) 100%);
+    border: 1px solid var(--border-stone);
+    border-left: 3px solid var(--color-gold-dark);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-deep);
     padding: var(--spacing-lg);
 }
 
