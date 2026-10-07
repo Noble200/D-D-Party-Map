@@ -13,7 +13,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Ventaja en pruebas de Carisma contra una criatura no hostil"
+      "effect": "Ventaja en pruebas de Carisma contra una criatura no hostil",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "viciousMockery": {
       "name": "Burla Cruel",
@@ -32,11 +38,20 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "wisdom" },
+      "save": {
+        "ability": "wisdom"
+      },
       "scaling": {
         "type": "cantrip",
-        "levels": { "5": "2d4", "11": "3d4", "17": "4d4" }
-      }
+        "levels": {
+          "5": "2d4",
+          "11": "3d4",
+          "17": "4d4"
+        }
+      },
+      "classes": [
+        "Bard"
+      ]
     },
     "shockingGrasp": {
       "name": "Contacto Electrizante",
@@ -54,12 +69,23 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "melee", "ability": "spellcasting" },
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
       "save": null,
       "scaling": {
         "type": "cantrip",
-        "levels": { "5": "2d8", "11": "3d8", "17": "4d8" }
-      }
+        "levels": {
+          "5": "2d8",
+          "11": "3d8",
+          "17": "4d8"
+        }
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "bladeWard": {
       "name": "Cuchilla Protectora",
@@ -74,7 +100,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Resistencia a daño cortante, contundente y perforante de armas"
+      "effect": "Resistencia a daño cortante, contundente y perforante de armas",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "eldritchBlast": {
       "name": "Estallido Arcano",
@@ -92,12 +124,23 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "ranged", "ability": "spellcasting" },
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
       "save": null,
       "scaling": {
         "type": "cantrip",
-        "beams": { "1": 1, "5": 2, "11": 3, "17": 4 }
-      }
+        "beams": {
+          "1": 1,
+          "5": 2,
+          "11": 3,
+          "17": 4
+        }
+      },
+      "classes": [
+        "Warlock"
+      ]
     },
     "produceFlame": {
       "name": "Flamear",
@@ -115,12 +158,22 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "ranged", "ability": "spellcasting" },
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
       "save": null,
       "scaling": {
         "type": "cantrip",
-        "levels": { "5": "2d8", "11": "3d8", "17": "4d8" }
-      }
+        "levels": {
+          "5": "2d8",
+          "11": "3d8",
+          "17": "4d8"
+        }
+      },
+      "classes": [
+        "Druid"
+      ]
     },
     "shillelagh": {
       "name": "Garrote",
@@ -138,9 +191,15 @@
         "defaultAbility": "wisdom",
         "addModifier": true
       },
-      "attack": { "type": "melee", "ability": "spellcasting" },
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
       "save": null,
-      "effect": "El arma usa tu característica de conjuros para ataque y daño"
+      "effect": "El arma usa tu característica de conjuros para ataque y daño",
+      "classes": [
+        "Druid"
+      ]
     },
     "minorIllusion": {
       "name": "Ilusión Menor",
@@ -155,7 +214,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Crea un sonido o imagen de un objeto en cubo de 5 pies"
+      "effect": "Crea un sonido o imagen de un objeto en cubo de 5 pies",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "trueStrike": {
       "name": "Impacto Verdadero",
@@ -170,7 +235,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Ventaja en tu próximo ataque contra el objetivo"
+      "effect": "Ventaja en tu próximo ataque contra el objetivo",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "sacredFlame": {
       "name": "Llama Sagrada",
@@ -189,11 +260,20 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "dexterity" },
+      "save": {
+        "ability": "dexterity"
+      },
       "scaling": {
         "type": "cantrip",
-        "levels": { "5": "2d8", "11": "3d8", "17": "4d8" }
-      }
+        "levels": {
+          "5": "2d8",
+          "11": "3d8",
+          "17": "4d8"
+        }
+      },
+      "classes": [
+        "Cleric"
+      ]
     },
     "dancingLights": {
       "name": "Luces Danzantes",
@@ -208,7 +288,12 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Crea hasta 4 luces del tamaño de antorchas"
+      "effect": "Crea hasta 4 luces del tamaño de antorchas",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "light": {
       "name": "Luz",
@@ -223,7 +308,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "El objeto emite luz brillante en 20 pies y luz tenue 20 pies más"
+      "effect": "El objeto emite luz brillante en 20 pies y luz tenue 20 pies más",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "thornWhip": {
       "name": "Látigo de Espinas",
@@ -241,13 +332,23 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "melee", "ability": "spellcasting" },
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
       "save": null,
       "scaling": {
         "type": "cantrip",
-        "levels": { "5": "2d6", "11": "3d6", "17": "4d6" }
+        "levels": {
+          "5": "2d6",
+          "11": "3d6",
+          "17": "4d6"
+        }
       },
-      "effect": "Acerca a la criatura 10 pies hacia ti"
+      "effect": "Acerca a la criatura 10 pies hacia ti",
+      "classes": [
+        "Druid"
+      ]
     },
     "druidcraft": {
       "name": "Magia Druídica",
@@ -262,7 +363,10 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Efectos sensoriales menores de la naturaleza"
+      "effect": "Efectos sensoriales menores de la naturaleza",
+      "classes": [
+        "Druid"
+      ]
     },
     "mageHand": {
       "name": "Mano de Mago",
@@ -277,7 +381,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Crea una mano espectral que puede manipular objetos hasta 10 libras"
+      "effect": "Crea una mano espectral que puede manipular objetos hasta 10 libras",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "message": {
       "name": "Mensaje",
@@ -292,7 +402,12 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Susurras un mensaje a una criatura que puede responder"
+      "effect": "Susurras un mensaje a una criatura que puede responder",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "guidance": {
       "name": "Orientación Divina",
@@ -307,7 +422,11 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "El objetivo añade 1d4 a una prueba de característica"
+      "effect": "El objetivo añade 1d4 a una prueba de característica",
+      "classes": [
+        "Cleric",
+        "Druid"
+      ]
     },
     "spareTheDying": {
       "name": "Perdonar la Vida",
@@ -322,7 +441,10 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Estabiliza a una criatura con 0 PG"
+      "effect": "Estabiliza a una criatura con 0 PG",
+      "classes": [
+        "Cleric"
+      ]
     },
     "prestidigitation": {
       "name": "Prestidigitación",
@@ -337,7 +459,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Trucos de magia menor"
+      "effect": "Trucos de magia menor",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "rayOfFrost": {
       "name": "Rayo de Escarcha",
@@ -355,13 +483,24 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "ranged", "ability": "spellcasting" },
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
       "save": null,
       "scaling": {
         "type": "cantrip",
-        "levels": { "5": "2d8", "11": "3d8", "17": "4d8" }
+        "levels": {
+          "5": "2d8",
+          "11": "3d8",
+          "17": "4d8"
+        }
       },
-      "effect": "Reduce velocidad del objetivo en 10 pies hasta tu próximo turno"
+      "effect": "Reduce velocidad del objetivo en 10 pies hasta tu próximo turno",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "mending": {
       "name": "Remendar",
@@ -376,7 +515,14 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Repara una rotura en un objeto"
+      "effect": "Repara una rotura en un objeto",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "resistance": {
       "name": "Resistencia",
@@ -391,7 +537,11 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "El objetivo añade 1d4 a una tirada de salvación"
+      "effect": "El objetivo añade 1d4 a una tirada de salvación",
+      "classes": [
+        "Cleric",
+        "Druid"
+      ]
     },
     "poisonSpray": {
       "name": "Rociada de Veneno",
@@ -410,11 +560,23 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "constitution" },
+      "save": {
+        "ability": "constitution"
+      },
       "scaling": {
         "type": "cantrip",
-        "levels": { "5": "2d12", "11": "3d12", "17": "4d12" }
-      }
+        "levels": {
+          "5": "2d12",
+          "11": "3d12",
+          "17": "4d12"
+        }
+      },
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "acidSplash": {
       "name": "Salpicadura de Ácido",
@@ -433,11 +595,21 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "dexterity" },
+      "save": {
+        "ability": "dexterity"
+      },
       "scaling": {
         "type": "cantrip",
-        "levels": { "5": "2d6", "11": "3d6", "17": "4d6" }
-      }
+        "levels": {
+          "5": "2d6",
+          "11": "3d6",
+          "17": "4d6"
+        }
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "thaumaturgy": {
       "name": "Taumaturgia",
@@ -452,7 +624,10 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Signos de poder sobrenatural menores"
+      "effect": "Signos de poder sobrenatural menores",
+      "classes": [
+        "Cleric"
+      ]
     },
     "chillTouch": {
       "name": "Toque Gélido",
@@ -470,13 +645,25 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "ranged", "ability": "spellcasting" },
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
       "save": null,
       "scaling": {
         "type": "cantrip",
-        "levels": { "5": "2d8", "11": "3d8", "17": "4d8" }
+        "levels": {
+          "5": "2d8",
+          "11": "3d8",
+          "17": "4d8"
+        }
       },
-      "effect": "No puede recuperar PG hasta tu próximo turno"
+      "effect": "No puede recuperar PG hasta tu próximo turno",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     }
   },
   "level1": {
@@ -494,8 +681,15 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "area": { "type": "cube", "size": 20 },
-      "effect": "Alarma contra intrusos"
+      "area": {
+        "type": "cube",
+        "size": 20
+      },
+      "effect": "Alarma contra intrusos",
+      "classes": [
+        "Ranger",
+        "Wizard"
+      ]
     },
     "armorOfAgathys": {
       "name": "Armadura de Agathys",
@@ -516,7 +710,13 @@
       "attack": null,
       "save": null,
       "effect": "5 PG temporales, daño frío a atacantes cuerpo a cuerpo",
-      "scaling": { "type": "spellLevel", "perLevel": "+5 PG y +5 daño" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+5 PG y +5 daño"
+      },
+      "classes": [
+        "Warlock"
+      ]
     },
     "mageArmor": {
       "name": "Armadura de Mago",
@@ -531,7 +731,11 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "CA base 13 + mod DES"
+      "effect": "CA base 13 + mod DES",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "bless": {
       "name": "Bendecir",
@@ -547,7 +751,14 @@
       "attack": null,
       "save": null,
       "effect": "Hasta 3 criaturas añaden 1d4 a ataques y salvaciones",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Cleric",
+        "Paladin"
+      ]
     },
     "armsOfHadar": {
       "name": "Brazos de Hadar",
@@ -566,9 +777,20 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "strength" },
-      "area": { "type": "sphere", "size": 10 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "save": {
+        "ability": "strength"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 10
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Warlock"
+      ]
     },
     "burningHands": {
       "name": "Manos Ardientes",
@@ -587,9 +809,21 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cone", "size": 15 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cone",
+        "size": 15
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "cureWounds": {
       "name": "Curar Heridas",
@@ -608,7 +842,17 @@
       },
       "attack": null,
       "save": null,
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Ranger"
+      ]
     },
     "detectMagic": {
       "name": "Detectar Magia",
@@ -624,7 +868,16 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Detecta magia a 30 pies"
+      "effect": "Detecta magia a 30 pies",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Ranger",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "disguiseSelf": {
       "name": "Disfrazarse",
@@ -639,7 +892,12 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Cambia tu apariencia ilusoriamente"
+      "effect": "Cambia tu apariencia ilusoriamente",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "sleep": {
       "name": "Dormir",
@@ -655,7 +913,15 @@
       "attack": null,
       "save": null,
       "effect": "5d8 PG de criaturas caen dormidas",
-      "scaling": { "type": "spellLevel", "perLevel": "+2d8 PG" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+2d8 PG"
+      },
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "shield": {
       "name": "Escudo",
@@ -670,7 +936,11 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "+5 CA hasta tu próximo turno"
+      "effect": "+5 CA hasta tu próximo turno",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "divineFavor": {
       "name": "Favor Divino",
@@ -690,7 +960,10 @@
       },
       "attack": null,
       "save": null,
-      "effect": "+1d4 daño radiante a ataques con armas"
+      "effect": "+1d4 daño radiante a ataques con armas",
+      "classes": [
+        "Paladin"
+      ]
     },
     "faerieFire": {
       "name": "Fuego Feérico",
@@ -704,9 +977,18 @@
       "concentration": true,
       "damage": null,
       "attack": null,
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cube", "size": 20 },
-      "effect": "Criaturas delineadas en luz, ataques con ventaja"
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cube",
+        "size": 20
+      },
+      "effect": "Criaturas delineadas en luz, ataques con ventaja",
+      "classes": [
+        "Bard",
+        "Druid"
+      ]
     },
     "searingSmite": {
       "name": "Golpe Abrasador",
@@ -725,8 +1007,16 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "constitution" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "save": {
+        "ability": "constitution"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Paladin"
+      ]
     },
     "thunderousSmite": {
       "name": "Golpe Estruendoso",
@@ -745,7 +1035,12 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "strength" }
+      "save": {
+        "ability": "strength"
+      },
+      "classes": [
+        "Paladin"
+      ]
     },
     "charmPerson": {
       "name": "Hechizar Persona",
@@ -759,8 +1054,20 @@
       "concentration": false,
       "damage": null,
       "attack": null,
-      "save": { "ability": "wisdom" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "save": {
+        "ability": "wisdom"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Bard",
+        "Druid",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "heroism": {
       "name": "Heroísmo",
@@ -776,7 +1083,14 @@
       "attack": null,
       "save": null,
       "effect": "Inmune a asustado, PG temp = mod conjuros cada turno",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Bard",
+        "Paladin"
+      ]
     },
     "identify": {
       "name": "Identificar",
@@ -792,7 +1106,11 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Aprende propiedades mágicas de un objeto"
+      "effect": "Aprende propiedades mágicas de un objeto",
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "inflictWounds": {
       "name": "Infligir Heridas",
@@ -810,9 +1128,18 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "melee", "ability": "spellcasting" },
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
       "save": null,
-      "scaling": { "type": "spellLevel", "perLevel": "+1d10" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d10"
+      },
+      "classes": [
+        "Cleric"
+      ]
     },
     "hex": {
       "name": "Mal de Ojo",
@@ -832,7 +1159,10 @@
       },
       "attack": null,
       "save": null,
-      "effect": "+1d6 daño necrótico a cada golpe, desventaja en pruebas de 1 característica"
+      "effect": "+1d6 daño necrótico a cada golpe, desventaja en pruebas de 1 característica",
+      "classes": [
+        "Warlock"
+      ]
     },
     "magicMissile": {
       "name": "Proyectil Mágico",
@@ -854,7 +1184,14 @@
       "attack": null,
       "save": null,
       "effect": "3 dardos de 1d4+1 cada uno, impacto automático",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 dardo" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 dardo"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "healingWord": {
       "name": "Palabra Sanadora",
@@ -873,7 +1210,15 @@
       },
       "attack": null,
       "save": null,
-      "scaling": { "type": "spellLevel", "perLevel": "+1d4" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d4"
+      },
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid"
+      ]
     },
     "rayOfSickness": {
       "name": "Rayo de Dolencia",
@@ -891,9 +1236,21 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "ranged", "ability": "spellcasting" },
-      "save": { "ability": "constitution" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
+      "save": {
+        "ability": "constitution"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "guidingBolt": {
       "name": "Rayo Guiado",
@@ -911,10 +1268,19 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "ranged", "ability": "spellcasting" },
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
       "save": null,
       "effect": "Siguiente ataque contra el objetivo tiene ventaja",
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Cleric"
+      ]
     },
     "hellishRebuke": {
       "name": "Reprensión Infernal",
@@ -933,8 +1299,16 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "dexterity" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d10" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d10"
+      },
+      "classes": [
+        "Warlock"
+      ]
     },
     "thunderwave": {
       "name": "Onda Atronadora",
@@ -953,9 +1327,23 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "constitution" },
-      "area": { "type": "cube", "size": 15 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "cube",
+        "size": 15
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Bard",
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "witchBolt": {
       "name": "Virote Encantado",
@@ -973,10 +1361,21 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "ranged", "ability": "spellcasting" },
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
       "save": null,
       "effect": "1d12 adicional cada turno como acción",
-      "scaling": { "type": "spellLevel", "perLevel": "+1d12 inicial" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d12 inicial"
+      },
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "dissonantWhispers": {
       "name": "Susurros Disonantes",
@@ -995,9 +1394,17 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "wisdom" },
+      "save": {
+        "ability": "wisdom"
+      },
       "effect": "El objetivo debe usar su reacción para huir",
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Bard"
+      ]
     },
     "featherFall": {
       "name": "Caída de Pluma",
@@ -1012,7 +1419,12 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Hasta 5 criaturas caen lentamente (60 pies/ronda)"
+      "effect": "Hasta 5 criaturas caen lentamente (60 pies/ronda)",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "comprehendLanguages": {
       "name": "Comprensión Idiomática",
@@ -1028,7 +1440,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Entiendes cualquier idioma hablado o escrito"
+      "effect": "Entiendes cualquier idioma hablado o escrito",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "entangle": {
       "name": "Enmarañar",
@@ -1042,9 +1460,17 @@
       "concentration": true,
       "damage": null,
       "attack": null,
-      "save": { "ability": "strength" },
-      "area": { "type": "square", "size": 20 },
-      "effect": "Plantas enredan a criaturas, terreno difícil"
+      "save": {
+        "ability": "strength"
+      },
+      "area": {
+        "type": "square",
+        "size": 20
+      },
+      "effect": "Plantas enredan a criaturas, terreno difícil",
+      "classes": [
+        "Druid"
+      ]
     },
     "fogCloud": {
       "name": "Nube Brumosa",
@@ -1059,9 +1485,21 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "area": { "type": "sphere", "size": 20 },
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
       "effect": "Área muy oscurecida",
-      "scaling": { "type": "spellLevel", "perLevel": "+20 pies radio" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+20 pies radio"
+      },
+      "classes": [
+        "Druid",
+        "Ranger",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "falseLife": {
       "name": "Vida Falsa",
@@ -1082,7 +1520,14 @@
       "attack": null,
       "save": null,
       "effect": "Ganas 1d4+4 PG temporales",
-      "scaling": { "type": "spellLevel", "perLevel": "+5 PG temp" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+5 PG temp"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "goodberry": {
       "name": "Buenas Bayas",
@@ -1103,7 +1548,11 @@
       },
       "attack": null,
       "save": null,
-      "effect": "10 bayas que curan 1 PG cada una y alimentan 1 día"
+      "effect": "10 bayas que curan 1 PG cada una y alimentan 1 día",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "command": {
       "name": "Orden Imperiosa",
@@ -1117,8 +1566,17 @@
       "concentration": false,
       "damage": null,
       "attack": null,
-      "save": { "ability": "wisdom" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "save": {
+        "ability": "wisdom"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Cleric",
+        "Paladin"
+      ]
     },
     "sanctuary": {
       "name": "Santuario",
@@ -1132,8 +1590,13 @@
       "concentration": false,
       "damage": null,
       "attack": null,
-      "save": { "ability": "wisdom" },
-      "effect": "Enemigos deben pasar salvación para atacar al objetivo"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Enemigos deben pasar salvación para atacar al objetivo",
+      "classes": [
+        "Cleric"
+      ]
     },
     "protectionFromEvilAndGood": {
       "name": "Protección contra el Bien y el Mal",
@@ -1148,7 +1611,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Protege contra aberraciones, celestiales, elementales, feéricos, infernales y muertos vivientes"
+      "effect": "Protege contra aberraciones, celestiales, elementales, feéricos, infernales y muertos vivientes",
+      "classes": [
+        "Cleric",
+        "Paladin",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "jump": {
       "name": "Salto",
@@ -1163,7 +1632,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Distancia de salto triplicada"
+      "effect": "Distancia de salto triplicada",
+      "classes": [
+        "Druid",
+        "Ranger",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "silentImage": {
       "name": "Imagen Silenciosa",
@@ -1178,8 +1653,16 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "area": { "type": "cube", "size": 15 },
-      "effect": "Crea imagen ilusoria visual sin sonido"
+      "area": {
+        "type": "cube",
+        "size": 15
+      },
+      "effect": "Crea imagen ilusoria visual sin sonido",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "shieldOfFaith": {
       "name": "Escudo de la Fe",
@@ -1194,7 +1677,11 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "+2 CA"
+      "effect": "+2 CA",
+      "classes": [
+        "Cleric",
+        "Paladin"
+      ]
     },
     "colorSpray": {
       "name": "Rociada de Color",
@@ -1209,9 +1696,19 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "area": { "type": "cone", "size": 15 },
+      "area": {
+        "type": "cone",
+        "size": 15
+      },
       "effect": "6d10 PG de criaturas cegadas",
-      "scaling": { "type": "spellLevel", "perLevel": "+2d10 PG" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+2d10 PG"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "findFamiliar": {
       "name": "Encontrar Familiar",
@@ -1227,7 +1724,10 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Invoca un familiar espiritual"
+      "effect": "Invoca un familiar espiritual",
+      "classes": [
+        "Wizard"
+      ]
     },
     "chromaticOrb": {
       "name": "Orbe Cromático",
@@ -1242,13 +1742,30 @@
       "damage": {
         "dice": "3d8",
         "type": "variable",
-        "types": ["ácido", "frío", "fuego", "eléctrico", "veneno", "trueno"],
+        "types": [
+          "ácido",
+          "frío",
+          "fuego",
+          "eléctrico",
+          "veneno",
+          "trueno"
+        ],
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "ranged", "ability": "spellcasting" },
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
       "save": null,
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "hailOfThorns": {
       "name": "Ráfaga de Espinas",
@@ -1267,9 +1784,20 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "dexterity" },
-      "area": { "type": "sphere", "size": 5 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d10 (max 6d10)" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 5
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d10 (max 6d10)"
+      },
+      "classes": [
+        "Ranger"
+      ]
     },
     "ensnaringStrike": {
       "name": "Impacto Enmarañador",
@@ -1288,8 +1816,16 @@
         "addModifier": false
       },
       "attack": null,
-      "save": { "ability": "strength" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "save": {
+        "ability": "strength"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Ranger"
+      ]
     },
     "longstrider": {
       "name": "Zancada Prodigiosa",
@@ -1305,7 +1841,16 @@
       "attack": null,
       "save": null,
       "effect": "+10 pies de velocidad",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Bard",
+        "Druid",
+        "Ranger",
+        "Wizard"
+      ]
     },
     "expeditiousRetreat": {
       "name": "Retirada Expeditiva",
@@ -1320,7 +1865,12 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Puedes usar Carrera como acción adicional"
+      "effect": "Puedes usar Carrera como acción adicional",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "bane": {
       "name": "Perdición",
@@ -1334,8 +1884,14 @@
       "concentration": true,
       "damage": null,
       "attack": null,
-      "save": { "ability": "charisma" },
-      "effect": "Hasta 3 criaturas restan 1d4 a ataques y salvaciones"
+      "save": {
+        "ability": "charisma"
+      },
+      "effect": "Hasta 3 criaturas restan 1d4 a ataques y salvaciones",
+      "classes": [
+        "Bard",
+        "Cleric"
+      ]
     },
     "speakWithAnimals": {
       "name": "Hablar con los Animales",
@@ -1351,7 +1907,12 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Puedes comunicarte con bestias"
+      "effect": "Puedes comunicarte con bestias",
+      "classes": [
+        "Bard",
+        "Druid",
+        "Ranger"
+      ]
     },
     "animalFriendship": {
       "name": "Amistad con los Animales",
@@ -1365,8 +1926,18 @@
       "concentration": false,
       "damage": null,
       "attack": null,
-      "save": { "ability": "wisdom" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1 bestia" }
+      "save": {
+        "ability": "wisdom"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 bestia"
+      },
+      "classes": [
+        "Bard",
+        "Druid",
+        "Ranger"
+      ]
     },
     "compelledDuel": {
       "name": "Duelo Obligado",
@@ -1380,8 +1951,13 @@
       "concentration": true,
       "damage": null,
       "attack": null,
-      "save": { "ability": "wisdom" },
-      "effect": "El objetivo tiene desventaja en ataques contra otros"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "El objetivo tiene desventaja en ataques contra otros",
+      "classes": [
+        "Paladin"
+      ]
     },
     "grease": {
       "name": "Grasa",
@@ -1395,9 +1971,17 @@
       "concentration": false,
       "damage": null,
       "attack": null,
-      "save": { "ability": "dexterity" },
-      "area": { "type": "square", "size": 10 },
-      "effect": "Terreno difícil, criaturas pueden caer"
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "square",
+        "size": 10
+      },
+      "effect": "Terreno difícil, criaturas pueden caer",
+      "classes": [
+        "Wizard"
+      ]
     },
     "detectEvilAndGood": {
       "name": "Detectar el Bien y el Mal",
@@ -1412,7 +1996,11 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Detecta aberraciones, celestiales, feéricos, infernales, muertos vivientes"
+      "effect": "Detecta aberraciones, celestiales, feéricos, infernales, muertos vivientes",
+      "classes": [
+        "Cleric",
+        "Paladin"
+      ]
     },
     "detectPoisonAndDisease": {
       "name": "Detectar Venenos y Enfermedades",
@@ -1428,7 +2016,13 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Detecta venenos, criaturas venenosas y enfermedades a 30 pies"
+      "effect": "Detecta venenos, criaturas venenosas y enfermedades a 30 pies",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Ranger"
+      ]
     },
     "createOrDestroyWater": {
       "name": "Crear o Destruir Agua",
@@ -1444,7 +2038,14 @@
       "attack": null,
       "save": null,
       "effect": "Crea o destruye hasta 10 galones de agua",
-      "scaling": { "type": "spellLevel", "perLevel": "+10 galones" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+10 galones"
+      },
+      "classes": [
+        "Cleric",
+        "Druid"
+      ]
     },
     "purifyFoodAndDrink": {
       "name": "Purificar Comida y Bebida",
@@ -1460,8 +2061,16 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "area": { "type": "sphere", "size": 5 },
-      "effect": "Purifica comida y bebida de venenos y enfermedades"
+      "area": {
+        "type": "sphere",
+        "size": 5
+      },
+      "effect": "Purifica comida y bebida de venenos y enfermedades",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Paladin"
+      ]
     },
     "unseenServant": {
       "name": "Sirviente Invisible",
@@ -1477,7 +2086,12 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Crea una fuerza invisible que realiza tareas simples"
+      "effect": "Crea una fuerza invisible que realiza tareas simples",
+      "classes": [
+        "Bard",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "illusoryScript": {
       "name": "Escritura Ilusoria",
@@ -1493,7 +2107,12 @@
       "damage": null,
       "attack": null,
       "save": null,
-      "effect": "Escritura que solo tú y designados pueden leer"
+      "effect": "Escritura que solo tú y designados pueden leer",
+      "classes": [
+        "Bard",
+        "Warlock",
+        "Wizard"
+      ]
     }
   },
   "level2": {
@@ -1507,9 +2126,20 @@
       "duration": "8 horas",
       "components": "V, S, M",
       "concentration": false,
-      "healing": { "dice": "5", "type": "maxHp", "addModifier": false },
+      "healing": {
+        "dice": "5",
+        "type": "maxHp",
+        "addModifier": false
+      },
       "effect": "Hasta 3 criaturas +5 PG máximos y actuales",
-      "scaling": { "type": "spellLevel", "perLevel": "+5 PG" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+5 PG"
+      },
+      "classes": [
+        "Cleric",
+        "Paladin"
+      ]
     },
     "spiritualWeapon": {
       "name": "Arma Espiritual",
@@ -1527,8 +2157,17 @@
         "defaultAbility": "spellcasting",
         "addModifier": true
       },
-      "attack": { "type": "melee", "ability": "spellcasting" },
-      "scaling": { "type": "spellLevel", "perLevelPair": "+1d8" }
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevelPair": "+1d8"
+      },
+      "classes": [
+        "Cleric"
+      ]
     },
     "magicWeapon": {
       "name": "Arma Mágica",
@@ -1540,7 +2179,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S",
       "concentration": true,
-      "effect": "Arma +1 a ataque y daño (nivel 4: +2, nivel 6: +3)"
+      "effect": "Arma +1 a ataque y daño (nivel 4: +2, nivel 6: +3)",
+      "classes": [
+        "Paladin",
+        "Wizard"
+      ]
     },
     "enhanceAbility": {
       "name": "Aumentar Característica",
@@ -1553,7 +2196,16 @@
       "components": "V, S, M",
       "concentration": true,
       "effect": "Ventaja en pruebas de una característica + efecto adicional",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Sorcerer"
+      ]
     },
     "blur": {
       "name": "Contorno Borroso",
@@ -1565,7 +2217,11 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V",
       "concentration": true,
-      "effect": "Ataques contra ti tienen desventaja"
+      "effect": "Ataques contra ti tienen desventaja",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "heatMetal": {
       "name": "Calentar Metal",
@@ -1583,8 +2239,17 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "save": {
+        "ability": "constitution"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Bard",
+        "Druid"
+      ]
     },
     "blindnessDeafness": {
       "name": "Ceguera/Sordera",
@@ -1596,8 +2261,19 @@
       "duration": "1 minuto",
       "components": "V",
       "concentration": false,
-      "save": { "ability": "constitution" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "save": {
+        "ability": "constitution"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "crownOfMadness": {
       "name": "Corona de Locura",
@@ -1609,8 +2285,16 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Humanoide encantado debe atacar a aliados"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Humanoide encantado debe atacar a aliados",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "detectThoughts": {
       "name": "Detectar Pensamientos",
@@ -1622,8 +2306,15 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Lee pensamientos superficiales o profundiza"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Lee pensamientos superficiales o profundiza",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "flamingSphere": {
       "name": "Esfera Flamígera",
@@ -1641,9 +2332,21 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "sphere", "size": 5 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 5
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Druid",
+        "Wizard"
+      ]
     },
     "shatter": {
       "name": "Estallar",
@@ -1661,9 +2364,23 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "area": { "type": "sphere", "size": 10 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 10
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "flameBlade": {
       "name": "Filo Flamígero",
@@ -1681,8 +2398,17 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "melee", "ability": "spellcasting" },
-      "scaling": { "type": "spellLevel", "perLevelPair": "+1d6" }
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevelPair": "+1d6"
+      },
+      "classes": [
+        "Druid"
+      ]
     },
     "phantasmalForce": {
       "name": "Fuerza Fantasmal",
@@ -1700,8 +2426,18 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "intelligence" },
-      "area": { "type": "cube", "size": 10 }
+      "save": {
+        "ability": "intelligence"
+      },
+      "area": {
+        "type": "cube",
+        "size": 10
+      },
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "brandingSmite": {
       "name": "Golpe Marcador",
@@ -1719,7 +2455,13 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Paladin"
+      ]
     },
     "mirrorImage": {
       "name": "Imagen Múltiple",
@@ -1731,7 +2473,12 @@
       "duration": "1 minuto",
       "components": "V, S",
       "concentration": false,
-      "effect": "Creas 3 duplicados ilusorios"
+      "effect": "Creas 3 duplicados ilusorios",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "holdPerson": {
       "name": "Inmovilizar Persona",
@@ -1743,9 +2490,22 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
+      "save": {
+        "ability": "wisdom"
+      },
       "effect": "Paraliza a un humanoide",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "invisibility": {
       "name": "Invisibilidad",
@@ -1758,7 +2518,16 @@
       "components": "V, S, M",
       "concentration": true,
       "effect": "El objetivo se vuelve invisible",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "levitate": {
       "name": "Levitar",
@@ -1770,8 +2539,14 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "constitution" },
-      "effect": "El objetivo se eleva verticalmente hasta 20 pies"
+      "save": {
+        "ability": "constitution"
+      },
+      "effect": "El objetivo se eleva verticalmente hasta 20 pies",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "cloudOfDaggers": {
       "name": "Nube de Dagas",
@@ -1789,8 +2564,20 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "area": { "type": "cube", "size": 5 },
-      "scaling": { "type": "spellLevel", "perLevel": "+2d4" }
+      "area": {
+        "type": "cube",
+        "size": 5
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+2d4"
+      },
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "prayerOfHealing": {
       "name": "Oración de Curación",
@@ -1808,7 +2595,13 @@
         "addModifier": true,
         "targets": 6
       },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Cleric"
+      ]
     },
     "darkness": {
       "name": "Oscuridad",
@@ -1820,8 +2613,16 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, M",
       "concentration": true,
-      "area": { "type": "sphere", "size": 15 },
-      "effect": "Oscuridad mágica impenetrable"
+      "area": {
+        "type": "sphere",
+        "size": 15
+      },
+      "effect": "Oscuridad mágica impenetrable",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "passWithoutTrace": {
       "name": "Pasar sin Dejar Rastro",
@@ -1833,7 +2634,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Tú y aliados +10 a Sigilo, no dejan rastro"
+      "effect": "Tú y aliados +10 a Sigilo, no dejan rastro",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "mistyStep": {
       "name": "Paso Brumoso",
@@ -1845,7 +2650,12 @@
       "duration": "Instantánea",
       "components": "V",
       "concentration": false,
-      "effect": "Te teleportas hasta 30 pies"
+      "effect": "Te teleportas hasta 30 pies",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "scorchingRay": {
       "name": "Rayo Abrasador",
@@ -1864,9 +2674,19 @@
         "addModifier": false,
         "rays": 3
       },
-      "attack": { "type": "ranged", "ability": "spellcasting" },
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
       "effect": "3 rayos de 2d6 cada uno",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 rayo" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 rayo"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "moonbeam": {
       "name": "Rayo de Luna",
@@ -1884,9 +2704,20 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "area": { "type": "cylinder", "size": 5 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d10" }
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "cylinder",
+        "size": 5
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d10"
+      },
+      "classes": [
+        "Druid"
+      ]
     },
     "lesserRestoration": {
       "name": "Restablecimiento Menor",
@@ -1898,7 +2729,14 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "effect": "Cura enfermedad o condición (cegado, ensordecido, paralizado, envenenado)"
+      "effect": "Cura enfermedad o condición (cegado, ensordecido, paralizado, envenenado)",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Ranger"
+      ]
     },
     "silence": {
       "name": "Silencio",
@@ -1911,8 +2749,16 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S",
       "concentration": true,
-      "area": { "type": "sphere", "size": 20 },
-      "effect": "Ningún sonido puede crearse o pasar"
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
+      "effect": "Ningún sonido puede crearse o pasar",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Ranger"
+      ]
     },
     "suggestion": {
       "name": "Sugestión",
@@ -1924,8 +2770,16 @@
       "duration": "Concentración, hasta 8 horas",
       "components": "V, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Sugiere un curso de acción razonable"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Sugiere un curso de acción razonable",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "web": {
       "name": "Telaraña",
@@ -1937,9 +2791,18 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cube", "size": 20 },
-      "effect": "Atrapa criaturas, terreno difícil"
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cube",
+        "size": 20
+      },
+      "effect": "Atrapa criaturas, terreno difícil",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "spikeGrowth": {
       "name": "Brote de Espinas",
@@ -1958,7 +2821,14 @@
         "addModifier": false,
         "perMovement": "5 pies"
       },
-      "area": { "type": "circle", "size": 20 }
+      "area": {
+        "type": "circle",
+        "size": 20
+      },
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "spiderClimb": {
       "name": "Trepar cual Arácnido",
@@ -1970,7 +2840,12 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Trepar por superficies incluso boca abajo"
+      "effect": "Trepar por superficies incluso boca abajo",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "seeInvisibility": {
       "name": "Ver lo Invisible",
@@ -1982,7 +2857,12 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Ves criaturas y objetos invisibles y en el Plano Etéreo"
+      "effect": "Ves criaturas y objetos invisibles y en el Plano Etéreo",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "darkvision": {
       "name": "Visión en la Oscuridad",
@@ -1994,7 +2874,13 @@
       "duration": "8 horas",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Visión en oscuridad 60 pies"
+      "effect": "Visión en oscuridad 60 pies",
+      "classes": [
+        "Druid",
+        "Ranger",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "zoneOfTruth": {
       "name": "Zona de Verdad",
@@ -2006,9 +2892,19 @@
       "duration": "10 minutos",
       "components": "V, S",
       "concentration": false,
-      "save": { "ability": "charisma" },
-      "area": { "type": "sphere", "size": 15 },
-      "effect": "Criaturas no pueden mentir deliberadamente"
+      "save": {
+        "ability": "charisma"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 15
+      },
+      "effect": "Criaturas no pueden mentir deliberadamente",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Paladin"
+      ]
     },
     "arcaneLock": {
       "name": "Cerradura Arcana",
@@ -2020,7 +2916,10 @@
       "duration": "Hasta ser disipado",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Cierra mágicamente puerta/ventana/cofre"
+      "effect": "Cierra mágicamente puerta/ventana/cofre",
+      "classes": [
+        "Wizard"
+      ]
     },
     "knock": {
       "name": "Apertura",
@@ -2032,7 +2931,12 @@
       "duration": "Instantánea",
       "components": "V",
       "concentration": false,
-      "effect": "Abre cerraduras, candados, barras, etc."
+      "effect": "Abre cerraduras, candados, barras, etc.",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "findSteed": {
       "name": "Encontrar Corcel",
@@ -2044,7 +2948,10 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "effect": "Invoca un corcel leal e inteligente"
+      "effect": "Invoca un corcel leal e inteligente",
+      "classes": [
+        "Paladin"
+      ]
     },
     "gustOfWind": {
       "name": "Ráfaga de Viento",
@@ -2056,9 +2963,20 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "strength" },
-      "area": { "type": "line", "size": 60, "width": 10 },
-      "effect": "Empuja criaturas 15 pies, terreno difícil"
+      "save": {
+        "ability": "strength"
+      },
+      "area": {
+        "type": "line",
+        "size": 60,
+        "width": 10
+      },
+      "effect": "Empuja criaturas 15 pies, terreno difícil",
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "wardingBond": {
       "name": "Vínculo Protector",
@@ -2070,7 +2988,10 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Objetivo +1 CA y salvaciones, resistencia a todo daño. Tú recibes el mismo daño"
+      "effect": "Objetivo +1 CA y salvaciones, resistencia a todo daño. Tú recibes el mismo daño",
+      "classes": [
+        "Cleric"
+      ]
     },
     "calmEmotions": {
       "name": "Calmar Emociones",
@@ -2082,9 +3003,18 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "save": { "ability": "charisma" },
-      "area": { "type": "sphere", "size": 20 },
-      "effect": "Suprime emociones fuertes o encantamientos"
+      "save": {
+        "ability": "charisma"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
+      "effect": "Suprime emociones fuertes o encantamientos",
+      "classes": [
+        "Bard",
+        "Cleric"
+      ]
     },
     "continualFlame": {
       "name": "Llama Continua",
@@ -2096,7 +3026,11 @@
       "duration": "Hasta ser disipado",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Crea llama permanente equivalente a antorcha"
+      "effect": "Crea llama permanente equivalente a antorcha",
+      "classes": [
+        "Cleric",
+        "Wizard"
+      ]
     },
     "augury": {
       "name": "Augurio",
@@ -2109,7 +3043,10 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Presagio sobre acción en próximos 30 minutos"
+      "effect": "Presagio sobre acción en próximos 30 minutos",
+      "classes": [
+        "Cleric"
+      ]
     },
     "protectionFromPoison": {
       "name": "Protección contra el Veneno",
@@ -2121,7 +3058,13 @@
       "duration": "1 hora",
       "components": "V, S",
       "concentration": false,
-      "effect": "Neutraliza veneno, ventaja salvaciones vs veneno, resistencia a daño por veneno"
+      "effect": "Neutraliza veneno, ventaja salvaciones vs veneno, resistencia a daño por veneno",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Ranger"
+      ]
     },
     "barkskin": {
       "name": "Piel Robliza",
@@ -2133,7 +3076,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "CA no puede ser menor que 16"
+      "effect": "CA no puede ser menor que 16",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "gentleRepose": {
       "name": "Descanso Apacible",
@@ -2146,7 +3093,11 @@
       "duration": "10 días",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Protege cadáver de descomposición y resurrección como muerto viviente"
+      "effect": "Protege cadáver de descomposición y resurrección como muerto viviente",
+      "classes": [
+        "Cleric",
+        "Wizard"
+      ]
     },
     "alterSelf": {
       "name": "Alterar el Propio Aspecto",
@@ -2158,7 +3109,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S",
       "concentration": true,
-      "effect": "Cambia apariencia, adaptación acuática, o armas naturales"
+      "effect": "Cambia apariencia, adaptación acuática, o armas naturales",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "enlarge/Reduce": {
       "name": "Agrandar/Reducir",
@@ -2176,8 +3131,14 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "effect": "Agranda (+1d4 daño, ventaja FUE) o reduce (-1d4, desventaja FUE)"
+      "save": {
+        "ability": "constitution"
+      },
+      "effect": "Agranda (+1d4 daño, ventaja FUE) o reduce (-1d4, desventaja FUE)",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "cordonOfArrows": {
       "name": "Cordón de Flechas",
@@ -2195,8 +3156,16 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "scaling": { "type": "spellLevel", "perLevel": "+2 flechas" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+2 flechas"
+      },
+      "classes": [
+        "Ranger"
+      ]
     },
     "animalMessenger": {
       "name": "Animal Mensajero",
@@ -2210,7 +3179,15 @@
       "components": "V, S, M",
       "concentration": false,
       "effect": "Utiliza un animal pequeño para entregar un mensaje",
-      "scaling": { "type": "spellLevel", "perLevel": "+48 horas de duración" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+48 horas de duración"
+      },
+      "classes": [
+        "Bard",
+        "Druid",
+        "Ranger"
+      ]
     },
     "beastSense": {
       "name": "Sentido Animal",
@@ -2223,7 +3200,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "S",
       "concentration": true,
-      "effect": "Percibes a través de los sentidos de una bestia voluntaria"
+      "effect": "Percibes a través de los sentidos de una bestia voluntaria",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "enthrall": {
       "name": "Cautivar",
@@ -2235,8 +3216,14 @@
       "duration": "1 minuto",
       "components": "V, S",
       "concentration": false,
-      "save": { "ability": "wisdom" },
-      "effect": "Distraes a criaturas que te pueden oír, tienen desventaja en Percepción"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Distraes a criaturas que te pueden oír, tienen desventaja en Percepción",
+      "classes": [
+        "Bard",
+        "Warlock"
+      ]
     },
     "findTraps": {
       "name": "Encontrar Trampas",
@@ -2248,7 +3235,12 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "effect": "Sientes la presencia de trampas en línea de visión"
+      "effect": "Sientes la presencia de trampas en línea de visión",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Ranger"
+      ]
     },
     "locateAnimalsOrPlants": {
       "name": "Localizar Animales o Plantas",
@@ -2261,7 +3253,12 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Localiza el tipo de bestia o planta más cercano en 5 millas"
+      "effect": "Localiza el tipo de bestia o planta más cercano en 5 millas",
+      "classes": [
+        "Bard",
+        "Druid",
+        "Ranger"
+      ]
     },
     "locateObject": {
       "name": "Localizar Objeto",
@@ -2273,7 +3270,15 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Presientes la dirección de un objeto específico a menos de 1000 pies"
+      "effect": "Presientes la dirección de un objeto específico a menos de 1000 pies",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Ranger",
+        "Wizard"
+      ]
     },
     "magicMouth": {
       "name": "Boca Mágica",
@@ -2286,7 +3291,11 @@
       "duration": "Hasta ser disipado",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Implanta un mensaje en un objeto que se activa con una condición"
+      "effect": "Implanta un mensaje en un objeto que se activa con una condición",
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "rayOfEnfeeblement": {
       "name": "Rayo de Debilitamiento",
@@ -2298,8 +3307,15 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "attack": { "type": "ranged", "ability": "spellcasting" },
-      "effect": "El objetivo hace solo la mitad de daño con ataques basados en Fuerza"
+      "attack": {
+        "type": "ranged",
+        "ability": "spellcasting"
+      },
+      "effect": "El objetivo hace solo la mitad de daño con ataques basados en Fuerza",
+      "classes": [
+        "Warlock",
+        "Wizard"
+      ]
     }
   },
   "level3": {
@@ -2319,9 +3335,21 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "sphere", "size": 20 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "lightningBolt": {
       "name": "Rayo Relampagueante",
@@ -2339,9 +3367,22 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "line", "size": 100, "width": 5 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "line",
+        "size": 100,
+        "width": 5
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "counterspell": {
       "name": "Contraconjuro",
@@ -2353,7 +3394,12 @@
       "duration": "Instantánea",
       "components": "S",
       "concentration": false,
-      "effect": "Interrumpe conjuro nivel 3 o menor automáticamente"
+      "effect": "Interrumpe conjuro nivel 3 o menor automáticamente",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "dispelMagic": {
       "name": "Disipar Magia",
@@ -2365,7 +3411,16 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "effect": "Termina conjuro nivel 3 o menor automáticamente"
+      "effect": "Termina conjuro nivel 3 o menor automáticamente",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "haste": {
       "name": "Acelerar",
@@ -2377,7 +3432,11 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Velocidad x2, +2 CA, ventaja salvaciones DES, acción extra"
+      "effect": "Velocidad x2, +2 CA, ventaja salvaciones DES, acción extra",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "slow": {
       "name": "Ralentizar",
@@ -2389,9 +3448,18 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "area": { "type": "cube", "size": 40 },
-      "effect": "Hasta 6 criaturas: velocidad /2, -2 CA, no reacciones"
+      "save": {
+        "ability": "wisdom"
+      },
+      "area": {
+        "type": "cube",
+        "size": 40
+      },
+      "effect": "Hasta 6 criaturas: velocidad /2, -2 CA, no reacciones",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "fly": {
       "name": "Volar",
@@ -2404,7 +3472,15 @@
       "components": "V, S, M",
       "concentration": true,
       "effect": "Velocidad de vuelo 60 pies",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "spiritGuardians": {
       "name": "Espíritus Guardianes",
@@ -2422,9 +3498,20 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "wisdom" },
-      "area": { "type": "sphere", "size": 15 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "save": {
+        "ability": "wisdom"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 15
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Cleric"
+      ]
     },
     "massHealingWord": {
       "name": "Palabra Sanadora en Masa",
@@ -2442,7 +3529,13 @@
         "addModifier": true,
         "targets": 6
       },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d4" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d4"
+      },
+      "classes": [
+        "Cleric"
+      ]
     },
     "revivify": {
       "name": "Revivir",
@@ -2454,7 +3547,11 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Devuelve la vida a criatura muerta hace menos de 1 minuto con 1 PG"
+      "effect": "Devuelve la vida a criatura muerta hace menos de 1 minuto con 1 PG",
+      "classes": [
+        "Cleric",
+        "Paladin"
+      ]
     },
     "animateDead": {
       "name": "Reanimar a los Muertos",
@@ -2467,7 +3564,14 @@
       "components": "V, S, M",
       "concentration": false,
       "effect": "Crea un esqueleto o zombi",
-      "scaling": { "type": "spellLevel", "perLevel": "+2 muertos vivientes" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+2 muertos vivientes"
+      },
+      "classes": [
+        "Cleric",
+        "Wizard"
+      ]
     },
     "vampiricTouch": {
       "name": "Toque Vampírico",
@@ -2485,9 +3589,19 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "melee", "ability": "spellcasting" },
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
       "effect": "Cura PG = mitad del daño",
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Warlock",
+        "Wizard"
+      ]
     },
     "callLightning": {
       "name": "Llamar al Relámpago",
@@ -2505,9 +3619,20 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cylinder", "size": 5 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d10" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cylinder",
+        "size": 5
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d10"
+      },
+      "classes": [
+        "Druid"
+      ]
     },
     "fear": {
       "name": "Miedo",
@@ -2519,9 +3644,20 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "area": { "type": "cone", "size": 30 },
-      "effect": "Criaturas asustadas deben huir"
+      "save": {
+        "ability": "wisdom"
+      },
+      "area": {
+        "type": "cone",
+        "size": 30
+      },
+      "effect": "Criaturas asustadas deben huir",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "hypnoticPattern": {
       "name": "Pauta Hipnótica",
@@ -2533,9 +3669,20 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "area": { "type": "cube", "size": 30 },
-      "effect": "Criaturas encantadas e incapacitadas"
+      "save": {
+        "ability": "wisdom"
+      },
+      "area": {
+        "type": "cube",
+        "size": 30
+      },
+      "effect": "Criaturas encantadas e incapacitadas",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "majorImage": {
       "name": "Imagen Mayor",
@@ -2547,8 +3694,17 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S, M",
       "concentration": true,
-      "area": { "type": "cube", "size": 20 },
-      "effect": "Ilusión visual con sonido, olor, temperatura"
+      "area": {
+        "type": "cube",
+        "size": 20
+      },
+      "effect": "Ilusión visual con sonido, olor, temperatura",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "tongues": {
       "name": "Don de Lenguas",
@@ -2560,7 +3716,14 @@
       "duration": "1 hora",
       "components": "V, M",
       "concentration": false,
-      "effect": "Entiende y habla cualquier idioma"
+      "effect": "Entiende y habla cualquier idioma",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "removeCurse": {
       "name": "Quitar Maldición",
@@ -2572,7 +3735,13 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "effect": "Termina todas las maldiciones sobre criatura u objeto"
+      "effect": "Termina todas las maldiciones sobre criatura u objeto",
+      "classes": [
+        "Cleric",
+        "Paladin",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "protectionFromEnergy": {
       "name": "Protección contra la Energía",
@@ -2584,7 +3753,14 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S",
       "concentration": true,
-      "effect": "Resistencia a un tipo de daño elegido"
+      "effect": "Resistencia a un tipo de daño elegido",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Ranger",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "waterBreathing": {
       "name": "Respiración Acuática",
@@ -2597,7 +3773,13 @@
       "duration": "24 horas",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Hasta 10 criaturas pueden respirar bajo el agua"
+      "effect": "Hasta 10 criaturas pueden respirar bajo el agua",
+      "classes": [
+        "Druid",
+        "Ranger",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "waterWalk": {
       "name": "Caminar sobre las Aguas",
@@ -2610,7 +3792,13 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Hasta 10 criaturas pueden caminar sobre líquidos"
+      "effect": "Hasta 10 criaturas pueden caminar sobre líquidos",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Ranger",
+        "Sorcerer"
+      ]
     },
     "stinkingCloud": {
       "name": "Nube Apestosa",
@@ -2622,9 +3810,19 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "constitution" },
-      "area": { "type": "sphere", "size": 20 },
-      "effect": "Criaturas nauseadas (acción desperdiciada)"
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
+      "effect": "Criaturas nauseadas (acción desperdiciada)",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "sleetStorm": {
       "name": "Tormenta de Granizo",
@@ -2636,9 +3834,20 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cylinder", "size": 40, "height": 20 },
-      "effect": "Área muy oscurecida, terreno difícil, puede derribar"
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cylinder",
+        "size": 40,
+        "height": 20
+      },
+      "effect": "Área muy oscurecida, terreno difícil, puede derribar",
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "hungerOfHadar": {
       "name": "Hambre de Hadar",
@@ -2656,9 +3865,17 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "sphere", "size": 20 },
-      "effect": "Oscuridad total, 2d6 frío al inicio de turno, 2d6 ácido al final"
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
+      "effect": "Oscuridad total, 2d6 frío al inicio de turno, 2d6 ácido al final",
+      "classes": [
+        "Warlock"
+      ]
     },
     "bestowCurse": {
       "name": "Lanzar Maldición",
@@ -2676,8 +3893,15 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "wisdom" },
-      "effect": "Maldice al objetivo con efecto a elección"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Maldice al objetivo con efecto a elección",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Wizard"
+      ]
     },
     "sending": {
       "name": "Recado",
@@ -2689,7 +3913,12 @@
       "duration": "1 asalto",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Envía mensaje de 25 palabras a criatura conocida"
+      "effect": "Envía mensaje de 25 palabras a criatura conocida",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Wizard"
+      ]
     },
     "conjureAnimals": {
       "name": "Conjurar Animales",
@@ -2701,7 +3930,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S",
       "concentration": true,
-      "effect": "Invoca bestias feéricas (8 de VD 1/4, 4 de VD 1/2, 2 de VD 1, o 1 de VD 2)"
+      "effect": "Invoca bestias feéricas (8 de VD 1/4, 4 de VD 1/2, 2 de VD 1, o 1 de VD 2)",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "plantGrowth": {
       "name": "Crecimiento Vegetal",
@@ -2713,8 +3946,16 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "area": { "type": "sphere", "size": 100 },
-      "effect": "Plantas crecen densamente, cuádruple coste de movimiento"
+      "area": {
+        "type": "sphere",
+        "size": 100
+      },
+      "effect": "Plantas crecen densamente, cuádruple coste de movimiento",
+      "classes": [
+        "Bard",
+        "Druid",
+        "Ranger"
+      ]
     },
     "speakWithDead": {
       "name": "Hablar con los Muertos",
@@ -2726,7 +3967,11 @@
       "duration": "10 minutos",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Hasta 5 preguntas a un cadáver"
+      "effect": "Hasta 5 preguntas a un cadáver",
+      "classes": [
+        "Bard",
+        "Cleric"
+      ]
     },
     "daylight": {
       "name": "Luz del Día",
@@ -2738,8 +3983,18 @@
       "duration": "1 hora",
       "components": "V, S",
       "concentration": false,
-      "area": { "type": "sphere", "size": 60 },
-      "effect": "Luz brillante, luz tenue 60 pies adicionales"
+      "area": {
+        "type": "sphere",
+        "size": 60
+      },
+      "effect": "Luz brillante, luz tenue 60 pies adicionales",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Ranger",
+        "Sorcerer"
+      ]
     },
     "createFoodAndWater": {
       "name": "Crear Comida y Agua",
@@ -2751,7 +4006,11 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "effect": "45 libras comida y 30 galones agua (15 criaturas/monturas por día)"
+      "effect": "45 libras comida y 30 galones agua (15 criaturas/monturas por día)",
+      "classes": [
+        "Cleric",
+        "Paladin"
+      ]
     },
     "clairvoyance": {
       "name": "Clarividencia",
@@ -2763,7 +4022,13 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Crea sensor invisible para ver u oír en lugar conocido"
+      "effect": "Crea sensor invisible para ver u oír en lugar conocido",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "beaconOfHope": {
       "name": "Faro de Esperanza",
@@ -2775,7 +4040,10 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "effect": "Ventaja salvaciones SAB y muerte, curación maximizada"
+      "effect": "Ventaja salvaciones SAB y muerte, curación maximizada",
+      "classes": [
+        "Cleric"
+      ]
     },
     "magicCircle": {
       "name": "Círculo Mágico",
@@ -2787,9 +4055,22 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "area": { "type": "cylinder", "size": 10, "height": 20 },
+      "area": {
+        "type": "cylinder",
+        "size": 10,
+        "height": 20
+      },
       "effect": "Protege contra tipo de criatura elegido",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 hora" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 hora"
+      },
+      "classes": [
+        "Cleric",
+        "Paladin",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "nondetection": {
       "name": "Indetectabilidad",
@@ -2801,7 +4082,12 @@
       "duration": "8 horas",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Oculta de magia de adivinación"
+      "effect": "Oculta de magia de adivinación",
+      "classes": [
+        "Bard",
+        "Ranger",
+        "Wizard"
+      ]
     },
     "blink": {
       "name": "Intermitencia",
@@ -2813,7 +4099,11 @@
       "duration": "1 minuto",
       "components": "V, S",
       "concentration": false,
-      "effect": "Con 11+ en d20, desapareces al Plano Etéreo hasta tu turno"
+      "effect": "Con 11+ en d20, desapareces al Plano Etéreo hasta tu turno",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "gaseousForm": {
       "name": "Forma Gaseosa",
@@ -2825,7 +4115,12 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Objetivo se convierte en nube brumosa, vuelo 10 pies"
+      "effect": "Objetivo se convierte en nube brumosa, vuelo 10 pies",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "feignDeath": {
       "name": "Fingir Muerte",
@@ -2838,7 +4133,13 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Objetivo parece muerto, cegado, resistencia a todo daño"
+      "effect": "Objetivo parece muerto, cegado, resistencia a todo daño",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Wizard"
+      ]
     },
     "glyphOfWarding": {
       "name": "Glifo Custodio",
@@ -2853,13 +4154,32 @@
       "damage": {
         "dice": "5d8",
         "type": "variable",
-        "types": ["ácido", "frío", "fuego", "eléctrico", "trueno"],
+        "types": [
+          "ácido",
+          "frío",
+          "fuego",
+          "eléctrico",
+          "trueno"
+        ],
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "sphere", "size": 20 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Wizard"
+      ]
     },
     "blindingSmite": {
       "name": "Golpe Cegador",
@@ -2877,8 +4197,13 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "effect": "Daño extra y ciega al objetivo"
+      "save": {
+        "ability": "constitution"
+      },
+      "effect": "Daño extra y ciega al objetivo",
+      "classes": [
+        "Paladin"
+      ]
     },
     "crusadersMantle": {
       "name": "Manto del Cruzado",
@@ -2896,8 +4221,14 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "area": { "type": "sphere", "size": 30 },
-      "effect": "Aliados hacen +1d4 daño radiante con armas"
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "effect": "Aliados hacen +1d4 daño radiante con armas",
+      "classes": [
+        "Paladin"
+      ]
     },
     "lightningArrow": {
       "name": "Flecha Relampagueante",
@@ -2915,10 +4246,21 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "sphere", "size": 10 },
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 10
+      },
       "effect": "Próximo ataque con arco: 4d8 + 2d8 criaturas cercanas",
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Ranger"
+      ]
     },
     "conjureBarrage": {
       "name": "Conjurar Bombardeo",
@@ -2936,8 +4278,16 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cone", "size": 60 }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cone",
+        "size": 60
+      },
+      "classes": [
+        "Ranger"
+      ]
     },
     "auraOfVitality": {
       "name": "Aura de Vitalidad",
@@ -2955,8 +4305,14 @@
         "addModifier": false,
         "perAction": "bonus"
       },
-      "area": { "type": "sphere", "size": 30 },
-      "effect": "Acción adicional: cura 2d6 a criatura en el aura"
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "effect": "Acción adicional: cura 2d6 a criatura en el aura",
+      "classes": [
+        "Paladin"
+      ]
     },
     "elementalWeapon": {
       "name": "Arma Elemental",
@@ -2971,11 +4327,20 @@
       "damage": {
         "dice": "1d4",
         "type": "variable",
-        "types": ["ácido", "frío", "fuego", "eléctrico", "trueno"],
+        "types": [
+          "ácido",
+          "frío",
+          "fuego",
+          "eléctrico",
+          "trueno"
+        ],
         "defaultAbility": null,
         "addModifier": false
       },
-      "effect": "Arma +1 ataque y +1d4 daño elemental (nivel 5-6: +2/2d4, nivel 7+: +3/3d4)"
+      "effect": "Arma +1 ataque y +1d4 daño elemental (nivel 5-6: +2/2d4, nivel 7+: +3/3d4)",
+      "classes": [
+        "Paladin"
+      ]
     },
     "windWall": {
       "name": "Muro de Viento",
@@ -2993,8 +4358,14 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "strength" },
-      "effect": "Muro de viento desvía proyectiles y criaturas pequeñas"
+      "save": {
+        "ability": "strength"
+      },
+      "effect": "Muro de viento desvía proyectiles y criaturas pequeñas",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "phantomSteed": {
       "name": "Corcel Fantasmal",
@@ -3007,7 +4378,10 @@
       "duration": "1 hora",
       "components": "V, S",
       "concentration": false,
-      "effect": "Crea un caballo cuasireal con velocidad 100 pies que puede ser montado"
+      "effect": "Crea un caballo cuasireal con velocidad 100 pies que puede ser montado",
+      "classes": [
+        "Wizard"
+      ]
     },
     "ropeTrick": {
       "name": "Truco de la Cuerda",
@@ -3019,7 +4393,10 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Una cuerda se eleva y crea un espacio extradimensional para hasta 8 criaturas"
+      "effect": "Una cuerda se eleva y crea un espacio extradimensional para hasta 8 criaturas",
+      "classes": [
+        "Wizard"
+      ]
     },
     "speakWithPlants": {
       "name": "Hablar con las Plantas",
@@ -3031,8 +4408,15 @@
       "duration": "10 minutos",
       "components": "V, S",
       "concentration": false,
-      "area": { "type": "sphere", "size": 30 },
-      "effect": "Puedes comunicarte con plantas y pedirles información o ayuda"
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "effect": "Puedes comunicarte con plantas y pedirles información o ayuda",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     }
   },
   "level4": {
@@ -3046,7 +4430,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Convocas criaturas feéricas que obedecen tus órdenes verbales"
+      "effect": "Convocas criaturas feéricas que obedecen tus órdenes verbales",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "banishment": {
       "name": "Destierro",
@@ -3058,9 +4446,21 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "charisma" },
+      "save": {
+        "ability": "charisma"
+      },
       "effect": "Envía criatura a otro plano",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Cleric",
+        "Paladin",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "polymorph": {
       "name": "Polimorfar",
@@ -3072,8 +4472,16 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Transforma criatura en bestia de VD igual o menor a nivel"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Transforma criatura en bestia de VD igual o menor a nivel",
+      "classes": [
+        "Bard",
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "greaterInvisibility": {
       "name": "Invisibilidad Mayor",
@@ -3085,7 +4493,12 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "effect": "Objetivo invisible incluso al atacar o lanzar conjuros"
+      "effect": "Objetivo invisible incluso al atacar o lanzar conjuros",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "dimensionDoor": {
       "name": "Puerta Dimensional",
@@ -3104,7 +4517,13 @@
         "addModifier": false,
         "condition": "si falla"
       },
-      "effect": "Te teleportas hasta 500 pies con 1 criatura"
+      "effect": "Te teleportas hasta 500 pies con 1 criatura",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "wallOfFire": {
       "name": "Muro de Fuego",
@@ -3122,8 +4541,18 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "iceStorm": {
       "name": "Tormenta de Hielo",
@@ -3141,9 +4570,23 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cylinder", "size": 20, "height": 40 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8 contundente" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cylinder",
+        "size": 20,
+        "height": 40
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8 contundente"
+      },
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "blight": {
       "name": "Marchitar",
@@ -3161,8 +4604,19 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "save": {
+        "ability": "constitution"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "confusion": {
       "name": "Confusión",
@@ -3174,10 +4628,24 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "area": { "type": "sphere", "size": 10 },
+      "save": {
+        "ability": "wisdom"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 10
+      },
       "effect": "Criaturas actúan erráticamente",
-      "scaling": { "type": "spellLevel", "perLevel": "+5 pies radio" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+5 pies radio"
+      },
+      "classes": [
+        "Bard",
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "deathWard": {
       "name": "Custodia contra la Muerte",
@@ -3189,7 +4657,11 @@
       "duration": "8 horas",
       "components": "V, S",
       "concentration": false,
-      "effect": "Primera vez que caería a 0 PG, queda en 1 PG"
+      "effect": "Primera vez que caería a 0 PG, queda en 1 PG",
+      "classes": [
+        "Cleric",
+        "Paladin"
+      ]
     },
     "guardianOfFaith": {
       "name": "Guardián de la Fe",
@@ -3207,8 +4679,13 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "effect": "Espectro guardián, 20 daño (60 total antes de desvanecerse)"
+      "save": {
+        "ability": "dexterity"
+      },
+      "effect": "Espectro guardián, 20 daño (60 total antes de desvanecerse)",
+      "classes": [
+        "Cleric"
+      ]
     },
     "fireShield": {
       "name": "Escudo de Fuego",
@@ -3226,7 +4703,10 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "effect": "Resistencia a frío/fuego y 2d8 daño a atacantes cuerpo a cuerpo"
+      "effect": "Resistencia a frío/fuego y 2d8 daño a atacantes cuerpo a cuerpo",
+      "classes": [
+        "Wizard"
+      ]
     },
     "stoneskin": {
       "name": "Piel Pétrea",
@@ -3238,7 +4718,13 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Resistencia a daño contundente, perforante y cortante no mágico"
+      "effect": "Resistencia a daño contundente, perforante y cortante no mágico",
+      "classes": [
+        "Druid",
+        "Ranger",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "freedomOfMovement": {
       "name": "Libertad de Movimiento",
@@ -3250,7 +4736,13 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Inmune a parálisis, terreno difícil y restricciones de movimiento"
+      "effect": "Inmune a parálisis, terreno difícil y restricciones de movimiento",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Ranger"
+      ]
     },
     "phantasmalKiller": {
       "name": "Asesino Fantasmal",
@@ -3268,8 +4760,16 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "wisdom" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d10" }
+      "save": {
+        "ability": "wisdom"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d10"
+      },
+      "classes": [
+        "Wizard"
+      ]
     },
     "divination": {
       "name": "Adivinación",
@@ -3282,7 +4782,10 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Contacta deidad para consejo sobre acción específica"
+      "effect": "Contacta deidad para consejo sobre acción específica",
+      "classes": [
+        "Cleric"
+      ]
     },
     "locateCreature": {
       "name": "Localizar Criatura",
@@ -3294,7 +4797,15 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Detecta dirección hacia criatura a menos de 1000 pies"
+      "effect": "Detecta dirección hacia criatura a menos de 1000 pies",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Ranger",
+        "Wizard"
+      ]
     },
     "arcaneEye": {
       "name": "Ojo Arcano",
@@ -3306,7 +4817,10 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Crea ojo invisible flotante para explorar"
+      "effect": "Crea ojo invisible flotante para explorar",
+      "classes": [
+        "Wizard"
+      ]
     },
     "stoneShape": {
       "name": "Transformar Piedra",
@@ -3318,7 +4832,12 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Moldea piedra mediana o menor a cualquier forma"
+      "effect": "Moldea piedra mediana o menor a cualquier forma",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Wizard"
+      ]
     },
     "conjureMinorElementals": {
       "name": "Conjurar Elementales Menores",
@@ -3330,7 +4849,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S",
       "concentration": true,
-      "effect": "Invoca elementales (8 de VD 1/4, 4 de VD 1/2, 2 de VD 1, o 1 de VD 2)"
+      "effect": "Invoca elementales (8 de VD 1/4, 4 de VD 1/2, 2 de VD 1, o 1 de VD 2)",
+      "classes": [
+        "Druid",
+        "Wizard"
+      ]
     },
     "controlWater": {
       "name": "Controlar el Agua",
@@ -3348,8 +4871,16 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "area": { "type": "cube", "size": 100 },
-      "effect": "Inundación, separar aguas, redirigir flujo o torbellino"
+      "area": {
+        "type": "cube",
+        "size": 100
+      },
+      "effect": "Inundación, separar aguas, redirigir flujo o torbellino",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Wizard"
+      ]
     },
     "fabricate": {
       "name": "Elaborar",
@@ -3361,8 +4892,14 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "area": { "type": "cube", "size": 10 },
-      "effect": "Convierte materias primas en productos elaborados"
+      "area": {
+        "type": "cube",
+        "size": 10
+      },
+      "effect": "Convierte materias primas en productos elaborados",
+      "classes": [
+        "Wizard"
+      ]
     },
     "dominateBeast": {
       "name": "Dominar Bestia",
@@ -3374,8 +4911,14 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Controla telepáticamente a una bestia"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Controla telepáticamente a una bestia",
+      "classes": [
+        "Druid",
+        "Sorcerer"
+      ]
     },
     "giantInsect": {
       "name": "Insecto Gigante",
@@ -3387,7 +4930,10 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S",
       "concentration": true,
-      "effect": "Agranda insectos para servirte"
+      "effect": "Agranda insectos para servirte",
+      "classes": [
+        "Druid"
+      ]
     },
     "auraOfPurity": {
       "name": "Aura de Pureza",
@@ -3399,8 +4945,14 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V",
       "concentration": true,
-      "area": { "type": "sphere", "size": 30 },
-      "effect": "Aliados inmunes a enfermedad, resistencia a veneno, ventaja vs condiciones"
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "effect": "Aliados inmunes a enfermedad, resistencia a veneno, ventaja vs condiciones",
+      "classes": [
+        "Paladin"
+      ]
     },
     "auraOfLife": {
       "name": "Aura de Vida",
@@ -3412,8 +4964,14 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V",
       "concentration": true,
-      "area": { "type": "sphere", "size": 30 },
-      "effect": "Aliados resistentes a daño necrótico, 0 PG → 1 PG al inicio de turno"
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "effect": "Aliados resistentes a daño necrótico, 0 PG → 1 PG al inicio de turno",
+      "classes": [
+        "Paladin"
+      ]
     },
     "staggeringSmite": {
       "name": "Golpe Asombroso",
@@ -3431,8 +4989,13 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "wisdom" },
-      "effect": "Daño psíquico + desventaja ataques/salvaciones/habilidades"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Daño psíquico + desventaja ataques/salvaciones/habilidades",
+      "classes": [
+        "Paladin"
+      ]
     },
     "compulsion": {
       "name": "Compulsión",
@@ -3444,8 +5007,13 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Criaturas deben moverse en dirección elegida"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Criaturas deben moverse en dirección elegida",
+      "classes": [
+        "Bard"
+      ]
     },
     "graspingVine": {
       "name": "Hiedras Atrapadoras",
@@ -3457,8 +5025,14 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "save": { "ability": "dexterity" },
-      "effect": "Enredadera arrastra criatura 20 pies hacia ella"
+      "save": {
+        "ability": "dexterity"
+      },
+      "effect": "Enredadera arrastra criatura 20 pies hacia ella",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "hallucinatoryTerrain": {
       "name": "Terreno Alucinatorio",
@@ -3470,8 +5044,17 @@
       "duration": "24 horas",
       "components": "V, S, M",
       "concentration": false,
-      "area": { "type": "cube", "size": 150 },
-      "effect": "Hace que terreno natural parezca otro tipo"
+      "area": {
+        "type": "cube",
+        "size": 150
+      },
+      "effect": "Hace que terreno natural parezca otro tipo",
+      "classes": [
+        "Bard",
+        "Druid",
+        "Warlock",
+        "Wizard"
+      ]
     }
   },
   "level5": {
@@ -3485,9 +5068,20 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
+      "save": {
+        "ability": "wisdom"
+      },
       "effect": "Paraliza cualquier criatura",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 criatura" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 criatura"
+      },
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "coneOfCold": {
       "name": "Cono de Frío",
@@ -3505,9 +5099,21 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "area": { "type": "cone", "size": 60 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "cone",
+        "size": 60
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "massCureWounds": {
       "name": "Curar Heridas en Masa",
@@ -3525,8 +5131,19 @@
         "addModifier": true,
         "targets": 6
       },
-      "area": { "type": "sphere", "size": 30 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid"
+      ]
     },
     "raiseDead": {
       "name": "Revivir a los Muertos",
@@ -3538,7 +5155,12 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Devuelve la vida a criatura muerta hace menos de 10 días"
+      "effect": "Devuelve la vida a criatura muerta hace menos de 10 días",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Paladin"
+      ]
     },
     "greaterRestoration": {
       "name": "Restablecimiento Mayor",
@@ -3550,7 +5172,12 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Cura agotamiento, encantamiento, petrificación, maldición o reduce característica"
+      "effect": "Cura agotamiento, encantamiento, petrificación, maldición o reduce característica",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid"
+      ]
     },
     "wallOfForce": {
       "name": "Muro de Fuerza",
@@ -3562,7 +5189,10 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Muro invisible e indestructible de fuerza"
+      "effect": "Muro invisible e indestructible de fuerza",
+      "classes": [
+        "Wizard"
+      ]
     },
     "wallOfStone": {
       "name": "Muro de Piedra",
@@ -3574,8 +5204,15 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "dexterity" },
-      "effect": "Crea muro de piedra no mágica"
+      "save": {
+        "ability": "dexterity"
+      },
+      "effect": "Crea muro de piedra no mágica",
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "cloudkill": {
       "name": "Nube Aniquiladora",
@@ -3593,9 +5230,21 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "area": { "type": "sphere", "size": 20 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "flameStrike": {
       "name": "Descarga Flamígera",
@@ -3613,9 +5262,21 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cylinder", "size": 10, "height": 40 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6 fuego o radiante" }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cylinder",
+        "size": 10,
+        "height": 40
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6 fuego o radiante"
+      },
+      "classes": [
+        "Cleric"
+      ]
     },
     "destructiveWave": {
       "name": "Onda Destructiva",
@@ -3633,9 +5294,17 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "area": { "type": "sphere", "size": 30 },
-      "effect": "Criaturas caen derribadas"
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "effect": "Criaturas caen derribadas",
+      "classes": [
+        "Paladin"
+      ]
     },
     "dominatePerson": {
       "name": "Dominar Persona",
@@ -3647,8 +5316,15 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Control telepático total sobre un humanoide"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Control telepático total sobre un humanoide",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "scrying": {
       "name": "Escudriñamiento",
@@ -3660,8 +5336,17 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Observa criatura en el mismo plano"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Observa criatura en el mismo plano",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "teleportationCircle": {
       "name": "Círculo de Teletransporte",
@@ -3673,7 +5358,12 @@
       "duration": "1 asalto",
       "components": "V, M",
       "concentration": false,
-      "effect": "Portal a círculo de teletransporte permanente conocido"
+      "effect": "Portal a círculo de teletransporte permanente conocido",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "conjureElemental": {
       "name": "Conjurar Elemental",
@@ -3686,7 +5376,14 @@
       "components": "V, S, M",
       "concentration": true,
       "effect": "Invoca elemental de VD 5 o menor",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 VD máximo" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 VD máximo"
+      },
+      "classes": [
+        "Druid",
+        "Wizard"
+      ]
     },
     "bigbysHand": {
       "name": "La Mano de Bigby",
@@ -3704,9 +5401,18 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "attack": { "type": "melee", "ability": "spellcasting" },
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
       "effect": "Mano grande de fuerza con múltiples usos",
-      "scaling": { "type": "spellLevel", "perLevel": "+2d8 puño, +2d6 agarre" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+2d8 puño, +2d6 agarre"
+      },
+      "classes": [
+        "Wizard"
+      ]
     },
     "animateObjects": {
       "name": "Animar Objetos",
@@ -3719,7 +5425,15 @@
       "components": "V, S",
       "concentration": true,
       "effect": "Anima hasta 10 objetos no mágicos",
-      "scaling": { "type": "spellLevel", "perLevel": "+2 objetos" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+2 objetos"
+      },
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "telekinesis": {
       "name": "Telequinesia",
@@ -3731,7 +5445,11 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S",
       "concentration": true,
-      "effect": "Mueve objetos/criaturas hasta 1000 libras con la mente"
+      "effect": "Mueve objetos/criaturas hasta 1000 libras con la mente",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "geas": {
       "name": "Geas",
@@ -3749,8 +5467,17 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "wisdom" },
-      "effect": "Obliga a criatura a obedecer una orden"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Obliga a criatura a obedecer una orden",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Paladin",
+        "Wizard"
+      ]
     },
     "insectPlague": {
       "name": "Plaga de Insectos",
@@ -3768,9 +5495,22 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "constitution" },
-      "area": { "type": "sphere", "size": 20 },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d10" }
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d10"
+      },
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Sorcerer"
+      ]
     },
     "passwall": {
       "name": "Pasamiento",
@@ -3782,7 +5522,10 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Crea pasaje de 20 pies a través de madera/yeso/piedra"
+      "effect": "Crea pasaje de 20 pies a través de madera/yeso/piedra",
+      "classes": [
+        "Wizard"
+      ]
     },
     "awaken": {
       "name": "Dotar de Consciencia",
@@ -3794,7 +5537,11 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Da inteligencia y consciencia a bestia o planta"
+      "effect": "Da inteligencia y consciencia a bestia o planta",
+      "classes": [
+        "Bard",
+        "Druid"
+      ]
     },
     "commune": {
       "name": "Comunión",
@@ -3807,7 +5554,10 @@
       "duration": "1 minuto",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "3 preguntas sí/no a deidad"
+      "effect": "3 preguntas sí/no a deidad",
+      "classes": [
+        "Cleric"
+      ]
     },
     "communeWithNature": {
       "name": "Comunión con la Naturaleza",
@@ -3820,7 +5570,11 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "effect": "Conocimiento del territorio en 3 millas (300 pies en cavernas)"
+      "effect": "Conocimiento del territorio en 3 millas (300 pies en cavernas)",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "contagion": {
       "name": "Contagio",
@@ -3832,8 +5586,15 @@
       "duration": "7 días",
       "components": "V, S",
       "concentration": false,
-      "attack": { "type": "melee", "ability": "spellcasting" },
-      "effect": "Inflige enfermedad natural a elección"
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
+      "effect": "Inflige enfermedad natural a elección",
+      "classes": [
+        "Cleric",
+        "Druid"
+      ]
     },
     "creation": {
       "name": "Creación",
@@ -3845,9 +5606,19 @@
       "duration": "Especial",
       "components": "V, S, M",
       "concentration": false,
-      "area": { "type": "cube", "size": 5 },
+      "area": {
+        "type": "cube",
+        "size": 5
+      },
       "effect": "Crea objeto vegetal o mineral temporal",
-      "scaling": { "type": "spellLevel", "perLevel": "+5 pies cubo" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+5 pies cubo"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "planarBinding": {
       "name": "Ligadura de los Planos",
@@ -3859,8 +5630,16 @@
       "duration": "24 horas",
       "components": "V, S, M",
       "concentration": false,
-      "save": { "ability": "charisma" },
-      "effect": "Liga celestial/elemental/feérico/infernal a tu servicio"
+      "save": {
+        "ability": "charisma"
+      },
+      "effect": "Liga celestial/elemental/feérico/infernal a tu servicio",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid",
+        "Wizard"
+      ]
     },
     "hallow": {
       "name": "Sacralizar",
@@ -3872,9 +5651,17 @@
       "duration": "Hasta ser disipado",
       "components": "V, S, M",
       "concentration": false,
-      "save": { "ability": "charisma" },
-      "area": { "type": "sphere", "size": 60 },
-      "effect": "Área sagrada/profana con efecto especial"
+      "save": {
+        "ability": "charisma"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 60
+      },
+      "effect": "Área sagrada/profana con efecto especial",
+      "classes": [
+        "Cleric"
+      ]
     },
     "seeming": {
       "name": "Similitud",
@@ -3886,8 +5673,15 @@
       "duration": "8 horas",
       "components": "V, S",
       "concentration": false,
-      "save": { "ability": "charisma" },
-      "effect": "Cambia apariencia de cualquier número de criaturas"
+      "save": {
+        "ability": "charisma"
+      },
+      "effect": "Cambia apariencia de cualquier número de criaturas",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "treeStride": {
       "name": "Zancada Arbórea",
@@ -3899,7 +5693,11 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "effect": "Entrar en árbol y salir por otro del mismo tipo a 500 pies"
+      "effect": "Entrar en árbol y salir por otro del mismo tipo a 500 pies",
+      "classes": [
+        "Druid",
+        "Ranger"
+      ]
     },
     "dispelEvilAndGood": {
       "name": "Disipar el Bien y el Mal",
@@ -3911,9 +5709,18 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "attack": { "type": "melee", "ability": "spellcasting" },
-      "save": { "ability": "charisma" },
-      "effect": "Protección y capacidad de romper encantamientos/posesiones/destierro"
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
+      "save": {
+        "ability": "charisma"
+      },
+      "effect": "Protección y capacidad de romper encantamientos/posesiones/destierro",
+      "classes": [
+        "Cleric",
+        "Paladin"
+      ]
     },
     "circleOfPower": {
       "name": "Círculo de Poder",
@@ -3925,8 +5732,14 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V",
       "concentration": true,
-      "area": { "type": "sphere", "size": 30 },
-      "effect": "Aliados tienen ventaja salvaciones vs magia, éxito = 0 daño"
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "effect": "Aliados tienen ventaja salvaciones vs magia, éxito = 0 daño",
+      "classes": [
+        "Paladin"
+      ]
     },
     "banishingSmite": {
       "name": "Castigo Desterrador",
@@ -3944,7 +5757,10 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "effect": "Daño extra + si cae a 50 PG o menos, desterrado"
+      "effect": "Daño extra + si cae a 50 PG o menos, desterrado",
+      "classes": [
+        "Paladin"
+      ]
     },
     "conjureVolley": {
       "name": "Conjurar Descarga",
@@ -3962,8 +5778,17 @@
         "defaultAbility": null,
         "addModifier": false
       },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cylinder", "size": 40, "height": 20 }
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cylinder",
+        "size": 40,
+        "height": 20
+      },
+      "classes": [
+        "Ranger"
+      ]
     },
     "swiftQuiver": {
       "name": "Carcaj Rápido",
@@ -3975,7 +5800,10 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Munición infinita, 2 ataques extra con arco como acción adicional"
+      "effect": "Munición infinita, 2 ataques extra con arco como acción adicional",
+      "classes": [
+        "Ranger"
+      ]
     },
     "modifyMemory": {
       "name": "Modificar Recuerdo",
@@ -3987,8 +5815,14 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Altera recuerdos de las últimas 24 horas"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Altera recuerdos de las últimas 24 horas",
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "dream": {
       "name": "Mensaje Onírico",
@@ -4007,8 +5841,15 @@
         "addModifier": false,
         "condition": "si pesadilla"
       },
-      "save": { "ability": "wisdom" },
-      "effect": "Contacta criatura durmiente vía sueños"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Contacta criatura durmiente vía sueños",
+      "classes": [
+        "Bard",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "mislead": {
       "name": "Doble Engañoso",
@@ -4020,7 +5861,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "S",
       "concentration": true,
-      "effect": "Te vuelves invisible + doble ilusorio"
+      "effect": "Te vuelves invisible + doble ilusorio",
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "antilifeshell": {
       "name": "Caparazón Antivida",
@@ -4032,8 +5877,14 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S",
       "concentration": true,
-      "area": { "type": "sphere", "size": 10 },
-      "effect": "Barrera que impide entrada de criaturas vivas"
+      "area": {
+        "type": "sphere",
+        "size": 10
+      },
+      "effect": "Barrera que impide entrada de criaturas vivas",
+      "classes": [
+        "Druid"
+      ]
     },
     "reincarnate": {
       "name": "Reencarnar",
@@ -4045,7 +5896,10 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Devuelve vida a humanoide en nuevo cuerpo (raza aleatoria)"
+      "effect": "Devuelve vida a humanoide en nuevo cuerpo (raza aleatoria)",
+      "classes": [
+        "Druid"
+      ]
     },
     "legendLore": {
       "name": "Conocimiento de Leyendas",
@@ -4057,7 +5911,12 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Obtiene información sobre persona, lugar u objeto legendario"
+      "effect": "Obtiene información sobre persona, lugar u objeto legendario",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Wizard"
+      ]
     },
     "contactOtherPlane": {
       "name": "Contactar con Otro Plano",
@@ -4077,8 +5936,14 @@
         "addModifier": false,
         "condition": "si falla salvación"
       },
-      "save": { "ability": "intelligence" },
-      "effect": "5 preguntas a entidad extraplanar"
+      "save": {
+        "ability": "intelligence"
+      },
+      "effect": "5 preguntas a entidad extraplanar",
+      "classes": [
+        "Warlock",
+        "Wizard"
+      ]
     }
   },
   "level6": {
@@ -4092,10 +5957,24 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "damage": { "dice": "10d8", "type": "eléctrico", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" },
+      "damage": {
+        "dice": "10d8",
+        "type": "eléctrico",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
       "effect": "Salta a 3 objetivos adicionales",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 objetivo" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 objetivo"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "disintegrate": {
       "name": "Desintegrar",
@@ -4107,9 +5986,23 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "damage": { "dice": "10d6+40", "type": "fuerza", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" },
-      "scaling": { "type": "spellLevel", "perLevel": "+3d6" }
+      "damage": {
+        "dice": "10d6+40",
+        "type": "fuerza",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+3d6"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "heal": {
       "name": "Sanar",
@@ -4121,9 +6014,21 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "healing": { "dice": "70", "type": "fijo", "defaultAbility": null, "addModifier": false },
+      "healing": {
+        "dice": "70",
+        "type": "fijo",
+        "defaultAbility": null,
+        "addModifier": false
+      },
       "effect": "Cura 70 PG y cura ceguera, sordera y enfermedades",
-      "scaling": { "type": "spellLevel", "perLevel": "+10 PG" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+10 PG"
+      },
+      "classes": [
+        "Cleric",
+        "Druid"
+      ]
     },
     "sunbeam": {
       "name": "Rayo Solar",
@@ -4135,10 +6040,26 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "damage": { "dice": "6d8", "type": "radiante", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "constitution" },
-      "area": { "type": "line", "size": 60, "width": 5 },
-      "effect": "Ciega a objetivos, repetible cada turno"
+      "damage": {
+        "dice": "6d8",
+        "type": "radiante",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "line",
+        "size": 60,
+        "width": 5
+      },
+      "effect": "Ciega a objetivos, repetible cada turno",
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "trueSeeing": {
       "name": "Visión Verdadera",
@@ -4150,7 +6071,14 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Visión verdadera 120 pies: ve a través de ilusiones, oscuridad, formas alteradas"
+      "effect": "Visión verdadera 120 pies: ve a través de ilusiones, oscuridad, formas alteradas",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "circleOfDeath": {
       "name": "Círculo de Muerte",
@@ -4162,10 +6090,28 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "damage": { "dice": "8d6", "type": "necrótico", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "constitution" },
-      "area": { "type": "sphere", "size": 60 },
-      "scaling": { "type": "spellLevel", "perLevel": "+2d6" }
+      "damage": {
+        "dice": "8d6",
+        "type": "necrótico",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 60
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+2d6"
+      },
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "harm": {
       "name": "Dañar",
@@ -4177,9 +6123,19 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "damage": { "dice": "14d6", "type": "necrótico", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "constitution" },
-      "effect": "No puede reducir por debajo de 1 PG"
+      "damage": {
+        "dice": "14d6",
+        "type": "necrótico",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "constitution"
+      },
+      "effect": "No puede reducir por debajo de 1 PG",
+      "classes": [
+        "Cleric"
+      ]
     },
     "massSuggestion": {
       "name": "Sugestión en Masa",
@@ -4191,8 +6147,16 @@
       "duration": "24 horas",
       "components": "V, M",
       "concentration": false,
-      "save": { "ability": "wisdom" },
-      "effect": "Hasta 12 criaturas siguen sugestión"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Hasta 12 criaturas siguen sugestión",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "eyebite": {
       "name": "Mirada Penetrante",
@@ -4204,8 +6168,16 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Dormido, aterrorizado o enfermo con tu mirada"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Dormido, aterrorizado o enfermo con tu mirada",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "fleshToStone": {
       "name": "De la Carne a la Piedra",
@@ -4217,8 +6189,14 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "constitution" },
-      "effect": "Petrifica gradualmente a la criatura"
+      "save": {
+        "ability": "constitution"
+      },
+      "effect": "Petrifica gradualmente a la criatura",
+      "classes": [
+        "Warlock",
+        "Wizard"
+      ]
     },
     "globeOfInvulnerability": {
       "name": "Globo de Invulnerabilidad",
@@ -4230,9 +6208,19 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "area": { "type": "sphere", "size": 10 },
+      "area": {
+        "type": "sphere",
+        "size": 10
+      },
       "effect": "Bloquea conjuros nivel 5 o menor",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 nivel bloqueado" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 nivel bloqueado"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "wordOfRecall": {
       "name": "Palabra de Regreso",
@@ -4244,7 +6232,10 @@
       "duration": "Instantánea",
       "components": "V",
       "concentration": false,
-      "effect": "Teletransporta hasta 5 criaturas a santuario designado"
+      "effect": "Teletransporta hasta 5 criaturas a santuario designado",
+      "classes": [
+        "Cleric"
+      ]
     },
     "conjureFey": {
       "name": "Conjurar Ser Feérico",
@@ -4257,7 +6248,14 @@
       "components": "V, S",
       "concentration": true,
       "effect": "Invoca criatura feérica de VD 6 o menor",
-      "scaling": { "type": "spellLevel", "perLevel": "+1 VD" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1 VD"
+      },
+      "classes": [
+        "Druid",
+        "Warlock"
+      ]
     },
     "wallOfIce": {
       "name": "Muro de Hielo",
@@ -4269,9 +6267,22 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S, M",
       "concentration": true,
-      "damage": { "dice": "10d6", "type": "frío", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" },
-      "scaling": { "type": "spellLevel", "perLevel": "+2d6 aparición, +1d6 atravesar" }
+      "damage": {
+        "dice": "10d6",
+        "type": "frío",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+2d6 aparición, +1d6 atravesar"
+      },
+      "classes": [
+        "Wizard"
+      ]
     },
     "wallOfThorns": {
       "name": "Muro de Espinas",
@@ -4283,9 +6294,22 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S, M",
       "concentration": true,
-      "damage": { "dice": "7d8", "type": "cortante", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" },
-      "scaling": { "type": "spellLevel", "perLevel": "+1d8" }
+      "damage": {
+        "dice": "7d8",
+        "type": "cortante",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d8"
+      },
+      "classes": [
+        "Druid"
+      ]
     },
     "bladeBarrier": {
       "name": "Barrera de Cuchillas",
@@ -4297,8 +6321,18 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S",
       "concentration": true,
-      "damage": { "dice": "6d10", "type": "cortante", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" }
+      "damage": {
+        "dice": "6d10",
+        "type": "cortante",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
+      "classes": [
+        "Cleric"
+      ]
     },
     "planarAlly": {
       "name": "Aliado de los Planos",
@@ -4310,7 +6344,10 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "effect": "Implora ayuda a entidad de otro mundo"
+      "effect": "Implora ayuda a entidad de otro mundo",
+      "classes": [
+        "Cleric"
+      ]
     },
     "contingency": {
       "name": "Contingencia",
@@ -4322,7 +6359,10 @@
       "duration": "10 días",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Conjuro nivel 5 o menor se activa con condición"
+      "effect": "Conjuro nivel 5 o menor se activa con condición",
+      "classes": [
+        "Wizard"
+      ]
     },
     "findThePath": {
       "name": "Encontrar la Senda",
@@ -4334,7 +6374,12 @@
       "duration": "Concentración, hasta 1 día",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Conoce ruta más corta a destino conocido"
+      "effect": "Conoce ruta más corta a destino conocido",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid"
+      ]
     },
     "createUndead": {
       "name": "Crear Muerto Viviente",
@@ -4346,7 +6391,12 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Crea 3 ghouls (solo de noche)"
+      "effect": "Crea 3 ghouls (solo de noche)",
+      "classes": [
+        "Cleric",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "moveEarth": {
       "name": "Remover Tierra",
@@ -4358,8 +6408,16 @@
       "duration": "Concentración, hasta 2 horas",
       "components": "V, S, M",
       "concentration": true,
-      "area": { "type": "square", "size": 40 },
-      "effect": "Moldea terreno, crea colinas/valles/zanjas"
+      "area": {
+        "type": "square",
+        "size": 40
+      },
+      "effect": "Moldea terreno, crea colinas/valles/zanjas",
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "windWalk": {
       "name": "Caminar con el Viento",
@@ -4371,7 +6429,10 @@
       "duration": "8 horas",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Hasta 10 criaturas se vuelven gaseosas con vuelo 300 pies"
+      "effect": "Hasta 10 criaturas se vuelven gaseosas con vuelo 300 pies",
+      "classes": [
+        "Druid"
+      ]
     },
     "ottosIrresistibleDance": {
       "name": "Baile Irresistible de Otto",
@@ -4383,8 +6444,14 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Criatura debe bailar, desventaja ataques y salvaciones DES"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Criatura debe bailar, desventaja ataques y salvaciones DES",
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "transportViaPlants": {
       "name": "Viajar Mediante Plantas",
@@ -4396,7 +6463,10 @@
       "duration": "1 asalto",
       "components": "V, S",
       "concentration": false,
-      "effect": "Portal entre dos plantas grandes en mismo plano"
+      "effect": "Portal entre dos plantas grandes en mismo plano",
+      "classes": [
+        "Druid"
+      ]
     },
     "guardsAndWards": {
       "name": "Guardas y Custodias",
@@ -4408,8 +6478,15 @@
       "duration": "24 horas",
       "components": "V, S, M",
       "concentration": false,
-      "area": { "type": "square", "size": 50 },
-      "effect": "Múltiples protecciones mágicas para área"
+      "area": {
+        "type": "square",
+        "size": 50
+      },
+      "effect": "Múltiples protecciones mágicas para área",
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "programmedIllusion": {
       "name": "Ilusión Programada",
@@ -4421,8 +6498,15 @@
       "duration": "Hasta ser disipado",
       "components": "V, S, M",
       "concentration": false,
-      "area": { "type": "cube", "size": 30 },
-      "effect": "Ilusión que se activa con condición específica"
+      "area": {
+        "type": "cube",
+        "size": 30
+      },
+      "effect": "Ilusión que se activa con condición específica",
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "magicJar": {
       "name": "Frasco Mágico",
@@ -4434,8 +6518,13 @@
       "duration": "Hasta ser disipado",
       "components": "V, S, M",
       "concentration": false,
-      "save": { "ability": "charisma" },
-      "effect": "Posee cuerpos de otras criaturas"
+      "save": {
+        "ability": "charisma"
+      },
+      "effect": "Posee cuerpos de otras criaturas",
+      "classes": [
+        "Wizard"
+      ]
     },
     "forbiddance": {
       "name": "Interdicción",
@@ -4448,9 +6537,20 @@
       "duration": "1 día",
       "components": "V, S, M",
       "concentration": false,
-      "damage": { "dice": "5d10", "type": "radiante/necrótico", "defaultAbility": null, "addModifier": false },
-      "area": { "type": "square", "size": 40000 },
-      "effect": "Bloquea teletransporte y daña tipos de criaturas elegidos"
+      "damage": {
+        "dice": "5d10",
+        "type": "radiante/necrótico",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "area": {
+        "type": "square",
+        "size": 40000
+      },
+      "effect": "Bloquea teletransporte y daña tipos de criaturas elegidos",
+      "classes": [
+        "Cleric"
+      ]
     },
     "arcaneGate": {
       "name": "Portal Arcano",
@@ -4462,7 +6562,12 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S",
       "concentration": true,
-      "effect": "Crea dos portales enlazados"
+      "effect": "Crea dos portales enlazados",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     }
   },
   "level7": {
@@ -4476,8 +6581,19 @@
       "duration": "Instantánea",
       "components": "V",
       "concentration": false,
-      "damage": { "dice": "3d10", "type": "fuerza", "defaultAbility": null, "addModifier": false, "condition": "si falla" },
-      "effect": "Teletransporta hasta 8 criaturas a destino conocido"
+      "damage": {
+        "dice": "3d10",
+        "type": "fuerza",
+        "defaultAbility": null,
+        "addModifier": false,
+        "condition": "si falla"
+      },
+      "effect": "Teletransporta hasta 8 criaturas a destino conocido",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "planeShift": {
       "name": "Desplazamiento de Plano",
@@ -4489,8 +6605,17 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "save": { "ability": "charisma" },
-      "effect": "Viaja a otro plano o destierra criatura"
+      "save": {
+        "ability": "charisma"
+      },
+      "effect": "Viaja a otro plano o destierra criatura",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "resurrection": {
       "name": "Resurrección",
@@ -4502,7 +6627,11 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Devuelve la vida a criatura muerta hace menos de 100 años"
+      "effect": "Devuelve la vida a criatura muerta hace menos de 100 años",
+      "classes": [
+        "Bard",
+        "Cleric"
+      ]
     },
     "fingerOfDeath": {
       "name": "Dedo de la Muerte",
@@ -4514,9 +6643,21 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "damage": { "dice": "7d8+30", "type": "necrótico", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "constitution" },
-      "effect": "Si mata a humanoide, se levanta como zombi"
+      "damage": {
+        "dice": "7d8+30",
+        "type": "necrótico",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "constitution"
+      },
+      "effect": "Si mata a humanoide, se levanta como zombi",
+      "classes": [
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "fireStorm": {
       "name": "Tormenta de Fuego",
@@ -4528,9 +6669,25 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "damage": { "dice": "7d10", "type": "fuego", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cubes", "count": 10, "size": 10 }
+      "damage": {
+        "dice": "7d10",
+        "type": "fuego",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cubes",
+        "count": 10,
+        "size": 10
+      },
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Sorcerer"
+      ]
     },
     "prismaticSpray": {
       "name": "Rociada Prismática",
@@ -4542,10 +6699,24 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "damage": { "dice": "10d6", "type": "variable", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cone", "size": 60 },
-      "effect": "8 efectos aleatorios según color"
+      "damage": {
+        "dice": "10d6",
+        "type": "variable",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cone",
+        "size": 60
+      },
+      "effect": "8 efectos aleatorios según color",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "delayedBlastFireball": {
       "name": "Bola de Fuego de Explosión Retardada",
@@ -4557,11 +6728,28 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "damage": { "dice": "12d6", "type": "fuego", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "sphere", "size": 20 },
+      "damage": {
+        "dice": "12d6",
+        "type": "fuego",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 20
+      },
       "effect": "+1d6 por cada asalto retrasado",
-      "scaling": { "type": "spellLevel", "perLevel": "+1d6" }
+      "scaling": {
+        "type": "spellLevel",
+        "perLevel": "+1d6"
+      },
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "forcecage": {
       "name": "Jaula de Fuerza",
@@ -4573,8 +6761,15 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "save": { "ability": "charisma" },
-      "effect": "Prisión cúbica de fuerza mágica indestructible"
+      "save": {
+        "ability": "charisma"
+      },
+      "effect": "Prisión cúbica de fuerza mágica indestructible",
+      "classes": [
+        "Bard",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "divineWord": {
       "name": "Palabra Divina",
@@ -4586,8 +6781,13 @@
       "duration": "Instantánea",
       "components": "V",
       "concentration": false,
-      "save": { "ability": "charisma" },
-      "effect": "Ensordece/ciega/aturde/mata según PG restantes"
+      "save": {
+        "ability": "charisma"
+      },
+      "effect": "Ensordece/ciega/aturde/mata según PG restantes",
+      "classes": [
+        "Cleric"
+      ]
     },
     "regenerate": {
       "name": "Regenerar",
@@ -4599,8 +6799,17 @@
       "duration": "1 hora",
       "components": "V, S, M",
       "concentration": false,
-      "healing": { "dice": "4d8+15", "defaultAbility": null, "addModifier": false },
-      "effect": "Cura 4d8+15 + 1 PG/minuto, regenera miembros"
+      "healing": {
+        "dice": "4d8+15",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "effect": "Cura 4d8+15 + 1 PG/minuto, regenera miembros",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Druid"
+      ]
     },
     "etherealness": {
       "name": "Etereidad",
@@ -4612,7 +6821,14 @@
       "duration": "Hasta 8 horas",
       "components": "V, S",
       "concentration": false,
-      "effect": "Entras al Plano Etéreo"
+      "effect": "Entras al Plano Etéreo",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "reverseGravity": {
       "name": "Invertir Gravedad",
@@ -4624,9 +6840,20 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "dexterity" },
-      "area": { "type": "cylinder", "size": 50, "height": 100 },
-      "effect": "Invierte gravedad en el área"
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "cylinder",
+        "size": 50,
+        "height": 100
+      },
+      "effect": "Invierte gravedad en el área",
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "symbol": {
       "name": "Símbolo",
@@ -4638,10 +6865,26 @@
       "duration": "Hasta dispararse o disiparse",
       "components": "V, S, M",
       "concentration": false,
-      "damage": { "dice": "10d10", "type": "necrótico", "defaultAbility": null, "addModifier": false, "condition": "si muerte" },
-      "save": { "ability": "variable" },
-      "area": { "type": "sphere", "size": 60 },
-      "effect": "Glifo con efecto elegido al dispararse"
+      "damage": {
+        "dice": "10d10",
+        "type": "necrótico",
+        "defaultAbility": null,
+        "addModifier": false,
+        "condition": "si muerte"
+      },
+      "save": {
+        "ability": "variable"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 60
+      },
+      "effect": "Glifo con efecto elegido al dispararse",
+      "classes": [
+        "Bard",
+        "Cleric",
+        "Wizard"
+      ]
     },
     "conjureCelestial": {
       "name": "Conjurar Celestial",
@@ -4653,7 +6896,10 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S",
       "concentration": true,
-      "effect": "Invoca celestial de VD 4 o menor"
+      "effect": "Invoca celestial de VD 4 o menor",
+      "classes": [
+        "Cleric"
+      ]
     },
     "simulacrum": {
       "name": "Simulacro",
@@ -4665,7 +6911,10 @@
       "duration": "Hasta ser cancelado",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Crea duplicado de bestia o humanoide con mitad de PG"
+      "effect": "Crea duplicado de bestia o humanoide con mitad de PG",
+      "classes": [
+        "Wizard"
+      ]
     },
     "mirageArcane": {
       "name": "Espejismo Arcano",
@@ -4677,8 +6926,16 @@
       "duration": "10 días",
       "components": "V, S",
       "concentration": false,
-      "area": { "type": "square", "size": 5280 },
-      "effect": "Terreno de 1 milla cuadrada parece otro"
+      "area": {
+        "type": "square",
+        "size": 5280
+      },
+      "effect": "Terreno de 1 milla cuadrada parece otro",
+      "classes": [
+        "Bard",
+        "Druid",
+        "Wizard"
+      ]
     },
     "projectImage": {
       "name": "Proyectar Imagen",
@@ -4690,7 +6947,11 @@
       "duration": "Concentración, hasta 1 día",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Crea copia ilusoria de ti mismo"
+      "effect": "Crea copia ilusoria de ti mismo",
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "mordenkainensSword": {
       "name": "Espada de Mordenkainen",
@@ -4702,8 +6963,20 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "damage": { "dice": "3d10", "type": "fuerza", "defaultAbility": null, "addModifier": false },
-      "attack": { "type": "melee", "ability": "spellcasting" }
+      "damage": {
+        "dice": "3d10",
+        "type": "fuerza",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "attack": {
+        "type": "melee",
+        "ability": "spellcasting"
+      },
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "sequester": {
       "name": "Recluir",
@@ -4715,7 +6988,10 @@
       "duration": "Hasta ser cancelado",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Oculta criatura/objeto de detección, puede hacerla invisible"
+      "effect": "Oculta criatura/objeto de detección, puede hacerla invisible",
+      "classes": [
+        "Wizard"
+      ]
     }
   },
   "level8": {
@@ -4729,10 +7005,25 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "damage": { "dice": "12d6", "type": "radiante", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "constitution" },
-      "area": { "type": "sphere", "size": 60 },
-      "effect": "Ciega a criaturas que fallen salvación"
+      "damage": {
+        "dice": "12d6",
+        "type": "radiante",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 60
+      },
+      "effect": "Ciega a criaturas que fallen salvación",
+      "classes": [
+        "Druid",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "powerWordStun": {
       "name": "Palabra de Poder Aturdir",
@@ -4744,8 +7035,16 @@
       "duration": "Instantánea",
       "components": "V",
       "concentration": false,
-      "save": { "ability": "constitution" },
-      "effect": "Aturde criatura con 150 PG o menos"
+      "save": {
+        "ability": "constitution"
+      },
+      "effect": "Aturde criatura con 150 PG o menos",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "dominateMonster": {
       "name": "Dominar Monstruo",
@@ -4757,8 +7056,16 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Control telepático total sobre cualquier criatura"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Control telepático total sobre cualquier criatura",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "maze": {
       "name": "Laberinto",
@@ -4770,7 +7077,10 @@
       "duration": "Concentración, hasta 10 minutos",
       "components": "V, S",
       "concentration": true,
-      "effect": "Destierra criatura a semiplano laberíntico"
+      "effect": "Destierra criatura a semiplano laberíntico",
+      "classes": [
+        "Wizard"
+      ]
     },
     "antimagicField": {
       "name": "Campo Antimagia",
@@ -4782,8 +7092,15 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "area": { "type": "sphere", "size": 10 },
-      "effect": "Suprime toda magia en el área"
+      "area": {
+        "type": "sphere",
+        "size": 10
+      },
+      "effect": "Suprime toda magia en el área",
+      "classes": [
+        "Cleric",
+        "Wizard"
+      ]
     },
     "feeblemind": {
       "name": "Debilidad Mental",
@@ -4795,9 +7112,22 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "damage": { "dice": "4d6", "type": "psíquico", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "intelligence" },
-      "effect": "INT y CAR caen a 1, no puede lanzar conjuros"
+      "damage": {
+        "dice": "4d6",
+        "type": "psíquico",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "intelligence"
+      },
+      "effect": "INT y CAR caen a 1, no puede lanzar conjuros",
+      "classes": [
+        "Bard",
+        "Druid",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "holyAura": {
       "name": "Aura Sagrada",
@@ -4809,9 +7139,17 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "constitution" },
-      "area": { "type": "sphere", "size": 30 },
-      "effect": "Aliados con ventaja salvaciones, enemigos con desventaja ataques, ciega infernales/muertos vivientes"
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "effect": "Aliados con ventaja salvaciones, enemigos con desventaja ataques, ciega infernales/muertos vivientes",
+      "classes": [
+        "Cleric"
+      ]
     },
     "earthquake": {
       "name": "Terremoto",
@@ -4823,10 +7161,25 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "damage": { "dice": "5d6", "type": "contundente", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "sphere", "size": 100 },
-      "effect": "Terreno difícil, fisuras, estructuras colapsan"
+      "damage": {
+        "dice": "5d6",
+        "type": "contundente",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 100
+      },
+      "effect": "Terreno difícil, fisuras, estructuras colapsan",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Sorcerer"
+      ]
     },
     "mindBlank": {
       "name": "Mente en Blanco",
@@ -4838,7 +7191,11 @@
       "duration": "24 horas",
       "components": "V, S",
       "concentration": false,
-      "effect": "Inmune a daño psíquico, detección de emociones/pensamientos, encantamiento, adivinación"
+      "effect": "Inmune a daño psíquico, detección de emociones/pensamientos, encantamiento, adivinación",
+      "classes": [
+        "Bard",
+        "Wizard"
+      ]
     },
     "clone": {
       "name": "Clonar",
@@ -4850,7 +7207,10 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Crea duplicado inerte; alma va al clon si muere el original"
+      "effect": "Crea duplicado inerte; alma va al clon si muere el original",
+      "classes": [
+        "Wizard"
+      ]
     },
     "controlWeather": {
       "name": "Controlar el Clima",
@@ -4862,8 +7222,16 @@
       "duration": "Concentración, hasta 8 horas",
       "components": "V, S, M",
       "concentration": true,
-      "area": { "type": "sphere", "size": 26400 },
-      "effect": "Controla clima en 5 millas"
+      "area": {
+        "type": "sphere",
+        "size": 26400
+      },
+      "effect": "Controla clima en 5 millas",
+      "classes": [
+        "Cleric",
+        "Druid",
+        "Wizard"
+      ]
     },
     "tsunami": {
       "name": "Tsunami",
@@ -4875,8 +7243,18 @@
       "duration": "Concentración, hasta 6 asaltos",
       "components": "V, S",
       "concentration": true,
-      "damage": { "dice": "6d10", "type": "contundente", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "strength" }
+      "damage": {
+        "dice": "6d10",
+        "type": "contundente",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "strength"
+      },
+      "classes": [
+        "Druid"
+      ]
     },
     "animalShapes": {
       "name": "Formas de Animal",
@@ -4888,7 +7266,10 @@
       "duration": "Concentración, hasta 24 horas",
       "components": "V, S",
       "concentration": true,
-      "effect": "Transforma aliados voluntarios en bestias de VD 4 o menor"
+      "effect": "Transforma aliados voluntarios en bestias de VD 4 o menor",
+      "classes": [
+        "Druid"
+      ]
     },
     "telepathy": {
       "name": "Telepatía",
@@ -4900,7 +7281,10 @@
       "duration": "24 horas",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Vínculo telepático con criatura conocida en mismo plano"
+      "effect": "Vínculo telepático con criatura conocida en mismo plano",
+      "classes": [
+        "Wizard"
+      ]
     },
     "demiplane": {
       "name": "Semiplano",
@@ -4912,7 +7296,11 @@
       "duration": "1 hora",
       "components": "S",
       "concentration": false,
-      "effect": "Crea puerta a semiplano vacío (30x30x30 pies)"
+      "effect": "Crea puerta a semiplano vacío (30x30x30 pies)",
+      "classes": [
+        "Warlock",
+        "Wizard"
+      ]
     },
     "glibness": {
       "name": "Labia",
@@ -4924,7 +7312,11 @@
       "duration": "1 hora",
       "components": "V",
       "concentration": false,
-      "effect": "Pruebas CAR mínimo 15, magia no detecta mentiras"
+      "effect": "Pruebas CAR mínimo 15, magia no detecta mentiras",
+      "classes": [
+        "Bard",
+        "Warlock"
+      ]
     },
     "antipatySympathy": {
       "name": "Antipatía/Simpatía",
@@ -4936,9 +7328,18 @@
       "duration": "10 días",
       "components": "V, S, M",
       "concentration": false,
-      "save": { "ability": "wisdom" },
-      "area": { "type": "cube", "size": 200 },
-      "effect": "Atrae o repele tipo de criaturas"
+      "save": {
+        "ability": "wisdom"
+      },
+      "area": {
+        "type": "cube",
+        "size": 200
+      },
+      "effect": "Atrae o repele tipo de criaturas",
+      "classes": [
+        "Druid",
+        "Wizard"
+      ]
     }
   },
   "level9": {
@@ -4952,8 +7353,19 @@
       "duration": "Instantánea",
       "components": "V",
       "concentration": false,
-      "damage": { "dice": "1d10", "type": "necrótico", "defaultAbility": null, "addModifier": false, "perAbility": true, "condition": "si deseo mayor" },
-      "effect": "El conjuro más poderoso. Duplica nivel 8 o menor, u otorga deseo"
+      "damage": {
+        "dice": "1d10",
+        "type": "necrótico",
+        "defaultAbility": null,
+        "addModifier": false,
+        "perAbility": true,
+        "condition": "si deseo mayor"
+      },
+      "effect": "El conjuro más poderoso. Duplica nivel 8 o menor, u otorga deseo",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "powerWordKill": {
       "name": "Palabra de Poder Matar",
@@ -4965,7 +7377,13 @@
       "duration": "Instantánea",
       "components": "V",
       "concentration": false,
-      "effect": "Mata instantáneamente criatura con 100 PG o menos"
+      "effect": "Mata instantáneamente criatura con 100 PG o menos",
+      "classes": [
+        "Bard",
+        "Sorcerer",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "powerWordHeal": {
       "name": "Palabra de Poder Sanar",
@@ -4977,7 +7395,10 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "effect": "Restaura todos los PG, cura todas las condiciones"
+      "effect": "Restaura todos los PG, cura todas las condiciones",
+      "classes": [
+        "Bard"
+      ]
     },
     "truePolymorph": {
       "name": "Polimorfismo Verdadero",
@@ -4989,8 +7410,15 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "save": { "ability": "wisdom" },
-      "effect": "Transforma criatura/objeto en otra criatura/objeto"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Transforma criatura/objeto en otra criatura/objeto",
+      "classes": [
+        "Bard",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "prismaticWall": {
       "name": "Muro Prismático",
@@ -5002,9 +7430,19 @@
       "duration": "10 minutos",
       "components": "V, S",
       "concentration": false,
-      "damage": { "dice": "10d6", "type": "variable", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "variable" },
-      "effect": "Muro de 7 capas con diferentes efectos letales"
+      "damage": {
+        "dice": "10d6",
+        "type": "variable",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "variable"
+      },
+      "effect": "Muro de 7 capas con diferentes efectos letales",
+      "classes": [
+        "Wizard"
+      ]
     },
     "massHeal": {
       "name": "Sanar a las Masas",
@@ -5016,8 +7454,16 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "healing": { "dice": "700", "type": "pool", "defaultAbility": null, "addModifier": false },
-      "effect": "Distribuye hasta 700 PG de curación entre criaturas"
+      "healing": {
+        "dice": "700",
+        "type": "pool",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "effect": "Distribuye hasta 700 PG de curación entre criaturas",
+      "classes": [
+        "Cleric"
+      ]
     },
     "trueResurrection": {
       "name": "Resurrección Verdadera",
@@ -5029,7 +7475,11 @@
       "duration": "Instantánea",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Devuelve la vida a criatura muerta hace menos de 200 años con todos los PG"
+      "effect": "Devuelve la vida a criatura muerta hace menos de 200 años con todos los PG",
+      "classes": [
+        "Cleric",
+        "Druid"
+      ]
     },
     "meteor Swarm": {
       "name": "Tromba de Meteoritos",
@@ -5041,10 +7491,25 @@
       "duration": "Instantánea",
       "components": "V, S",
       "concentration": false,
-      "damage": { "dice": "20d6+20d6", "type": "fuego+contundente", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "dexterity" },
-      "area": { "type": "spheres", "count": 4, "size": 40 },
-      "effect": "4 meteoros de 40 pies de radio cada uno"
+      "damage": {
+        "dice": "20d6+20d6",
+        "type": "fuego+contundente",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "dexterity"
+      },
+      "area": {
+        "type": "spheres",
+        "count": 4,
+        "size": 40
+      },
+      "effect": "4 meteoros de 40 pies de radio cada uno",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "stormOfVengeance": {
       "name": "Tormenta de Venganza",
@@ -5056,10 +7521,23 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "damage": { "dice": "2d6", "type": "trueno", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "constitution" },
-      "area": { "type": "sphere", "size": 360 },
-      "effect": "Tormenta devastadora con efectos por asalto"
+      "damage": {
+        "dice": "2d6",
+        "type": "trueno",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "constitution"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 360
+      },
+      "effect": "Tormenta devastadora con efectos por asalto",
+      "classes": [
+        "Druid"
+      ]
     },
     "gate": {
       "name": "Umbral",
@@ -5071,7 +7549,12 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Portal a otro plano o invoca criatura por nombre"
+      "effect": "Portal a otro plano o invoca criatura por nombre",
+      "classes": [
+        "Cleric",
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "timeStop": {
       "name": "Detener el Tiempo",
@@ -5083,7 +7566,11 @@
       "duration": "Instantánea",
       "components": "V",
       "concentration": false,
-      "effect": "1d4+1 turnos extra mientras el tiempo se detiene para otros"
+      "effect": "1d4+1 turnos extra mientras el tiempo se detiene para otros",
+      "classes": [
+        "Sorcerer",
+        "Wizard"
+      ]
     },
     "imprisonment": {
       "name": "Cautiverio",
@@ -5095,8 +7582,14 @@
       "duration": "Hasta ser disipado",
       "components": "V, S, M",
       "concentration": false,
-      "save": { "ability": "wisdom" },
-      "effect": "Encarcela criatura de forma elegida"
+      "save": {
+        "ability": "wisdom"
+      },
+      "effect": "Encarcela criatura de forma elegida",
+      "classes": [
+        "Warlock",
+        "Wizard"
+      ]
     },
     "foresight": {
       "name": "Presciencia",
@@ -5108,7 +7601,13 @@
       "duration": "8 horas",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "No sorprendido, ventaja en ataques/salvaciones/habilidades, desventaja contra él"
+      "effect": "No sorprendido, ventaja en ataques/salvaciones/habilidades, desventaja contra él",
+      "classes": [
+        "Bard",
+        "Druid",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "astralProjection": {
       "name": "Proyección Astral",
@@ -5120,7 +7619,12 @@
       "duration": "Especial",
       "components": "V, S, M",
       "concentration": false,
-      "effect": "Hasta 8 criaturas proyectan cuerpos astrales"
+      "effect": "Hasta 8 criaturas proyectan cuerpos astrales",
+      "classes": [
+        "Cleric",
+        "Warlock",
+        "Wizard"
+      ]
     },
     "shapechange": {
       "name": "Cambiar de Forma",
@@ -5132,7 +7636,11 @@
       "duration": "Concentración, hasta 1 hora",
       "components": "V, S, M",
       "concentration": true,
-      "effect": "Adopta forma de cualquier criatura de VD igual o menor a nivel"
+      "effect": "Adopta forma de cualquier criatura de VD igual o menor a nivel",
+      "classes": [
+        "Druid",
+        "Wizard"
+      ]
     },
     "weird": {
       "name": "Némesis Inexorable",
@@ -5144,10 +7652,23 @@
       "duration": "Concentración, hasta 1 minuto",
       "components": "V, S",
       "concentration": true,
-      "damage": { "dice": "4d10", "type": "psíquico", "defaultAbility": null, "addModifier": false },
-      "save": { "ability": "wisdom" },
-      "area": { "type": "sphere", "size": 30 },
-      "effect": "Criaturas asustadas y reciben daño"
+      "damage": {
+        "dice": "4d10",
+        "type": "psíquico",
+        "defaultAbility": null,
+        "addModifier": false
+      },
+      "save": {
+        "ability": "wisdom"
+      },
+      "area": {
+        "type": "sphere",
+        "size": 30
+      },
+      "effect": "Criaturas asustadas y reciben daño",
+      "classes": [
+        "Wizard"
+      ]
     }
   }
 }
