@@ -11,6 +11,10 @@ class DiceRoller3D {
         this.isRolling = false;
         this.DiceBoxClass = null;
 
+        // Auto-limpieza: los dados desaparecen solos tras la tirada
+        this.autoClearDelay = 5000; // ms que los dados quedan en pantalla
+        this.autoClearTimer = null;
+
         // Callbacks
         this.onRollComplete = null;
         this.onDiceListChanged = null;
@@ -183,7 +187,11 @@ class DiceRoller3D {
         this.isRolling = true;
 
         try {
-            // Limpiar dados anteriores
+            // Cancelar auto-limpieza pendiente y limpiar dados anteriores
+            if (this.autoClearTimer) {
+                clearTimeout(this.autoClearTimer);
+                this.autoClearTimer = null;
+            }
             if (this.diceBox) {
                 this.diceBox.clear();
             }
@@ -237,10 +245,20 @@ class DiceRoller3D {
         if (this.onRollComplete) {
             this.onRollComplete(rollData);
         }
+
+        // Los dados desaparecen solos pasados unos segundos
+        this.autoClearTimer = setTimeout(() => {
+            this.autoClearTimer = null;
+            this.clear();
+        }, this.autoClearDelay);
     }
 
     // Limpiar canvas
     clear() {
+        if (this.autoClearTimer) {
+            clearTimeout(this.autoClearTimer);
+            this.autoClearTimer = null;
+        }
         if (this.diceBox) {
             try {
                 this.diceBox.clear();
@@ -252,6 +270,10 @@ class DiceRoller3D {
 
     // Destruir instancia
     destroy() {
+        if (this.autoClearTimer) {
+            clearTimeout(this.autoClearTimer);
+            this.autoClearTimer = null;
+        }
         if (this.diceBox) {
             try {
                 this.diceBox.clear();

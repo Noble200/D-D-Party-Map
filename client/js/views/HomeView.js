@@ -402,6 +402,7 @@ class HomeView {
 
         this.renderTestSelectedDice([]);
         this.updateTestRollButton(false);
+        this.cancelTestDiceResultHide();
         document.getElementById('testDiceResult')?.classList.add('hidden');
 
         // Mostrar modal primero
@@ -417,6 +418,8 @@ class HomeView {
             this.testDiceRoller.destroy();
             this.testDiceRoller = null;
         }
+        this.cancelTestDiceResultHide();
+        document.getElementById('testDiceResult')?.classList.add('hidden');
         this.hideModal('testDice');
     }
 
@@ -431,6 +434,7 @@ class HomeView {
             this.testDiceRoller.clearDice();
             this.testDiceRoller.clear();
         }
+        this.cancelTestDiceResultHide();
         document.getElementById('testDiceResult')?.classList.add('hidden');
     }
 
@@ -480,7 +484,10 @@ class HomeView {
         const resultContainer = document.getElementById('testDiceResult');
         if (!resultContainer) return;
 
-        resultContainer.classList.remove('hidden');
+        // Cancelar ocultado pendiente de una tirada anterior
+        this.cancelTestDiceResultHide();
+
+        resultContainer.classList.remove('hidden', 'dice-result-fadeout');
 
         const rollsStr = rollData.rolls.map(r => `${r.value}`).join(', ');
 
@@ -492,6 +499,26 @@ class HomeView {
         if (this.testDiceRoller) {
             this.testDiceRoller.clearDice();
         }
+
+        // El resultado aguanta unos segundos mas que los dados y se desvanece
+        // (dados: ~5s, resultado: ~8s desde que se asientan)
+        this.testDiceResultHideTimer = setTimeout(() => {
+            resultContainer.classList.add('dice-result-fadeout');
+            this.testDiceResultHideTimer = setTimeout(() => {
+                this.testDiceResultHideTimer = null;
+                resultContainer.classList.add('hidden');
+                resultContainer.classList.remove('dice-result-fadeout');
+            }, 400);
+        }, 8000);
+    }
+
+    // Cancelar el ocultado programado del resultado de prueba
+    cancelTestDiceResultHide() {
+        if (this.testDiceResultHideTimer) {
+            clearTimeout(this.testDiceResultHideTimer);
+            this.testDiceResultHideTimer = null;
+        }
+        document.getElementById('testDiceResult')?.classList.remove('dice-result-fadeout');
     }
 
     // Unirse como jugador

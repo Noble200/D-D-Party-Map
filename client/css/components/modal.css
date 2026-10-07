@@ -267,12 +267,12 @@
     pointer-events: none;
 }
 
-/* Permitir clicks en los controles */
+/* Permitir clicks en los controles.
+   El canvas 3D NO: queda por encima del panel y no debe bloquear clicks */
 .modal-dice-3d .dice-control-panel,
 .modal-dice-3d .dice-close-btn,
 .modal-dice-3d .dice-history,
-.modal-dice-3d .dice-result,
-.modal-dice-3d .dice-3d-canvas {
+.modal-dice-3d .dice-result {
     pointer-events: auto;
 }
 

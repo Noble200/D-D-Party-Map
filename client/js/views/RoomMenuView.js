@@ -1057,6 +1057,7 @@ class RoomMenuView {
         this.renderDiceHistory();
         this.renderSelectedDice([]);
         this.updateRollButton(false);
+        this.cancelDiceResultHide();
         document.getElementById('diceResult')?.classList.add('hidden');
 
         // Mostrar modal primero
@@ -1072,6 +1073,8 @@ class RoomMenuView {
             this.diceRoller3D.clear();
             this.diceRoller3D.clearDice();
         }
+        this.cancelDiceResultHide();
+        document.getElementById('diceResult')?.classList.add('hidden');
         this.hideModal('diceRoller');
     }
 
@@ -1088,6 +1091,7 @@ class RoomMenuView {
             this.diceRoller3D.clearDice();
             this.diceRoller3D.clear();
         }
+        this.cancelDiceResultHide();
         document.getElementById('diceResult')?.classList.add('hidden');
     }
 
@@ -1200,7 +1204,10 @@ class RoomMenuView {
         const resultContainer = document.getElementById('diceResult');
         if (!resultContainer) return;
 
-        resultContainer.classList.remove('hidden');
+        // Cancelar ocultado pendiente de una tirada anterior
+        this.cancelDiceResultHide();
+
+        resultContainer.classList.remove('hidden', 'dice-result-fadeout');
 
         const formulaStr = notation + (modifier ? (modifier > 0 ? '+' : '') + modifier : '');
         const rollsStr = rolls.map(r => `${r.value}`).join(', ');
@@ -1212,6 +1219,26 @@ class RoomMenuView {
         // Animacion
         resultContainer.classList.add('dice-result-animate');
         setTimeout(() => resultContainer.classList.remove('dice-result-animate'), 500);
+
+        // El resultado aguanta unos segundos mas que los dados y se desvanece
+        // (dados: ~5s, resultado: ~8s desde que se asientan)
+        this.diceResultHideTimer = setTimeout(() => {
+            resultContainer.classList.add('dice-result-fadeout');
+            this.diceResultHideTimer = setTimeout(() => {
+                this.diceResultHideTimer = null;
+                resultContainer.classList.add('hidden');
+                resultContainer.classList.remove('dice-result-fadeout');
+            }, 400);
+        }, 8000);
+    }
+
+    // Cancelar el ocultado programado del resultado
+    cancelDiceResultHide() {
+        if (this.diceResultHideTimer) {
+            clearTimeout(this.diceResultHideTimer);
+            this.diceResultHideTimer = null;
+        }
+        document.getElementById('diceResult')?.classList.remove('dice-result-fadeout');
     }
 
     async loadDiceHistory() {

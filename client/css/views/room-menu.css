@@ -768,6 +768,8 @@
 }
 
 /* Canvas 3D de dados - FULLSCREEN OVERLAY TRANSPARENTE */
+/* Va POR ENCIMA del panel de controles para que los dados rueden sobre el,
+   pero sin capturar clicks (pointer-events: none) */
 .dice-3d-canvas {
     position: fixed;
     top: 0;
@@ -775,7 +777,8 @@
     width: 100vw;
     height: 100vh;
     background: transparent !important;
-    z-index: 9000;
+    z-index: 9160;
+    pointer-events: none !important;
 }
 
 /* El canvas/iframe interno debe ocupar todo */
@@ -1064,7 +1067,7 @@
     border: 3px solid var(--color-gold);
     border-radius: var(--radius-lg);
     animation: diceResultPop 0.5s ease-out;
-    z-index: 9150;
+    z-index: 9170;
     backdrop-filter: blur(10px);
     min-width: 200px;
     box-shadow: 0 0 40px rgba(212, 167, 38, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -1081,6 +1084,18 @@
     100% {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Desvanecimiento del resultado antes de ocultarse */
+.dice-result.dice-result-fadeout {
+    animation: diceResultFade 0.4s ease-in forwards;
+}
+
+@keyframes diceResultFade {
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
     }
 }
 
