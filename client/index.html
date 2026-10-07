@@ -44,14 +44,30 @@
         </aside>
 
         <div class="home-container">
-            <h1>D&D Map Editor</h1>
-            <p class="subtitle">Crea y comparte tableros para tus partidas</p>
+            <!-- Capa decorativa: brasas flotantes (CSS puro) -->
+            <div class="home-embers" aria-hidden="true"></div>
+
+            <header class="home-header">
+                <!-- Emblema d20 dibujado con CSS -->
+                <div class="home-crest" aria-hidden="true">
+                    <span class="crest-diamond"></span>
+                    <span class="crest-number">20</span>
+                </div>
+                <h1>D&amp;D Map Editor</h1>
+                <div class="home-divider" aria-hidden="true">
+                    <span class="divider-line"></span>
+                    <span class="divider-gem"></span>
+                    <span class="divider-line"></span>
+                </div>
+                <p class="subtitle">Forja tus mapas, reúne a tu grupo y que comience la aventura</p>
+            </header>
 
             <div class="home-options">
-                <!-- Opción Admin -->
-                <div class="option-card">
-                    <h2>Administrador</h2>
-                    <p>Crea y edita salas de juego</p>
+                <!-- Opción Admin (Dungeon Master) -->
+                <div class="option-card card-dm">
+                    <span class="card-kicker">El que narra</span>
+                    <h2>Dungeon Master</h2>
+                    <p>Forja tus mapas y dirige la partida</p>
 
                     <div class="option-buttons">
                         <button id="btnCreateRoom" class="btn btn-primary">Crear Nueva Sala</button>
@@ -59,16 +75,17 @@
                     </div>
                 </div>
 
-                <!-- Opción Usuario -->
-                <div class="option-card">
-                    <h2>Jugador</h2>
-                    <p>Únete a una sala existente</p>
+                <!-- Opción Usuario (Jugador) -->
+                <div class="option-card card-player">
+                    <span class="card-kicker">Los que juegan</span>
+                    <h2>Aventurero</h2>
+                    <p>Únete a la mesa con el código de tu DM</p>
 
                     <div class="join-form">
                         <input type="text" id="characterNameInput" placeholder="Nombre del personaje" maxlength="30">
                         <input type="text" id="playerNameInput" placeholder="Tu nombre real" maxlength="20">
                         <input type="text" id="roomCodeInput" placeholder="Código de sala" maxlength="8">
-                        <button id="btnJoinRoom" class="btn btn-primary">Unirse</button>
+                        <button id="btnJoinRoom" class="btn btn-primary">Unirse a la Partida</button>
                     </div>
                 </div>
             </div>
